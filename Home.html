@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sistema SaaS</title>
+  <link rel="stylesheet" href="Home.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .header {
+      background-color: #f1f1f1;
+      padding: 10px;
+      text-align: right;
+    }
+    
+    .content {
+      display: flex;
+    }
+    
+    .sidebar {
+      width: 30%;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    
+    .main {
+      width: 70%;
+      padding: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .form-group input[type="text"],
+    .form-group select {
+      width: 100%;
+      padding: 5px;
+    }
+
+    
+    
+    .form-group textarea {
+      width: 100%;
+      padding: 5px;
+      height: 100px;
+    }
+    
+    .submit-btn {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    
+    .submit-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <button id="open-chat-btn">Abrir Chamada</button>
+  </div>
+  
+  <div class="content">
+    <div class="sidebar">
+      <h3>Opções</h3>
+      <ul>
+        <li>Usuários</li>
+        <li>Configurações</li>
+      </ul>
+    </div>
+    
+    <div class="main">
+      <h2>Abrir Chamada</h2>
+      <form>
+        <div class="form-group">
+          <label for="motivo">Motivo:</label>
+          <input type="text" id="motivo" name="motivo" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="urgencia">Urgência:</label>
+          <select id="urgencia" name="urgencia" required>
+            <option value="">Selecione...</option>
+            <option value="baixa">Baixa</option>
+            <option value="média">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="descricao">Descrição:</label>
+          <textarea id="descricao" name="descricao" required></textarea>
+        </div>
+        
+        <button class="submit-btn" type="submit">Enviar Chamada</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Adicione o código JavaScript necessário para abrir a chamada quando o botão for clicado.
+    var openChatBtn = document.getElementById('open-chat-btn');
+    openChatBtn.addEventListener('click', function() {
+      // Coloque aqui o código para abrir a chamada
+      console.log('Abrindo chamada...');
+    });
+  </script>
+</body>
+</html>
