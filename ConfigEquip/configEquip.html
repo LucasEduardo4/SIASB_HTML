@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <title>Document</title>
+</head>
+<body onload="init()">
+    <h3>Configurar Status Chamado</h3>
+    <hr>
+    <form style="width: 100px; display: inline;">
+        <label for="">Adicionar novo status:</label>
+        <input type="text" name="novoStatus" required>
+    </form>
+    <button onclick="submitForm()">></button><br><br><br>
+    <caption>Status Existentes:</caption>
+    <table border id="tableStatus" style="text-align: center;">
+        <tr>
+            <th>ID Status</th>
+            <th>Descrição status</th>
+            <th>Ações</th>
+        </tr>
+    </table>
+    <div id="resultado"></div>
+
+    <script>
+        function init() {
+            loadStatus()//Promises para controlar o fluxo assíncrono do código. (then, e catch)
+                .then(hideSaveButton)
+                .then(setupEditButtons)
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        function loadStatus() {
+            return new Promise(function(resolve, reject) {
+                var tableStatus = document.getElementById("tableStatus");
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "configEquip.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            tableStatus.innerHTML += xhr.responseText;
+                            resolve();
+                        } else {
+                            reject(new Error("Falha ao carregar status."));
+                        }
+                    }
+                };
+                xhr.send();
+            });
+        }
+
+        function hideSaveButton() {
+            var saveButtons = document.getElementsByClassName("glyphicon glyphicon-floppy-disk");
+            for (var i = 0; i < saveButtons.length; i++) {
+                var saveButton = saveButtons[i];
+                saveButton.style.display = "none";
+            }
+        }
+
+        function submitForm() {
+            var novoStatus = document.getElementsByName('novoStatus')[0].value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "configEquip.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // document.getElementById("resultado").innerHTML = xhr.responseText;
+                    // tableStatus.innerHTML += xhr.responseText;
+                    setupEditButtons();
+                    window.location.reload()
+                }
+            };
+            xhr.send("novoStatus=" + novoStatus);
+        }
+
+        function setupEditButtons() {//função imediata (IIFE - Immediately Invoked Function Expression)
+            var editButtons = document.getElementsByClassName("glyphicon glyphicon-pencil");
+            var saveButtons = document.getElementsByClassName("glyphicon glyphicon-floppy-disk");
+            var removeButtons = document.getElementsByClassName("glyphicon glyphicon-trash");
+
+            for (var i = 0; i < editButtons.length; i++) {
+                (function(id) {
+                    var editButton = editButtons[i];
+                    editButton.addEventListener("click", function() {
+                        openEditInput(id + 1);
+                    });
+
+                    var saveButton = saveButtons[i];
+                    saveButton.addEventListener("click", function() {
+                        saveEditedValue(id + 1);
+                    });
+                    
+                    var removeButton = removeButtons[i];
+                    removeButton.addEventListener("click", function() {
+                        removeValue(id + 1);
+                    });
+                })(i);
+            }
+        }
+
+        function openEditInput(id) {
+            var cell = document.getElementById("desc-" + id);
+            var descValue = cell.innerHTML;
+            var inputElement = document.createElement("input");
+            inputElement.type = "text";
+            inputElement.value = descValue;
+            inputElement.id = "edit-input-" + id;
+            cell.innerHTML = "";
+            cell.appendChild(inputElement);
+            document.getElementById("edit-btn-" + id).style.display = "none";
+            document.getElementById("trash-btn-" + id).style.display = "none";
+            document.getElementById("save-btn-" + id).style.display = "inline-block";
+        }
+
+        function saveEditedValue(id) {
+            var editedInput = document.getElementById("edit-input-" + id);
+            var editedValue = editedInput.value;
+
+            // Envie a nova string para o servidor para atualização no banco de dados
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "configEquip.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                    }
+                };
+                xhr.send("editedValue=" + encodeURIComponent(editedValue) + "&id=" + id);
+                
+            // Exemplo de resposta JSON do servidor
+            var response = {
+                success: true,
+                message: "Status atualizado com sucesso!"
+            };
+
+            if (response.success) {
+                var cell = document.getElementById("desc-" + id);
+                cell.innerHTML = editedValue;
+                document.getElementById("edit-btn-" + id).style.display = "inline-block";
+                document.getElementById("trash-btn-" + id).style.display = "inline-block";
+                document.getElementById("save-btn-" + id).style.display = "none";
+            } else {
+                // Lide com o caso de erro de atualização
+                alert("Erro ao atualizar o status: " + response.message);
+            }
+        }
+        
+        function removeValue(id){
+        var removeCell = document.getElementById("trash-btn-"+id);
+
+        var xhr = new XMLHttpRequest();
+                xhr.open("POST", "configEquip.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                    }
+                };
+                xhr.send("deleteId=" + id);
+        }
+    </script>
+</body>
+</html>
