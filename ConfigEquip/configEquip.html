@@ -10,6 +10,14 @@
         .hidden {
             display: none;
         }
+        body{
+            width: 95%;
+            margin: auto;
+        }
+        h3{ 
+            width: 500px;
+        }
+
     </style>
 
     <title>Document</title>
@@ -31,10 +39,10 @@
         </tr>
     </table>
     <div id="resultado"></div>
-
+    <h3>Obs... preciso agora alterar o php, para receber o id, e na hora de inserir, passar o valor tanto do ID, quanto da descrição, e o ID, tem que ser ID + 1</h3>
     <script>
         function init() {
-            loadStatus()//Promises para controlar o fluxo assíncrono do código. (then, e catch)
+            loadStatus()
                 .then(hideSaveButton)
                 .then(setupEditButtons)
                 .catch(function(error) {
@@ -79,16 +87,14 @@
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    // document.getElementById("resultado").innerHTML = xhr.responseText;
-                    // tableStatus.innerHTML += xhr.responseText;
                     setupEditButtons();
-                    window.location.reload()
+                    window.location.reload();
                 }
             };
-            xhr.send("novoStatus=" + novoStatus);
+            xhr.send("novoStatus=" + encodeURIComponent(novoStatus));
         }
 
-        function setupEditButtons() {//função imediata (IIFE - Immediately Invoked Function Expression)
+        function setupEditButtons() {
             var editButtons = document.getElementsByClassName("glyphicon glyphicon-pencil");
             var saveButtons = document.getElementsByClassName("glyphicon glyphicon-floppy-disk");
             var removeButtons = document.getElementsByClassName("glyphicon glyphicon-trash");
@@ -97,79 +103,88 @@
                 (function(id) {
                     var editButton = editButtons[i];
                     editButton.addEventListener("click", function() {
-                        openEditInput(id + 1);
+                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                        var ref = element.cells[0].innerText;
+                        openEditInput(ref);
                     });
 
                     var saveButton = saveButtons[i];
                     saveButton.addEventListener("click", function() {
-                        saveEditedValue(id + 1);
+                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                        var ref = element.cells[0].innerText;
+                        saveEditedValue(ref);
                     });
-                    
+
                     var removeButton = removeButtons[i];
                     removeButton.addEventListener("click", function() {
-                        removeValue(id + 1);
+                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                        var ref = element.cells[0].innerText;
+                        removeValue(ref);
                     });
                 })(i);
             }
         }
 
         function openEditInput(id) {
+            if(id == "ID Status"){
+                id = 1;
+            }
             var cell = document.getElementById("desc-" + id);
-            var descValue = cell.innerHTML;
-            var inputElement = document.createElement("input");
-            inputElement.type = "text";
-            inputElement.value = descValue;
-            inputElement.id = "edit-input-" + id;
-            cell.innerHTML = "";
-            cell.appendChild(inputElement);
-            document.getElementById("edit-btn-" + id).style.display = "none";
-            document.getElementById("trash-btn-" + id).style.display = "none";
-            document.getElementById("save-btn-" + id).style.display = "inline-block";
+
+            if (cell) {
+                var descValue = cell.innerHTML;
+                var inputElement = document.createElement("input");
+                inputElement.type = "text";
+                inputElement.value = descValue;
+                inputElement.id = "edit-input-" + id;
+                cell.innerHTML = "";
+                cell.appendChild(inputElement);
+                document.getElementById("edit-btn-" + id).style.display = "none";
+                document.getElementById("trash-btn-" + id).style.display = "none";
+                document.getElementById("save-btn-" + id).style.display = "inline-block";
+            }
         }
 
         function saveEditedValue(id) {
+            if(id == "ID Status"){
+                id = 1;
+            }
             var editedInput = document.getElementById("edit-input-" + id);
             var editedValue = editedInput.value;
 
-            // Envie a nova string para o servidor para atualização no banco de dados
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "configEquip.php", true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "configEquip.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        var cell = document.getElementById("desc-" + id);
+                        cell.innerHTML = editedValue;
+                        document.getElementById("edit-btn-" + id).style.display = "inline-block";
+                        document.getElementById("trash-btn-" + id).style.display = "inline-block";
+                        document.getElementById("save-btn-" + id).style.display = "none";
+                    } else {
+                        alert("Erro ao atualizar o status: " + response.message);
                     }
-                };
-                xhr.send("editedValue=" + encodeURIComponent(editedValue) + "&id=" + id);
-                
-            // Exemplo de resposta JSON do servidor
-            var response = {
-                success: true,
-                message: "Status atualizado com sucesso!"
+                }
             };
-
-            if (response.success) {
-                var cell = document.getElementById("desc-" + id);
-                cell.innerHTML = editedValue;
-                document.getElementById("edit-btn-" + id).style.display = "inline-block";
-                document.getElementById("trash-btn-" + id).style.display = "inline-block";
-                document.getElementById("save-btn-" + id).style.display = "none";
-            } else {
-                // Lide com o caso de erro de atualização
-                alert("Erro ao atualizar o status: " + response.message);
-            }
+            xhr.send("editedValue=" + encodeURIComponent(editedValue) + "&id=" + id);
         }
-        
-        function removeValue(id){
-        var xhr = new XMLHttpRequest();
-                xhr.open("POST", "configEquip.php", true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                    }
-                };
-                xhr.send("deletedId=" + id);
-                window.location.reload()
 
+        function removeValue(id) {
+            if(id == "ID Status"){
+                id = 1;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "configEquip.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    window.location.reload();
+                }
+            };
+            xhr.send("deletedId=" + id);
         }
     </script>
 </body>

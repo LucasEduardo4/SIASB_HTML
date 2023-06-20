@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
             $descValue = $row["descricao"];
 
             // Adicionar os valores na tabela HTML com ícones de ação
-            echo "<tr><td>".$idValue."</td><td id='desc-".$idValue."'>".$descValue."</td><td>
+            echo "<tr><td id='id-".$idValue."'>".$idValue."</td><td id='desc-".$idValue."'>".$descValue."</td><td>
             <span class='glyphicon glyphicon-pencil' aria-hidden='true' id='edit-btn-".$idValue."'></span> 
             <span class='glyphicon glyphicon-trash' aria-hidden='true' id='trash-btn-".$idValue."'></span></span>
             <span class='glyphicon glyphicon-floppy-disk' aria-hidden='true' id='save-btn-".$idValue."'></span></td></tr>";
