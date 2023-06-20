@@ -68,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 // DELETE FROM `tbstatus_chamado` WHERE `tbstatus_chamado`.`IDStatus` = 8
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST["deletedID"])) {
-        $deletedID = $_POST['deletedID'];
+    if (isset($_POST["deletedId"])) {
+        $deletedId = $_POST['deletedId'];
 
-        $sql = "DELETE FROM tbstatus_chamado WHERE IDStatus = '$id'";
+        $sql = "DELETE FROM tbstatus_chamado WHERE IDStatus = '$deletedId'";
 
         if ($conn->query($sql) === TRUE) {
             // Atualização bem-sucedida

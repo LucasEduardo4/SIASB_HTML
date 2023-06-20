@@ -160,8 +160,6 @@
         }
         
         function removeValue(id){
-        var removeCell = document.getElementById("trash-btn-"+id);
-
         var xhr = new XMLHttpRequest();
                 xhr.open("POST", "configEquip.php", true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -169,7 +167,9 @@
                     if (xhr.readyState === 4 && xhr.status === 200) {
                     }
                 };
-                xhr.send("deleteId=" + id);
+                xhr.send("deletedId=" + id);
+                window.location.reload()
+
         }
     </script>
 </body>
