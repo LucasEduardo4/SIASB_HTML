@@ -1,6 +1,6 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "siasb");
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST["novoStatus"])) {
         $novoStatus = $_POST['novoStatus'];
 
@@ -8,17 +8,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
 
-        $sql = "INSERT INTO TBStatus_chamado (descricao) VALUES ('$novoStatus')";
+        $sql = "
+        START TRANSACTION;
+        SET @UltimoIDStatus = (SELECT MAX(IDStatus) FROM tbstatus_chamado);
+        SET @UltimoIDStatus = IFNULL(@UltimoIDStatus, 0) + 1;
+        INSERT INTO tbstatus_chamado (IDStatus, descricao)
+        VALUES (@UltimoIDStatus, '$novoStatus');
+        COMMIT;
+        ";
 
-        if ($conn->query($sql) === true) {
+        if (mysqli_multi_query($conn, $sql)) {
             echo "Novo status adicionado com sucesso!";
         } else {
-            echo "Erro ao adicionar novo status: " . $conn->error;
+            echo "Erro ao adicionar novo status: " . mysqli_error($conn);
         }
 
         $conn->close();
     }
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     // $conn = mysqli_connect("localhost", "root", "", "siasb");
     $sql = "SELECT IDStatus, descricao FROM tbstatus_chamado";
