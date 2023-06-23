@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Pessoas</title>
+    <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
+    <style>
+        body{
+            width: 90%;
+            margin: auto;
+        }
+        .box-sqr{
+            border: solid 1px black;
+            box-shadow: -2px 3px 4px 0px grey;
+            min-width: fit-content;
+            max-width: fit-content;
+        }
+        th,td{
+            padding: 10px;
+            border-top: solid black 0.5px;
+            border-bottom: solid black 0.5px;
+        }
+    </style>
+</head>
+<body onload="init()">
+    <h3>Pessoas:</h3>
+    <p>Filtros:</p>
+    
+    <div class=box-sqr>
+        <table id="tablePerson">
+            <tr>
+                <th>IDPessoa</th>
+                <th>nomeCompleto</th>
+                <th>cpf</th>
+                <th>matricula</th>
+                <th>setor</th>
+                <th>email</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>user</td>
+                <td>12345678900</td>
+                <td>9999</td>
+                <td>1</td>
+                <td>user@test.com</th>
+            </tr>
+        </table>
+    </div>
+<script>
+    function init(){
+        displayPersons();
+    }
+
+    function displayPersons(){
+        var xhr = new XMLHttpRequest();
+            xhr.open("POST", "consultas.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState === 4){
+                    if(xhr.status === 200){
+                        tablePerson.innerHTML += xhr.responseText
+                    }else
+                    reject(new Error("Falha ao carregar as pessoas"))
+                }
+            };
+            xhr.send();
+
+    }
+</script>
+</body>
+</html>
