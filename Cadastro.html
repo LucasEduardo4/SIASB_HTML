@@ -3,14 +3,16 @@
 <head>
   <title>Cadastro</title>
   <link rel="stylesheet" href="Inicial.css">
+  <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192"/>
+
   <meta charset="UTF-8">
 
 
 </head>
-<body>
+<body onload="init()">
   <div class="container">
     <h1>Cadastro</h1>
-    <form>
+    <form action="Cadastro.php" method="POST" >
       <div class="form-group">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" placeholder="Informe seu nome">
@@ -26,10 +28,12 @@
       <div class="form-group">
         <label for="setor">Setor:</label>
         <select id="setor" name="setor">
-          <option value="TI">TI</option>
+          <option value="" disabled selected hidden>Escolha uma das opções</option>
+
+          <!-- <option value="TI">TI</option>
           <option value="ADM">ADM</option>
           <option value="RH">RH</option>
-          <option value="CONTABILIDADE">CONTABILIDADE</option>
+          <option value="CONTABILIDADE">CONTABILIDADE</option> -->
         </select>
       </div>
       <div class="form-group">
@@ -42,4 +46,33 @@
     </form>
   </div>
 </body>
+<script>
+  function init(){
+    getSelect();
+  }
+  function getSelect(){
+    var setor = document.getElementById("setor");
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "Cadastro.php", true)
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState === 4){
+        if(xhr.status === 200){
+          setor.innerHTML += xhr.responseText;
+        }else{
+          console.error("Erro ao carregar os setores")
+        }
+      }
+    };
+    xhr.send("select_setor=" + encodeURIComponent(1));
+  }
+
+  function sendForm(){
+    let nome = document.getElementById("nome").value;
+    let cpf = document.getElementById("cpf").value;
+    let matricula = document.getElementById("matricula").value;
+    let setor = document.getElementById("setor").value;
+    let email = document.getElementById("email").value;
+  }
+</script>
 </html>
