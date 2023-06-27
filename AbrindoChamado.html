@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="sidebars/sidebars.css">
+
+<style>
+    .form {
+  margin: 20px;
+}
+
+.top-div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.setor-div,
+.assunto-div {
+  flex-basis: 48%;
+}
+
+.bottom-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.descricao-div,
+.upload-div {
+  flex-basis: 48%;
+}
+
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 5px;
+}
+
+</style>
+    
+</head>
+<body>
+
+    <form class="blue-theme-form">
+  <div class="top-div">
+    <div class="setor-div">
+      <label for="setor">Setor:</label>
+      <select id="setor" name="setor">
+        <option value="rh">RH</option>
+        <option value="financeiro">Financeiro</option>
+        <option value="ti">TI</option>
+        <!-- Adicione mais opções conforme necessário -->
+      </select>
+    </div>
+    <div class="assunto-div">
+      <label for="assunto">Assunto:</label>
+      <input type="text" id="assunto" name="assunto">
+    </div>
+  </div>
+  <div class="bottom-div">
+    <div class="descricao-div">
+      <label for="descricao">Descrição:</label>
+      <textarea id="descricao" name="descricao" rows="4"></textarea>
+    </div>
+    <div class="upload-div">
+      <label for="imagem">Upload de Imagem:</label>
+      <input type="file" id="imagem" name="imagem">
+    </div>
+  </div>
+  <button class="submit-button" type="submit">Enviar</button>
+</form>
+
+
+    <script>
+
+
+    </script>
+    
+</body>
+</html>

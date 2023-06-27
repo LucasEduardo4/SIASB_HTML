@@ -69,7 +69,10 @@
     --bs-danger-border-subtle: #f1aeb5;
     --bs-light-border-subtle: #e9ecef;
     --bs-dark-border-subtle: #adb5bd;
-    --bs-white-rgb: 255, 255, 255;
+
+    /* COLOCAMOS AQUI AS CORES DOS LINKS */
+    --bs-white-rgb: 255, 255 , 255;
+
     --bs-black-rgb: 0, 0, 0;
     --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -93,11 +96,17 @@
     --bs-tertiary-bg: #f8f9fa;
     --bs-tertiary-bg-rgb: 248, 249, 250;
     --bs-heading-color: inherit;
-    --bs-link-color: #0d6efd;
+
+    /* REALIZANDO ALTERAÇÕES NAS CORES DOS LINKS */
+    --bs-link-color: #ffffff;
     --bs-link-color-rgb: 13, 110, 253;
     --bs-link-decoration: underline;
-    --bs-link-hover-color: #0a58ca;
-    --bs-link-hover-color-rgb: 10, 88, 202;
+    --bs-link-hover-color: #ffffff;
+    --bs-link-hover-color-rgb: 255, 255, 255;
+    
+    /* ================================================================ */
+
+    
     --bs-code-color: #d63384;
     --bs-highlight-bg: #fff3cd;
     --bs-border-width: 1px;
@@ -166,8 +175,10 @@
     --bs-heading-color: inherit;
     --bs-link-color: #6ea8fe;
     --bs-link-hover-color: #8bb9fe;
-    --bs-link-color-rgb: 110, 168, 254;
-    --bs-link-hover-color-rgb: 139, 185, 254;
+
+
+    --bs-link-color-rgb: 255, 255, 255;
+    --bs-link-hover-color-rgb: 255, 255, 255;
     --bs-code-color: #e685b5;
     --bs-border-color: #495057;
     --bs-border-color-translucent: rgba(255, 255, 255, 0.15);
@@ -3677,6 +3688,9 @@ fieldset:disabled .btn {
     }
 }
 .nav-link:focus,
+/* .nav-link.active {
+    color: blue;
+} */
 .nav-link:hover {
     color: var(--bs-nav-link-hover-color);
 }
