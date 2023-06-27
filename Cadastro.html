@@ -73,6 +73,14 @@
     let matricula = document.getElementById("matricula").value;
     let setor = document.getElementById("setor").value;
     let email = document.getElementById("email").value;
+
+    var options = document.getElementsByTagName("option")
+    while(i<= options.length){
+    if(options[i].selected == true)
+      setor = options[i].value;
+    else
+      i++;
+    }
   }
 </script>
 </html>
