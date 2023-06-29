@@ -7,6 +7,45 @@
     <link rel="stylesheet" href="sidebars/sidebars.css">
 
 <style>
+
+.container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* height: 100vh; */
+            background-color: #f1f1f1;
+            padding: 50px;
+        }
+
+        .div-superior {
+            width: 4000px;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            float: right;
+        }
+
+        .div-inferior {
+            width: 4500px;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        .div-azul {
+            background-color: blue;
+            color: #ffffff;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+
+  /* ======================================================================================================= */
+
     .form {
   margin: 20px;
 }
@@ -43,35 +82,51 @@ input[type="file"] {
 </head>
 <body>
 
-    <form class="blue-theme-form">
-  <div class="top-div">
-    <div class="setor-div">
-      <label for="setor">Setor:</label>
-      <select id="setor" name="setor">
-        <option value="rh">RH</option>
-        <option value="financeiro">Financeiro</option>
-        <option value="ti">TI</option>
-        <!-- Adicione mais opções conforme necessário -->
-      </select>
+  <div class="container">
+    <div class="div-superior">
+        <div class="logo"></div>
+        <h2>Div Superior</h2>
+        <!-- Conteúdo adicional da div superior -->
     </div>
-    <div class="assunto-div">
-      <label for="assunto">Assunto:</label>
-      <input type="text" id="assunto" name="assunto">
-    </div>
-  </div>
-  <div class="bottom-div">
-    <div class="descricao-div">
-      <label for="descricao">Descrição:</label>
-      <textarea id="descricao" name="descricao" rows="4"></textarea>
-    </div>
-    <div class="upload-div">
-      <label for="imagem">Upload de Imagem:</label>
-      <input type="file" id="imagem" name="imagem">
-    </div>
-  </div>
-  <button class="submit-button" type="submit">Enviar</button>
-</form>
+</div>
 
+<div class="container">
+    <div class="div-inferior">
+        <div class="div-azul">Escreva abaixo a sua solicitação</div>
+        <h2> </h2>
+        <!-- Conteúdo adicional da div inferior -->
+        <form class="blue-theme-form">
+          <div class="top-div">
+            <div class="setor-div">
+              <label for="setor">Setor:</label>
+              <select id="setor" name="setor">
+                <option value="rh">RH</option>
+                <option value="financeiro">Financeiro</option>
+                <option value="ti">TI</option>
+                <!-- Adicione mais opções conforme necessário -->
+              </select>
+            </div>
+            <div class="assunto-div">
+              <label for="assunto">Assunto:</label>
+              <input type="text" id="assunto" name="assunto">
+            </div>
+          </div>
+          <div class="bottom-div">
+            <div class="descricao-div">
+              <label for="descricao">Descrição:</label>
+              <textarea id="descricao" name="descricao" rows="4"></textarea>
+            </div>
+            <div class="upload-div">
+              <label for="imagem">Upload de Imagem:</label>
+              <input type="file" id="imagem" name="imagem">
+            </div>
+          </div>
+          <button class="submit-button" type="submit">Enviar</button>
+        </form>        
+
+    </div>
+</div>
+</div> 
 
     <script>
 

@@ -243,21 +243,31 @@
     <!-- ALTERAÇÃO REFEITA DA HOME COM LISTA DE PARAGRAFOS -->
     <nav class="menu">
       <ul>
-        <li onclick="alterarCor(this)" class="menu-item">
-          <p onclick="" > Home </p>
-        </li>
-        
-        <li onclick="alterarCor(this)" class="menu-item">
-          <p onclick="abrirIframe()" > Abrir Chamado </p>
-        </li>
 
-        <li onclick="alterarCor(this)" class="menu-item">
-          <p onclick="abrirSite()" >  Site </p>
-        </li>
+        <div onclick="" >
+          <li onclick="alterarCor(this)" class="menu-item">
+            <p> Home </p>
+          </li>
+        </div>
         
-        <li onclick="alterarCor(this)" class="menu-item">
-          <p onclick="abrirConfiguracoes()" > Configurações </p>
-        </li>
+        <div onclick="abrirIframe()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <p> Abrir Chamado </p>
+          </li>
+        </div>
+
+        <div onclick="abrirSite()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <p>  Site </p>
+          </li>
+        </div>
+
+        <div onclick="abrirConfiguracoes()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <p> Configurações </p>
+          </li>
+        </div>
+
       </ul>
     </nav>
     <hr>
