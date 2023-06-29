@@ -4,57 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="sidebars/sidebars.css">
 
 <style>
+
+
 
 .container {
             display: flex;
             justify-content: center;
             align-items: center;
             /* height: 100vh; */
-            background-color: #f1f1f1;
             padding: 50px;
+            max-width: 100%;
+            background: none;
+
         }
 
         .div-superior {
             width: 4000px;
             background-color: #ffffff;
             padding: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
         }
 
         .logo {
-            width: 100px;
-            height: 100px;
-            background-color: #ccc;
-            float: right;
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          left: 78px;
+          margin: 0 auto;
+          background-color: #eee;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 2;
+          top: 35px;
+        }
+
+        .logo img {
+          max-width: 100%;
+          max-height: 100%;
+          border-radius: 6px;
         }
 
         .div-inferior {
             width: 4500px;
             background-color: #ffffff;
             padding: 20px;
+            z-index: 1;
+            margin-bottom: 50px;
         }
 
         .div-azul {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+
+            position: absolute;
             background-color: blue;
             color: #ffffff;
-            padding: 10px;
-            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 2;
+            /* width: 1028px; */
+            width: 85%;
+            top: 280px;
+            text-align: center;
+            font-size: 15px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
         }
 
 
-  /* ======================================================================================================= */
 
-    .form {
+  .form {
   margin: 20px;
 }
 
+
+/* REALIZANDO ALTERAÇÃO DA DIV DOS CAMPOS DE CIMA DO FORMULÁRO */
 .top-div {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
+/* ================================================================ */
 
 .setor-div,
 .assunto-div {
@@ -66,37 +101,65 @@
   justify-content: space-between;
 }
 
-.descricao-div,
-.upload-div {
+.descricao-div{
   flex-basis: 48%;
+
 }
 
-textarea,
-input[type="file"] {
-  width: 100%;
-  padding: 5px;
+.upload-div {
+  width: 98%;
+  padding: 10px;
+  border-width: 2px;
+  border-style: dotted;
+  border-color: black;
+  border-radius: 5px;
 }
+
+textarea{
+  width: 81%;
+  padding: 100px;
+  border-radius: 7px;
+
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+
 
 </style>
     
 </head>
-<body>
+<body style="background: none;">
 
   <div class="container">
-    <div class="div-superior">
-        <div class="logo"></div>
-        <h2>Div Superior</h2>
+    <div style="border-radius: 5px; ;" class="div-superior">
+        <div class="logo"> <img src="https://png.pngtree.com/png-vector/20190321/ourmid/pngtree-vector-notification-icon-png-image_855007.jpg" > </div>
+        <h2>SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
+        <p>
+          Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
+        </p>
         <!-- Conteúdo adicional da div superior -->
     </div>
 </div>
 
 <div class="container">
-    <div class="div-inferior">
-        <div class="div-azul">Escreva abaixo a sua solicitação</div>
+    <div style="border-radius: 5px; " class="div-inferior">
+        <div class="div-azul">ESCREVA A BAIXO A SUA SOLICITAÇÃO</div>
         <h2> </h2>
         <!-- Conteúdo adicional da div inferior -->
         <form class="blue-theme-form">
-          <div class="top-div">
+                  
+          <div style="margin-top: 30px;" class="top-div">
+            <div class="assunto-div">
+              <label for="assunto">Assunto:</label>
+              <input type="text" id="assunto" name="assunto">
+            </div>
+
+
             <div class="setor-div">
               <label for="setor">Setor:</label>
               <select id="setor" name="setor">
@@ -106,22 +169,20 @@ input[type="file"] {
                 <!-- Adicione mais opções conforme necessário -->
               </select>
             </div>
-            <div class="assunto-div">
-              <label for="assunto">Assunto:</label>
-              <input type="text" id="assunto" name="assunto">
-            </div>
           </div>
-          <div class="bottom-div">
-            <div class="descricao-div">
+
+          
+            <div style="margin-top: 20px;" class="descricao-div">
               <label for="descricao">Descrição:</label>
               <textarea id="descricao" name="descricao" rows="4"></textarea>
             </div>
-            <div class="upload-div">
+            
+            <div style="margin-top: 30px;" class="upload-div">
               <label for="imagem">Upload de Imagem:</label>
               <input type="file" id="imagem" name="imagem">
             </div>
-          </div>
-          <button class="submit-button" type="submit">Enviar</button>
+
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="submit">Enviar</button>
         </form>        
 
     </div>
