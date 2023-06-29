@@ -16,8 +16,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $setor = $row["descricao_setor"];
+                $id = $row["IDSetor"];
 
-                echo "<option value='".$setor."'>".$setor."</option>";
+                echo "<option value='".$id."'>".$setor."</option>";
             }
         }
         $stmt->close();
@@ -38,14 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             START TRANSACTION;
             SET @UltimoIDPessoa = (SELECT MAX(IDPessoa) FROM TBPessoa);
             SET @UltimoIDPessoa = IFNULL(@UltimoIDPessoa, 0) + 1;
-            INSERT INTO TBPessoa VALUES(
-            '@IDPessoa',
+            INSERT INTO TBPessoa (IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email, gestor) VALUES(
+            '@UltimoIDPessoa',
             '$nome',
             '$cpf',
             '$matricula',
             '$setor',
-            '1',
-            '$email'
+            1,
+            '$email',
+            ''
             );
             COMMIT;
             ";

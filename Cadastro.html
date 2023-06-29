@@ -12,7 +12,7 @@
 <body onload="init()">
   <div class="container">
     <h1>Cadastro</h1>
-    <h2>OBS. tirei o method do form.. preciso adicionar um XMLHttpRequest no script</h2>
+    <!-- <h2>OBS. tirei o method do form.. preciso adicionar um XMLHttpRequest no script</h2> -->
     <form>
       <div class="form-group">
         <label for="nome">Nome:</label>
@@ -41,10 +41,10 @@
         <label for="email">E-mail:</label>
         <input type="text" id="email" name="email" placeholder="Informe seu e-mail">
       </div>
-      <div class="form-group">
-        <button type="submit">Cadastrar</button>
-      </div>
     </form>
+    <div class="form-group">
+      <button onclick="submitForm()">Cadastrar</button>
+    </div>
   </div>
 </body>
 <script>
@@ -68,20 +68,37 @@
     xhr.send("select_setor=" + encodeURIComponent(1));
   }
 
-  function sendForm(){
+  function submitForm(){
     let nome = document.getElementById("nome").value;
     let cpf = document.getElementById("cpf").value;
     let matricula = document.getElementById("matricula").value;
     let setor = document.getElementById("setor").value;
     let email = document.getElementById("email").value;
 
-    var options = document.getElementsByTagName("option")
-    while(i<= options.length){
-    if(options[i].selected == true)
-      setor = options[i].value;
-    else
-      i++;
-    }
+    var i=0;
+    // var options = document.getElementsByTagName("option");
+    // while(i < options.length){
+    // if(options[i].selected == true){
+    //   setor = options[i].value;
+    //   i++;
+    // }
+    // else
+    //   i++;
+    // }
+
+    var xhr = new XMLHttpRequest();
+            xhr.open("POST", "Cadastro.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.reload();
+                    } else {
+                        console.error("Falha ao carregar as pessoas");
+                    }
+                }
+            };
+            xhr.send("nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula)+ "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email));
   }
 </script>
 </html>

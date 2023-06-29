@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
         
-        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email
+        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email, p.gestor
                 FROM TBPessoa p
                 JOIN TBSetor st ON p.setor = st.IDSetor
                 JOIN TBSecao sc ON p.secao = sc.IDSecao";
@@ -25,7 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $setor = $row["descricao_setor"];
                 $secao = $row["descricao_secao"];
                 $email = $row['email'];
+                $gerente = $row['gestor'];
 
+                        // Verifica se $gerente é igual a 1
+        if ($gerente == 1) {
+            // Usar ícone para gerente
+            $icone = "<i class='bi bi-check-square' onclick='onoffGerente(" . $IDPessoa . ")' value='" . $gerente . "' id='sqr-" . $IDPessoa . "'></i>";
+        } else {
+            // Usar ícone padrão
+            $icone = "<i class='bi bi-square' onclick='onoffGerente(" . $IDPessoa . ")' value='" . $gerente . "' id='sqr-" . $IDPessoa	 . "'></i>";
+        }
                 echo "<tr>
                 <td>".$IDPessoa."</td>
                 <td>".$nomeCompleto."</td>
@@ -34,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td>".$setor."</td>
                 <td>".$secao."</td>
                 <td>".$email."</td>
+                <td id=".$IDPessoa.">".$icone."</td>
                 </tr>";
             }
         }

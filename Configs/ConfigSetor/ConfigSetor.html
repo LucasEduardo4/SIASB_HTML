@@ -44,8 +44,7 @@
             <div class="text-center">
                 <button class="btn btn-success" onclick="adicionarSetor()">Adicionar Setor</button>
             </div>
-            <h1>PArei aqui ^^</h1>
-        
+            <p id="response"></p>
     </div>
     <br><br>
     <h3>Setores Cadastrados:</h3>
@@ -97,6 +96,7 @@
         function adicionarSetor(){
             var novo = document.getElementById("novoSetor").value;
             var foo = document.getElementById("selects");
+            var response = document.getElementById("response")
             var i = 0;
             
             while (i < foo.options.length) {  // Correção: use '<' em vez de '<=' para verificar o comprimento
@@ -111,8 +111,9 @@
                 xhr.onreadystatechange = function(){
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            // window.location.href();
-                            window.location.href = "ConfigSetor.php";
+                            window.location.reload();
+                            // window.location.href = "ConfigSetor.php";
+                            // response.innerHTML = xhr.responseText;
 
                         } else {
                             console.error("Falha ao carregar as pessoas");
