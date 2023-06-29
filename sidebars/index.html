@@ -21,6 +21,53 @@
 
     <style>
 
+
+
+    /* REALIZANDO A ALTERAÇÃO NO TEMA DE CLARO PARA ESCURO */
+
+/* Tema claro */
+body.claro {
+    background-color: #f1f1f1;
+    color: #000;
+}
+
+/* Tema escuro */
+body.escuro {
+    background-color: #000;
+    color: #fff;
+}
+    
+    /* ABRINDO DROPBOX NA OPÇÃO DOS CHAMADOS */
+
+        .menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000000;
+            min-width: 160px;
+            padding: 10px;
+            border-radius: 5%;
+        }
+
+        /* .dropdown:hover .dropdown-content {  //CASO EU QUEIRA ATIVAR O HOUVER
+            display: block;
+        } */
+
+
+
+/* REALIZANDO AS ALTERAÇÕES DO DESIGN DO MENU ATIVADO E DESATIVADO */
+
+
 .menu {
 
   padding: 10px;
@@ -50,12 +97,9 @@
 }
 
 
-
-
-
-    #myIframe {
+      #myIframe {
       width: 100%;
-    }
+      }
 
       .cor_ativado {
         color:blue;
@@ -71,7 +115,7 @@
 
       }
 
-
+/* CUSTOMIZAÇÃO DAS OPÇÕES DE NAVEGAÇÃO */
       
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -167,6 +211,9 @@
       </symbol>
     </svg>
 
+
+    <!-- RELIZANDO A TROCA DE TEMAS DO SITE, DE CLARO PARA ESCURO -->
+
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
       <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
         <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
@@ -174,23 +221,16 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
         <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+          <button onclick="alterarTema('claro')" id="btnTemaClaro" type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
             <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#sun-fill"></use></svg>
             Claro
             <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
           </button>
         </li>
         <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+          <button onclick="alterarTema('escuro')" id="btnTemaEscuro" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
             <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
             Escuro
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            Automatico
             <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
           </button>
         </li>
@@ -235,26 +275,37 @@
       
       <!-- <span class="fs-4">SIASB</span> -->
       
-      <p style="padding-left: 30px; font-size: 30px; padding-top: 10px;"> SIASB</p>
+
+      <!-- ALTERNATIVA DA LOGO, COLOCANDO O NOME DO SISTEMA -->
+      <!-- <p style="padding-left: 30px; font-size: 30px; padding-top: 10px;"> SIASB</p> -->
 
     </a>
     <hr>
+
+
 
     <!-- ALTERAÇÃO REFEITA DA HOME COM LISTA DE PARAGRAFOS -->
     <nav class="menu">
       <ul>
 
-        <div onclick="" >
+        <div onclick="abrirHome()" >
           <li onclick="alterarCor(this)" class="menu-item">
             <p> Home </p>
           </li>
         </div>
         
-        <div onclick="abrirIframe()">
+
+
+        <div class="dropdown" onclick="abrirDropdown()">
           <li onclick="alterarCor(this)" class="menu-item">
-            <p> Abrir Chamado </p>
+              <p>Chamados</p>
           </li>
-        </div>
+          <div class="dropdown-content">
+              <p onclick="abrirIframe('Abrir Chamado')">Abrir Chamado</p>
+              <p onclick="abrirIframe('Ver Chamados')">Ver Chamados</p>
+          </div>
+      </div>        
+
 
         <div onclick="abrirSite()">
           <li onclick="alterarCor(this)" class="menu-item">
@@ -285,53 +336,31 @@
   </div>
 
   <div class="b-example-divider b-example-vr"></div>
-
-  
-<!--   <iframe src="https://saaeb.com.br/" frameborder="0" width="100%"></iframe>   -->
-
   
   <iframe id="myIframe" frameborder="0"></iframe>
 
+
+  
   <script>
 
-// var elemento = document.getElementById("AlterarCor");
-// var classes = elemento.classList;
-
-// function alternarClasse(AlterarCor) {
-
-      //ALTERAR CLASSE DO ELEMENTO, DESATIVADO PARA ATIVADO
+  //ALTERAR CLASSE DO ELEMENTO, DESATIVADO PARA ATIVADO
 
       function alterarCor(elemento) {
-  var menuItens = document.querySelectorAll('.menu-item');
+      var menuItens = document.querySelectorAll('.menu-item');
 
-  menuItens.forEach(function(item) {
-    if (item === elemento) {
+      menuItens.forEach(function(item) {
+      if (item === elemento) {
       item.classList.add('active');
-    } else {
+      } else {
       item.classList.remove('active');
-    }
-  });
-}
-
-    //   if (elemento.classList.contains("cor_desativado")) {
-    //     elemento.classList.remove("cor_desativado");
-    //     elemento.classList.add("cor_ativado");
-    //   } else {
-    //     elemento.classList.remove("cor_ativado");
-    //     elemento.classList.add("cor_desativado");
-    //   }
-    // }
-
-
-    //ABRIR O IFRAME DO SITE NA PAGINA DO SISTEMA
-    function abrirIframe() {
-      var iframe = document.getElementById("myIframe");
-      iframe.src = "../AbrindoChamado.html";
+      }
+      }); 
     }
 
+  //ABRINDO OS IFRAME PELO MENU DE OPÇÕES
     function abrirHome() {
       var iframe = document.getElementById("myIframe");
-      iframe.src = "";
+      iframe.src = "../PaginaInicial.html";
     }
 
     function abrirSite() {
@@ -343,17 +372,57 @@
       var iframe = document.getElementById("myIframe");
       iframe.src = "../Configs/index.html";
     }
-    
+
+  //ABRINDO DROPBOX NA OPÇÃO DOS CHAMADOS
+    function abrirDropdown() {
+            var dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+        }
+
+    function abrirIframe(opcao) {
+            var iframeContainer = document.getElementById('myIframe');
+            if (opcao === 'Abrir Chamado') {
+              iframeContainer.src = "../AbrindoChamado.html";
+            } else if (opcao === 'Ver Chamados') {
+              iframeContainer.src = "../VendoChamados.html";
+            }
+        }
+
+  // REALIZANDO A ALTERAÇÃO DO TEMA DO SITE
+  var temaAtual = null;
+
+  function alterarTema(tema) {
+    var body = document.body;
+    var btnTemaClaro = document.getElementById("btnTemaClaro");
+    var btnTemaEscuro = document.getElementById("btnTemaEscuro");
+
+    if (tema === "claro") {
+        body.classList.remove("escuro");
+        body.classList.add("claro");
+
+        btnTemaClaro.disabled = true;
+        btnTemaEscuro.disabled = false;
+        temaAtual = "claro";
+    } else if (tema === "escuro") {
+        body.classList.remove("claro");
+        body.classList.add("escuro");
+
+        btnTemaClaro.disabled = false;
+        btnTemaEscuro.disabled = true;
+        temaAtual = "escuro";
+    }
+}
+
   </script>
-
-
-
-
-  
-  
-
-
 </main>
+
+
+
+
+
+<!--  Esse Script Padrão é responsável por carregar bibliotecas e scripts adicionais, bem como fornecer recursos de interatividade e atualização 
+automática da página. -->
+
 <script src="bootstrap.bundle.min.js"></script>
 
     <script src="sidebars.js"></script><!-- Code injected by live-server -->

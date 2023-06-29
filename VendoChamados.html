@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Filtro de Chamados</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* Estilos para o formulário */
+        form {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        h2 {
+            width: 100%;
+            text-align: center;
+        }
+
+        .form-group {
+            flex-basis: 45%;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .resultados {
+            margin-top: 20px;
+            background-color: #f5f5f5;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form id="filtroForm">
+        <h2>Filtro de Chamados</h2>
+
+        <div class="form-group">
+            <label for="dataAbertura">Data de Abertura:</label>
+            <input type="text" id="dataAbertura" name="dataAbertura" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="codigoSolicitacao">Código da Solicitação:</label>
+            <input type="text" id="codigoSolicitacao" name="codigoSolicitacao">
+        </div>
+
+        <div class="form-group">
+            <label for="status">Selecionar Status:</label>
+            <select id="status" name="status">
+                <option value="">Selecione...</option>
+                <option value="aberto">Aberto</option>
+                <option value="emProgresso">Em Progresso</option>
+                <option value="concluido">Concluído</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="verFinalizadas">Ver Finalizadas:</label>
+            <input type="checkbox" id="verFinalizadas" name="verFinalizadas">
+        </div>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <div class="resultados" id="resultadosContainer" style="display: none;">
+        <h3>Resultados:</h3>
+        <div id="resultados"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#dataAbertura", {
+            dateFormat: "d/m/Y"
+        });
+
+        const filtroForm = document.getElementById('filtroForm');
+        const resultadosContainer = document.getElementById('resultadosContainer');
+        const resultados = document.getElementById('resultados');
+
+        filtroForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Lógica de filtragem aqui
+            const dataAbertura = document.getElementById('dataAbertura').value;
+            const codigoSolicitacao = document.getElementById('codigoSolicitacao').value;
+            const status = document.getElementById('status').value;
+            const verFinalizadas = document.getElementById('verFinalizadas').checked;
+
+            // Exemplo: exibir resultados em um elemento de texto
+            resultados.textContent = `Filtrando por:\nData de Abertura: ${dataAbertura}\nCódigo da Solicitação: ${codigoSolicitacao}\nStatus: ${status}\nVer Finalizadas: ${verFinalizadas}`;
+
+            resultadosContainer.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
