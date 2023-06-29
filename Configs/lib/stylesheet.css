@@ -1,0 +1,23 @@
+body{
+    width: 90%;
+    margin: auto;
+}
+th,td{
+    padding: 10px;
+    text-align: center;
+}
+header{
+    width: 100%;
+    height: 100px;
+}
+header a{
+    text-decoration: none;
+    color: black;
+}
+header a:hover{
+    text-decoration: underline;
+}
+#temp{
+    border: solid 2px yellow;
+    text-align: center;
+}
