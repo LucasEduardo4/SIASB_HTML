@@ -65,30 +65,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST["nomeSetor"]) && isset($_POST["responsavel"])) { // Correção: Adicionado parênteses para cada isset()
+    if (isset($_POST["nomeSetor"]) && isset($_POST["responsavel"])) {
+        $conn = mysqli_connect("localhost", "root", "", "siasb");
 
+        $nomeSetor = $_POST["nomeSetor"];
+        $gerente = $_POST["responsavel"];
         if ($conn->connect_error) {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
 
-        echo $nomeSetor, $gerente;
-
         $sql = "
-        START TRANSACTION;
-        SET @UltimoIDStatus = (SELECT MAX(IDSetor) FROM TBSetor);
-        SET @UltimoIDStatus = IFNULL(@UltimoIDStatus, 0) + 1;
-        INSERT INTO TBSetor (IDSetor, descricao_setor, gerente)
-        VALUES (@UltimoIDStatus, '$nomeSetor', '$gerente');
-        COMMIT;
+        SET @UltimoIDSetor = (SELECT MAX(IDSetor) FROM tbsetor);
+        SET @UltimoIDSetor = IFNULL(@UltimoIDSetor, 0) + 1;
+        INSERT INTO tbsetor (IDSetor, descricao_setor, gerente)
+        VALUES (@UltimoIDSetor, '$nomeSetor', '$gerente');
         ";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        if (mysqli_multi_query($conn, $sql)) {
+            echo "Novo setor adicionado com sucesso!";
+        } else {
+            echo "Erro ao adicionar novo status: " . mysqli_error($conn);
+        }
 
-        $stmt->close();
         $conn->close();
     }
 }
+
+
 
 ?>

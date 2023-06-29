@@ -33,6 +33,7 @@
                 <th>Setor</th>
                 <th>Secao</th>
                 <th>E-mail</th>
+                <th>Gestor</th>
             </tr>
         </table>
     </div>
@@ -51,6 +52,7 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         tablePerson.innerHTML += xhr.responseText;
+          
                     } else {
                         console.error("Falha ao carregar as pessoas");
                     }
@@ -59,6 +61,31 @@
             xhr.send("select_ready=" + encodeURIComponent(1));
 
     }
+    function setupEditButtons() {
+            var sqrchk = document.getElementsByClassName("bi bi-check-square");
+            var sqr = document.getElementsByClassName("bi bi-square");
+
+            for (var i = 0; i < editButtons.length; i++) {
+                (function(id) {
+
+                    var removeButton = removeButtons[i];
+                    removeButton.addEventListener("click", function() {
+                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                        var ref = element.cells[0].innerText;
+                        removeValue(ref);
+                    });
+                })(i);
+            }
+        }
+        function onoffGerente(ID){
+            console.log("entrou")
+            var verifica = document.getElementById(`sqr-${ID}`)
+            if(verifica.value == 0){
+                console.log("desmarcado");
+            }else if(verifica.value == 1){
+                console.log("marcado");
+            }
+        }
 </script>
 </body>
 </html>
