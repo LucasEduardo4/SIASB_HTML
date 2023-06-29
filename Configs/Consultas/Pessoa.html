@@ -80,11 +80,25 @@
         function onoffGerente(ID){
             console.log("entrou")
             var verifica = document.getElementById(`sqr-${ID}`)
-            if(verifica.value == 0){
-                console.log("desmarcado");
-            }else if(verifica.value == 1){
-                console.log("marcado");
+            if(verifica.dataset.value == 0){
+                verifica = 'desmarcado';
+            }else if(verifica.dataset.value == 1){
+                verifica = 'marcado';
             }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "consultas.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.reload();
+                    } else {
+                        console.error("Falha ao carregar as pessoas");
+                    }
+                }
+            };
+            xhr.send("verifica=" + encodeURIComponent(verifica)+ "&id=" + ID);
         }
 </script>
 </body>
