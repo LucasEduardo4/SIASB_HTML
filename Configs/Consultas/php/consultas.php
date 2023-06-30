@@ -2,7 +2,7 @@
 $conn = mysqli_connect("localhost", "root", "", "siasb");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST["select_ready"])) {
+    if (isset($_POST["select_ready_person"])) {
         if ($conn->connect_error) {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
@@ -80,4 +80,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->close();
     }
 }
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['select_ready_equipment'])){
+
+        $sql = "
+        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, st.descricao_setor, sc.descricao_secao FROM TBEquipamentos e
+        join TBTipo_Equipamentos te on te.IDTipo = e.tipo
+        join TBPessoa p on p.IDPessoa = e.usuario
+        join TBSetor st on e.setor = st.IDSetor
+        join TBSecao sc on e.secao = sc.IDSecao
+        ";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+
+                $sti_id = $row["sti_id"];
+                $descricao = $row["descricao"];
+                $ip = $row["ip"];
+                $tipo = $row["tipo"];
+                $nomeCompleto = $row["nomeCompleto"];
+                $setor = $row['descricao_setor'];
+                $secao = $row["descricao_secao"];
+
+                echo "<tr>
+                <td>".$sti_id."</td>
+                <td>".$descricao."</td>
+                <td>".$ip."</td>
+                <td>".$tipo."</td>
+                <td>".$nomeCompleto."</td>
+                <td>".$setor."</td>
+                <td>".$secao."</td>
+                </tr>";
+            }
+        }
+
+        $stmt->close();
+        $conn->close();
+    }
+    }
+
 ?>

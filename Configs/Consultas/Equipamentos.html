@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta Equipamentos</title>
+  <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
+  <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../lib/stylesheet.css">
+</head>
+<header>
+  <div>
+    <a href="../index.html">
+      <h1><i class="bi-arrow-left-circle bi-lg">Voltar</i></h1>
+    </a>
+  </div>
+</header>
+<body onload="init()">
+  <h3>Equipamentos:</h3>
+  <p>Filtros:</p>
+  <div class="box-sqr">
+    <table id="tableEquipment" class="table table-striped table-hover">
+      <tr class="table table-dark ">
+        <th>sti_ID</th>
+        <th>Descrição</th>
+        <th>IP</th>
+        <th>Tipo</th>
+        <th>Usuário</th>
+        <th>Setor</th>
+        <th>Seção</th>
+      </tr>
+    </table>
+  </div>
+  <script>
+    function init() {
+      displayEquipments();
+    }
+
+    function displayEquipments() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "php/consultas.php", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            tableEquipment.innerHTML += xhr.responseText;
+
+          } else {
+            tableEquipment.innerHTML += "Falha ao carregar os equipamentos";
+          }
+        }
+      };
+      xhr.send("select_ready_equipment=" + encodeURIComponent(1));
+
+    }
+
+    function setupEditButtons() {
+      var sqrchk = document.getElementsByClassName("bi bi-check-square");
+      var sqr = document.getElementsByClassName("bi bi-square");
+
+      for (var i = 0; i < editButtons.length; i++) {
+        (function (id) {
+
+          var removeButton = removeButtons[i];
+          removeButton.addEventListener("click", function () {
+            var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+            var ref = element.cells[0].innerText;
+            removeValue(ref);
+          });
+        })(i);
+      }
+    }
+  </script>
+</body>
+</html>

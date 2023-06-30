@@ -45,7 +45,7 @@
 
     function displayPersons(){
         var xhr = new XMLHttpRequest();
-            xhr.open("POST", "consultas.php", true)
+            xhr.open("POST", "php/consultas.php", true)
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function(){
                 if (xhr.readyState === 4) {
@@ -57,7 +57,7 @@
                     }
                 }
             };
-            xhr.send("select_ready=" + encodeURIComponent(1));
+            xhr.send("select_ready_person=" + encodeURIComponent(1));
 
     }
     function setupEditButtons() {
@@ -86,7 +86,7 @@
             }
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "consultas.php", true)
+            xhr.open("POST", "php/consultas.php", true)
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function(){
                 if (xhr.readyState === 4) {
