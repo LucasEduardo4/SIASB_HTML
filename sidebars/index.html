@@ -334,7 +334,9 @@ body.escuro {
         <strong>mdo</strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-        <li><a class="dropdown-item" href="#">PERFIL</a></li>
+        
+        <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
+        <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">SAIR</a></li>
       </ul>
@@ -381,6 +383,11 @@ body.escuro {
     function abrirConfiguracoes() {
       var iframe = document.getElementById("myIframe");
       iframe.src = "../Configs/index.html";
+    }
+
+    function abrirPerfil() {
+      var iframe = document.getElementById("myIframe");
+      iframe.src = "../Perfil.html";
     }
 
   //ABRINDO DROPBOX NA OPÇÃO DOS CHAMADOS
