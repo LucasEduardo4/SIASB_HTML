@@ -30,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Verifica se $gerente é igual a 1
         if ($gerente == 1) {
             // Usar ícone para gerente
-            $icone = "<i class='bi bi-check-square' onclick='onoffGerente(" . $IDPessoa . ")' value='" . $gerente . "' id='sqr-" . $IDPessoa . "'></i>";
+            $icone = "<i class='bi bi-check-square' onclick='onoffGerente(" . $IDPessoa . ")' data-value='" . $gerente . "' id='sqr-" . $IDPessoa . "'></i>";
         } else {
             // Usar ícone padrão
-            $icone = "<i class='bi bi-square' onclick='onoffGerente(" . $IDPessoa . ")' value='" . $gerente . "' id='sqr-" . $IDPessoa	 . "'></i>";
+            $icone = "<i class='bi bi-square' onclick='onoffGerente(" . $IDPessoa . ")' data-value='" . $gerente . "' id='sqr-" . $IDPessoa	 . "'></i>";
         }
                 echo "<tr>
                 <td>".$IDPessoa."</td>
@@ -49,6 +49,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt->close();
+        $conn->close();
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST["verifica"])) {
+        // $conn = mysqli_connect("localhost", "root", "", "siasb");
+        $verifica = $_POST['verifica'];
+        $id = $_POST['id'];
+
+        if ($conn->connect_error) {
+            die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
+        }
+        // $sql = "UPDATE tbstatus_chamado SET descricao = '$editedValue' WHERE IDStatus = '$id'";
+        if($verifica == "desmarcado"){
+            $sql = "UPDATE tbpessoa SET gestor = b'1' WHERE IDPessoa = '$id';";
+        }else
+        if($verifica == "marcado"){
+            $sql = "UPDATE tbpessoa SET gestor = b'0' WHERE IDPessoa = '$id';";
+        }
+        if ($conn->query($sql) === TRUE) {
+            // Atualização bem-sucedida
+            echo json_encode(array("success" => true, "message" => "Status atualizado com sucesso!"));
+        } else {
+            // Erro ao executar a consulta SQL
+            echo json_encode(array("success" => false, "message" => "Erro ao atualizar o status: " . $conn->error));
+        }
+
         $conn->close();
     }
 }

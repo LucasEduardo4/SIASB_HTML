@@ -70,13 +70,18 @@
                 }
             };
             xhr.send("select_ready=" + encodeURIComponent(1));
-
+            
+        var controle = 1; //para nao duplicar os dados.
+        var consultaUnica = 1;
         function novoSetor(){
             document.getElementById("cadastro").style.display="grid"
-            var controle = 1; //para nao duplicar os dados.
 
             if(controle == 1){
+            var novo = document.getElementById("novo");
+            novo.innerHTML = "Cadastrar nova seção : <i class='bi bi-dash-circle'></i>"
                 
+            if(consultaUnica == 1){
+
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "ConfigSetor.php", true)
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -90,8 +95,16 @@
                     }
                 };
                 xhr.send("gerente=" + encodeURIComponent(1));
+                consultaUnica++;
             }
-            controle++;
+                controle++;
+            }else
+            if(controle != 1){
+                document.getElementById("cadastro").style.display="none"
+                var novo = document.getElementById("novo");
+                novo.innerHTML = "Cadastrar novo setor : <i class='bi bi-plus-circle'></i>"
+                controle=1;
+            }
         }
         function adicionarSetor(){
             var novo = document.getElementById("novoSetor").value;

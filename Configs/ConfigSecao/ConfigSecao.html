@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../icons/warning.png" sizes="192x192"/>
+    <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
+    <link rel="stylesheet" href="../lib/stylesheet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>Config Seção</title>
+    <style>
+        #cadastro{
+            display:none;
+        }
+        #novo:hover{
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<header>
+    <div>
+        <a href="../index.html">
+        <h1><i class="bi-arrow-left-circle bi-lg ">Voltar</i></h1></a>
+    </div>
+</header>
+<body>
+    <h3>Configurar Seção</h3>
+    <hr>
+    <h3 id="novo" onclick="verificaSetor()">Cadastrar nova seção : <i class="bi bi-plus-circle"></i></h3>
+
+    <div id="cadastro" class="container-fluid p-5 border">
+        <form>
+            <div class="mb-3">
+                <label for="" class="form-label">Nome Seção</label>
+                <input type="text" class="form-control" id="novaSecao">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Responsável</label>
+                <select name="" id="selectGerentes" class="form-select">
+                    <label for="" class="form-label">Setor</label>
+                    <select name="" id="selectSetores" class="form-select">
+                    <!-- <option value="" disabled selected hidden>-------------------------</option> -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Setor</label>
+                <select name="" id="selectSetores" class="form-select">
+                </select>
+            </div>
+        </form>
+            <div class="text-center">
+                <button class="btn btn-success" onclick="adicionarSetor()">Adicionar Seção</button>
+            </div>
+            <p id="response"></p>
+    </div>
+
+    <script>
+        var controle = 1; //para nao duplicar os dados.
+        var consultaUnica = 1;
+
+        function verificaSetor(){
+            if(controle == 1){
+            document.getElementById("cadastro").style.display="grid"
+            var novo = document.getElementById("novo");
+            novo.innerHTML = "Cadastrar nova seção : <i class='bi bi-dash-circle'></i>"
+            if(consultaUnica == 1){
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "ConfigSecao.php", true) 
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            //Objeto tal.. alteração tal.. selects.innerhtml="jsonparse...."
+                            response.innerHTML = xhr.responseText; //<<<--- a resposta vem ate aqui.. dps passar pros selects
+                        } else {
+                            console.error("Falha ao carregar as pessoas");
+                        }
+                    }
+                };
+                xhr.send("selects=" + encodeURIComponent(1));
+                consultaUnica++;
+            }
+                controle++;
+            }else
+            if(controle != 1){
+                document.getElementById("cadastro").style.display="none"
+                var novo = document.getElementById("novo");
+                novo.innerHTML = "Cadastrar nova seção : <i class='bi bi-plus-circle'></i>"
+                controle=1;
+            }
+        }
+    </script>
+</body>
+
+</html>
