@@ -65,7 +65,7 @@
                     if (xhr.status === 200) {
                         tableSetor.innerHTML += xhr.responseText;
                     } else {
-                        console.error("Falha ao carregar as pessoas");
+                        tableSetor.innerHTML += "Falha ao carregar os setores";
                     }
                 }
             };
@@ -90,7 +90,7 @@
                         if (xhr.status === 200) {
                             selects.innerHTML = xhr.responseText;
                         } else {
-                            console.error("Falha ao carregar as pessoas");
+                            selects.innerHTML= "Falha ao carregar as pessoas";
                         }
                     }
                 };

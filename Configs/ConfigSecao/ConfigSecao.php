@@ -1,5 +1,32 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "siasb");
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST["select_ready"])) {
+        $sql = "SELECT s.IDSecao, s.descricao_secao, p.nomeCompleto, t.descricao_setor FROM TBSECAO s
+        join TBPessoa p on s.gerente = p.IDPessoa
+        join TBSetor t on s.setor = t.IDSetor";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $IDSecao = $row["IDSecao"];
+                $descricao = $row["descricao_secao"];
+                $gerente = $row["nomeCompleto"];
+                $setor = $row["descricao_setor"];
+
+                echo "<tr>
+                <td>".$IDSecao."</td>
+                <td>".$descricao."</td>
+                <td>".$gerente."</td>
+                <td>".$setor."</td>
+                </tr>";
+            }
+        }
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST["selects"])) {
@@ -45,6 +72,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Retornar o resultado como JSON
         echo json_encode($resultArray);
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if(isset($_POST['nomeSecao']) && isset($_POST['gerente']) && isset($_POST['setor'])){
+        $nomeSecao = $_POST['nomeSecao'];
+        $gerente = $_POST['gerente'];
+        $setor = $_POST['setor'];
+
+        $sql = "SET @ultimoIDSecao = (SELECT MAX(IDSecao) FROM tbsecao);
+        SET @ultimoIDSecao = IFNULL(@ultimoIDSecao, 0) + 1;
+        INSERT INTO tbsecao (IDSecao, descricao_secao, gerente, setor)
+        VALUES (@ultimoIDSecao, '$nomeSecao', '$gerente', '$setor')";
+        
+        if (mysqli_multi_query($conn, $sql)) {
+            echo "Nova seção adicionada com sucesso!";
+        } else {
+            echo "Erro ao adicionar nova seção: " . mysqli_error($conn);
+        }
+
+        $conn->close();
     }
 }
 

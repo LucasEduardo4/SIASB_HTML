@@ -78,7 +78,7 @@
                             tableStatus.innerHTML += xhr.responseText;
                             resolve();
                         } else {
-                            reject(new Error("Falha ao carregar status."));
+                            tableStatus.innerHTML += "Falha ao carregar os status";
                         }
                     }
                 };

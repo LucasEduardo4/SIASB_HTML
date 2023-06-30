@@ -26,7 +26,7 @@
 <body>
     <h3>Configurar Seção</h3>
     <hr>
-    <h3 id="novo" onclick="verificaSetor()">Cadastrar nova seção : <i class="bi bi-plus-circle"></i></h3>
+    <h3 id="novo" onclick="selectsDropdown()">Cadastrar nova seção : <i class="bi bi-plus-circle"></i></h3>
 
     <div id="cadastro" class="container-fluid p-5 border">
         <form>
@@ -49,16 +49,50 @@
             </div>
         </form>
             <div class="text-center">
-                <button class="btn btn-success" onclick="adicionarSetor()">Adicionar Seção</button>
+                <button class="btn btn-success" onclick="adicionarSecao()">Adicionar Seção</button>
             </div>
-            <p id="response"></p>
     </div>
-
+    <div class="container-fluid" style="margin-top: 40px;">
+        <table id="tableSecao"  class="table table-striped table-hover">
+            <tr class="table-dark">
+                <th>IDSecao</th>
+                <th>Descrição</th>
+                <th>Responsável</th>
+                <th>Setor</th>
+            </tr>
+            <tr></tr>
+        </table>
+    </div>
+    
     <script>
         var controle = 1; //para nao duplicar os dados.
         var consultaUnica = 1;
+        function selectsDropdown(){
+            function unParse(data) {
+                var dadosObjeto = JSON.parse(data)
+                var gerentes = dadosObjeto.gerentes;
+                var setores = dadosObjeto.setores;
+                let selectGerentes = document.getElementById("selectGerentes");
+                let selectSetores = document.getElementById("selectSetores");
+                var i=0;
 
-        function verificaSetor(){
+                selectGerentes.innerHTML = '<option value="" disabled selected hidden>-------------------------</option>'
+                selectSetores.innerHTML = '<option value="" disabled selected hidden>-------------------------</option>'
+
+                console.log(gerentes);
+                console.log(setores);
+                //colocar a condição dos innerhtml
+
+                for (let key in gerentes) {
+                let value = gerentes[key];
+                selectGerentes.innerHTML += `<option value="${key}">${value}</option>`;
+                }
+                for (let key in setores) {
+                let value = setores[key];
+                selectSetores.innerHTML += `<option value="${key}">${value}</option>`;
+                }
+            }
+
             if(controle == 1){
             document.getElementById("cadastro").style.display="grid"
             var novo = document.getElementById("novo");
@@ -71,7 +105,7 @@
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             //Objeto tal.. alteração tal.. selects.innerhtml="jsonparse...."
-                            response.innerHTML = xhr.responseText; //<<<--- a resposta vem ate aqui.. dps passar pros selects
+                            unParse(xhr.responseText)
                         } else {
                             console.error("Falha ao carregar as pessoas");
                         }
@@ -89,6 +123,55 @@
                 controle=1;
             }
         }
+        function adicionarSecao() {
+            var nomeSecao = document.getElementById("novaSecao").value;
+            var selectGerentes = document.getElementById("selectGerentes");
+            var selectSetores = document.getElementById("selectSetores");
+            var gerente = selectGerentes.options[selectGerentes.selectedIndex].value;
+            var setor = selectSetores.options[selectSetores.selectedIndex].value;
+
+            console.log(nomeSecao);
+            console.log(gerente);
+            console.log(setor);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "ConfigSecao.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    window.location.reload();
+                } else {
+                    console.error("Falha ao carregar as pessoas");
+                }
+                }
+            };
+            xhr.send(
+                "nomeSecao=" +
+                encodeURIComponent(nomeSecao) +
+                "&gerente=" +
+                encodeURIComponent(gerente) +
+                "&setor=" +
+                encodeURIComponent(setor)
+            );
+            }
+
+
+        // function selectTable(){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "ConfigSecao.php", true) 
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            tableSecao.innerHTML += xhr.responseText;
+                        } else {
+                            tableSecao.innerHTML += "Falha ao carregar as Secoes";
+                        }
+                    }
+                };
+                xhr.send("select_ready=" + encodeURIComponent(1)); 
+        // }
     </script>
 </body>
 

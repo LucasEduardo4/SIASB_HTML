@@ -37,7 +37,6 @@
             </tr>
         </table>
     </div>
-    <p>Obs: vou adicionar uma coluna gestor, tipo bit.</p>
 
 <script>
     function init() {
@@ -54,7 +53,7 @@
                         tablePerson.innerHTML += xhr.responseText;
           
                     } else {
-                        console.error("Falha ao carregar as pessoas");
+                        tablePerson.innerHTML += "Falha ao carregar as pessoas";
                     }
                 }
             };
