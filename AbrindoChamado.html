@@ -24,7 +24,9 @@
             width: 4000px;
             background-color: #ffffff;
             padding: 20px;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+
 
         }
 
@@ -54,6 +56,8 @@
             padding: 20px;
             z-index: 1;
             margin-bottom: 50px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+
         }
 
         .div-azul {
@@ -72,7 +76,9 @@
             top: 280px;
             text-align: center;
             font-size: 15px;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+
 
         }
 
@@ -113,6 +119,8 @@
   border-style: dotted;
   border-color: black;
   border-radius: 5px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
 }
 
 textarea{
@@ -126,6 +134,8 @@ input, select {
   width: 100%;
   padding: 10px;
   border-radius: 7px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
 }
 
 
@@ -137,8 +147,8 @@ input, select {
 
   <div class="container">
     <div style="border-radius: 5px; ;" class="div-superior">
-        <div class="logo"> <img src="https://png.pngtree.com/png-vector/20190321/ourmid/pngtree-vector-notification-icon-png-image_855007.jpg" > </div>
-        <h2>SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
+        <div class="logo"> <img src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png" > </div>
+        <h2 style="color: rgb(0, 0, 181);">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
         <p>
           Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
         </p>
@@ -148,7 +158,7 @@ input, select {
 
 <div class="container">
     <div style="border-radius: 5px; " class="div-inferior">
-        <div class="div-azul">ESCREVA A BAIXO A SUA SOLICITAÇÃO</div>
+        <div style="border: 2px;" class="div-azul">ESCREVA ABAIXO A SUA SOLICITAÇÃO</div>
         <h2> </h2>
         <!-- Conteúdo adicional da div inferior -->
         <form class="blue-theme-form">
@@ -156,7 +166,7 @@ input, select {
           <div style="margin-top: 30px;" class="top-div">
             <div class="assunto-div">
               <label for="assunto">Assunto:</label>
-              <input type="text" id="assunto" name="assunto">
+              <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto">
             </div>
 
 
@@ -174,15 +184,15 @@ input, select {
           
             <div style="margin-top: 20px;" class="descricao-div">
               <label for="descricao">Descrição:</label>
-              <textarea id="descricao" name="descricao" rows="4"></textarea>
+              <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
             </div>
             
             <div style="margin-top: 30px;" class="upload-div">
-              <label for="imagem">Upload de Imagem:</label>
+              <label for="imagem">Envie uma imagem do problema:</label>
               <input type="file" id="imagem" name="imagem">
             </div>
 
-          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="submit">Enviar</button>
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="submit">ENVIAR</button>
         </form>        
 
     </div>
