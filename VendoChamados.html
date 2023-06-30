@@ -7,12 +7,50 @@
     <style>
         /* Estilos para o formulário */
 
-        .top-div {
+.top-div {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
+        #myIframe {
+        width: 100%;
+        }
+
+        .logo {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          left: 40px;
+          margin: 0 auto;
+          background-color: #eee;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 2;
+          top: 30px;
+        }
+
+        .logo img {
+          max-width: 100%;
+          max-height: 100%;
+          border-radius: 6px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            /* max-width: 30%; */
+            width: 200px;
+            height: 70px;
+            background-color: white;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            border-radius: 5px;
+
+        }
 
         form {
             max-width: 100%;
@@ -23,11 +61,16 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
 
         h2 {
             width: 100%;
             text-align: center;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: rgb(0, 0, 181);
+        
+
         }
 
         .form-group {
@@ -45,6 +88,8 @@
         select {
             width: 100%;
             padding: 10px;
+            padding-left: 30px;
+            padding-right: 30px;
             border-radius: 3px;
             border: 1px solid #ccc;
         }
@@ -61,31 +106,59 @@
 
         .resultados {
             margin-top: 20px;
-            background-color: #f5f5f5;
+            background-color: #ffffff;
             padding: 10px;
+            border-radius: 5px;
         }
 
         .MeusCampos {
-            padding-left: 20px;
+            padding-left: 0px;     
+            margin-right: 70px;   
+            padding-top: 10px;
+        }
+
+        .FaixaForm {
+            background-color: #0031e3;
+            border-radius: 3px;
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        /* VOU UTILIZAR PARA A PARTE DE CIMA E PARA PARTE DE BAIXO */
+        .CamposResultados {
+            width: 100%;
+            display: inline-block;
+            color: #ffffff;
         }
 
     </style>
 </head>
 <body>
+
+    <div class="container" >
+        <div style="border-radius: 5px;" class="div-superior">
+            <div style="border-radius: 10px;" class="logo"> <img src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png" > </div>
+            <h2 style="color: rgb(0, 0, 181); font-size: 21px;">ABRIR CHAMADO</h2>
+            <button onclick="RedirecionarPagina()">
+              Novo Chamado
+            </button>
+            <!-- Conteúdo adicional da div superior -->
+        </div>
+    </div>
+
     <form style="background-color: white; border-radius: 5px;" id="filtroForm">
-        <h2>Filtro de Chamados</h2>
+        <h2  >FILTRO DE CHAMADOS</h2>
 
     <div class="top-div" >
        
         <div class="MeusCampos">
-            <label for="dataAbertura">Data de Abertura:</label>
-            <input type="text" id="dataAbertura" name="dataAbertura" readonly>
-        </div>
-
-                
-        <div class="MeusCampos">
             <label for="codigoSolicitacao">Código da Solicitação:</label>
             <input type="text" id="codigoSolicitacao" name="codigoSolicitacao">
+        </div>
+
+        <div class="MeusCampos">
+            <label for="dataAbertura">Data de Abertura:</label>
+            <input type="text" id="dataAbertura" name="dataAbertura" readonly>
         </div>
               
             
@@ -110,15 +183,28 @@
     </form>
 
     <div class="resultados" id="resultadosContainer" style="display: none;">
-        <h3>Resultados:</h3>
-        <div id="resultados">
+    <div class="FaixaForm">
+        <div class="CamposResultados"> <p style="padding-left: 10px;"> ID da Solicitação </p> </div>
+        <div class="CamposResultados"> <p> Data de Abertura </p> </div>
+        <div class="CamposResultados"> <p> Assunto</p> </div>
+        <div class="CamposResultados"> <p> Status</p> </div>
+    </div>
+    <div id="resultados">
     
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+<script>
 
+// CAPTURANDO OS DADOS PARA FILTRAR E APARECER OS RESULTADOS DENTRO DA SELEÇÃO 
+//================================================================================================
+    function RedirecionarPagina() {
+        window.location.href = "AbrindoChamado.html";
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
+      
+    }
+//================================================================================================
+
         flatpickr("#dataAbertura", {
             dateFormat: "d/m/Y"
         });
@@ -137,7 +223,7 @@
             const verFinalizadas = document.getElementById('verFinalizadas').checked;
 
             // Exemplo: exibir resultados em um elemento de texto
-            resultados.textContent = `Filtrando por:\nData de Abertura: ${dataAbertura}\nCódigo da Solicitação: ${codigoSolicitacao}\nStatus: ${status}\nVer Finalizadas: ${verFinalizadas}`;
+            resultados.textContent = `Filtrando por:\nCódigo da Solicitação: ${codigoSolicitacao}\nData de Abertura: ${dataAbertura}\nStatus: ${status}\nVer Finalizadas: ${verFinalizadas}`;
 
             resultadosContainer.style.display = 'block';
         });

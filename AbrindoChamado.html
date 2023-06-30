@@ -146,8 +146,8 @@ input, select {
 <body style="background: none;">
 
   <div class="container">
-    <div style="border-radius: 5px; ;" class="div-superior">
-        <div class="logo"> <img src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png" > </div>
+    <div style="border-radius: 5px;" class="div-superior">
+        <div style="border-radius: 10px;" class="logo"> <img src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png" > </div>
         <h2 style="color: rgb(0, 0, 181);">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
         <p>
           Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
@@ -194,6 +194,36 @@ input, select {
 
           <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="submit">ENVIAR</button>
         </form>        
+
+        
+        <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
+      <script>
+          function enviarFormulario() {
+            var assunto = document.getElementById("assunto").value;
+            var setor = document.getElementById("setor").value;
+            var descricao = document.getElementById("descricao").value;
+            var imagem = document.getElementById("imagem").value;
+      
+            // Aqui você pode adicionar mais campos conforme necessário
+      
+            // Enviar as informações para o PHP
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "seu_arquivo_php.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+
+                // Processar a resposta do PHP, se necessário
+                console.log(xhr.responseText);
+              }
+            };
+            var data = "assunto=" + encodeURIComponent(assunto) +
+                       "&setor=" + encodeURIComponent(setor) +
+                       "&descricao=" + encodeURIComponent(descricao) +
+                       "&imagem=" + encodeURIComponent(imagem);
+            xhr.send(data);
+          }
+        </script>
 
     </div>
 </div>
