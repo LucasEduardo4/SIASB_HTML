@@ -5,182 +5,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-<style>
-
-
-
-.container {
+    <style>
+        .container {
             display: flex;
             justify-content: center;
             align-items: center;
-            /* height: 100vh; */
             padding: 50px;
             max-width: 100%;
             background: none;
-
         }
 
         .div-superior {
-            width: 4000px;
+            width: 400px;
             background-color: #ffffff;
             padding: 20px;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-
-
         }
 
         .logo {
-          position: absolute;
-          width: 40px;
-          height: 40px;
-          left: 78px;
-          margin: 0 auto;
-          background-color: #eee;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 2;
-          top: 35px;
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: 78px;
+            margin: 0 auto;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            top: 35px;
         }
 
         .logo img {
-          max-width: 100%;
-          max-height: 100%;
-          border-radius: 6px;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 6px;
         }
 
         .div-inferior {
-            width: 4500px;
+            width: 450px;
             background-color: #ffffff;
-            padding: 20px;
+            padding: 40px;
+            padding-top: 100px;
             z-index: 1;
             margin-bottom: 50px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-
         }
 
         .div-azul {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             position: absolute;
             background-color: blue;
+            padding-top: 50px;
             color: #ffffff;
             padding: 15px;
             border-radius: 5px;
             z-index: 2;
-            /* width: 1028px; */
-            width: 85%;
-            top: 280px;
+            width: 420px;
+            top: 285px;
             text-align: center;
             font-size: 15px;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-
-
         }
 
+        .field {
+            margin-bottom: 20px;
+        }
 
+        .field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-  .form {
-  margin: 20px;
-}
+        .field input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
 
-
-/* REALIZANDO ALTERAÇÃO DA DIV DOS CAMPOS DE CIMA DO FORMULÁRO */
-.top-div {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-/* ================================================================ */
-
-.setor-div,
-.assunto-div {
-  flex-basis: 48%;
-}
-
-.bottom-div {
-  display: flex;
-  justify-content: space-between;
-}
-
-.descricao-div{
-  flex-basis: 48%;
-
-}
-
-.upload-div {
-  width: 98%;
-  padding: 10px;
-  border-width: 2px;
-  border-style: dotted;
-  border-color: black;
-  border-radius: 5px;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-
-}
-
-textarea{
-  width: 81%;
-  padding: 100px;
-  border-radius: 7px;
-
-}
-
-input, select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 7px;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-
-}
-
-
-
-</style>
-    
+        .submit-button {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body style="background: none;">
 
-  <div class="container">
-    <div style="border-radius: 5px;" class="div-superior">
-        <div style="border-radius: 10px;" class="logo"> <img src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png" > </div>
-        <h2 style="color: rgb(0, 0, 181);">GERENCIAMENTO DO PERFIL</h2>
-    </div>
-</div>
-
-<div class="container">
-    <div style="border-radius: 5px; " class="div-inferior">
-        <div style="border: 2px;" class="div-azul">INFORMAÇÕES DO USUÁRIO</div>
-        <!-- Conteúdo adicional da div inferior -->
-        <form class="blue-theme-form">
-                  
-          <div style="margin-top: 60px; " class="top-div">
-            <div class="assunto-div">
-              <label for="assunto">Nome:</label>
-              <input placeholder="Digite seu nome" type="text" id="nome" name="nome">
+    <div class="container">
+        <div style="border-radius: 5px;" class="div-superior">
+            <div style="border-radius: 10px;" class="logo">
+                <img src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png">
             </div>
-
-            <div >
-                <div class="assunto-div">
-                  <label for="assunto">Sobrenome:</label>
-                  <input placeholder="Digite o seu sobrenome " type="text" id="sobrenome" name="sobrenome">
-                </div>
-            </div>
+            <h2 style="color: rgb(0, 0, 181);">GERENCIAMENTO DO PERFIL</h2>
         </div>
-
-
-
-          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="submit">ENVIAR</button>
-        </form>        
-
-
     </div>
-</div>
-</div> 
-    
+
+    <div class="container">
+        <div style="border-radius: 5px; " class="div-inferior">
+            <div style="border: 2px;" class="div-azul">INFORMAÇÕES DO USUÁRIO</div>
+            <!-- Conteúdo adicional da div inferior -->
+            <div class="field">
+                <label for="nome">Nome:</label>
+                <p id="nome">John</p>
+            </div>
+
+            <div class="field">
+                <label for="sobrenome">Sobrenome:</label>
+                <p id="sobrenome">Doe</p>
+            </div>
+
+            <div class="field">
+                <label for="usuario">Usuário:</label>
+                <p id="usuario">johndoe</p>
+            </div>
+
+            <div class="field">
+                <label for="senha">Senha:</label>
+                <p id="senha">********</p>
+            </div>
+
+            <button class="submit-button" type="submit" onclick="editarInformacoes()">EDITAR</button>
+        </div>
+    </div>
+
+    <script>
+        function editarInformacoes() {
+            // Obtém os valores atuais dos campos de parágrafo
+            var nomeParagrafo = document.getElementById("nome");
+            var sobrenomeParagrafo = document.getElementById("sobrenome");
+            var usuarioParagrafo = document.getElementById("usuario");
+            var senhaParagrafo = document.getElementById("senha");
+
+            // Obtém os valores atuais dos campos de parágrafo
+            var nomeValor = nomeParagrafo.textContent;
+            var sobrenomeValor = sobrenomeParagrafo.textContent;
+            var usuarioValor = usuarioParagrafo.textContent;
+            var senhaValor = senhaParagrafo.textContent;
+
+            // Substitui os campos de parágrafo pelos campos de entrada de texto
+            nomeParagrafo.innerHTML = '<input type="text" id="nomeInput" value="' + nomeValor + '">';
+            sobrenomeParagrafo.innerHTML = '<input type="text" id="sobrenomeInput" value="' + sobrenomeValor + '">';
+            usuarioParagrafo.innerHTML = '<input type="text" id="usuarioInput" value="' + usuarioValor + '">';
+            senhaParagrafo.innerHTML = '<input type="password" id="senhaInput" value="' + senhaValor + '">';
+
+            // Altera o texto do botão para "SALVAR" e define o evento de clique
+            var editarButton = document.getElementsByClassName("submit-button")[0];
+            editarButton.textContent = "SALVAR";
+            editarButton.setAttribute("onclick", "salvarInformacoes()");
+        }
+
+        function salvarInformacoes() {
+            // Obtém os valores dos campos de entrada de texto
+            var nomeInput = document.getElementById("nomeInput");
+            var sobrenomeInput = document.getElementById("sobrenomeInput");
+            var usuarioInput = document.getElementById("usuarioInput");
+            var senhaInput = document.getElementById("senhaInput");
+
+            // Obtém os valores dos campos de entrada
+            var nomeValor = nomeInput.value;
+            var sobrenomeValor = sobrenomeInput.value;
+            var usuarioValor = usuarioInput.value;
+            var senhaValor = senhaInput.value;
+
+            // Substitui os campos de entrada de texto pelos parágrafos atualizados
+            nomeInput.parentNode.innerHTML = nomeValor;
+            sobrenomeInput.parentNode.innerHTML = sobrenomeValor;
+            usuarioInput.parentNode.innerHTML = usuarioValor;
+            senhaInput.parentNode.innerHTML = senhaValor;
+
+            // Altera o texto do botão de volta para "EDITAR" e define o evento de clique
+            var editarButton = document.getElementsByClassName("submit-button")[0];
+            editarButton.textContent = "EDITAR";
+            editarButton.setAttribute("onclick", "editarInformacoes()");
+        }
+    </script>
+
 </body>
 </html>
