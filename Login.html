@@ -4,7 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Inicial.css">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    
     <style>
+        .custom-fade-in {
+          animation-duration: 2s !important;
+        }
+      #error{
+        border: solid 1px red;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        color: white;
+        background-color: red;
+        display: none;
+      }
       #temp{
         height: 450px;
         /* border: solid 3px red; */
@@ -30,17 +47,20 @@
 <body>
     <div class="container">
         <h1>SIASB</h1>
-        <form>
+        <form action="Login.php" method="post">
           <div class="form-group">
             <label for="Usuario">Usuario:</label>
-            <input type="text" id="Usuario" name="Usuario" placeholder="Entre com o seu Usuario">
+            <input type="text" id="Usuario" name="username" placeholder="Entre com o seu Usuario">
           </div>
           <div class="form-group">
             <label for="Senha">Senha:</label>
-            <input type="password" id="Senha" name="Senha" placeholder="Entre com a sua senha">
+            <input type="password" id="Senha" name="password" placeholder="Entre com a sua senha">
           </div>
           <div class="form-group">
             <button type="submit">Login</button>
+          </div>
+          <div class="form-group bg-danger text-white p-3 animate__animated animate__fadeIn custom-fade-in">
+           <p id="error">Você precisa realizar o login para acessar o sistema.</p>          
           </div>
         </form>
         <div class="footer">
@@ -60,4 +80,13 @@
   
 </footer>
 </body>
+<script>
+var url = new URL(window.location.href);
+var error = url.searchParams.get("error");
+
+if (error === "true") {
+  document.getElementById("error").style.display="inline"
+}
+
+</script>
 </html>
