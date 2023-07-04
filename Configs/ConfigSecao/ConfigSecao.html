@@ -67,12 +67,12 @@
     </div>
     
     <script>
+        var controle = 1; //para nao duplicar os dados.
+        var consultaUnica = 1;
     function init() {
       loadSecoes();
     }
     function loadSecoes(){
-        var controle = 1; //para nao duplicar os dados.
-        var consultaUnica = 1;
         
         var xhr = new XMLHttpRequest();
             xhr.open("POST", "ConfigSecao.php", true) 

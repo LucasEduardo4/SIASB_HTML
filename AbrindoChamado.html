@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
 
 <style>
 
@@ -23,6 +25,7 @@
 
         .div-superior {
             width: 4000px;
+            min-width: 800px;
             background-color: #ffffff;
             padding: 20px;
             font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -53,6 +56,7 @@
 
         .div-inferior {
             width: 4500px;
+            min-width: 700px;
             background-color: #ffffff;
             padding: 20px;
             z-index: 1;
@@ -65,6 +69,7 @@
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
+          min-width: 600px;
 
             position: absolute;
             background-color: blue;
@@ -138,6 +143,28 @@ input, select {
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
 }
+#descricao{
+  padding: 10px 20px;
+  height: 200px;
+  width: 95%;
+  min-width: 500px;
+}
+.hardware-div{
+  max-width: 98%;
+  min-width: 300px;
+  /* display: flex; */
+  text-align: center;
+  margin: 35px 0px;
+  display:none;
+  
+}
+.hardware-div label{
+  padding: 10px;
+}
+.custom-fade-in {
+    animation-duration: 0.5s !important;
+  }
+
 
 
 
@@ -159,7 +186,7 @@ input, select {
 
 <div class="container">
     <div style="border-radius: 5px; " class="div-inferior">
-        <div style="border: 2px;" class="div-azul">ESCREVA ABAIXO A SUA SOLICITAÇÃO</div>
+        <div style="border: 2px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
         <h2> </h2>
         <!-- Conteúdo adicional da div inferior -->
         <form class="blue-theme-form">
@@ -172,20 +199,26 @@ input, select {
 
 
             <div class="setor-div">
-              <label for="setor">Setor:</label>
-              <select id="setor" name="setor">
-                <option value="rh">RH</option>
-                <option value="financeiro">Financeiro</option>
-                <option value="ti">TI</option>
+              <label for="categoria">Categoria:</label>
+              <select id="categoria" name="categoria" onchange="verifySelect()">
+                <option selected hidden >Escolha uma das opções</option>
+                <option value="hardware">Hardware</option>
+                <option value="software">Software</option>
                 <!-- Adicione mais opções conforme necessário -->
               </select>
             </div>
           </div>
 
-          
-            <div style="margin-top: 20px;" class="descricao-div">
+          <div class="hardware-div animate__animated animate__fadeInDown custom-fade-in">
+            <label for="stiID" >STI_ID:</label>
+            <input style="width: 150px;" type="text" id="stiID" name="stiID" oninput="verificaEquipamento()">
+            <label for="nomeEquipamento"> Equipamento:</label>
+            <input type="text" id="equipamentoNome" disabled value="">
+          </div>
+
+            <div style="margin-top: 0px;" class="descricao-div">
               <label for="descricao">Descrição:</label>
-              <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
+              <textarea onclick="verificaEquipamento()" placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
             </div>
             
             <div style="margin-top: 30px;" class="upload-div">
@@ -193,7 +226,7 @@ input, select {
               <input type="file" id="imagem" name="imagem">
             </div>
 
-          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="submit">ENVIAR</button>
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="button" onclick="enviarFormulario()">ENVIAR</button>
         </form>        
 
         
@@ -201,28 +234,69 @@ input, select {
       <script>
           function enviarFormulario() {
             var assunto = document.getElementById("assunto").value;
-            var setor = document.getElementById("setor").value;
             var descricao = document.getElementById("descricao").value;
             var imagem = document.getElementById("imagem").value;
-      
-            // Aqui você pode adicionar mais campos conforme necessário
-      
-            // Enviar as informações para o PHP
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "seu_arquivo_php.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4 && xhr.status === 200) {
+            var selectCategoria = document.getElementById("categoria");
+            var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
+            var equipamento = "NULL";
 
-                // Processar a resposta do PHP, se necessário
-                console.log(xhr.responseText);
-              }
-            };
-            var data = "assunto=" + encodeURIComponent(assunto) +
-                       "&setor=" + encodeURIComponent(setor) +
-                       "&descricao=" + encodeURIComponent(descricao) +
-                       "&imagem=" + encodeURIComponent(imagem);
-            xhr.send(data);
+            // var selectSetores = document.getElementById("selectSetores");
+            // var setor = selectSetores.options[selectSetores.selectedIndex].value;
+            if(categoria == "hardware"){
+              equipamento = document.getElementById("stiID").value;
+            }
+            strTeste=`
+            IDChamado       ->  Auto_Increment
+            assunto         ->  ${assunto},
+            descricao       ->  ${descricao}
+            dataAbertura    ->  $datetime = date('Y-m-d H:i:s');
+            categoria       ->  ${categoria}
+            status_chamado  ->  1 //(Aberto)
+            responsavel     ->  NULL //depois será alterado
+            autor           ->  $_SESSION['username']
+            equipamento     ->  ${equipamento}
+            `
+            console.log(strTeste)
+          //   var xhr = new XMLHttpRequest();
+          //   xhr.open("POST", "seu_arquivo_php.php", true);
+          //   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          //   xhr.onreadystatechange = function () {
+          //     if (xhr.readyState === 4 && xhr.status === 200) {
+
+          //       // Processar a resposta do PHP, se necessário
+          //       console.log(xhr.responseText);
+          //     }
+          //   };
+          //   var data = "assunto=" + encodeURIComponent(assunto) +
+          //              "&setor=" + encodeURIComponent(setor) +
+          //              "&descricao=" + encodeURIComponent(descricao) +
+          //              "&imagem=" + encodeURIComponent(imagem);
+          //   xhr.send(data);
+          }
+
+          function verifySelect(){
+            if(document.getElementById("categoria")[1].selected == true){
+              document.querySelector(".hardware-div").style.display="flex";
+            }else
+            if(document.getElementById("categoria")[2].selected == true){
+              document.querySelector(".hardware-div").style.display="none";
+            }
+          }
+
+          function verificaEquipamento(){
+            var selectCategoria = document.getElementById("categoria");
+            var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
+            
+            if(categoria == "hardware"){
+              var stiID = document.getElementById("stiID").value;
+              var equipamento = document.getElementById("equipamentoNome");
+              console.log(stiID);
+
+              if(stiID == 100){
+                equipamento.value = "deu certo";
+              }else
+                equipamento.value="nao encontrado"
+            }
           }
         </script>
 
