@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <title>Document</title>
+    <style>
+        body{
+            background-color: rgba(246,246,246,255);
+        }
+        div{
+            border-radius: 5px;
+            background-color: white;
+            width: fit-content;
+        }
+        .custom-fade-in {
+            animation-duration: 0.5s !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 p-3">
+        <h2>Filtrar chamados</h2>
+        <br>
+        <p>Filtrar por:</p>
+        <select name="" id="filtro" onchange="verifyChange()">
+            <option value="" selected disabled hidden>Escolha uma opção</option>
+            <option value="1">Data de Abertura</option>
+            <option value="2">Data de Fechamento</option>
+            <option value="3">Status</option>
+            <option value="4">Usuario</option>
+            <option value="5">Analista</option>
+            <option value="6">Equipamento</option>
+            <option value="7">Categoria</option>
+        </select>
+    </div>
+    <div id="dataAbertura" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
+        <p>Intervalo da data de abertura:</p>
+        <label for="dataInicial">De:</label>
+        <input type="date" name="dataInicial">
+        <label for="dataFinal">Até:</label>
+        <input type="date" name="dataFinal">
+        <button style="border-radius: 5px;">Filtrar</button>
+    </div>
+    <div id="dataFechamento" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
+        <p>Intervalo da data de fechamento:</p>
+        <label for= "dataInicial">De:</label>
+        <input type="date" name="dataInicial">
+        <label for="dataFinal">Até:</label>
+        <input type="date" name="dataFinal">
+        <button style="border-radius: 5px;">Filtrar</button>
+    </div>
+    <div id="status" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
+        <p>Selecione o Status:</p>
+        <select name="" id="selectStatus">
+            <option selected hidden disabled>Escolha uma das opções</option>
+        </select>
+        <button style="border-radius: 5px;" onclick="executaFiltro(3)">Filtrar</button>
+    </div>
+    <div id="usuario" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
+        <p>Selecione o Usuário:</p>
+        <select name="" id="selectUsuario">
+            <option selected hidden disabled>Escolha abaixo</option>
+        </select>
+        <button style="border-radius: 5px;">Filtrar</button>
+    </div>
+    <div id="analista" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
+        <p>Selecione o Analista Responsável pelo chamado:</p>
+        <select name="" id="selectAnalista">
+            <option selected hidden disabled>Escolha abaixo</option>
+        </select>
+        <button style="border-radius: 5px;">Filtrar</button>
+    </div>
+    <div id="equipamento" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
+        <p>Selecione o Equipamento:</p>
+        <select name="" id="selectEquipamento">
+            <option selected hidden disabled>Escolha abaixo</option>
+        </select>
+        <button style="border-radius: 5px;">Filtrar</button>
+    </div>
+    <div id="categoria" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
+        <p>Selecione a categoria:</p>
+        <select name="" id="selectCategoria">
+            <option selected hidden disabled>Escolha abaixo</option>
+        </select>
+        <button style="border-radius: 5px;">Filtrar</button>
+    </div>
+    <div class="container mt-4 p-3">
+        <table id="tableQuery"class="table table-hover table-striped">
+            <tr>
+                <th>IDChamado</th>
+                <th>Assunto</th>
+                <th>Descrição</th>
+                <th>Data Abertura</th>
+                <th>Status</th>
+                <th>Analista</th>
+                <th>Autor</th>
+                <th>Equipamento</th>
+                <th>Imagem</th>
+                <th>Categoria</th>
+            </tr>
+        </table>
+    </div>
+    <script>
+        function verifyChange(){
+            var selectFiltro = document.getElementById("filtro");
+            var filtro = selectFiltro.options[selectFiltro.selectedIndex].value;
+            var dataAbertura = document.getElementById("dataAbertura");
+            var dataFechamento = document.getElementById("dataFechamento");
+            var status = document.getElementById("status");
+            var usuario = document.getElementById("usuario");
+            var analista = document.getElementById("analista");
+            var equipamento = document.getElementById("equipamento");
+            var categoria = document.getElementById("categoria")
+
+        switch (filtro) {
+            case "1":
+                escondeDivs();
+                dataAbertura.style.display="block";                
+                break;
+            case "2":
+                escondeDivs();
+                dataFechamento.style.display="block";                
+                break;
+            case "3":
+                escondeDivs();
+                status.style.display="block";
+                connection("selectStatus=" + encodeURIComponent(1), selectStatus)
+                break;
+            case "4":
+                escondeDivs();
+                usuario.style.display="block";
+                break;
+            case "5":
+                escondeDivs();
+                analista.style.display="block";
+                break;
+            case "6":
+                escondeDivs();
+                equipamento.style.display="block";
+                break;
+            case "7":
+                escondeDivs();
+                categoria.style.display="block";
+                break;
+        }
+        function escondeDivs(){
+            dataFechamento.style.display = "none"
+            dataAbertura.style.display="none";                
+            status.style.display="none"; 
+            usuario.style.display="none";  
+            analista.style.display="none";   
+            equipamento.style.display="none";                
+            categoria.style.display="none";  
+        }
+
+        }
+        
+        function executaFiltro(comando){
+            var tableQuery = document.getElementById("tableQuery");
+            if(comando == 3){
+            var selectStatus = document.getElementById("selectStatus");
+            var statusSelected = selectStatus.options[selectStatus.selectedIndex].value;
+
+            connection("selectStatus=" + encodeURIComponent(statusSelected),tableQuery)
+            }
+        }
+
+        function connection(data, output){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "FiltroChamados.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        output.innerHTML += xhr.responseText;
+                    } else {
+                            output.innerHTML += "Falha ao conectar ao banco de dados";
+                        }
+                    }
+                };
+                // var data = "assunto=" + encodeURIComponent(assunto) +
+                //             "&setor=" + encodeURIComponent(setor) +
+                //             "&descricao=" + encodeURIComponent(descricao) +
+                //             "&imagem=" + encodeURIComponent(imagem);
+                xhr.send(data);            
+        }
+    </script>
+</body>
+</html>
