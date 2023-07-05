@@ -58,21 +58,21 @@
         <select name="" id="selectStatus">
             <option selected hidden disabled>Escolha uma das opções</option>
         </select>
-        <button style="border-radius: 5px;" onclick="executaFiltro(3)">Filtrar</button>
+        <button style="border-radius: 5px;" onclick="executaFiltro(3)" id="buttonFiltro">Filtrar</button>
     </div>
     <div id="usuario" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
         <p>Selecione o Usuário:</p>
         <select name="" id="selectUsuario">
             <option selected hidden disabled>Escolha abaixo</option>
         </select>
-        <button style="border-radius: 5px;">Filtrar</button>
+        <button style="border-radius: 5px;" onclick="executaFiltro(4)">Filtrar</button>
     </div>
     <div id="analista" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
         <p>Selecione o Analista Responsável pelo chamado:</p>
         <select name="" id="selectAnalista">
             <option selected hidden disabled>Escolha abaixo</option>
         </select>
-        <button style="border-radius: 5px;">Filtrar</button>
+        <button style="border-radius: 5px;" onclick="executaFiltro(5)">Filtrar</button>
     </div>
     <div id="equipamento" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
         <p>Selecione o Equipamento:</p>
@@ -89,7 +89,7 @@
         <button style="border-radius: 5px;">Filtrar</button>
     </div>
     <div class="container mt-4 p-3">
-        <table id="tableQuery"class="table table-hover table-striped">
+        <table id="tableQuery" class="table table-hover table-striped">
             <tr>
                 <th>IDChamado</th>
                 <th>Assunto</th>
@@ -103,6 +103,17 @@
                 <th>Categoria</th>
             </tr>
         </table>
+    </div>
+
+    <div class="container">
+        <ul style="letter-spacing: 1.3px; line-height: 30px; font-family: 'Times New Roman'; font-weight: bold; font-size: 20px; text-shadow: 1px 1px 2px grey;">Falta:
+            <li>Data Abertura</li>
+            <li>Data Fechamento</li>
+            <li>Equipamento</li>
+            <li>Categoria</li>
+            <li>fazer os joins na tabela acima, pra exibir os nomes ao inves dos ID's</li>
+            <li>no GET do php, criar uma função pra executar os selects (ja que o padrao se repete)</li>
+        </ul>
     </div>
     <script>
         function verifyChange(){
@@ -128,15 +139,17 @@
             case "3":
                 escondeDivs();
                 status.style.display="block";
-                connection("selectStatus=" + encodeURIComponent(1), selectStatus)
+                connection("status="+encodeURIComponent(1), selectStatus, "GET");
                 break;
             case "4":
                 escondeDivs();
                 usuario.style.display="block";
+                connection("usuario=1",selectUsuario, "GET");
                 break;
             case "5":
                 escondeDivs();
                 analista.style.display="block";
+                connection("analista=1", selectAnalista, "GET");
                 break;
             case "6":
                 escondeDivs();
@@ -160,34 +173,69 @@
         }
         
         function executaFiltro(comando){
+            document.getElementById("buttonFiltro").disabled;
             var tableQuery = document.getElementById("tableQuery");
             if(comando == 3){
-            var selectStatus = document.getElementById("selectStatus");
-            var statusSelected = selectStatus.options[selectStatus.selectedIndex].value;
-
-            connection("selectStatus=" + encodeURIComponent(statusSelected),tableQuery)
+                var selectStatus = document.getElementById("selectStatus");
+                var statusSelected = selectStatus.options[selectStatus.selectedIndex].value;
+                // var data = `filterStatus=${+ encodeURIComponent(statusSelected)}`
+                var data = "filterStatus=" + encodeURIComponent(statusSelected) +"&coluna="+ encodeURIComponent('status');
+                connection(data,tableQuery, "POST")
+            }
+            if(comando == 4){
+                var selectUsuario = document.getElementById("selectUsuario");
+                var usuarioSelected = selectUsuario.options[selectUsuario.selectedIndex].value;
+                // console.log("selecionou ->" + usuarioSelected);
+                var data = "filterUser="+encodeURIComponent(usuarioSelected)+"&coluna="+encodeURIComponent('user');
+                connection(data,tableQuery, "POST")
+            }
+            if(comando == 5){
+                var selectAnalista = document.getElementById("selectAnalista");
+                var analistaSelected = selectAnalista.options[selectAnalista.selectedIndex].value;
+                // console.log("selecionou ->" + analistaSelected);
+                var data = "filterAnalista="+encodeURIComponent(analistaSelected)+"&coluna="+encodeURIComponent('analista');
+                connection(data,tableQuery, "POST")
             }
         }
 
-        function connection(data, output){
+        function connection(data, output, method) {
+            console.log(data);
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "FiltroChamados.php", true)
+            var url = "FiltroChamados.php";
+
+            if (method === "GET") {
+                url += "?" + data;
+            }
+
+            xhr.open(method, url, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function(){
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        output.innerHTML += xhr.responseText;
-                    } else {
-                            output.innerHTML += "Falha ao conectar ao banco de dados";
+                        if (method === "POST") {
+                            output.innerHTML = "<tr><th>IDChamado</th><th>Assunto</th><th>Descrição</th><th>Data Abertura</th><th>Status</th><th>Analista</th><th>Autor</th><th>Equipamento</th><th>Imagem</th><th>Categoria</th></tr>";
+                        }else if(method === "GET"){
+                            output.innerHTML = '<option selected hidden disabled>Escolha abaixo</option>';
                         }
+                        output.innerHTML += xhr.responseText;
+                        console.log(xhr.responseText);
+                    } else {
+                        output.innerHTML += "Falha ao conectar ao banco de dados";
                     }
-                };
-                // var data = "assunto=" + encodeURIComponent(assunto) +
-                //             "&setor=" + encodeURIComponent(setor) +
-                //             "&descricao=" + encodeURIComponent(descricao) +
-                //             "&imagem=" + encodeURIComponent(imagem);
-                xhr.send(data);            
+                }
+            };
+
+            if (method === "POST") {
+                xhr.send(data);
+            } else {
+                xhr.send();
+            }
         }
+
+            // var data = "assunto=" + encodeURIComponent(assunto) +
+            //             "&setor=" + encodeURIComponent(setor) +
+            //             "&descricao=" + encodeURIComponent(descricao) +
+            //             "&imagem=" + encodeURIComponent(imagem);
     </script>
 </body>
 </html>
