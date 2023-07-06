@@ -79,7 +79,8 @@
                     }
                 }
             };
-            xhr.send("select_ready=" + encodeURIComponent(1));
+            var data = "select_ready=" + encodeURIComponent(1)
+            xhr.send(data);
             
             var controle = 1; //para nao duplicar os dados.
             var consultaUnica = 1;

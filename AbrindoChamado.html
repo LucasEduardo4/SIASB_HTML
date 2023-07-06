@@ -211,14 +211,14 @@ input, select {
 
           <div class="hardware-div animate__animated animate__fadeInDown custom-fade-in">
             <label for="stiID" >STI_ID:</label>
-            <input style="width: 150px;" type="text" id="stiID" name="stiID" oninput="verificaEquipamento()">
+            <input style="width: 150px;" type="text" id="stiID" name="stiID" onblur="verificaEquipamento()">
             <label for="nomeEquipamento"> Equipamento:</label>
             <input type="text" id="equipamentoNome" disabled value="">
           </div>
 
             <div style="margin-top: 0px;" class="descricao-div">
               <label for="descricao">Descrição:</label>
-              <textarea onclick="verificaEquipamento()" placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
+              <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
             </div>
             
             <div style="margin-top: 30px;" class="upload-div">
@@ -250,13 +250,15 @@ input, select {
             assunto         ->  ${assunto},
             descricao       ->  ${descricao}
             dataAbertura    ->  $datetime = date('Y-m-d H:i:s');
-            categoria       ->  ${categoria}
             status_chamado  ->  1 //(Aberto)
             responsavel     ->  NULL //depois será alterado
             autor           ->  $_SESSION['username']
             equipamento     ->  ${equipamento}
+            categoria       ->  ${categoria}
+            imagem          ->  null(meanwhile)
             `
             console.log(strTeste)
+            
           //   var xhr = new XMLHttpRequest();
           //   xhr.open("POST", "seu_arquivo_php.php", true);
           //   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
