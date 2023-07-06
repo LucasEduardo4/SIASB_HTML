@@ -1,3 +1,13 @@
+
+<?php
+// Verifica se o usuário está autenticado
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php"); // Redireciona para a página de login se não estiver autenticado
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,13 +97,21 @@
 </head>
 <body style="background: none;">
     <div class="container">
+
+    
         <header>
-            <h1>Bem-vindo ao Sistema de Chamados</h1>
-        </header>
+            <h1>Bem-vindo, <?php echo $_SESSION['username']; ?>!</h1>
+            <p>Aqui está o conteúdo restrito do painel de controle.</p>
+
+            <!-- Inclua o conteúdo adicional do painel de controle aqui -->
+
+            <a href="../flowSite/encerrarSessao.php">Sair</a> <!-- Adicione o link de logout para encerrar a sessão -->
+             </header>
+
 
         <div class="welcome-message">
             <h2>Olá, [Nome do Usuário]!</h2>
-            <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo dia.</p>
+            <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
         </div>
 
         <div class="info-panel">
