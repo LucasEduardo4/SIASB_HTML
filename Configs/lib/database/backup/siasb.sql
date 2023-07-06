@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04/07/2023 às 14:09
+-- Tempo de geração: 06/07/2023 às 13:40
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.0.28
 
@@ -54,20 +54,22 @@ CREATE TABLE `tbchamados` (
   `status_chamado` int(11) DEFAULT NULL,
   `responsavel` int(11) DEFAULT NULL,
   `autor` int(11) DEFAULT NULL,
-  `equipamento` int(11) DEFAULT NULL
+  `equipamento` int(11) DEFAULT NULL,
+  `imagem` blob NOT NULL,
+  `categoria` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `tbchamados`
 --
 
-INSERT INTO `tbchamados` (`IDChamado`, `assunto`, `descricao`, `dataAbertura`, `status_chamado`, `responsavel`, `autor`, `equipamento`) VALUES
-(1, 'chamado teste', 'aqui entraria a descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100),
-(2, 'chamado teste 2', 'aqui entraria a outra descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100),
-(3, 'chamado teste 3', 'aqui entraria a outra descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100),
-(4, 'chamado teste 4', 'aqui entraria a outra descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100),
-(5, 'chamado teste 5', 'aqui entraria a outra descricao....', '2023-06-22 12:15:00', 1, 1, 2, 100),
-(6, 'chamado teste 6', 'impressora com defeito...', '2023-06-23 10:33:00', 1, 1, 2, 105);
+INSERT INTO `tbchamados` (`IDChamado`, `assunto`, `descricao`, `dataAbertura`, `status_chamado`, `responsavel`, `autor`, `equipamento`, `imagem`, `categoria`) VALUES
+(1, 'chamado teste', 'aqui entraria a descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100, '', 0),
+(2, 'chamado teste 2', 'aqui entraria a outra descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100, '', 0),
+(3, 'chamado teste 3', 'aqui entraria a outra descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100, '', 0),
+(4, 'chamado teste 4', 'aqui entraria a outra descricao....', '0000-00-00 00:00:00', 1, 1, 2, 100, '', 0),
+(5, 'chamado teste 5', 'aqui entraria a outra descricao....', '2023-06-22 12:15:00', 1, 1, 2, 100, '', 0),
+(6, 'chamado teste 6', 'impressora com defeito...', '2023-06-23 10:33:00', 1, 1, 2, 105, '', 0);
 
 -- --------------------------------------------------------
 
