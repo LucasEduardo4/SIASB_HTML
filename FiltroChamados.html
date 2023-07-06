@@ -34,16 +34,16 @@
             <option value="4">Usuario</option>
             <option value="5">Analista</option>
             <option value="6">Equipamento</option>
-            <option value="7">Categoria</option>
+            <!-- <option value="7">Categoria</option> -->
         </select>
     </div>
     <div id="dataAbertura" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
         <p>Intervalo da data de abertura:</p>
         <label for="dataInicial">De:</label>
-        <input type="date" name="dataInicial">
+        <input type="date" id="dataInicial" name="dataInicial">
         <label for="dataFinal">Até:</label>
-        <input type="date" name="dataFinal">
-        <button style="border-radius: 5px;">Filtrar</button>
+        <input type="date" id="dataFinal" name="dataFinal">
+        <button style="border-radius: 5px;" onclick="executaFiltro(1)">Filtrar</button>
     </div>
     <div id="dataFechamento" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
         <p>Intervalo da data de fechamento:</p>
@@ -52,6 +52,7 @@
         <label for="dataFinal">Até:</label>
         <input type="date" name="dataFinal">
         <button style="border-radius: 5px;">Filtrar</button>
+        <p style="color: red;">Data Final ainda nao existe na tabela</p>
     </div>
     <div id="status" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
         <p>Selecione o Status:</p>
@@ -79,14 +80,14 @@
         <select name="" id="selectEquipamento">
             <option selected hidden disabled>Escolha abaixo</option>
         </select>
-        <button style="border-radius: 5px;">Filtrar</button>
+        <button style="border-radius: 5px;" onclick="executaFiltro(6)">Filtrar</button>
     </div>
     <div id="categoria" class="container mt-4 p-3 animate__animated animate__fadeInDown custom-fade-in" style="display: none;">
         <p>Selecione a categoria:</p>
         <select name="" id="selectCategoria">
             <option selected hidden disabled>Escolha abaixo</option>
         </select>
-        <button style="border-radius: 5px;">Filtrar</button>
+        <button style="border-radius: 5px;" onclick="executaFiltro(7)">Filtrar</button>
     </div>
     <div class="container mt-4 p-3">
         <table id="tableQuery" class="table table-hover table-striped">
@@ -109,8 +110,6 @@
         <ul style="letter-spacing: 1.3px; line-height: 30px; font-family: 'Times New Roman'; font-weight: bold; font-size: 20px; text-shadow: 1px 1px 2px grey;">Falta:
             <li>Data Abertura</li>
             <li>Data Fechamento</li>
-            <li>Equipamento</li>
-            <li>Categoria</li>
             <li>fazer os joins na tabela acima, pra exibir os nomes ao inves dos ID's</li>
             <li>no GET do php, criar uma função pra executar os selects (ja que o padrao se repete)</li>
         </ul>
@@ -154,10 +153,13 @@
             case "6":
                 escondeDivs();
                 equipamento.style.display="block";
+                connection("equipamento=1", selectEquipamento,"GET");
                 break;
             case "7":
-                escondeDivs();
-                categoria.style.display="block";
+                // escondeDivs();
+                // categoria.style.display="block";
+                // connection("categoria=1", selectCategoria, "GET");
+                //nao vou fazer isso por enquanto...
                 break;
         }
         function escondeDivs(){
@@ -175,26 +177,45 @@
         function executaFiltro(comando){
             document.getElementById("buttonFiltro").disabled;
             var tableQuery = document.getElementById("tableQuery");
+            if(comando == 1){
+                var dataInicial = document.getElementById("dataInicial").value;
+                var dataFinal = document.getElementById("dataFinal").value;
+
+                data="filterDataAbertura=1"+ "&dataInicial="+ encodeURIComponent(dataInicial)+ "&dataFinal="+ encodeURIComponent(dataFinal);
+                console.log(`Data inicial => ${dataInicial} || Data final => ${dataFinal}`);
+                console.log(data);
+                connection(data, tableQuery, "POST");
+            }else
+            if(comando == 2){
+
+            }else
             if(comando == 3){
                 var selectStatus = document.getElementById("selectStatus");
                 var statusSelected = selectStatus.options[selectStatus.selectedIndex].value;
                 // var data = `filterStatus=${+ encodeURIComponent(statusSelected)}`
-                var data = "filterStatus=" + encodeURIComponent(statusSelected) +"&coluna="+ encodeURIComponent('status');
+                var data = "filterStatus=" + encodeURIComponent(statusSelected);
                 connection(data,tableQuery, "POST")
-            }
+            }else
             if(comando == 4){
                 var selectUsuario = document.getElementById("selectUsuario");
                 var usuarioSelected = selectUsuario.options[selectUsuario.selectedIndex].value;
                 // console.log("selecionou ->" + usuarioSelected);
-                var data = "filterUser="+encodeURIComponent(usuarioSelected)+"&coluna="+encodeURIComponent('user');
+                var data = "filterUser="+encodeURIComponent(usuarioSelected);
                 connection(data,tableQuery, "POST")
-            }
+            }else
             if(comando == 5){
                 var selectAnalista = document.getElementById("selectAnalista");
                 var analistaSelected = selectAnalista.options[selectAnalista.selectedIndex].value;
                 // console.log("selecionou ->" + analistaSelected);
-                var data = "filterAnalista="+encodeURIComponent(analistaSelected)+"&coluna="+encodeURIComponent('analista');
+                var data = "filterAnalista="+encodeURIComponent(analistaSelected);
                 connection(data,tableQuery, "POST")
+            }else
+            if(comando == 6){
+                var selectEquipamento = document.getElementById("selectEquipamento");
+                var equipamentoSelected = selectEquipamento.options[selectEquipamento.selectedIndex].value;
+
+                var data = "filterEquipamento="+encodeURIComponent(equipamentoSelected);
+                connection(data,tableQuery,"POST");
             }
         }
 
