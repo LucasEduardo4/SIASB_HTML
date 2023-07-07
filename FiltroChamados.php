@@ -66,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['filterDataAbertura'])){
         $dataInicial = $_POST['dataInicial'];
         $dataFinal = $_POST['dataFinal'];
+        $dataFinal = date('Y-m-d H:i:s', strtotime($dataFinal . ' +1 day'));
         $sql= "SELECT * FROM tbchamados WHERE dataAbertura between '$dataInicial' and '$dataFinal'";
     }else
     if(isset($_POST['filterStatus'])){
