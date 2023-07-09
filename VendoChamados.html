@@ -171,39 +171,40 @@
        
         <div class="MeusCampos">
             <label for="codigoSolicitacao">Código:</label>
-            <input type="text">
+            <input type="text" id="codigoSolicitacao">
         </div>
         <div class="MeusCampos">
-            <label for="dataAbertura">Data</label>
-            <select class="form-select" name="" id="">
+            <label for="data">Data</label>
+            <select class="form-select" name="data" id="data">
                 <option value="" selected hidden>Selecione a opção</option>
-                <option value="">Abertura</option>
-                <option value="">Fechamento</option>
-                <option value="">Até Hoje</option>
+                <option value="1">Abertura</option>
+                <option value="2">Fechamento</option>
+                <option value="3">Até Hoje</option>
             </select>
 
         </div>
         <div class="MeusCampos datas">
             <label for=""> </label>
-            <input type="text" id="dataAbertura" name="dataAbertura" placeholder="De:" readonly>
+            <input type="text" id="dataDe" class="datas" placeholder="De:" readonly>
         </div>
         <div class="MeusCampos datas">
             <label for=""> </label>
-            <input type="text" id="dataAbertura" name="dataAbertura" placeholder="Até:" readonly>
+            <input type="text" id="dataAte" class="datas" placeholder="Até:" readonly>
             
         </div> 
         <div class="MeusCampos">
-            <label for="status">Selecionar Status:</label>
+            <label for="status">Status:</label>
             <select id="status" name="status">
             <option value="">Selecione...</option>
             <option value="aberto">Aberto</option>
-            <option value="emProgresso">Em Progresso</option>
-            <option value="concluido">Concluído</option>
+            <option value="andamento">Andamento</option>
+            <option value="pendente">Pendente</option>
+            <option value="fechado">Fechado</option>
             </select>
         </div>
         
         <div class="MeusCampos">
-            <label for="verFinalizadas">Ver Finalizadas:</label>
+            <label for="verFinalizadas">Finalizados:</label>
             <input type="checkbox" id="verFinalizadas" name="verFinalizadas">
         </div>
 
@@ -235,7 +236,10 @@
     }
 //================================================================================================
 
-        flatpickr("#dataAbertura", {
+        flatpickr("#dataDe", {
+            dateFormat: "d/m/Y"
+        });
+        flatpickr("#dataAte", {
             dateFormat: "d/m/Y"
         });
 
@@ -247,13 +251,18 @@
             event.preventDefault();
 
             // Lógica de filtragem aqui
-            const dataAbertura = document.getElementById('dataAbertura').value;
+
+            var selectData = document.getElementById("data");
+            var data = selectData.options[selectData.selectedIndex].value;
+            var dataDe = document.getElementById("dataDe").value;
+            var dataAte = document.getElementById("dataAte").value;
+
             const codigoSolicitacao = document.getElementById('codigoSolicitacao').value;
             const status = document.getElementById('status').value;
             const verFinalizadas = document.getElementById('verFinalizadas').checked;
 
             // Exemplo: exibir resultados em um elemento de texto
-            resultados.textContent = `Filtrando por:\nCódigo da Solicitação: ${codigoSolicitacao}\nData de Abertura: ${dataAbertura}\nStatus: ${status}\nVer Finalizadas: ${verFinalizadas}`;
+            resultados.innerHTML = `Filtrando por:<br>Código da Solicitação: ${codigoSolicitacao}<br>Opção data: ${data}<br>Data de:${dataDe}<br>Data até:${dataAte}<br>Status: ${status}<br>Ver Finalizadas: ${verFinalizadas}`;
 
             resultadosContainer.style.display = 'block';
         });
