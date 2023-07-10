@@ -198,10 +198,10 @@
             <label for="status">Status:</label>
             <select id="status" name="status">
             <option value="">Selecione...</option>
-            <option value="aberto">Aberto</option>
-            <option value="andamento">Andamento</option>
-            <option value="pendente">Pendente</option>
-            <option value="fechado">Fechado</option>
+            <option value="1">Aberto</option>
+            <option value="2">Andamento</option>
+            <option value="3">Pendente</option>
+            <option value="4">Fechado</option>
             </select>
         </div>
         </div>
@@ -218,7 +218,33 @@
     </div>
     <div id="resultados">
     
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="form-group" style="background-color: gainsboro; border-radius: 6px; width: fit-content; margin-left: 10px;">
+                codigoSolicitacao
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque iusto commodi dolorum aperiam eos. Autem temporibus voluptas porro nisi velit ipsa aspernatur eligendi illo distinctio. Impedit officia repudiandae laudantium maxime?</p>
+            </div>
+        
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        
+            </div>
+        </div>
+    </div>
 
+    
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
