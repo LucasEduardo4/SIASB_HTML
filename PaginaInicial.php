@@ -94,8 +94,39 @@ if (!isset($_SESSION['username'])) {
             color: #888;
         }
     </style>
+
+<script>
+        function exibirHorarioAtual() {
+            var dataAtual = new Date();
+            var hora = dataAtual.getHours();
+            var minutos = dataAtual.getMinutes();
+            var segundos = dataAtual.getSeconds();
+
+            // Formatação para garantir que sempre tenhamos 2 dígitos
+            if (hora < 10) {
+                hora = "0" + hora;
+            }
+            if (minutos < 10) {
+                minutos = "0" + minutos;
+            }
+            if (segundos < 10) {
+                segundos = "0" + segundos;
+            }
+
+            // Exibir o horário atual na página
+            document.getElementById("horario-atual").innerHTML = hora + ":" + minutos + ":" + segundos;
+
+            // Atualizar o horário a cada segundo
+            setTimeout(exibirHorarioAtual, 1000);
+
+
+            
+        }
+    </script>
+
+
 </head>
-<body style="background: none;">
+<body onload="exibirHorarioAtual()" style="background: none;" >
     <div class="container">
 
     
@@ -110,7 +141,7 @@ if (!isset($_SESSION['username'])) {
 
 
         <div class="welcome-message">
-            <h2>Olá, [Nome do Usuário]!</h2>
+            <h2>Olá, <?php echo $_SESSION['username']; ?> !</h2>
             <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
         </div>
 
@@ -121,7 +152,7 @@ if (!isset($_SESSION['username'])) {
             </div>
             <div>
                 <h3>Horário</h3>
-                <p>[Horário Atual]</p>
+                <p id="horario-atual">[Horário Atual]</p>
             </div>
         </div>
 
