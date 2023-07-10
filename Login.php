@@ -15,10 +15,6 @@
 
 <?php
 // Conecte-se ao banco de dados MySQL (substitua com suas credenciais)
-$host = 'localhost';
-$username = 'seu_usuario';
-$password = 'sua_senha';
-$database = 'seu_banco_de_dados';
 
 $conn = new mysqli($host, $username, $password, $database);
 if ($conn->connect_error) {
@@ -37,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows == 1) {
         $user = $result->fetch_assoc();
 
-        // Verifica se a senha fornecida corresponde à senha criptografada no banco de dados
+        // Verifica se a senha fornecida corresponde à senha armazenada no banco de dados
         if (password_verify($password, $user['password'])) {
             // Autenticação bem-sucedida
             session_start();
@@ -53,3 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
+
+
