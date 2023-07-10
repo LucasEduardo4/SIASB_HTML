@@ -200,7 +200,7 @@ input, select {
 
             <div class="setor-div">
               <label for="categoria">Categoria:</label>
-              <select id="categoria" name="categoria" onchange="verifySelect()">
+              <select id="categoria" name="categoria" onchange="verifySelect()" required>
                 <option selected hidden >Escolha uma das opções</option>
                 <option value="hardware">Hardware</option>
                 <option value="software">Software</option>
@@ -257,23 +257,23 @@ input, select {
             categoria       ->  ${categoria}
             imagem          ->  null(meanwhile)
             `
-            console.log(strTeste)
+            // console.log(strTeste)
             
-          //   var xhr = new XMLHttpRequest();
-          //   xhr.open("POST", "seu_arquivo_php.php", true);
-          //   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          //   xhr.onreadystatechange = function () {
-          //     if (xhr.readyState === 4 && xhr.status === 200) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "AbrindoChamado.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
 
-          //       // Processar a resposta do PHP, se necessário
-          //       console.log(xhr.responseText);
-          //     }
-          //   };
-          //   var data = "assunto=" + encodeURIComponent(assunto) +
-          //              "&setor=" + encodeURIComponent(setor) +
-          //              "&descricao=" + encodeURIComponent(descricao) +
-          //              "&imagem=" + encodeURIComponent(imagem);
-          //   xhr.send(data);
+                // Processar a resposta do PHP, se necessário
+                console.log(xhr.responseText);
+              }
+            };
+            var data = "assunto=" + encodeURIComponent(assunto) +
+                      "&descricao=" + encodeURIComponent(descricao) +
+                      "&equipamento=" + encodeURIComponent(equipamento) +
+                      "&categoria=" + encodeURIComponent(categoria);
+            xhr.send(data);
           }
 
           function verifySelect(){

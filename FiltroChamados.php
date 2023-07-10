@@ -42,6 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             }
         }
     }
+    else
+    if(isset($_GET['equipamento'])){
+        $sql = "SELECT sti_id, descricao from tbequipamentos";
+
+        $result = $conn->query($sql);
+        if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                $sti_id = $row["sti_id"];
+                $descricao = $row["descricao"];
+                echo "<option value='$sti_id'>$descricao</option>";
+            }
+        }
+    }
     else{
         echo "Nada a ser exibido";
     }
@@ -50,8 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $conn = mysqli_connect("localhost", "root", "", "siasb");
-    $coluna = $_POST['coluna'];
-
+    if(isset($_POST['filterDataAbertura'])){
+        $dataInicial = $_POST['dataInicial'];
+        $dataFinal = $_POST['dataFinal'];
+        $dataFinal = date('Y-m-d H:i:s', strtotime($dataFinal . ' +1 day'));
+        $sql= "SELECT * FROM tbchamados WHERE dataAbertura between '$dataInicial' and '$dataFinal'";
+    }else
     if(isset($_POST['filterStatus'])){
         $statusSelected = $_POST['filterStatus'];
         $sql = "SELECT * FROM tbchamados WHERE status_chamado = '$statusSelected'";
@@ -63,6 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['filterAnalista'])){
         $analistaSelected = $_POST['filterAnalista'];
         $sql = "SELECT * FROM tbchamados WHERE responsavel = '$analistaSelected'";
+    }else
+    if(isset($_POST['filterEquipamento'])){
+        $equipamento = $_POST['filterEquipamento'];
+        $sql = "SELECT * FROM tbchamados WHERE equipamento = '$equipamento'";
     }
         
     $result = $conn->query($sql);
