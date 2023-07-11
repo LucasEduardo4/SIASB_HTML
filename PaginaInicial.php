@@ -97,10 +97,10 @@ if (!isset($_SESSION['username'])) {
 
 <script>
         function exibirHorarioAtual() {
-            var dataAtual = new Date();
-            var hora = dataAtual.getHours();
-            var minutos = dataAtual.getMinutes();
-            var segundos = dataAtual.getSeconds();
+            var horasAtual = new Date();
+            var hora = horasAtual.getHours();
+            var minutos = horasAtual.getMinutes();
+            var segundos = horasAtual.getSeconds();
 
             // Formatação para garantir que sempre tenhamos 2 dígitos
             if (hora < 10) {
@@ -118,15 +118,33 @@ if (!isset($_SESSION['username'])) {
 
             // Atualizar o horário a cada segundo
             setTimeout(exibirHorarioAtual, 1000);
-
-
-            
         }
+
+            function exibirDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11
+            var ano = dataAtual.getFullYear();
+
+            // Formatação para exibição do formato desejado (opcional)
+            if (dia < 10) {
+                dia = '0' + dia;
+            }
+            if (mes < 10) {
+                mes = '0' + mes;
+            }
+
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+
+            // Exibe a data atual na página
+            document.getElementById('dataAtual').textContent = dataFormatada;
+        }
+            
     </script>
 
 
 </head>
-<body onload="exibirHorarioAtual()" style="background: none;" >
+<body onload="exibirHorarioAtual()" onload="exibirDataAtual()" style="background: none;" >
     <div class="container">
 
     
@@ -148,7 +166,7 @@ if (!isset($_SESSION['username'])) {
         <div class="info-panel">
             <div>
                 <h3>Data Atual</h3>
-                <p>[Data Atual]</p>
+                <p id="dataAtual">[Data Atual]</p>
             </div>
             <div>
                 <h3>Horário</h3>
