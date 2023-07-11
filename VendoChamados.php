@@ -1,7 +1,35 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = mysqli_connect("localhost", "root", "", "siasb");
-    $sql = "SELECT * FROM TBChamados WHERE 1=1"; // Inicia com uma consulta básica
+session_start();
+$conn = mysqli_connect("localhost", "root", "", "siasb");
+$username = $_SESSION['username'];
+$sql = "SELECT * FROM tbusuario where nome = '$username'";
+$administrador = 0;
+
+    $result = $conn->query($sql);
+    if ($result) {
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $IDUsuario = $row["IDUsuario"];
+                $nome = $row["nome"];
+                $administrador = $row["administrador"];
+                // Adicionar os valores na tabela HTML com ícones de ação
+            }
+        } else {
+            $administrador = 0;
+        }
+    } else {
+        echo "Erro na consulta SQL: " . $conn->error;
+    }
+
+
+    if($administrador){
+        $sql = "SELECT * FROM TBChamados WHERE 1=1"; // Consulta básica ADM:
+        // echo "<br> consulta básica ADM";
+    }else{
+        $sql = "SELECT * FROM TBChamados WHERE autor = '$IDUsuario'"; //Consulta básica Usuário comum
+        // echo "<br> consulta básica Uusário Comum";
+    }
 
     $dataOption = $_POST['dataOption'];
     $dataDe = $_POST['dataDe'];
