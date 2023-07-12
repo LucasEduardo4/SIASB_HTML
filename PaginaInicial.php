@@ -16,6 +16,56 @@ if (!isset($_SESSION['username'])) {
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 
     <style>
+
+table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+
+        th {
+            background-color: #ccc;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        td.selected-day {
+            background-color: #eee;
+        }
+
+        .current-day {
+            background-color: blue;
+            color: #fff;
+        }
+
+        .notes-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .notes-content {
+            width: 100%;
+            height: 100px;
+        }
+
+        .notes-submit {
+            margin-top: 10px;
+        }
+
+        .saved-notes {
+            margin-top: 20px;
+        }
+
+
+
+
         /* Estilos gerais */
         body {
             font-family: Arial, sans-serif;
@@ -175,9 +225,175 @@ if (!isset($_SESSION['username'])) {
         </div>
 
         <div class="calendar">
+            
             <h3>Calendário</h3>
             <!-- Inclua aqui o código do calendário desejado -->
         </div>
+
+
+
+        <!-- REALIZAÇÃO DO CALENDÁRIO -->
+        <h1>Calendário com Anotações</h1>
+    <label for="month-select">Escolha o mês:</label>
+    <select id="month-select" onchange="changeMonth()">
+        <option value="0">Janeiro</option>
+        <option value="1">Fevereiro</option>
+        <option value="2">Março</option>
+        <option value="3">Abril</option>
+        <option value="4">Maio</option>
+        <option value="5">Junho</option>
+        <option value="6">Julho</option>
+        <option value="7">Agosto</option>
+        <option value="8">Setembro</option>
+        <option value="9">Outubro</option>
+        <option value="10">Novembro</option>
+        <option value="11">Dezembro</option>
+    </select>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Domingo</th>
+                <th>Segunda-feira</th>
+                <th>Terça-feira</th>
+                <th>Quarta-feira</th>
+                <th>Quinta-feira</th>
+                <th>Sexta-feira</th>
+                <th>Sábado</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+    </table>
+
+    <div id="notes-section" class="notes-section">
+        <h2>Anotações</h2>
+        <form id="notes-form">
+            <input type="hidden" id="selected-date" name="selected-date">
+            <textarea id="notes-content" class="notes-content" name="notes-content" placeholder="Faça suas anotações aqui"></textarea>
+            <button type="submit" class="notes-submit">Salvar</button>
+        </form>
+        <div id="saved-notes" class="saved-notes">
+            <h3>Todas as Anotações</h3>
+            <ul id="notes-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Função para obter o calendário de um mês específico
+        function getCalendar(month, year) {
+            // Obter data atual
+            var currentDate = new Date();
+
+            // Configurar data para o primeiro dia do mês específico
+            var date = new Date(year, month, 1);
+
+            // Obter o número do dia da semana do primeiro dia
+            var firstDay = date.getDay();
+
+            // Obter o último dia do mês
+            var lastDay = new Date(year, month + 1, 0).getDate();
+
+            var calendarBody = document.getElementById('calendar-body');
+
+            // Limpar conteúdo do corpo do calendário
+            calendarBody.innerHTML = '';
+
+            // Adicionar linhas para cada semana do mês
+            var row = document.createElement('tr');
+            var day = 1;
+
+            for (var i = 0; i < 42; i++) {
+                var cell = document.createElement('td');
+
+                if (i >= firstDay && day <= lastDay) {
+                    cell.innerText = day;
+
+                    // Adicionar classe 'current-day' ao dia atual
+                    if (month === currentDate.getMonth() && year === currentDate.getFullYear() && day === currentDate.getDate()) {
+                        cell.classList.add('current-day');
+                    }
+
+                    // Adicionar evento de clique para exibir campo de anotações
+                    cell.addEventListener('click', function() {
+                        var selectedDate = new Date(year, month, parseInt(this.innerText));
+
+                        // Atualizar classe das células para remover a seleção anterior
+                        var cells = document.getElementsByTagName('td');
+                        for (var j = 0; j < cells.length; j++) {
+                            cells[j].classList.remove('selected-day');
+                        }
+
+                        // Adicionar classe 'selected-day' à célula selecionada
+                        this.classList.add('selected-day');
+
+                        // Preencher data selecionada no campo escondido
+                        document.getElementById('selected-date').value = selectedDate.toISOString().split('T')[0];
+
+                        // Exibir campo de anotações
+                        showNotesForm();
+                    });
+                    day++;
+                }
+
+                row.appendChild(cell);
+
+                if (i % 7 === 6) {
+                    calendarBody.appendChild(row);
+                    row = document.createElement('tr');
+                }
+            }
+
+            // Adicionar a última linha, se necessário
+            if (row.childNodes.length > 0) {
+                calendarBody.appendChild(row);
+            }
+        }
+
+        // Função para atualizar o mês do calendário ao selecionar uma opção da caixa de seleção
+        function changeMonth() {
+            var monthSelect = document.getElementById('month-select');
+            var selectedMonth = parseInt(monthSelect.value);
+            var currentYear = new Date().getFullYear();
+
+            getCalendar(selectedMonth, currentYear);
+        }
+
+        // Função para exibir o formulário de anotações
+        function showNotesForm() {
+            document.getElementById('notes-section').style.display = 'block';
+        }
+
+        // Função para lidar com o envio do formulário de anotações
+        document.getElementById('notes-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var selectedDate = document.getElementById('selected-date').value;
+            var notesContent = document.getElementById('notes-content').value;
+
+            // Aqui você pode adicionar a lógica para enviar os dados para o backend e armazenar no banco de dados
+
+            // Após salvar as anotações, você pode adicionar o conteúdo ao elemento <ul> das anotações salvas
+            var notesList = document.getElementById('notes-list');
+            var listItem = document.createElement('li');
+            listItem.innerText = selectedDate + ': ' + notesContent;
+            notesList.appendChild(listItem);
+
+            // Limpar o formulário após o envio
+            document.getElementById('notes-content').value = '';
+
+            // Remover a classe 'selected-day' da célula selecionada
+            var selectedCell = document.getElementsByClassName('selected-day')[0];
+            selectedCell.classList.remove('selected-day');
+        });
+
+        // Chamar a função para gerar o calendário do mês atual
+        var currentMonth = new Date().getMonth();
+        var currentYear = new Date().getFullYear();
+        document.getElementById('month-select').value = currentMonth.toString();
+        getCalendar(currentMonth, currentYear);
+    </script>
+
+
 
         <footer>
             &copy; 2023 Sistema de Chamados. Todos os direitos reservados.
