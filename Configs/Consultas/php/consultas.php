@@ -7,10 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
         
-        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email, p.gestor
+        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email, p.gestor, u.IDUsuario, u.administrador
                 FROM TBPessoa p
                 JOIN TBSetor st ON p.setor = st.IDSetor
-                JOIN TBSecao sc ON p.secao = sc.IDSecao";
+                JOIN TBSecao sc ON p.secao = sc.IDSecao
+                LEFT JOIN TBUsuario	u on p.IDPessoa = u.IDUsuario";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -26,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $secao = $row["descricao_secao"];
                 $email = $row['email'];
                 $gerente = $row['gestor'];
+                $IDUsuario = $row['IDUsuario'];
+                $administrador = $row['administrador'];
 
                         // Verifica se $gerente é igual a 1
         if ($gerente == 1) {
@@ -34,6 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Usar ícone padrão
             $icone = "<i class='bi bi-square' onclick='onoffGerente(" . $IDPessoa . ")' data-value='" . $gerente . "' id='sqr-" . $IDPessoa	 . "'></i>";
+        }
+        if($IDUsuario){
+            $userType = "<h3 onclick=verificaUsuario(this) id='usuarioComum' 'title='Usuário comum' class='bi bi-person-fill  my-custom-icon'></h3>";
+            if($administrador){
+                $userType = "<h3 onclick=verificaUsuario(this) id='usuarioAdministrador' title='Usuário Administrador' class='bi bi-person-fill-up  my-custom-icon'></h3>";
+            }
+        }else{
+            $userType = "<h3 onclick=verificaUsuario(this) ' id='usuarioNaoCadastrado' 'title='Não cadastrado como usuário' class='bi bi-person-slash'></h3>";
         }
                 echo "<tr>
                 <td>".$IDPessoa."</td>
@@ -44,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td>".$secao."</td>
                 <td>".$email."</td>
                 <td id=".$IDPessoa.">".$icone."</td>
+                <td>".$userType."</td>
                 </tr>";
             }
         }

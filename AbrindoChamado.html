@@ -164,7 +164,11 @@ input, select {
 }
 .custom-fade-in {
     animation-duration: 0.5s !important;
-  }
+}
+.my-custom-icon {
+  font-size:200px; /* Defina o tamanho desejado */
+}
+
 
 
 
@@ -294,8 +298,6 @@ input, select {
               xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
               xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                  
-                  // Processar a resposta do PHP, se necessário
                   console.log(xhr.responseText);
                 }
               };
@@ -332,7 +334,7 @@ input, select {
               var equipamento = document.getElementById("equipamentoNome");
               console.log(stiID);
 
-              if(stiID == 100){
+              if(stiID == 100){ //posteriormente inserir um select na tabela tbequipamentos aqui.
                 equipamento.value = "deu certo";
               }else
                 equipamento.value="nao encontrado"
