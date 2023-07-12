@@ -6,6 +6,7 @@
     <title>Document</title>
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="sidebars/bootstrap.min.css">
 
 
 <style>
@@ -35,7 +36,7 @@
         }
 
         .logo {
-          position: absolute;
+          /* position: absolute; */
           width: 40px;
           height: 40px;
           left: 78px;
@@ -44,7 +45,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          z-index: 2;
+          /* z-index: 2; */
           top: 35px;
         }
 
@@ -59,7 +60,7 @@
             min-width: 700px;
             background-color: #ffffff;
             padding: 20px;
-            z-index: 1;
+            /* z-index: 1; */
             margin-bottom: 50px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 
@@ -71,14 +72,14 @@
           justify-content: center;
           min-width: 600px;
 
-            position: absolute;
+            /* position: absolute; */
             background-color: blue;
             color: #ffffff;
             padding: 15px;
             border-radius: 5px;
-            z-index: 2;
+            /* z-index: 2; */
             /* width: 1028px; */
-            width: 85%;
+            width: 100%;
             top: 280px;
             text-align: center;
             font-size: 15px;
@@ -114,12 +115,12 @@
 }
 
 .descricao-div{
-  flex-basis: 48%;
+  flex-basis: 60%;
 
 }
 
 .upload-div {
-  width: 98%;
+  width: 100%;
   padding: 10px;
   border-width: 2px;
   border-style: dotted;
@@ -146,7 +147,7 @@ input, select {
 #descricao{
   padding: 10px 20px;
   height: 200px;
-  width: 95%;
+  width: 100%;
   min-width: 500px;
 }
 .hardware-div{
@@ -200,8 +201,8 @@ input, select {
 
             <div class="setor-div">
               <label for="categoria">Categoria:</label>
-              <select id="categoria" name="categoria" onchange="verifySelect()" required>
-                <option selected hidden >Escolha uma das opções</option>
+              <select id="categoria" name="categoria" onchange="verifySelect()" >
+                <option value="" selected hidden required>Escolha uma das opções</option>
                 <option value="hardware">Hardware</option>
                 <option value="software">Software</option>
                 <!-- Adicione mais opções conforme necessário -->
@@ -225,12 +226,38 @@ input, select {
               <label for="imagem">Envie uma imagem do problema:</label>
               <input type="file" id="imagem" name="imagem">
             </div>
+            <div id="erromsg" class="container p-3 mt-3 bg-danger" style="border-radius: 16px; width: 70%; display: none;">
+              <p>Preencha corretamente as informações acima</p>
+            </div>
 
-          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%;" class="submit-button" type="button" onclick="enviarFormulario()">ENVIAR</button>
-        </form>        
+          </form>        
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
 
-        
+        <div class="modal" id="myModal"> <!-- mensagem de confirmação-->
+          <div class="modal-dialog">
+            <div class="modal-content">
+          
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Confirmação</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              
+              <!-- Modal body -->
+              <div class="modal-body">
+                <p>O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.</p>
+              </div>
+              
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="window.location.href='VendoChamados.html'">Fechar</button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
         <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
+      <script src="sidebars/bootstrap.bundle.min.js"></script>
       <script>
           function enviarFormulario() {
             var assunto = document.getElementById("assunto").value;
@@ -240,8 +267,6 @@ input, select {
             var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
             var equipamento = "NULL";
 
-            // var selectSetores = document.getElementById("selectSetores");
-            // var setor = selectSetores.options[selectSetores.selectedIndex].value;
             if(categoria == "hardware"){
               equipamento = document.getElementById("stiID").value;
             }
@@ -259,21 +284,34 @@ input, select {
             `
             // console.log(strTeste)
             
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "AbrindoChamado.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4 && xhr.status === 200) {
+            if (assunto == '' || descricao == '' || categoria == '') {
+              console.log("Entrou no IF aqui...");
+              document.getElementById("erromsg").style.display = 'flex';
+            }else{
 
-                // Processar a resposta do PHP, se necessário
-                console.log(xhr.responseText);
-              }
-            };
-            var data = "assunto=" + encodeURIComponent(assunto) +
-                      "&descricao=" + encodeURIComponent(descricao) +
-                      "&equipamento=" + encodeURIComponent(equipamento) +
-                      "&categoria=" + encodeURIComponent(categoria);
+              var xhr = new XMLHttpRequest();
+              xhr.open("POST", "AbrindoChamado.php", true);
+              xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  
+                  // Processar a resposta do PHP, se necessário
+                  console.log(xhr.responseText);
+                }
+              };
+              var data = "assunto=" + encodeURIComponent(assunto) +
+              "&descricao=" + encodeURIComponent(descricao) +
+              "&equipamento=" + encodeURIComponent(equipamento) +
+              "&categoria=" + encodeURIComponent(categoria);
             xhr.send(data);
+            showModal();
+          }
+            
+          }
+          function showModal(){
+
+            var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal.show();
           }
 
           function verifySelect(){
@@ -305,11 +343,6 @@ input, select {
     </div>
 </div>
 </div> 
-
-    <script>
-
-
-    </script>
     
 </body>
 </html>

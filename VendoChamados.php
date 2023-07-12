@@ -1,21 +1,67 @@
 <?php
-
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $conn = mysqli_connect("localhost", "root", "", "siasb");
-
-    $dataDe = $_POST['dataDe'];
-    $dataAte = $_POST['dataAte'];
-    
-    // Converter a data para o formato desejado
-    $dataDeFormatted = date_format(date_create_from_format('d/m/Y', $dataDe), 'Y/m/d');
-    $dataAteFormatted = date_format(date_create_from_format('d/m/Y', $dataAte), 'Y/m/d');
-    
-
-    $sql=	"SELECT * FROM TBChamados
-    WHERE dataAbertura between '$dataDeFormatted' and '$dataAteFormatted'";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+session_start();
+$conn = mysqli_connect("localhost", "root", "", "siasb");
+$username = $_SESSION['username'];
+$sql = "SELECT * FROM tbusuario where nome = '$username'";
+$administrador = 0;
 
     $result = $conn->query($sql);
-    // if ($result && $result->num_rows > 0) {
+    if ($result) {
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $IDUsuario = $row["IDUsuario"];
+                $nome = $row["nome"];
+                $administrador = $row["administrador"];
+                // Adicionar os valores na tabela HTML com ícones de ação
+            }
+        } else {
+            $administrador = 0;
+        }
+    } else {
+        echo "Erro na consulta SQL: " . $conn->error;
+    }
+
+
+    if($administrador){
+        $sql = "SELECT * FROM TBChamados WHERE 1=1"; // Consulta básica ADM:
+        // echo "<br> consulta básica ADM";
+    }else{
+        $sql = "SELECT * FROM TBChamados WHERE autor = '$IDUsuario'"; //Consulta básica Usuário comum
+        // echo "<br> consulta básica Uusário Comum";
+    }
+
+    $dataOption = $_POST['dataOption'];
+    $dataDe = $_POST['dataDe'];
+    $dataAte = $_POST['dataAte'];
+
+    if($_POST['dataDe'] != '' && $_POST['dataAte'] != ''){
+        $dataDeFormatted = date_format(date_create_from_format('d/m/Y', $dataDe), 'Y/m/d');
+        $dataAteFormatted = date_format(date_create_from_format('d/m/Y', $dataAte), 'Y/m/d');
+        $dataAteFormatted = date('Y-m-d H:i:s', strtotime($dataAteFormatted . ' +1 day'));
+    }
+
+    $codigoSolicitacao = $_POST['codigoSolicitacao'];
+    $status = $_POST['status'];
+
+    if ($codigoSolicitacao != '') {
+        $sql .= " AND IDChamado = '$codigoSolicitacao'";
+    }
+
+    if ($dataOption == 1 || $dataOption == 3) {
+        $sql .= " AND dataAbertura BETWEEN '$dataDeFormatted' AND '$dataAteFormatted'";
+    }
+
+    if ($dataOption == 2) {
+        $sql .= " AND dataFechamento BETWEEN '$dataDeFormatted' AND '$dataAteFormatted'";
+    }
+
+    if ($status != '') {
+        $sql .= " AND status_chamado = '$status'";
+    }
+
+    // Executa a consulta SQL
+    $result = $conn->query($sql);
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $IDChamado = $row["IDChamado"];
@@ -25,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             
             // Adicionar os valores na tabela HTML com ícones de ação
             echo "
-            <div class='Filtro Form'>
+            <div class='FaixaForm'>
             <div class='CamposResultados'> <p style='padding-left: 10px;'>".$IDChamado."</p> </div>
             <div class='CamposResultados'> <p>".$dataAbertura."</p> </div>
             <div class='CamposResultados'> <p>".$assunto."</p> </div>
@@ -37,17 +83,27 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         echo "Nenhum resultado encontrado.";
         echo "<br> Select realizado -> ";
         echo $sql;
+        echo "<br>";
+        echo "<br>";
+        echo $_POST['dataOption'];
+        echo "<br>";
+        echo $_POST['dataDe'];
+        echo "<br>";
+        echo $_POST['dataAte'];
+        echo "<br>";
+        echo $_POST['codigoSolicitacao'];
+        echo "<br>";
+        echo $_POST['status'];
     }
-    // echo $_POST['dataOption'];
-    // echo "<br>";
-    // echo "<br>";
-    // echo $_POST['dataDe'];
-    // echo "<br>";
-    // echo $_POST['dataAte'];
-    // echo "<br>";
-    // echo $_POST['codigoSolicitacao'];
-    // echo "<br>";
-    // echo $_POST['status'];
 }
 
 ?>
+
+
+<!-- 
+    
+    if(isset($_POST['codigoSolicitacao'])){
+    $CodigoSolicitacao = $_POST['codigoSolicitacao'];
+    $sql=	"SELECT * FROM TBChamados
+    WHERE IDCHamado = '$CodigoSolicitacao'";
+    } -->
