@@ -73,6 +73,7 @@
             xhr.send("select_ready_person=" + encodeURIComponent(1));
 
     }
+
     function setupEditButtons() {
             var sqrchk = document.getElementsByClassName("bi bi-check-square");
             var sqr = document.getElementsByClassName("bi bi-square");
@@ -88,144 +89,218 @@
                     });
                 })(i);
             }
+    }
+
+    function onoffGerente(ID){
+        console.log("entrou")
+        var verifica = document.getElementById(`sqr-${ID}`)
+        if(verifica.dataset.value == 0){
+            verifica = 'desmarcado';
+        }else if(verifica.dataset.value == 1){
+            verifica = 'marcado';
         }
-        function onoffGerente(ID){
-            console.log("entrou")
-            var verifica = document.getElementById(`sqr-${ID}`)
-            if(verifica.dataset.value == 0){
-                verifica = 'desmarcado';
-            }else if(verifica.dataset.value == 1){
-                verifica = 'marcado';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "php/consultas.php", true)
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    window.location.reload();
+                } else {
+                    console.error("Falha ao carregar as pessoas");
+                }
             }
+        };
+        xhr.send("verifica=" + encodeURIComponent(verifica)+ "&id=" + ID);
+    }
+ 
+    function verificaUsuario(usuario){
+        var usuarioID = usuario.id
+        var pai = usuario.parentElement;
+        
+        abrirPopup(usuarioID, pai);
+    }
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "php/consultas.php", true)
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function(){
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        window.location.reload();
-                    } else {
-                        console.error("Falha ao carregar as pessoas");
-                    }
+    function abrirPopup(usuarioID, pai) {
+        Swal.fire({
+            title: 'Escolha uma opção, para alterar o tipo de usuário',
+            html: `
+            <div class="swal-columns">
+                <label>
+                <input type="radio" name="opcao" id="opcao1" value="opcao1">
+                Usuário Comum
+                </label>
+                <label>
+                <input type="radio" name="opcao" id="opcao2" value="opcao2">
+                Administrador
+                </label>
+                <label id='naocadastrado'>
+                <input type="radio" name="opcao" id="opcao3" value="opcao3">
+                Não Cadastrado
+                </label>
+            </div>
+            `,
+            inputValidator: (result) => {
+            if (!result) {
+                return 'Você precisa selecionar uma opção!';
+            }
+            },
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Confirmar',
+            preConfirm: () => {
+            const selectedOption = document.querySelector('input[name="opcao"]:checked').value;
+            if (selectedOption === 'opcao1') { //usuario comum
+                if(usuarioID == 'usuarioNaoCadastrado')
+                    CadastroUsuario(0, pai.id);
+                else if(usuarioID == 'usuarioAdministrador'){
+                    console.log('retirar privilegio')
                 }
-            };
-            xhr.send("verifica=" + encodeURIComponent(verifica)+ "&id=" + ID);
-        }
-        function verificaUsuario(usuario){
-            var usuarioID = usuario.id
+                if(usuarioID == 'usuarioComum')
+                    mesmoTipoUsuario();
+            } else if (selectedOption === 'opcao2') {// Ação para Administrador
+                if(usuarioID == 'usuarioNaoCadastrado'){
+                    CadastroUsuario(1, pai.id);
+                }else 
+                if(usuarioID == 'usuarioComum'){
+                    console.log('adicionar privilegio');
+                }else
+                if(usuarioID == 'usuarioAdministrador')
+                    mesmoTipoUsuario();
+            } else
+            if(selectedOption === 'opcao4'){ //desabilitar usuario
+                console.log('selecionou desabilitar usuario');
+            }
+            }
+        });
+        var opcao1 = document.getElementById('opcao1');
+        var opcao2 = document.getElementById('opcao2');
+        var opcao3 = document.getElementById('opcao3');
+        var label = document.getElementById('naocadastrado')
+
+        if (usuarioID == 'usuarioComum') {
+            opcao1.checked = true;
+            opcao1.disabled = true;
+            label.innerHTML= '<input type="radio" name="opcao" id="opcao4" value="opcao4"> Desabilitar Usuário';
+        } else if (usuarioID == 'usuarioAdministrador') {
+            opcao2.checked = true;
+            opcao2.disabled = true;
+            label.innerHTML= '<input type="radio" name="opcao" id="opcao4" value="opcao4"> Desabilitar Usuário';
+        } else if (usuarioID == 'usuarioNaoCadastrado') {
+            opcao3.checked = true;
+            opcao3.disabled = true;
             
-            abrirPopup(usuarioID);
-            function abrirPopup(usuarioID) {
-                Swal.fire({
-                    title: 'Escolha uma opção, para alterar o tipo de usuário',
-                    html: `
-                    <div class="swal-columns">
-                        <label>
-                        <input type="radio" name="opcao" id="opcao1" value="opcao1">
-                        Usuário Comum
-                        </label>
-                        <label>
-                        <input type="radio" name="opcao" id="opcao2" value="opcao2">
-                        Administrador
-                        </label>
-                        <label id='naocadastrado'>
-                        <input type="radio" name="opcao" id="opcao3" value="opcao3">
-                        Não Cadastrado
-                        </label>
-                    </div>
-                    `,
-                    inputValidator: (result) => {
-                    if (!result) {
-                        return 'Você precisa selecionar uma opção!';
-                    }
-                    },
-                    showCancelButton: true,
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonText: 'Confirmar',
-                    preConfirm: () => {
-                    const selectedOption = document.querySelector('input[name="opcao"]:checked').value;
-                    if (selectedOption === 'opcao1') { //usuario comum
-                        if(usuarioID == 'usuarioNaoCadastrado')
-                            CadastroUsuario(0);
-                        else if(usuarioID == 'usuarioAdministrador'){
-                            console.log('retirar privilegio')
-                        }
-                        if(usuarioID == 'usuarioComum')
-                            usuarioExistente();
-                    } else if (selectedOption === 'opcao2') {// Ação para Administrador
-                        if(usuarioID == 'usuarioNaoCadastrado'){
-                            CadastroUsuario(1);
-                        }else 
-                        if(usuarioID == 'usuarioComum'){
-                            console.log('adicionar privilegio');
-                        }else
-                        if(usuarioID == 'usuarioAdministrador')
-                            usuarioExistente();
-                    } else if (selectedOption === 'opcao3') {// nao cadastrado
-                        console.log('opcao 3');
-                    }
-                    }
-                });
-                var opcao1 = document.getElementById('opcao1');
-                var opcao2 = document.getElementById('opcao2');
-                var opcao3 = document.getElementById('opcao3');
-                var label = document.getElementById('naocadastrado')
-
-                if (usuarioID == 'usuarioComum') {
-                    opcao1.checked = true;
-                    opcao1.disabled = true;
-                    label.innerHTML= '<input type="radio" name="opcao" id="opcao3" value="opcao3"> Desabilitar Usuário';
-                } else if (usuarioID == 'usuarioAdministrador') {
-                    opcao2.checked = true;
-                    opcao2.disabled = true;
-                    label.innerHTML= '<input type="radio" name="opcao" id="opcao3" value="opcao3"> Desabilitar Usuário';
-                } else if (usuarioID == 'usuarioNaoCadastrado') {
-                    opcao3.checked = true;
-                    opcao3.disabled = true;
-                    
-                }
-                }
-
-                function CadastroUsuario(adm){
-                    Swal.fire({
-                        title: 'Digite o nome de usuário e senha para o usuario novo:',
-                        html:
-                        '<input id="nome" class="swal2-input" placeholder="Nome">' +
-                        '<input id="senha" type="password" class="swal2-input" placeholder="Senha">' +
-                        '<label for="administrador" class="swal2-checkbox">' +
-                        '<input id="administrador" type="checkbox" class="swal2-input" style="height: auto;">' +
-                        '<span class="swal2-label">Administrador</span>' +
-                        '</label>',
-                        showCancelButton: true,
-                        confirmButtonText: 'Confirmar',
-                        cancelButtonText: 'Cancelar',
-                        preConfirm: () => {
-                            const nome = document.getElementById('nome').value;
-                            const senha = document.getElementById('senha').value;
-
-                            // Aqui você pode fazer algo com os valores digitados
-                            console.log('Nome:', nome);
-                            console.log('Senha:', senha);
-                        }
-                        });
-                        if(adm == 1){
-                            document.getElementById("administrador").checked=true;
-                        }else
-                            document.getElementById("administrador").disabled=true;
-
-
-                }
-                function usuarioExistente(){
-                    Swal.fire({
-                        title: 'Usuário já está cadastrado com essa opção',
-                        icon: 'warning',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-
         }
+        }
+
+    function CadastroUsuario(adm, ID_User){
+        Swal.fire({
+            title: 'Digite o nome de usuário e senha para o usuário novo:',
+            html:
+                '<input id="nome" class="swal2-input" onblur="verificaNomeUsuario()" placeholder="Nome">' +
+                '<label id="userAllowed" style="display:none"> </label>'+
+                '<input id="senha" type="password" class="swal2-input" placeholder="Senha">' +
+                '<label for="administrador" class="swal2-checkbox">' +
+                '<input id="administrador" type="checkbox" class="swal2-input" style="height: auto;">' +
+                '<span class="swal2-label">Administrador</span>' +
+                '</label>',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+                const nome = document.getElementById('nome').value;
+                const senha = document.getElementById('senha').value;
+                console.log(ID_User);
+                            
+                data = "registerUser=" + encodeURIComponent(1) + "&nome=" + encodeURIComponent(nome) + "&senha=" + encodeURIComponent(senha)+ "&idUsuario=" + encodeURIComponent(ID_User);
+                var existe = document.getElementsByName("userAvailable")[0].id;
+
+                if (existe == 1) {
+                connection(data, "update", "POST");
+                Swal.close();
+                } else {
+                showAlert();
+                return false; // Impede que o popup seja fechado
+                }
+            },
+            allowOutsideClick: false // Impede que o popup seja fechado clicando fora dele
+            });
+
+        if(adm == 1){
+            document.getElementById("administrador").checked=true;
+        }else
+            document.getElementById("administrador").disabled=true;
+    }
+    function verificaNomeUsuario(){
+        var foo = document.getElementById("nome");
+        var data = "selectNameUser=" + 1+ "&nome=" + encodeURIComponent(foo.value);
+        connection(data, userAllowed, 'POST');
+    }
+
+    function connection(data, output, method) {
+        console.log(data);
+        var xhr = new XMLHttpRequest();
+        var url = "php/consultas.php";
+
+        if (method === "GET") {
+            url += "?" + data;
+        }
+
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    if(output == "update"){
+                        // window.location.reload();
+                    }else
+                    output.innerHTML = xhr.responseText;
+                    // return xhr.responseText;
+                    // console.log(xhr.responseText);
+                } else {
+                    output.innerHTML = "Falha ao conectar ao banco de dados";
+                }
+            }
+        };
+
+        if (method === "POST") {
+            xhr.send(data);
+        } else {
+            xhr.send();
+        }
+    }
+
+    function mesmoTipoUsuario(){
+        Swal.fire({
+            title: 'Usuário já está cadastrado com essa opção',
+            icon: 'warning',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    }
+
+    function showAlert() {
+        var userAllowed = document.getElementById("userAllowed");
+        
+        // Salvar o estilo original
+        var originalStyle = userAllowed.style.cssText;
+        
+        // Modificar o estilo para exibir a mensagem de erro
+        userAllowed.style.backgroundColor = "red";
+        userAllowed.style.color = "white";
+        userAllowed.style.display= "block";
+        
+        // Aguardar 3 segundos
+        setTimeout(function() {
+            // Restaurar o estilo original
+            userAllowed.style.cssText = originalStyle;
+            
+            // Limpar a mensagem de erro
+            userAllowed.textContent = "";
+        }, 3000);
+    }
+
 </script>
 </body>
 </html>

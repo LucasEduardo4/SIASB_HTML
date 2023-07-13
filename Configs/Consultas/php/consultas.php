@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }else{
             $userType = "<h3 onclick=verificaUsuario(this) ' id='usuarioNaoCadastrado' 'title='Não cadastrado como usuário' class='bi bi-person-slash'></h3>";
-        }
+        } //icone de desabilitado: <i class="bi bi-person-fill-slash"></i>
                 echo "<tr>
                 <td>".$IDPessoa."</td>
                 <td>".$nomeCompleto."</td>
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td>".$secao."</td>
                 <td>".$email."</td>
                 <td id=".$IDPessoa.">".$icone."</td>
-                <td>".$userType."</td>
+                <td id=".$IDPessoa.">".$userType."</td>
                 </tr>";
             }
         }
@@ -134,6 +134,37 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $stmt->close();
         $conn->close();
     }
-    }
+}
 
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['selectNameUser'])){
+        $nome = $_POST['nome'];
+        
+        $sql = "SELECT * FROM TBUsuario where nome = '$nome'";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $nomeCadastrado = '';
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $nomeCadastrado = $row['nome'];
+            }
+        }
+        if($nomeCadastrado == ''){
+            echo '<p name="userAvailable" id="1" >Nome de Usuário Disponível</p>';
+        }else
+            echo '<p name="userAvailable" id="2" >Nome de Usuário Indisponível</p>';
+
+        $stmt->close();
+        $conn->close();
+    
+    }
+}
+    
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['registerUser'])){
+        
+    }
+}
 ?>
