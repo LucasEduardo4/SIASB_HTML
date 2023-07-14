@@ -33,8 +33,17 @@
 </header>
 <body onload="init()">
 
-    <h3>Pessoas:</h3>
-    <p>Filtros:</p>
+    <div class="d-flex align-items-start">
+        <div id="esq" class="flex-fill">
+          <h3>Pessoas:</h3>
+          <p>Filtros:</p>
+        </div>
+        <div id="dir" class="flex-fill">
+        <p></p>
+          <button class="btn btn-primary" onclick="window.location.href='../../Cadastro.html'">Adicionar pessoa</button>
+        </div>
+      </div>
+      
     
     <div class="box-sqr">
         <table id="tablePerson" class="table table-striped table-hover">
