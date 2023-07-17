@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="../../Inicial.css">
+  <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192"/>
+  <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup Sweet alert-->
+  <script src='./../../flowSite/verificaSessao.js'></script>
+
+
+
+  <meta charset="UTF-8">
+
+
+</head>
+<body onload="init()">
+  <div class="container">
+    <h1>Cadastro Equipamento</h1>
+    
+    <form>
+      <div class="form-group">
+        <label for="stiID">Sti_ID:</label>
+        <input type="text" id="stiID" name="stiID" placeholder="Informe o Sti_ID do equipamento">
+      </div>
+      <div class="form-group">
+        <label for="descricao">Descrição do Equipamento:</label>
+        <input type="text" id="descricao" name="descricao" placeholder="Ex: Impressora brother, modelo X">
+      </div>
+      <div class="form-group">
+        <label for="ip">IP:</label>
+        <input type="text" id="ip" name="ip" placeholder="IP do equipamento">
+      </div>
+      <div class="form-group">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo">
+          <option value="" disabled selected hidden>Escolha uma das opções</option>
+          <option value="">Aqui preciso de um select no banco de dados, para todos os tipos de equipamentos possiveis</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="usuario">Usuário:</label>
+        <select id="usuario" name="usuario">
+          <option value="" disabled selected hidden>Escolha uma das opções</option>
+          <option value="">Aqui preciso de um select no banco de dados, para todas as pessoas cadastradas</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="secao">Seção:</label>
+        <select id="secao" name="secao">
+          <option value="" disabled selected hidden>Escolha uma das opções</option>
+          <option value="">Aqui preciso de um select no banco de dados, para todas as seções existentes (ou setor)</option>
+        </select>
+      </div>
+    </form>
+    <div class="form-group">
+      <button onclick="submitForm()">Cadastrar</button>
+    </div>
+</div>
+<script>
+    connection("teste = 1", "teste");
+
+    function init(){
+        selectTipo(); //<- fazendo
+        selectUsuario(); // falta
+        selectSecao(); // falta
+    }
+
+    function selectTipo(){
+        var tipo = document.getElementById("tipo");
+        var data = "Select_Tipo = 1";
+        connection(data, tipo)
+    }
+    function connection(data, output){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "Equipamento.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            output.innerHTML = xhr.responseText;
+        }else{
+    //por enquanto vou deixar vazio        
+    }
+    }
+    xhr.send(data);
+    }
+</script>
+</body>
+</html>
