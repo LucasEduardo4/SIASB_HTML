@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="Inicial.css">
   <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192"/>
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup Sweet alert-->
 
 
   <meta charset="UTF-8">
@@ -51,7 +52,11 @@
       <button onclick="submitForm()">Cadastrar</button>
     </div>
 </div>
-  </div>
+</div>
+<div>
+  <p>Implementar depois:</p>
+  <p>Verificação dos valores digitados (email, cpf, etc.)</p>
+</div>
 </body>
 
 
@@ -105,25 +110,31 @@
       connection(data, "reload");
     }
     function connection(data, output){
-    var xhr = new XMLHttpRequest();
-            xhr.open("POST", "Cadastro.php", true)
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function(){
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                      if(output == "reload"){
-                        // console.log("usuario inserido com sucesso");
-                        console.log(xhr.responseText);
-                        // window.location.reload();
-                      }
-                      if(output == setor);
-                        setor.innerHTML += xhr.responseText;
-                    } else {
-                        console.error("Falha ao carregar as pessoas");
-                    }
-                }
-            };
-            xhr.send(data);
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "Cadastro.php", true)
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function(){
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            if (output == "reload") {
+              Swal.fire({
+                icon: 'success',
+                title: 'Usuário inserido com sucesso',
+                showConfirmButton: false,
+                timer: 3000
+              }).then(() => {
+                window.location.reload();
+              });
+            }
+
+            if(output == setor);
+              setor.innerHTML += xhr.responseText;
+          } else {
+              console.error("Falha ao carregar as pessoas");
+          }
+        }
+      };
+      xhr.send(data);
 
     }
   
