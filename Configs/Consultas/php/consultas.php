@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 FROM TBPessoa p
                 JOIN TBSetor st ON p.setor = st.IDSetor
                 JOIN TBSecao sc ON p.secao = sc.IDSecao
-                LEFT JOIN TBUsuario	u on p.IDPessoa = u.IDUsuario";
+                LEFT JOIN TBUsuario	u on p.IDPessoa = u.IDUsuario
+                ORDER BY p.IDPessoa ASC";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
