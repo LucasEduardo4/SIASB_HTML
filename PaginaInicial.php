@@ -1,4 +1,3 @@
-
 <?php
 // Verifica se o usuário está autenticado
 session_start();
@@ -17,51 +16,129 @@ if (!isset($_SESSION['username'])) {
 
     <style>
 
-table {
+body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .calendar-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .dropdown-container select {
+            padding: 8px;
+            margin-left: 10px;
+            padding-right: 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+        }
+
+        table {
+            width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
         th, td {
             padding: 10px;
             text-align: center;
-            border: 1px solid black;
-            cursor: pointer;
+            border: 1px solid #ddd;
         }
 
         th {
-            background-color: #ccc;
+            background-color: #f2f2f2;
         }
 
         td {
-            background-color: #fff;
-        }
-
-        td.selected-day {
-            background-color: #eee;
+            cursor: pointer;
         }
 
         .current-day {
-            background-color: blue;
-            color: #fff;
+            background-color: #e6f2ff;
+            font-weight: bold;
         }
 
-        .notes-section {
+        .selected-day, td:hover {
+            background-color: #f5f5f5;
+        }
+
+        .notes-popup {
             display: none;
-            margin-top: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .notes-popup h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
         }
 
         .notes-content {
             width: 100%;
             height: 100px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
 
         .notes-submit {
+            display: block;
+            width: 100%;
+            padding: 8px;
             margin-top: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color:blue;
+            color: #fff;
+            cursor: pointer;
         }
 
-        .saved-notes {
-            margin-top: 20px;
+        .notes-list {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            list-style-type: none;
         }
+
+        .notes-list li {
+            margin-bottom: 10px;
+        }
+
+        .note-date {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+
 
 
 
@@ -214,153 +291,160 @@ table {
         </div>
 
         <div class="info-panel">
-            <div>
-                <h3>Data Atual</h3>
-                <p id="dataAtual">[Data Atual]</p>
-            </div>
+
             <div>
                 <h3>Horário</h3>
                 <p id="horario-atual">[Horário Atual]</p>
             </div>
         </div>
 
-        <div class="calendar">
-            
-            <h3>Calendário</h3>
-            <!-- Inclua aqui o código do calendário desejado -->
+         <div class="calendar-container">
+        <h1>Calendário</h1>
+
+        <div class="dropdown-container">
+            <select id="month-select" onchange="getCalendar()">
+                <option value="0">Janeiro</option>
+                <option value="1">Fevereiro</option>
+                <option value="2">Março</option>
+                <option value="3">Abril</option>
+                <option value="4">Maio</option>
+                <option value="5">Junho</option>
+                <option value="6">Julho</option>
+                <option value="7">Agosto</option>
+                <option value="8">Setembro</option>
+                <option value="9">Outubro</option>
+                <option value="10">Novembro</option>
+                <option value="11">Dezembro</option>
+            </select>
+
+            <select id="year-select" onchange="getCalendar()"></select>
         </div>
 
+        <table>
+            <thead>
+                <tr>
+                    <th>Domingo</th>
+                    <th>Segunda-feira</th>
+                    <th>Terça-feira</th>
+                    <th>Quarta-feira</th>
+                    <th>Quinta-feira</th>
+                    <th>Sexta-feira</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+        </table>
 
-
-        <!-- REALIZAÇÃO DO CALENDÁRIO -->
-        <h1>Calendário com Anotações</h1>
-    <label for="month-select">Escolha o mês:</label>
-    <select id="month-select" onchange="changeMonth()">
-        <option value="0">Janeiro</option>
-        <option value="1">Fevereiro</option>
-        <option value="2">Março</option>
-        <option value="3">Abril</option>
-        <option value="4">Maio</option>
-        <option value="5">Junho</option>
-        <option value="6">Julho</option>
-        <option value="7">Agosto</option>
-        <option value="8">Setembro</option>
-        <option value="9">Outubro</option>
-        <option value="10">Novembro</option>
-        <option value="11">Dezembro</option>
-    </select>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Domingo</th>
-                <th>Segunda-feira</th>
-                <th>Terça-feira</th>
-                <th>Quarta-feira</th>
-                <th>Quinta-feira</th>
-                <th>Sexta-feira</th>
-                <th>Sábado</th>
-            </tr>
-        </thead>
-        <tbody id="calendar-body"></tbody>
-    </table>
-
-    <div id="notes-section" class="notes-section">
-        <h2>Anotações</h2>
-        <form id="notes-form">
-            <input type="hidden" id="selected-date" name="selected-date">
-            <textarea id="notes-content" class="notes-content" name="notes-content" placeholder="Faça suas anotações aqui"></textarea>
-            <button type="submit" class="notes-submit">Salvar</button>
-        </form>
-        <div id="saved-notes" class="saved-notes">
-            <h3>Todas as Anotações</h3>
-            <ul id="notes-list"></ul>
+        <div id="notes-popup" class="notes-popup">
+            <h2>Anotações</h2>
+            <form id="notes-form">
+                <input type="hidden" id="selected-date" name="selected-date">
+                <textarea id="notes-content" class="notes-content" name="notes-content" placeholder="Faça suas anotações aqui"></textarea>
+                <button type="submit" class="notes-submit">Salvar</button>
+            </form>
         </div>
+
+        <ul id="notes-list" class="notes-list"></ul>
     </div>
 
     <script>
-        // Função para obter o calendário de um mês específico
-        function getCalendar(month, year) {
-            // Obter data atual
+        // Objeto para armazenar as anotações
+        var notesData = {};
+
+        // Obter elementos HTML
+        var monthSelect = document.getElementById('month-select');
+        var yearSelect = document.getElementById('year-select');
+
+        // Preencher dropdown de anos com os últimos 20 anos
+        var currentYear = new Date().getFullYear();
+        for (var i = currentYear; i >= currentYear - 20; i--) {
+            var option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+            yearSelect.appendChild(option);
+        }
+
+        // Função para obter o calendário do mês selecionado
+        function getCalendar() {
+            var selectedMonth = parseInt(monthSelect.value);
+            var selectedYear = parseInt(yearSelect.value);
             var currentDate = new Date();
-
-            // Configurar data para o primeiro dia do mês específico
-            var date = new Date(year, month, 1);
-
-            // Obter o número do dia da semana do primeiro dia
-            var firstDay = date.getDay();
-
-            // Obter o último dia do mês
-            var lastDay = new Date(year, month + 1, 0).getDate();
-
+            var currentMonth = currentDate.getMonth();
             var calendarBody = document.getElementById('calendar-body');
+            var firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
+            var lastDay = new Date(selectedYear, selectedMonth + 1, 0).getDate();
 
-            // Limpar conteúdo do corpo do calendário
             calendarBody.innerHTML = '';
 
-            // Adicionar linhas para cada semana do mês
             var row = document.createElement('tr');
-            var day = 1;
 
-            for (var i = 0; i < 42; i++) {
+            // Preencher células vazias no início do mês
+            for (var i = 0; i < firstDay; i++) {
                 var cell = document.createElement('td');
+                row.appendChild(cell);
+            }
 
-                if (i >= firstDay && day <= lastDay) {
-                    cell.innerText = day;
+            // Preencher os dias do mês
+            for (var day = 1; day <= lastDay; day++) {
+                var cell = document.createElement('td');
+                cell.innerText = day;
 
-                    // Adicionar classe 'current-day' ao dia atual
-                    if (month === currentDate.getMonth() && year === currentDate.getFullYear() && day === currentDate.getDate()) {
-                        cell.classList.add('current-day');
-                    }
+                // Adicionar classe 'current-day' ao dia atual
+                if (selectedMonth === currentMonth && selectedYear === currentDate.getFullYear() && day === currentDate.getDate()) {
+                    cell.classList.add('current-day');
+                }
 
-                    // Adicionar evento de clique para exibir campo de anotações
-                    cell.addEventListener('click', function() {
-                        var selectedDate = new Date(year, month, parseInt(this.innerText));
+                // Adicionar evento de clique para exibir o popup de anotações
+                cell.addEventListener('click', function() {
+                    var selectedDate = new Date(selectedYear, selectedMonth, parseInt(this.innerText));
+                    var selectedDateString = formatDate(selectedDate);
+                    document.getElementById('selected-date').value = selectedDateString;
+                    showNotesPopup(selectedDateString);
+                });
 
-                        // Atualizar classe das células para remover a seleção anterior
-                        var cells = document.getElementsByTagName('td');
-                        for (var j = 0; j < cells.length; j++) {
-                            cells[j].classList.remove('selected-day');
-                        }
-
-                        // Adicionar classe 'selected-day' à célula selecionada
-                        this.classList.add('selected-day');
-
-                        // Preencher data selecionada no campo escondido
-                        document.getElementById('selected-date').value = selectedDate.toISOString().split('T')[0];
-
-                        // Exibir campo de anotações
-                        showNotesForm();
-                    });
-                    day++;
+                // Verificar se a data possui anotações
+                var dateKey = formatDate(new Date(selectedYear, selectedMonth, day));
+                if (notesData[dateKey]) {
+                    cell.classList.add('selected-day');
                 }
 
                 row.appendChild(cell);
 
-                if (i % 7 === 6) {
+                if (row.children.length === 7) {
                     calendarBody.appendChild(row);
                     row = document.createElement('tr');
                 }
             }
 
-            // Adicionar a última linha, se necessário
-            if (row.childNodes.length > 0) {
-                calendarBody.appendChild(row);
+            // Preencher células vazias no final do mês
+            while (row.children.length < 7) {
+                var cell = document.createElement('td');
+                row.appendChild(cell);
             }
+
+            calendarBody.appendChild(row);
+
+            // Atualizar a exibição das anotações
+            showAllNotes();
         }
 
-        // Função para atualizar o mês do calendário ao selecionar uma opção da caixa de seleção
-        function changeMonth() {
-            var monthSelect = document.getElementById('month-select');
-            var selectedMonth = parseInt(monthSelect.value);
-            var currentYear = new Date().getFullYear();
+        // Função para exibir o popup de anotações
+        function showNotesPopup(selectedDate) {
+            var popup = document.getElementById('notes-popup');
+            popup.style.display = 'block';
 
-            getCalendar(selectedMonth, currentYear);
+            // Verificar se a data já possui anotações
+            var notesContentInput = document.getElementById('notes-content');
+            notesContentInput.value = notesData[selectedDate] || '';
+
+            // Preencher o campo de data selecionada
+            document.getElementById('selected-date').value = selectedDate;
         }
 
-        // Função para exibir o formulário de anotações
-        function showNotesForm() {
-            document.getElementById('notes-section').style.display = 'block';
+        // Função para fechar o popup de anotações
+        function closeNotesPopup() {
+            var popup = document.getElementById('notes-popup');
+            popup.style.display = 'none';
         }
 
         // Função para lidar com o envio do formulário de anotações
@@ -370,33 +454,63 @@ table {
             var selectedDate = document.getElementById('selected-date').value;
             var notesContent = document.getElementById('notes-content').value;
 
-            // Aqui você pode adicionar a lógica para enviar os dados para o backend e armazenar no banco de dados
+            // Salvar as anotações no objeto de notas
+            notesData[selectedDate] = notesContent;
 
-            // Após salvar as anotações, você pode adicionar o conteúdo ao elemento <ul> das anotações salvas
-            var notesList = document.getElementById('notes-list');
-            var listItem = document.createElement('li');
-            listItem.innerText = selectedDate + ': ' + notesContent;
-            notesList.appendChild(listItem);
+            // Fechar o popup de anotações
+            closeNotesPopup();
 
-            // Limpar o formulário após o envio
-            document.getElementById('notes-content').value = '';
-
-            // Remover a classe 'selected-day' da célula selecionada
-            var selectedCell = document.getElementsByClassName('selected-day')[0];
-            selectedCell.classList.remove('selected-day');
+            // Atualizar a exibição das anotações
+            showAllNotes();
         });
 
-        // Chamar a função para gerar o calendário do mês atual
-        var currentMonth = new Date().getMonth();
-        var currentYear = new Date().getFullYear();
-        document.getElementById('month-select').value = currentMonth.toString();
-        getCalendar(currentMonth, currentYear);
+        // Função para exibir todas as anotações
+        function showAllNotes() {
+            var notesList = document.getElementById('notes-list');
+            notesList.innerHTML = '';
+
+            for (var dateKey in notesData) {
+                if (notesData.hasOwnProperty(dateKey)) {
+                    var note = document.createElement('li');
+                    var noteDate = dateKey;
+                    var noteContent = notesData[dateKey];
+                    note.innerHTML = '<span class="note-date">' + noteDate + '</span>: ' + noteContent;
+                    notesList.appendChild(note);
+                }
+            }
+        }
+
+        // Função para formatar a data no formato brasileiro (dd/mm/yyyy)
+        function formatDate(date) {
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+
+            return (
+                (day < 10 ? '0' + day : day) +
+                '/' +
+                (month < 10 ? '0' + month : month) +
+                '/' +
+                year
+            );
+        }
+
+        var currentDate = new Date();
+        var currentMonth = currentDate.getMonth();
+        var currentYear = currentDate.getFullYear();
+        monthSelect.value = currentMonth;
+        yearSelect.value = currentYear;
+        getCalendar();
+        showAllNotes();
+
+        // Chamar a função para gerar o calendário e exibir as anotações
+        getCalendar();
+        showAllNotes();
     </script>
 
 
-
         <footer>
-            &copy; 2023 Sistema de Chamados. Todos os direitos reservados.
+            &copy; <p> 2023 Sistema de Chamados. Todos os direitos reservados. </p> 
         </footer>
     </div>
 </body>

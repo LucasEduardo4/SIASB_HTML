@@ -1,54 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form method="post">
+        <div>
+            <label for="usuario">Usuário:</label>
+            <input type="text" id="usuario" name="usuario" required>
+        </div>
+        <div>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+        </div>
+        <div>
+            <input type="submit" value="Entrar">
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+
 <?php
-    if(isset ($_POST['username']) && isset($_POST['password'])){
-        if($_POST['username'] == 'root' && $_POST['password'] == 'toor'){
-            session_start();
-            $_SESSION['username'] = $_POST['username'];
-            header('Location: sidebars/index.html');
-        }else{
-            header('Location: Login.html?error=true');
-        }
+// Conectar ao banco de dados
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
 
-    }
-
-?>
-
-
-<?php
-// Conecte-se ao banco de dados MySQL (substitua com suas credenciais)
-
-$conn = new mysqli($host, $username, $password, $database);
+$conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
-    die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+    die("Falha na conexão com o banco de dados: " . $conn->connect_error);
 }
 
-// Processa o formulário de login quando for enviado
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+// Dado desejado para busca
+$login_usuario = $_POST['username'];
+$login_senha = $_POST['password'];
 
-    // Consulta o banco de dados para verificar se o usuário existe
-    $query = "SELECT * FROM users WHERE username = '$username'";
-    $result = $conn->query($query);
+// Consulta SQL
+$sql = "SELECT * FROM tbusuario WHERE nome = ? AND senha = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $login_usuario, $login_senha);
+$stmt->execute();
+$result = $stmt->get_result();
 
-    if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
+if ($result->num_rows > 0) {
+    // Encontrou resultados
+    $row = $result->fetch_assoc();
+    echo "Dado encontrado!<br>";
+    echo "Senha: " . $row["senha"] . "<br>";
+    echo "Nome: " . $row["nome"] . "<br>";
+    $login_habilitado = $row["habilitado"];
 
-        // Verifica se a senha fornecida corresponde à senha armazenada no banco de dados
-        if (password_verify($password, $user['password'])) {
-            // Autenticação bem-sucedida
-            session_start();
-            $_SESSION['username'] = $username;
-            header("Location: dashboard.php"); // Redireciona para a página do painel de controle
-        } else {
-            // Senha incorreta
-            $error = "Senha incorreta";
-        }
-    } else {
-        // Usuário não encontrado
-        $error = "Usuário não encontrado";
+    if ($login_habilitado == "1") 
+    {           
+        session_start();
+        $_SESSION['username'] = $_POST['username'];
+        header('Location: sidebars/index.html');
+        echo "Usuário pode realizar o login!";
+    
+    }else {
+        // header('Location: Login.html?error=true');
+        header('Location: Login.html?error=true');
     }
+
+    // Exibir outros campos conforme necessário
+} else {
+    header('Location: Login.html?error=true');
 }
+
+$stmt->close();
+$conn->close();
 ?>
-
-
-
