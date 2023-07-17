@@ -7,11 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
         
-        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email, p.gestor, u.IDUsuario, u.administrador
+        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email, p.gestor, u.IDUsuario, u.administrador, u.habilitado
                 FROM TBPessoa p
                 JOIN TBSetor st ON p.setor = st.IDSetor
                 JOIN TBSecao sc ON p.secao = sc.IDSecao
-                LEFT JOIN TBUsuario	u on p.IDPessoa = u.IDUsuario";
+                LEFT JOIN TBUsuario	u on p.IDPessoa = u.IDUsuario
+                ORDER BY p.IDPessoa ASC";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -29,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $gerente = $row['gestor'];
                 $IDUsuario = $row['IDUsuario'];
                 $administrador = $row['administrador'];
+                $habilitado = $row['habilitado'];
 
                         // Verifica se $gerente é igual a 1
         if ($gerente == 1) {
@@ -39,12 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $icone = "<i class='bi bi-square' onclick='onoffGerente(" . $IDPessoa . ")' data-value='" . $gerente . "' id='sqr-" . $IDPessoa	 . "'></i>";
         }
         if($IDUsuario){
-            $userType = "<h3 onclick=verificaUsuario(this) id='usuarioComum' 'title='Usuário comum' class='bi bi-person-fill  my-custom-icon'></h3>";
+            $userType = "<h3 onclick=verificaUsuario(this) id='usuarioComum' title='Usuário comum' class='bi bi-person-fill  my-custom-icon'></h3>";
             if($administrador){
                 $userType = "<h3 onclick=verificaUsuario(this) id='usuarioAdministrador' title='Usuário Administrador' class='bi bi-person-fill-up  my-custom-icon'></h3>";
             }
         }else{
-            $userType = "<h3 onclick=verificaUsuario(this) ' id='usuarioNaoCadastrado' 'title='Não cadastrado como usuário' class='bi bi-person-slash'></h3>";
+            $userType = "<h3 onclick=verificaUsuario(this) ' id='usuarioNaoCadastrado' title='Não cadastrado como usuário' class='bi bi-person-slash'></h3>";
+        }if($habilitado == 0 && $IDUsuario){
+            $userType = "<h3 onclick=verificaUsuario(this) ' id='usuarioDesabilitado' title='Usuário Desabilitado' class='bi bi-person-fill-slash'></h3>";
+            
         } //icone de desabilitado: <i class="bi bi-person-fill-slash"></i>
                 echo "<tr>
                 <td>".$IDPessoa."</td>
@@ -164,7 +169,47 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['registerUser'])){
-        
+        $nome = $_POST['nome'];
+        $senha = $_POST['senha'];
+        $idUsuario = $_POST['idUsuario'];
+        $adm = $_POST['adm'];
+
+        $sql = "INSERT INTO TBUsuario (IDUsuario, nome, senha, administrador, habilitado) VALUES (?, ?, ?, ?, 1)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isss", $idUsuario, $nome, $senha, $adm);
+        $stmt->execute();
+        $result = $stmt->get_result();        
+    }
+}
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['desabilitarUsuario']) || isset($_POST['habilitarUsuario'])){
+        $idUsuario = $_POST['ID_User'];
+
+        if($_POST['desabilitarUsuario'] == 1){
+            $sql = "UPDATE TBUsuario SET habilitado = 0 WHERE IDUsuario = '$idUsuario'";
+        } if($_POST['habilitarUsuario'] == 1){
+            $sql = "UPDATE TBUsuario SET habilitado = 1 WHERE IDUsuario = '$idUsuario'";
+        }
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();        
+    }
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['adicionarPrivilegio']) || isset($_POST['retirarPrivilegio'])){
+        $idUsuario = $_POST['ID_User'];
+
+        if($_POST['adicionarPrivilegio'] == 1){
+            $sql = "UPDATE TBUsuario SET administrador = 1 WHERE IDUsuario = '$idUsuario'";
+        } if($_POST['retirarPrivilegio'] == 1){
+            $sql = "UPDATE TBUsuario SET administrador = 0 WHERE IDUsuario = '$idUsuario'";
+        }
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();        
     }
 }
 ?>

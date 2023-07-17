@@ -33,8 +33,17 @@
 </header>
 <body onload="init()">
 
-    <h3>Pessoas:</h3>
-    <p>Filtros:</p>
+    <div class="d-flex align-items-start">
+        <div id="esq" class="flex-fill">
+          <h3>Pessoas:</h3>
+          <p>Filtros:</p>
+        </div>
+        <div id="dir" class="flex-fill">
+        <p></p>
+          <button class="btn btn-primary" onclick="window.location.href='../../Cadastro.html'">Adicionar pessoa</button>
+        </div>
+      </div>
+      
     
     <div class="box-sqr">
         <table id="tablePerson" class="table table-striped table-hover">
@@ -51,7 +60,6 @@
             </tr>
         </table>
     </div>
-
 <script>
     function init() {
         displayPersons();
@@ -150,28 +158,41 @@
             cancelButtonText: 'Cancelar',
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
-            const selectedOption = document.querySelector('input[name="opcao"]:checked').value;
-            if (selectedOption === 'opcao1') { //usuario comum
-                if(usuarioID == 'usuarioNaoCadastrado')
-                    CadastroUsuario(0, pai.id);
-                else if(usuarioID == 'usuarioAdministrador'){
-                    console.log('retirar privilegio')
+                const selectedOption = document.querySelector('input[name="opcao"]:checked').value;
+                if (selectedOption === 'opcao1') { // Ação para Usuario comum
+                    if(usuarioID == 'usuarioNaoCadastrado')
+                        CadastroUsuario('', pai.id);
+                    else if(usuarioID == 'usuarioAdministrador'){
+                        console.log('retirar privilegio')
+                        alterarPrivilegioUsuario('retirar', pai.id);
+                    }else if(usuarioID == 'usuarioDesabilitado'){
+                        // console.log('habilitar usuario')
+                        alterarStatusUsuario('habilitar', pai.id);
+                        alterarPrivilegioUsuario('retirar', pai.id);
+                    }else
+                    if(usuarioID == 'usuarioComum')
+                        mesmoTipoUsuario();
+                } else 
+                if (selectedOption === 'opcao2') {// Ação para Administrador
+                    if(usuarioID == 'usuarioNaoCadastrado'){
+                        CadastroUsuario(1, pai.id);
+                    }else 
+                    if(usuarioID == 'usuarioComum'){
+                        alterarPrivilegioUsuario('adicionar', pai.id);
+                    }else
+                    if(usuarioID == "usuarioDesabilitado"){
+                        // console.log('habilitar usuario')
+                        alterarStatusUsuario('habilitar', pai.id);
+                        alterarPrivilegioUsuario('adicionar', pai.id);
+                    }else
+
+                    if(usuarioID == 'usuarioAdministrador')
+                        mesmoTipoUsuario();
+                } else
+                if(selectedOption === 'opcao4'){ //Ação para desabilitar usuario
+                    console.log('selecionou desabilitar usuario');
+                    alterarStatusUsuario('desabilitar', pai.id);
                 }
-                if(usuarioID == 'usuarioComum')
-                    mesmoTipoUsuario();
-            } else if (selectedOption === 'opcao2') {// Ação para Administrador
-                if(usuarioID == 'usuarioNaoCadastrado'){
-                    CadastroUsuario(1, pai.id);
-                }else 
-                if(usuarioID == 'usuarioComum'){
-                    console.log('adicionar privilegio');
-                }else
-                if(usuarioID == 'usuarioAdministrador')
-                    mesmoTipoUsuario();
-            } else
-            if(selectedOption === 'opcao4'){ //desabilitar usuario
-                console.log('selecionou desabilitar usuario');
-            }
             }
         });
         var opcao1 = document.getElementById('opcao1');
@@ -190,9 +211,37 @@
         } else if (usuarioID == 'usuarioNaoCadastrado') {
             opcao3.checked = true;
             opcao3.disabled = true;
-            
+            label.innerHTML= '';
+        }else if(usuarioID == 'usuarioDesabilitado'){
+            label.innerHTML= '';
+          
         }
         }
+
+    function alterarPrivilegioUsuario(privilegio, ID_User){
+        if(privilegio === 'adicionar'){
+            var data = "adicionarPrivilegio=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
+            // console.log(data);
+            connection(data, "update", "POST")
+        }
+        else if(privilegio === 'retirar'){
+            var data = "retirarPrivilegio=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
+            // console.log(data);
+            connection(data, "update", "POST")
+        }
+    }
+
+    function alterarStatusUsuario(status, ID_User){
+        if(status === 'desabilitar'){
+            var data = "desabilitarUsuario=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
+            // console.log(data);
+            connection(data, "update", "POST")
+        }
+        else if(status === 'habilitar'){
+            var data = "habilitarUsuario=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
+            connection(data, "update", "POST")
+        }
+    }
 
     function CadastroUsuario(adm, ID_User){
         Swal.fire({
@@ -213,7 +262,7 @@
                 const senha = document.getElementById('senha').value;
                 console.log(ID_User);
                             
-                data = "registerUser=" + encodeURIComponent(1) + "&nome=" + encodeURIComponent(nome) + "&senha=" + encodeURIComponent(senha)+ "&idUsuario=" + encodeURIComponent(ID_User);
+                data = "registerUser=" + encodeURIComponent(1) + "&nome=" + encodeURIComponent(nome) + "&senha=" + encodeURIComponent(senha)+ "&idUsuario=" + encodeURIComponent(ID_User) + "&adm=" + encodeURIComponent(adm);
                 var existe = document.getElementsByName("userAvailable")[0].id;
 
                 if (existe == 1) {
@@ -253,7 +302,7 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     if(output == "update"){
-                        // window.location.reload();
+                        window.location.reload();
                     }else
                     output.innerHTML = xhr.responseText;
                     // return xhr.responseText;

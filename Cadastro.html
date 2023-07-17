@@ -32,21 +32,25 @@
         <label for="setor">Setor:</label>
         <select id="setor" name="setor">
           <option value="" disabled selected hidden>Escolha uma das opções</option>
-
-          <!-- <option value="TI">TI</option>
-          <option value="ADM">ADM</option>
-          <option value="RH">RH</option>
-          <option value="CONTABILIDADE">CONTABILIDADE</option> -->
         </select>
       </div>
       <div class="form-group">
         <label for="email">E-mail:</label>
         <input type="text" id="email" name="email" placeholder="Informe seu e-mail">
       </div>
+      <div class="form-group">
+        <div class="form-check">
+          <label class="form-check-label" for="usuario">Vincular como usuário</label>
+          <input class="form-check-input form-check-inline" type="checkbox" id="usuario" name="usuario" value="usuario">
+        </div>
+        
+        
+      </div> 
     </form>
     <div class="form-group">
       <button onclick="submitForm()">Cadastrar</button>
     </div>
+</div>
   </div>
 </body>
 
@@ -58,19 +62,11 @@
   }
   function getSelect(){
     var setor = document.getElementById("setor");
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "Cadastro.php", true)
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function(){
-      if(xhr.readyState === 4){
-        if(xhr.status === 200){
-          setor.innerHTML += xhr.responseText;
-        }else{
-          console.error("Erro ao carregar os setores")
-        }
-      }
-    };
-    xhr.send("select_setor=" + encodeURIComponent(1));
+
+    data= "select_setor=" + encodeURIComponent(1);
+
+    connection(data, setor);
+
   }
 
   function submitForm(){
@@ -79,31 +75,57 @@
     let matricula = document.getElementById("matricula").value;
     let setor = document.getElementById("setor").value;
     let email = document.getElementById("email").value;
+    let usuario = document.getElementById("usuario").checked;
+    var nomeSeparado = '';
+    if(usuario){
+      nomeSeparado = separarNomes(nome);
+      console.log(nomeSeparado);
 
-    var i=0;
-    // var options = document.getElementsByTagName("option");
-    // while(i < options.length){
-    // if(options[i].selected == true){
-    //   setor = options[i].value;
-    //   i++;
-    // }
-    // else
-    //   i++;
-    // }
+        function separarNomes(username) {
+        username = username.toLowerCase();
 
+        // Separar o primeiro e o último nome
+        var nomes = username.split(' ');
+        var primeiroNome = nomes[0];
+        var ultimoNome = nomes[nomes.length - 1];
+
+        // Unir o primeiro e o último nome com '_'
+        var nomeCompleto = primeiroNome + '_' + ultimoNome;
+
+        return nomeCompleto;
+        } // <<< - voltar aqui
+        
+      } 
+      if(nomeSeparado == ''){
+        var data = "insertUser=" + 0 + "&nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula)+ "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email) 
+      }else{
+        var data = "insertUser=" + 1 + "&nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula)+ "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email) + "&username=" + encodeURIComponent(nomeSeparado);
+      }
+      // console.log(data);
+      connection(data, "reload");
+    }
+    function connection(data, output){
     var xhr = new XMLHttpRequest();
             xhr.open("POST", "Cadastro.php", true)
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function(){
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        window.location.reload();
+                      if(output == "reload"){
+                        // console.log("usuario inserido com sucesso");
+                        console.log(xhr.responseText);
+                        // window.location.reload();
+                      }
+                      if(output == setor);
+                        setor.innerHTML += xhr.responseText;
                     } else {
                         console.error("Falha ao carregar as pessoas");
                     }
                 }
             };
-            xhr.send("nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula)+ "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email));
-  }
+            xhr.send(data);
+
+    }
+  
 </script>
 </html>

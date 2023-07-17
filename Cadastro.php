@@ -27,38 +27,56 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['nome'];
-    $cpf = $_POST['cpf'];
-    $matricula = $_POST['matricula'];
-    $setor = $_POST['setor'];
-    $email = $_POST['email'];
+    function inserirUsuario($conn, $username) {
+        echo "entrou na função de inserir";
+        $sql = "SELECT MAX(IDPessoa) FROM TBPessoa";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_row($result);
+        $ultimoIDPessoa = $row[0] ?? 0;
+        $ultimoIDPessoa++;
 
-    // echo "Valores recebidos: " . $nome . " " . $cpf . " " . $matricula . " " . $setor . " " . $email;
-    if(isset($nome) && isset($cpf) && isset($matricula) && isset($setor) && isset($email)){
-        $sql = "
-            START TRANSACTION;
-            SET @UltimoIDPessoa = (SELECT MAX(IDPessoa) FROM TBPessoa);
-            SET @UltimoIDPessoa = IFNULL(@UltimoIDPessoa, 0) + 1;
-            INSERT INTO TBPessoa (IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email, gestor) VALUES(
-            '@UltimoIDPessoa',
-            '$nome',
-            '$cpf',
-            '$matricula',
-            '$setor',
-            1,
-            '$email',
-            ''
-            );
-            COMMIT;
-            ";
-            
-            if (mysqli_multi_query($conn, $sql)) {
-                echo "Novo status adicionado com sucesso!";
-            } else {
-                echo "Erro ao adicionar novo status: " . mysqli_error($conn);
-            }
-    
-            $conn->close();
+        $sql = "INSERT INTO TBUsuario (IDUsuario, nome, senha, administrador, habilitado) VALUES (?, ?, ?, ?, 1)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isss", $ultimoIDPessoa, $username, $senha, $adm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        echo "\nUsuario inserido com sucesso -> " . $result;
+        echo "\nSQL Line -> " . $sql;
     }
-}	
-?>
+
+    if (isset($_POST['insertUser'])) {
+        $nome = $_POST['nome'];
+        $cpf = $_POST['cpf'];
+        $matricula = $_POST['matricula'];
+        $setor = $_POST['setor'];
+        $email = $_POST['email'];
+        $insertUser = $_POST['insertUser'];
+        $username = $_POST['username'];
+
+        if (isset($nome) && isset($cpf) && isset($matricula) && isset($setor) && isset($email)) {
+            $sql = "INSERT INTO TBPessoa (IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email, gestor) VALUES (
+                NULL,
+                '$nome',
+                '$cpf',
+                '$matricula',
+                '$setor',
+                1,
+                '$email',
+                ''
+            )";
+
+            if (mysqli_query($conn, $sql)) {
+                echo "Nova pessoa adicionada com sucesso!";
+                if ($insertUser == 1) {
+                    inserirUsuario($conn, $username);
+                }
+            } else {
+                echo "Erro ao adicionar nova pessoa: motivo->" . mysqli_error($conn);
+            }
+
+            $conn->close();
+        }
+    }
+}
+
+    ?>
