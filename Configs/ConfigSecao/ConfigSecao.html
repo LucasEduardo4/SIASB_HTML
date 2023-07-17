@@ -125,7 +125,6 @@
                 xhr.onreadystatechange = function(){
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            //Objeto tal.. alteração tal.. selects.innerhtml="jsonparse...."
                             unParse(xhr.responseText)
                         } else {
                             console.error("Falha ao carregar as pessoas");
@@ -162,19 +161,15 @@
                 if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     window.location.reload();
+                    // console.log(xhr.responseText);
+                    
                 } else {
                     console.error("Falha ao carregar as pessoas");
                 }
                 }
             };
-            xhr.send(
-                "nomeSecao=" +
-                encodeURIComponent(nomeSecao) +
-                "&gerente=" +
-                encodeURIComponent(gerente) +
-                "&setor=" +
-                encodeURIComponent(setor)
-            );
+            var data = "nomeSecao=" + encodeURIComponent(nomeSecao) + "&gerente=" + encodeURIComponent(gerente) + "&setor=" + encodeURIComponent(setor);
+            xhr.send(data);
             }
     </script>
 </body>

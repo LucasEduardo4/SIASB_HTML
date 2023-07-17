@@ -83,8 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "SET @ultimoIDSecao = (SELECT MAX(IDSecao) FROM tbsecao);
         SET @ultimoIDSecao = IFNULL(@ultimoIDSecao, 0) + 1;
         INSERT INTO tbsecao (IDSecao, descricao_secao, gerente, setor)
-        VALUES (@ultimoIDSecao, '$nomeSecao', '$gerente', '$setor')";
-        
+        VALUES (@ultimoIDSecao, '$nomeSecao', '$gerente', '$setor');";        
         if (mysqli_multi_query($conn, $sql)) {
             echo "Nova seção adicionada com sucesso!";
         } else {

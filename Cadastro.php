@@ -28,20 +28,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function inserirUsuario($conn, $username) {
-        echo "entrou na função de inserir";
         $sql = "SELECT MAX(IDPessoa) FROM TBPessoa";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_row($result);
         $ultimoIDPessoa = $row[0] ?? 0;
-        $ultimoIDPessoa++;
 
-        $sql = "INSERT INTO TBUsuario (IDUsuario, nome, senha, administrador, habilitado) VALUES (?, ?, ?, ?, 1)";
+        $sql = "INSERT INTO TBUsuario (IDUsuario, nome, senha, administrador, habilitado) VALUES (?, ?, 123, 0, 1)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isss", $ultimoIDPessoa, $username, $senha, $adm);
+        $stmt->bind_param("is", $ultimoIDPessoa, $username);
         $stmt->execute();
         $result = $stmt->get_result();
-        echo "\nUsuario inserido com sucesso -> " . $result;
-        echo "\nSQL Line -> " . $sql;
     }
 
     if (isset($_POST['insertUser'])) {
@@ -66,12 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             )";
 
             if (mysqli_query($conn, $sql)) {
-                echo "Nova pessoa adicionada com sucesso!";
+                // echo "Nova pessoa adicionada com sucesso!";
                 if ($insertUser == 1) {
                     inserirUsuario($conn, $username);
                 }
             } else {
-                echo "Erro ao adicionar nova pessoa: motivo->" . mysqli_error($conn);
+                // echo "Erro ao adicionar nova pessoa: motivo->" . mysqli_error($conn);
             }
 
             $conn->close();

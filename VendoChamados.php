@@ -80,20 +80,7 @@ $administrador = 0;
             ";
         }
     } else {
-        echo "Nenhum resultado encontrado.";
-        echo "<br> Select realizado -> ";
-        echo $sql;
-        echo "<br>";
-        echo "<br>";
-        echo $_POST['dataOption'];
-        echo "<br>";
-        echo $_POST['dataDe'];
-        echo "<br>";
-        echo $_POST['dataAte'];
-        echo "<br>";
-        echo $_POST['codigoSolicitacao'];
-        echo "<br>";
-        echo $_POST['status'];
+        echo "Nenhum resultado encontrado para este usuário.";
     }
 }
 
