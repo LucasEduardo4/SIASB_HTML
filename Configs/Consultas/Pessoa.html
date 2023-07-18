@@ -60,6 +60,7 @@
             </tr>
         </table>
     </div>
+    <div id="tempElement" style="display: none;"></div>
 <script>
     function init() {
         displayPersons();
@@ -124,10 +125,24 @@
     }
  
     function verificaUsuario(usuario){
+        console.log("\n Usuário:");
+        console.log(usuario);
         var usuarioID = usuario.id
         var pai = usuario.parentElement;
-        
-        abrirPopup(usuarioID, pai);
+        console.log("\n pai :")
+        console.log(pai.id);
+
+        pai_do_pai = pai.parentElement;
+        console.log("\n pai_do_pai :");
+        console.log(pai_do_pai);
+
+        // tempElement.innerHTML = pai_do_pai;
+
+        // Obter o valor da tag com o ID "nomeCompleto"
+        var bar = tempElement.querySelector('#nomeCompleto').innerHTML;
+                
+        console.log(bar);
+        abrirPopup(usuarioID, pai, bar);
     }
 
     function abrirPopup(usuarioID, pai) {
@@ -161,7 +176,7 @@
                 const selectedOption = document.querySelector('input[name="opcao"]:checked').value;
                 if (selectedOption === 'opcao1') { // Ação para Usuario comum
                     if(usuarioID == 'usuarioNaoCadastrado')
-                        CadastroUsuario('', pai.id);
+                        CadastroUsuario('', pai.id, nomeCompleto);
                     else if(usuarioID == 'usuarioAdministrador'){
                         console.log('retirar privilegio')
                         alterarPrivilegioUsuario('retirar', pai.id);
@@ -175,7 +190,7 @@
                 } else 
                 if (selectedOption === 'opcao2') {// Ação para Administrador
                     if(usuarioID == 'usuarioNaoCadastrado'){
-                        CadastroUsuario(1, pai.id);
+                        CadastroUsuario(1, pai.id, nomeCompleto);
                     }else 
                     if(usuarioID == 'usuarioComum'){
                         alterarPrivilegioUsuario('adicionar', pai.id);
@@ -243,38 +258,21 @@
         }
     }
 
-    function CadastroUsuario(adm, ID_User){
-        Swal.fire({
-            title: 'Digite o nome de usuário e senha para o usuário novo:',
-            html:
-                '<input id="nome" class="swal2-input" onblur="verificaNomeUsuario()" placeholder="Nome">' +
-                '<label id="userAllowed" style="display:none"> </label>'+
-                '<input id="senha" type="password" class="swal2-input" placeholder="Senha">' +
-                '<label for="administrador" class="swal2-checkbox">' +
-                '<input id="administrador" type="checkbox" class="swal2-input" style="height: auto;">' +
-                '<span class="swal2-label">Administrador</span>' +
-                '</label>',
-            showCancelButton: true,
-            confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar',
-            preConfirm: () => {
-                const nome = document.getElementById('nome').value;
-                const senha = document.getElementById('senha').value;
-                console.log(ID_User);
-                            
-                data = "registerUser=" + encodeURIComponent(1) + "&nome=" + encodeURIComponent(nome) + "&senha=" + encodeURIComponent(senha)+ "&idUsuario=" + encodeURIComponent(ID_User) + "&adm=" + encodeURIComponent(adm);
-                var existe = document.getElementsByName("userAvailable")[0].id;
+    function CadastroUsuario(adm, ID_User, nomeCompleto){
+        // const nome = document.getElementById('nome').value;
+        // const senha = document.getElementById('senha').value;
+        console.log(ID_User);
+                    
+        data = "registerUser=" + encodeURIComponent(1) + "&nome=" + encodeURIComponent(nome) + "&senha=" + encodeURIComponent(senha)+ "&idUsuario=" + encodeURIComponent(ID_User) + "&adm=" + encodeURIComponent(adm);
+        var existe = document.getElementsByName("userAvailable")[0].id;
 
-                if (existe == 1) {
-                connection(data, "update", "POST");
-                Swal.close();
-                } else {
-                showAlert();
-                return false; // Impede que o popup seja fechado
-                }
-            },
-            allowOutsideClick: false // Impede que o popup seja fechado clicando fora dele
-            });
+        if (existe == 1) {
+        connection(data, "update", "POST");
+        Swal.close();
+        } else {
+        showAlert();
+        return false; // Impede que o popup seja fechado
+        }
 
         if(adm == 1){
             document.getElementById("administrador").checked=true;
