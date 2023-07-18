@@ -27,15 +27,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    function inserirUsuario($conn, $username) {
+    function inserirUsuario($conn, $username, $cpf) {
         $sql = "SELECT MAX(IDPessoa) FROM TBPessoa";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_row($result);
         $ultimoIDPessoa = $row[0] ?? 0;
 
-        $sql = "INSERT INTO TBUsuario (IDUsuario, nome, senha, administrador, habilitado) VALUES (?, ?, 123, 0, 1)";
+
+        $hashed_password = password_hash($cpf, PASSWORD_DEFAULT);
+
+
+        $sql = "INSERT INTO TBUsuario (IDUsuario, nome, senha, administrador, habilitado) VALUES (?, ?, ?, 0, 1)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $ultimoIDPessoa, $username);
+        $stmt->bind_param("iss", $ultimoIDPessoa, $username, $hashed_password);
         $stmt->execute();
         $result = $stmt->get_result();
     }
@@ -64,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (mysqli_query($conn, $sql)) {
                 // echo "Nova pessoa adicionada com sucesso!";
                 if ($insertUser == 1) {
-                    inserirUsuario($conn, $username);
+                    
+                    inserirUsuario($conn, $username, $cpf);
                 }
             } else {
                 // echo "Erro ao adicionar nova pessoa: motivo->" . mysqli_error($conn);
