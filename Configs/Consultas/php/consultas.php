@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } //icone de desabilitado: <i class="bi bi-person-fill-slash"></i>
                 echo "<tr>
                 <td>".$IDPessoa."</td>
-                <td>".$nomeCompleto."</td>
+                <td id='nomeCompleto'>".$nomeCompleto."</td>
                 <td>".$cpf."</td>
                 <td>".$matricula."</td>
                 <td>".$setor."</td>

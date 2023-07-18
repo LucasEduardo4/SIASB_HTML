@@ -52,19 +52,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $resultArray['gerentes'] = $gerentes;
 
-        // Consulta 2: SELECT * FROM TBSetor
-        $sql2 = "SELECT * FROM TBSetor";
+        // Consulta 2: SELECT * FROM TBSecao
+        $sql2 = "SELECT * FROM TBSecao";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute();
         $result2 = $stmt2->get_result();
 
-        $setores = array();
+        $secoes = array();
         while ($row2 = $result2->fetch_assoc()) {
-            $IDSetor = $row2["IDSetor"];
-            $descricaoSetor = $row2["descricao_setor"];
-            $setores[$IDSetor] = $descricaoSetor;
+            $IDSecao = $row2["IDSecao"];
+            $descricaoSecao = $row2["descricao_secao"];
+            $secoes[$IDSecao] = $descricaoSecao;
         }
-        $resultArray['setores'] = $setores;
+        $resultArray['secoes'] = $secoes;
 
         $stmt1->close();
         $stmt2->close();
