@@ -160,6 +160,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 }
     
+
+
+
+
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['registerUser'])){
         $nome = $_POST['nome'];
@@ -176,6 +181,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $result = $stmt->get_result();        
     }
 }
+
+
+
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['desabilitarUsuario']) || isset($_POST['habilitarUsuario'])){
         $idUsuario = $_POST['ID_User'];
