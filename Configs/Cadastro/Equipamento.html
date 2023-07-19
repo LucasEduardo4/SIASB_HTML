@@ -66,6 +66,7 @@
     var data = 'Select_Tipo_Secao=' + 1;
     connection("POST", data, "selects")
   }
+  
   function selectPerson(){
     var selectSecoes = document.getElementById("selectSecoes");
     var secao = selectSecoes.options[selectSecoes.selectedIndex].value;
@@ -74,6 +75,18 @@
     // console.log("Entrou aqui");
 
   }
+  
+  function submitForm(){
+  var stiID = document.getElementById("stiID").value;
+  var descricao = document.getElementById("descricao").value;
+  var ip = document.getElementById("ip").value;
+  var tipo = document.getElementById("selectTipos").value;
+  var secao = document.getElementById("selectSecoes").value;
+  var usuario = document.getElementById("selectPessoas").value;
+  var data = 'submitForm=1'+ '&stiID=' + encodeURIComponent(stiID) + '&descricao=' + encodeURIComponent(descricao) + '&ip=' + encodeURIComponent(ip) + '&tipo=' + encodeURIComponent(tipo) + '&secao=' + encodeURIComponent(secao) + '&usuario=' + encodeURIComponent(usuario);
+  connection("POST", data, "cadastro")
+}
+
   function connection(method, data, output){
     var xhr = new XMLHttpRequest();
     xhr.open(method, "Equipamento.php", true);
@@ -87,11 +100,22 @@
         if(output == selectPessoas){
           // console.log("Entrou aqui");
           output.innerHTML += xhr.responseText;
-        }        
+        }else
+        if(output == "cadastro"){
+          Swal.fire({
+                icon: 'success',
+                title: 'Equipamento inserido com sucesso',
+                showConfirmButton: false,
+                timer: 3000
+              }).then(() => {
+                window.location.reload();
+              });
+        }
       } 
     }
     xhr.send(data);
   }
+  
   function unParse(data){
       var dadosObjeto = JSON.parse(data)
       var tipos = dadosObjeto.tipos;
@@ -116,6 +140,7 @@
       selectSecoes.innerHTML += `<option value="${key}">${value}</option>`;
       }
     }
+
 </script>
 </body>
 </html>

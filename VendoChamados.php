@@ -76,6 +76,7 @@ $administrador = 0;
             <div class='CamposResultados'> <p>".$dataAbertura."</p> </div>
             <div class='CamposResultados'> <p>".$assunto."</p> </div>
             <div class='CamposResultados'> <p>".$status_chamado."</p> </div>
+            <div class='CamposResultados responsavel_tecnologia'> <p>Andamento</p> </div>
             </div>
             ";
         }
