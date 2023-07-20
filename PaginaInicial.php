@@ -7,12 +7,65 @@ if (!isset($_SESSION['username'])) {
 }
 ?>
 
+
+<!-- PHP PARA REALIZAR A INSERÇÃO DAS ANOTAÇÕES NO BANCO DE DADOS -->
+<?php
+// Faça a consulta para obter o ID do usuário
+// Realizar a conexão com o banco de dados (substitua os valores conforme suas configurações)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar a conexão
+if ($conn->connect_error) {
+    die("Falha na conexão com o banco de dados: " . $conn->connect_error);
+}
+
+// Certifique-se de que a variável $usuario_ esteja definida com o nome do usuário atual
+$usuario_ = $_SESSION['username'];
+
+// Faça a consulta para obter o ID do usuário
+$sql_id_usuario = "SELECT IDUsuario FROM tbusuario WHERE nome = '$usuario_'";
+
+$result_id_usuario = mysqli_query($conn, $sql_id_usuario);
+
+if ($result_id_usuario) {
+    $row_id_usuario = mysqli_fetch_assoc($result_id_usuario);
+    $id_usuario = $row_id_usuario['IDUsuario'];
+
+    // Faça a consulta para recuperar as anotações do usuário com base no ID do usuário
+    $sql_anotacoes = "SELECT mensagem, dia FROM tbagenda WHERE IDUsuario = '$id_usuario'";
+
+    $result_anotacoes = mysqli_query($conn, $sql_anotacoes);
+
+    // Crie um array para armazenar as anotações
+    $anotacoes_usuario = array();
+
+    while ($row_anotacoes = mysqli_fetch_assoc($result_anotacoes)) {
+        $anotacoes_usuario[] = $row_anotacoes;
+    }
+} else {
+    // Trate o erro, se necessário
+    echo "Erro ao obter ID do usuário: " . mysqli_error($conn);
+}
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Página Home</title>
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <style>
 
@@ -136,6 +189,13 @@ body {
         .note-date {
             font-weight: bold;
             margin-bottom: 5px;
+        }
+
+        .conteudo_salvo
+        {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 30px;
         }
 
 
@@ -330,6 +390,7 @@ body {
                     <th>Quinta-feira</th>
                     <th>Sexta-feira</th>
                     <th>Sábado</th>
+                    
                 </tr>
             </thead>
             <tbody id="calendar-body"></tbody>
@@ -344,6 +405,29 @@ body {
             </form>
         </div>
 
+        <!-- Código HTML existente -->
+
+
+<!-- Adicione este código PHP para exibir as anotações -->
+<div>
+    <h3>Ultimas Anotações Salvas:</h3>
+    <ul >
+        <?php foreach ($anotacoes_usuario as $anotacao) { ?>
+            <li id="conteudo_salvo">
+                <span>Data: <?php echo $anotacao['dia']; ?></span><br>
+                <span>Anotação: <?php echo $anotacao['mensagem']; ?></span>
+            </li>
+        <?php } ?>
+    </ul>
+</div>
+
+<!-- Mais código HTML, se houver -->
+
+<!-- Código HTML existente -->
+
+
+
+        <!-- AQUI IRA APARECER TODAS AS ANOTAÇÕES QUE IRAM SER SALVAS // class="note-date" -->
         <ul id="notes-list" class="notes-list"></ul>
     </div>
 
@@ -487,11 +571,18 @@ body {
             var year = date.getFullYear();
 
             return (
-                (day < 10 ? '0' + day : day) +
-                '/' +
-                (month < 10 ? '0' + month : month) +
-                '/' +
-                year
+                year + 
+                '-' + 
+                (month < 10 ? '0' + month : month) + 
+                '-' + 
+                (day < 10 ? '0' + day : day)
+
+
+                // (day < 10 ? '0' + day : day) +
+                // '/' +
+                // (month < 10 ? '0' + month : month) +
+                // '/' +
+                // year
             );
         }
 
@@ -506,6 +597,58 @@ body {
         // Chamar a função para gerar o calendário e exibir as anotações
         getCalendar();
         showAllNotes();
+
+
+
+
+
+        // REALIZANDO TESTES PARA SALVAR AS ANOTAÇÕES
+    
+        // Função para enviar as anotações para o servidor
+
+
+    document.getElementById('notes-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var selectedDate = document.getElementById('selected-date').value;
+    var notesContent = document.getElementById('notes-content').value;
+
+    // Salvar as anotações no objeto de notas (opcionalmente, você pode fazer isso imediatamente após o usuário digitar a anotação)
+    notesData[selectedDate] = notesContent;
+
+    // Chamar a função para salvar as anotações no banco de dados
+    saveNotesToDatabase(selectedDate, notesContent);
+
+    // Fechar o popup de anotações
+    closeNotesPopup();
+
+    // Atualizar a exibição das anotações (opcionalmente, você pode fazer isso depois de receber a confirmação do servidor)
+    showAllNotes();
+});
+
+
+
+
+    function saveNotesToDatabase(selectedDate, notesContent) {
+    // Fazer a requisição AJAX usando jQuery
+    $.ajax({
+        url: 'salvar_anotacoes.php', // O arquivo PHP que vai salvar as anotações no banco de dados
+        type: 'POST',
+        data: {
+            date: selectedDate,
+            message: notesContent
+        },
+        success: function(response) {
+            console.log(response); // Imprimir resposta do servidor (opcional)
+        },
+        error: function(xhr, status, error) {
+            console.error(error); // Tratar erro, se necessário (opcional)
+        }
+    });
+}
+
+
+
     </script>
 
 
