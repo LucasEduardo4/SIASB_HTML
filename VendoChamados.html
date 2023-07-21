@@ -215,7 +215,7 @@
             <label for="status">Status:</label>
             <select id="status" name="status">
             <option value="">Selecione...</option>
-            <option value="1">Aberto</option>
+            <option value="1">Aberto</option> <!-- seria interessante essas informações partirem de um select nos status-->
             <option value="2">Andamento</option>
             <option value="3">Pendente</option>
             <option value="4">Fechado</option>
@@ -229,7 +229,7 @@
     <div class="resultados" id="resultadosContainer" style="display: none;">
     <div class="FaixaForm">
         <div class="CamposResultados"> <p style="padding-left: 10px;"> ID da Solicitação </p> </div>
-        <div class="CamposResultados"> <p> Data de Abertura </p> </div> <!-- seria interessante essas informações partirem de um select nos status-->
+        <div class="CamposResultados"> <p> Data de Abertura </p> </div>
         <div class="CamposResultados"> <p> Assunto</p> </div>
         <div class="CamposResultados"> <p> Status</p> </div>
         <div class="CamposResultados responsavel_tecnologia"> <p>Andamento</p> </div>
@@ -288,7 +288,8 @@
         // resultados.innerHTML = `Filtrando por:<br>Código da Solicitação: ${codigoSolicitacao}<br>Opção data: ${dataOption}<br>Data de:${dataDe}<br>Data até:${dataAte}<br>Status: ${status}<br>`;
         
 
-        var data = "dataOption=" + encodeURIComponent(dataOption) +
+        var data = "Select="+ 1 +
+                    "&dataOption=" + encodeURIComponent(dataOption) +
                     "&dataDe=" + encodeURIComponent(dataDe) +
                     "&dataAte=" + encodeURIComponent(dataAte) +
                     "&codigoSolicitacao=" + encodeURIComponent(codigoSolicitacao) +
@@ -321,7 +322,7 @@
         // Formatar para "dd/mm/yyyy"
         var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
         var dataAte = dataAtual;
-        var data =    "firstSelect="+ 1 +
+        var data =    "Select="+ 1 +
                       "&dataOption=" + encodeURIComponent('1') +
                       "&dataDe=" + encodeURIComponent('01/01/2023') +
                       "&dataAte=" + encodeURIComponent(dataAte) +
@@ -342,12 +343,12 @@
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                if(output == resultados){
+                if(output.id == 'resultados'){
                     output.innerHTML = xhr.responseText;
+                    verificaSetor();
                 }else
                 if(output == 'verificarSetor'){
                     //se a resposta for 1, é setor tecnologia
-
                     if(xhr.responseText == 1){
                         controlarChamados();
                     }

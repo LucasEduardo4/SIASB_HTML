@@ -5,8 +5,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         $IDChamado = $_POST['ChamadoID'];
 
-        $sql = "SELECT * FROM tbchamados WHERE IDChamado = $IDChamado"; // fazer os joins, pra retornar os nomes ao inves dos ID's.
-
+        // $sql = "SELECT * FROM tbchamados WHERE IDChamado = $IDChamado"; // fazer os joins, pra retornar os nomes ao inves dos ID's.
+        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, c.categoria
+                FROM TBChamados c
+                LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus
+                LEFT JOIN TBUsuario a on c.responsavel = a.IDUsuario
+                LEFT JOIN TBUsuario u on c.autor = u.IDUsuario    
+                LEFT JOIN TBEquipamentos e on c.equipamento = e.sti_ID
+                WHERE IDChamado = $IDChamado";
+                // LEFT JOIN tbligacaochamados_log lcl on c.IDChamado = lcl.IDChamado
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -25,6 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $equipamento = $row["equipamento"];
                     $imagem = $row["imagem"];
                     $categoria = $row["categoria"];
+                    // $ligacaoChamadoID = $row["ligacaoChamadoID"];
                     
                     $resultArray['IDChamado'] = $IDChamado;
                     $resultArray['assunto'] = $assunto;
@@ -36,6 +44,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $resultArray['equipamento'] = $equipamento;
                     $resultArray['imagem'] = $imagem;
                     $resultArray['categoria'] = $categoria;
+                    // $resultArray['ligacaoChamadoID'] = $ligacaoChamadoID;
                 }
                     
                     echo json_encode($resultArray);

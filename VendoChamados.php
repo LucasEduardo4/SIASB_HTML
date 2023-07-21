@@ -1,7 +1,7 @@
 <?php
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if(isset($_POST['firstSelect'])){
+    if(isset($_POST['Select'])){
         $conn = mysqli_connect("localhost", "root", "", "siasb");
         $username = $_SESSION['username'];
         $sql = "SELECT * FROM tbusuario where nome = '$username'";
