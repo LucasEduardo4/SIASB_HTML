@@ -23,10 +23,10 @@ $usuario_ = $_SESSION['username'];
 
 // Verificar se o usuário existe
 // Preparar e executar a consulta SQL para inserir os dados na tabela
-$sql = "SET @ultimoID = (SELECT MAX(ID) FROM tbagenda);
+$sql = "SET @ultimoID = (SELECT MAX(IDAgenda) FROM tbagenda);
         SET @ultimoID = IFNULL(@ultimoID, 0) + 1;
         SET @IDUsuario = (SELECT IDUsuario FROM tbusuario WHERE nome = '$usuario_');
-        INSERT INTO tbagenda (ID, mensagem, dia, IDUsuario) VALUES (@ultimoID, '$message', '$date', @IDUsuario)";
+        INSERT INTO tbagenda (IDAgenda, mensagem, dia, IDUsuario) VALUES (@ultimoID, '$message', '$date', @IDUsuario)";
 if (mysqli_multi_query($conn, $sql)) {
     echo "Nova seção adicionada com sucesso!";
 } else {
