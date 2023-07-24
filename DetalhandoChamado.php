@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['ChamadoID'])){
         $conn = mysqli_connect("localhost", "root", "", "siasb");
@@ -46,11 +48,77 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $resultArray['categoria'] = $categoria;
                     // $resultArray['ligacaoChamadoID'] = $ligacaoChamadoID;
                 }
-                    
-                    echo json_encode($resultArray);
-                    
             }
         }
+
+        class LogChamado {
+            public $IDLog;
+            public $mensagem;
+            public $dataAlteracao;
+            public $responsavel;
+            public $status;
+        
+            public function __construct($IDLog, $mensagem, $dataAlteracao, $responsavel, $status) {
+                $this->IDLog = $IDLog;
+                $this->mensagem = $mensagem;
+                $this->dataAlteracao = $dataAlteracao;
+                $this->responsavel = $responsavel;
+                $this->status = $status;
+            }
+        }
+        
+        $sql2 = "SELECT IDLog, mensagem, dataAlteracao, u.nome as 'responsavel', sc.descricao as 'status', referencia FROM TBLog_chamado
+                left join tbusuario u on responsavel = u.IDUsuario
+                left join tbstatus_chamado sc on status = sc.IDStatus WHERE referencia = $IDChamado";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->execute();
+        $result2 = $stmt2->get_result();
+        
+        $resultLogs = array();
+        if ($result->num_rows > 0) {
+            while ($row2 = $result2->fetch_assoc()) {
+                $logChamado = new LogChamado(
+                    $row2["IDLog"],
+                    $row2["mensagem"],
+                    $row2["dataAlteracao"],
+                    $row2["responsavel"],
+                    $row2["status"]
+                );
+                $resultLogs[] = $logChamado;
+            }
+        }
+        
+        $resultArray['logs'] = $resultLogs;
+            
+            echo json_encode($resultArray);
+            
+    
+        
     }
 }
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['gerarLog'])){
+        $conn = mysqli_connect("localhost", "root", "", "siasb");
+    
+        $status = $_POST['status'];
+        $mensagem = $_POST['mensagem'];
+        $referencia = $_POST['referencia'];
+        $responsavel = $_SESSION['username'];
+
+        $sql="SET @responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '$responsavel');
+        INSERT INTO tblog_chamado(IDLog, mensagem, dataAlteracao, responsavel, status, referencia)
+        VALUES (NULL, '$mensagem', NOW(), @responsavel, $status, $referencia)";
+
+        if (mysqli_multi_query($conn, $sql)) {
+            echo "Novo status do chamado adicionado com sucesso!";
+        } else {
+            echo "Erro ao adicionar novo status de chamado: " . mysqli_error($conn);
+        }
+            // echo $sql;
+        $conn->close();
+    }
+}
+
+
 ?>

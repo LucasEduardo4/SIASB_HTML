@@ -1,70 +1,91 @@
 <!-- Voltar no DetalhandoChamado.php (falta fazer os joins pra substituir os ID's pelos nomes) -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="sidebars/bootstrap.min.css">
-    <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 
-    <title>Detalhando Chamado</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+  <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+  <title>Detalhando Chamado</title>
 </head>
+
 <body>
-    <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Detalhes do Chamado</h4>
-                <h5 class="card-text" id="numChamado">Chamado nº </h5>
-                <hr>
-                <h5 class="card-text" id="assunto">Assunto: </h5>
-                <hr>
-                <p class="card-text" id="descricao">Descrição: </p>
-                <hr>
-                <p class="card-text">Logs: </p>
-                <div class="resultados_log" id="resultados_log">
-                  <p></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Informações Adicionais</h5>
-                <p class="card-text" id="autor">Autor: </p>
-                <p class="card-text" id="responsavel">Analista Responsável: </p>
-                <p class="card-text" id="dataAbertura">Data de Abertura: </p>
-                <p class="card-text" id="status">Status: </p>
-                <p class="card-text" id="equipamento">Equipamento: </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card m-3">
+          <div class="card-body">
+            <h4 class="card-title">Detalhes do Chamado</h4>
+            <h5 class="card-text" id="numChamado">Chamado nº </h5>
+            <hr>
+            <h5 class="card-text" id="assunto">Assunto: </h5>
+            <hr>
+            <p class="card-text" id="descricao">Descrição: </p>
+            <hr>
+            <p class="card-text">Logs:</p>
+            <div class="resultados_log" id="resultados_log">
+              <div class="container mt-4" id="logsContainer">
+                <!-- Div pré-existente que exibirá os logs -->
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-    <script src="sidebars/bootstrap.bundle.min.js"></script>
+      <div class="col-md-4">
+        <div class="container my-3 p-0">
+          <button type="button" class="btn btn-success" onclick="alterarChamado()">
+            Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
+          </button>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Informações Adicionais</h5>
+            <p class="card-text" id="autor">Autor: </p>
+            <p class="card-text" id="responsavel">Analista Responsável: </p>
+            <p class="card-text" id="dataAbertura">Data de Abertura: </p>
+            <p class="card-text" id="status">Status: </p>
+            <p class="card-text" id="equipamento">Equipamento: </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="m-5">os triggers tem que ser para: quando alterar o status do log, e também o usuário responsável pelo
+    chamado.</p>
+
+  <script src="sidebars/bootstrap.bundle.min.js"></script>
   <script>
     var url = new URL(window.location.href);
     var IDChamado = url.searchParams.get("IDChamado"); //22
 
-    connection('ChamadoID=' + encodeURIComponent(IDChamado));
+    connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
-  function connection(data){      
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "DetalhandoChamado.php", true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // console.log(xhr.responseText);
-        unParse(xhr.responseText);
-      }
-    };
-    xhr.send(data);
-  }
+    function connection(data, operation) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "DetalhandoChamado.php", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if (operation == 1) {
 
-    function unParse(data) {
+            console.log(xhr.responseText);
+            unParse(xhr.responseText);
+          } else
+            if (operation == 2) {
+              console.log(xhr.responseText);
+            }
+        }
+      };
+      xhr.send(data);
+    }
+
+    function unParse(data, recursao) {
       var dadosObjeto = JSON.parse(data)
       var IDChamado = dadosObjeto.IDChamado;
       var assunto = dadosObjeto.assunto;
@@ -76,13 +97,16 @@
       var equipamento = dadosObjeto.equipamento;
       var imagem = dadosObjeto.imagem;
       var categoria = dadosObjeto.categoria;
+      var logs = dadosObjeto.logs;
+      console.log(logs);
       // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
 
+      exibeLogs(logs);
 
       dataAbertura = formatarDataHora(dataAbertura);
-      
+
       document.getElementById("assunto").innerHTML += assunto;
-      document.getElementById("descricao").innerHTML += '<br>'+ descricao;
+      document.getElementById("descricao").innerHTML += '<br>' + descricao;
       document.getElementById("dataAbertura").innerHTML += dataAbertura;
       document.getElementById("status").innerHTML += status_chamado;
       document.getElementById("responsavel").innerHTML += responsavel;
@@ -96,7 +120,47 @@
       // }
     }
 
-    
+    function exibeLogs(logs) {
+      const logsContainer = document.getElementById("logsContainer");
+
+      logs.forEach((log) => {
+        const div = document.createElement("div");
+        div.classList.add("row", "mb-3");
+
+        const col = document.createElement("div");
+        col.classList.add("col", "px-0");
+
+        const dFlex = document.createElement("div");
+        dFlex.classList.add("d-flex");
+
+        const div1 = document.createElement("div");
+
+        const responsavelStatus = document.createElement("p");
+        responsavelStatus.classList.add("mb-0");
+        responsavelStatus.textContent = log.responsavel + " alterou status para: " + log.status;
+        div1.appendChild(responsavelStatus);
+
+        const div2 = document.createElement("div");
+        div2.classList.add("border-start", "border-primary", "px-3");
+
+        const mensagem = document.createElement("p");
+        mensagem.classList.add("mb-0");
+        mensagem.textContent = "motivo:  " + log.mensagem;
+        div2.appendChild(mensagem);
+
+        const dataParagrafo = document.createElement("p");
+        dataParagrafo.classList.add("mb-0");
+        dataParagrafo.textContent = formatarDataHora(log.dataAlteracao);
+        div2.appendChild(dataParagrafo);
+
+        div.appendChild(col);
+        col.appendChild(dFlex);
+        dFlex.appendChild(div1);
+        div.appendChild(div2);
+
+        logsContainer.appendChild(div);
+      });
+    }
 
     function formatarDataHora(dataOriginal) {
       const date = new Date(dataOriginal);
@@ -109,8 +173,72 @@
       return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
     }
 
+    function alterarChamado() {
+      // Criando um formulário HTML
+      const formHTML = `
+      <form id="alterarChamadoForm" class="text-start">
+        <div class="mb-3">
+          <div class="d-flex">
+          <label for="status" class="form-label" style="margin:auto; padding-right:5px;">Status:</label>
+            <select id="statusPopup" class="form-select form-select-sm">
+              <option value="1">Aberto</option>
+              <option value="2" selected>Andamento</option>
+              <option value="3">Pendente</option>
+              <option value="4">Fechado</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="mensagem" class="form-label">Mensagem:</label>
+          <textarea id="mensagem" class="form-control" rows="4"></textarea>
+        </div>
+      </form>
+    `;
 
-    
+      // Exibindo o popup com o formulário
+      swal({
+        title: "Atualizar o Status do Chamado",
+        content: {
+          element: "div",
+          attributes: {
+            innerHTML: formHTML,
+          },
+        },
+        buttons: {
+          confirm: {
+            text: "Alterar",
+            className: "btn btn-primary",
+          },
+          cancel: {
+            text: "Cancelar",
+            className: "btn btn-secondary",
+            visible: true,
+          },
+        },
+        closeOnClickOutside: false,
+      }).then((result) => {
+        if (result) {
+          // Aqui você pode implementar o código para enviar o formulário
+          const status = document.getElementById("statusPopup").value;
+          const mensagem = document.getElementById("mensagem").value;
+
+
+          var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado);
+          // console.log(data);
+
+          connection(data, 2);
+          // window.location.reload();
+          // Exemplo de envio do formulário
+          swal("Chamado alterado com sucesso!", "", "success");
+          setTimeout(() => {
+            swal.close();
+            window.location.reload();
+          }, 2000);
+        }
+      });
+    }
+
   </script>
 </body>
+
 </html>

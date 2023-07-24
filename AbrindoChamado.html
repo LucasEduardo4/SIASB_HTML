@@ -1,280 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="/siasb_html/flowSite/verificaSessao.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="sidebars/bootstrap.min.css">
 
 
-<style>
+  <style>
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* height: 100vh; */
+      padding: 50px;
+      max-width: 100%;
+      background: none;
+
+    }
+
+    .div-superior {
+      width: 4000px;
+      min-width: 800px;
+      background-color: #ffffff;
+      padding: 20px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 
 
+    }
 
-.container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* height: 100vh; */
-            padding: 50px;
-            max-width: 100%;
-            background: none;
+    .logo {
+      /* position: absolute; */
+      width: 40px;
+      height: 40px;
+      left: 78px;
+      margin: 0 auto;
+      background-color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* z-index: 2; */
+      top: 35px;
+    }
 
-        }
+    .logo img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 6px;
+    }
 
-        .div-superior {
-            width: 4000px;
-            min-width: 800px;
-            background-color: #ffffff;
-            padding: 20px;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    .div-inferior {
+      width: 4500px;
+      min-width: 700px;
+      background-color: #ffffff;
+      padding: 20px;
+      /* z-index: 1; */
+      margin-bottom: 50px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 
+    }
 
-        }
+    .div-azul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-width: 600px;
 
-        .logo {
-          /* position: absolute; */
-          width: 40px;
-          height: 40px;
-          left: 78px;
-          margin: 0 auto;
-          background-color: #eee;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          /* z-index: 2; */
-          top: 35px;
-        }
-
-        .logo img {
-          max-width: 100%;
-          max-height: 100%;
-          border-radius: 6px;
-        }
-
-        .div-inferior {
-            width: 4500px;
-            min-width: 700px;
-            background-color: #ffffff;
-            padding: 20px;
-            /* z-index: 1; */
-            margin-bottom: 50px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-
-        }
-
-        .div-azul {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          min-width: 600px;
-
-            /* position: absolute; */
-            background-color: blue;
-            color: #ffffff;
-            padding: 15px;
-            border-radius: 5px;
-            /* z-index: 2; */
-            /* width: 1028px; */
-            width: 100%;
-            top: 280px;
-            text-align: center;
-            font-size: 15px;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+      /* position: absolute; */
+      background-color: blue;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 5px;
+      /* z-index: 2; */
+      /* width: 1028px; */
+      width: 100%;
+      top: 280px;
+      text-align: center;
+      font-size: 15px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 
 
-        }
+    }
 
 
 
-  .form {
-  margin: 20px;
-}
+    .form {
+      margin: 20px;
+    }
 
 
-/* REALIZANDO ALTERAÇÃO DA DIV DOS CAMPOS DE CIMA DO FORMULÁRO */
-.top-div {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-/* ================================================================ */
+    /* REALIZANDO ALTERAÇÃO DA DIV DOS CAMPOS DE CIMA DO FORMULÁRO */
+    .top-div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
 
-.setor-div,
-.assunto-div {
-  flex-basis: 48%;
-}
+    /* ================================================================ */
 
-.bottom-div {
-  display: flex;
-  justify-content: space-between;
-}
+    .setor-div,
+    .assunto-div {
+      flex-basis: 48%;
+    }
 
-.descricao-div{
-  flex-basis: 60%;
+    .bottom-div {
+      display: flex;
+      justify-content: space-between;
+    }
 
-}
+    .descricao-div {
+      flex-basis: 60%;
 
-.upload-div {
-  width: 100%;
-  padding: 10px;
-  border-width: 2px;
-  border-style: dotted;
-  border-color: black;
-  border-radius: 5px;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
 
-}
+    .upload-div {
+      width: 100%;
+      padding: 10px;
+      border-width: 2px;
+      border-style: dotted;
+      border-color: black;
+      border-radius: 5px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
-textarea{
-  width: 81%;
-  padding: 100px;
-  border-radius: 7px;
+    }
 
-}
+    textarea {
+      width: 81%;
+      padding: 100px;
+      border-radius: 7px;
 
-input, select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 7px;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
 
-}
-#descricao{
-  padding: 10px 20px;
-  height: 200px;
-  width: 100%;
-  min-width: 500px;
-}
-.hardware-div{
-  max-width: 98%;
-  min-width: 300px;
-  /* display: flex; */
-  text-align: center;
-  margin: 35px 0px;
-  display:none;
-  
-}
-.hardware-div label{
-  padding: 10px;
-}
-.custom-fade-in {
-    animation-duration: 0.5s !important;
-}
-.my-custom-icon {
-  font-size:200px; /* Defina o tamanho desejado */
-}
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 7px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
+    }
 
+    #descricao {
+      padding: 10px 20px;
+      height: 200px;
+      width: 100%;
+      min-width: 500px;
+    }
 
+    .hardware-div {
+      max-width: 98%;
+      min-width: 300px;
+      /* display: flex; */
+      text-align: center;
+      margin: 35px 0px;
+      display: none;
 
+    }
 
-</style>
-    
+    .hardware-div label {
+      padding: 10px;
+    }
+
+    .custom-fade-in {
+      animation-duration: 0.5s !important;
+    }
+
+    .my-custom-icon {
+      font-size: 200px;
+      /* Defina o tamanho desejado */
+    }
+  </style>
+
 </head>
+
 <body style="background: none;">
 
   <div class="container">
     <div style="border-radius: 5px;" class="div-superior">
-        <div style="border-radius: 10px;" class="logo"> <img src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png" > </div>
-        <h2 style="color: rgb(0, 0, 181);">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
-        <p>
-          Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
-        </p>
-        <!-- Conteúdo adicional da div superior -->
+      <div style="border-radius: 10px;" class="logo"> <img
+          src="C:\Users\lucas\Downloads\pngtree-vector-notification-icon-png-image_855007.png"> </div>
+      <h2 style="color: rgb(0, 0, 181);">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
+      <p>
+        Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
+      </p>
+      <!-- Conteúdo adicional da div superior -->
     </div>
-</div>
+  </div>
 
-<div class="container">
+  <div class="container">
     <div style="border-radius: 5px; " class="div-inferior">
-        <div style="border: 2px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
-        <h2> </h2>
-        <!-- Conteúdo adicional da div inferior -->
-        <form class="blue-theme-form">
-                  
-          <div style="margin-top: 30px;" class="top-div">
-            <div class="assunto-div">
-              <label for="assunto">Assunto:</label>
-              <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto">
-            </div>
+      <div style="border: 2px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
+      <h2> </h2>
+      <!-- Conteúdo adicional da div inferior -->
+      <form class="blue-theme-form">
 
-
-            <div class="setor-div">
-              <label for="categoria">Categoria:</label>
-              <select id="categoria" name="categoria" onchange="verifySelect()" >
-                <option value="" selected hidden required>Escolha uma das opções</option>
-                <option value="hardware">Hardware</option>
-                <option value="software">Software</option>
-                <!-- Adicione mais opções conforme necessário -->
-              </select>
-            </div>
+        <div style="margin-top: 30px;" class="top-div">
+          <div class="assunto-div">
+            <label for="assunto">Assunto:</label>
+            <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto">
           </div>
 
-          <div class="hardware-div animate__animated animate__fadeInDown custom-fade-in">
-            <label for="stiID" >STI_ID:</label>
-            <input style="width: 150px;" type="text" id="stiID" name="stiID" onblur="verificaEquipamento()">
-            <label for="nomeEquipamento"> Equipamento:</label>
-            <input type="text" id="equipamentoNome" disabled value="">
-          </div>
 
-            <div style="margin-top: 0px;" class="descricao-div">
-              <label for="descricao">Descrição:</label>
-              <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
-            </div>
-            
-            <div style="margin-top: 30px;" class="upload-div">
-              <label for="imagem">Envie uma imagem do problema:</label>
-              <input type="file" id="imagem" name="imagem">
-            </div>
-            <div id="erromsg" class="container p-3 mt-3 bg-danger" style="border-radius: 16px; width: 70%; display: none;">
-              <p>Preencha corretamente as informações acima</p>
-            </div>
-
-          </form>        
-          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
-
-        <div class="modal" id="myModal"> <!-- mensagem de confirmação-->
-          <div class="modal-dialog">
-            <div class="modal-content">
-          
-              <!-- Modal Header -->
-              <div class="modal-header">
-                <h4 class="modal-title">Confirmação</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              
-              <!-- Modal body -->
-              <div class="modal-body">
-                <p>O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.</p>
-              </div>
-              
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="window.location.href='VendoChamados.html'">Fechar</button>
-              </div>
-              
-            </div>
+          <div class="setor-div">
+            <label for="categoria">Categoria:</label>
+            <select id="categoria" name="categoria" onchange="verifySelect()">
+              <option value="" selected hidden required>Escolha uma das opções</option>
+              <option value="hardware">Hardware</option>
+              <option value="software">Software</option>
+              <!-- Adicione mais opções conforme necessário -->
+            </select>
           </div>
         </div>
-        <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
+
+        <div class="hardware-div animate__animated animate__fadeInDown custom-fade-in">
+          <label for="stiID">STI_ID:</label>
+          <input style="width: 150px;" type="text" id="stiID" name="stiID" onblur="verificaEquipamento()">
+          <label for="nomeEquipamento"> Equipamento:</label>
+          <input type="text" id="equipamentoNome" disabled value="">
+        </div>
+
+        <div style="margin-top: 0px;" class="descricao-div">
+          <label for="descricao">Descrição:</label>
+          <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
+        </div>
+
+        <div style="margin-top: 30px;" class="upload-div">
+          <label for="imagem">Envie uma imagem do problema:</label>
+          <input type="file" id="imagem" name="imagem">
+        </div>
+        <div id="erromsg" class="container p-3 mt-3 bg-danger" style="border-radius: 16px; width: 70%; display: none;">
+          <p>Preencha corretamente as informações acima</p>
+        </div>
+
+      </form>
+      <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+        class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
+
+      <div class="modal" id="myModal"> <!-- mensagem de confirmação-->
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Confirmação</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <p>O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando
+                houver alteração no status.</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                onclick="window.location.href='VendoChamados.html'">Fechar</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
       <script src="sidebars/bootstrap.bundle.min.js"></script>
       <script>
-          function enviarFormulario() {
-            var assunto = document.getElementById("assunto").value;
-            var descricao = document.getElementById("descricao").value;
-            var imagem = document.getElementById("imagem").value;
-            var selectCategoria = document.getElementById("categoria");
-            var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
-            var equipamento = "NULL";
+        function enviarFormulario() {
+          var assunto = document.getElementById("assunto").value;
+          var descricao = document.getElementById("descricao").value;
+          var imagem = document.getElementById("imagem").value;
+          var selectCategoria = document.getElementById("categoria");
+          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
+          var equipamento = "NULL";
 
-            if(categoria == "hardware"){
-              equipamento = document.getElementById("stiID").value;
-            }
-            strTeste=`
+          if (categoria == "hardware") {
+            equipamento = document.getElementById("stiID").value;
+          }
+          strTeste = `
             IDChamado       ->  Auto_Increment
             assunto         ->  ${assunto},
             descricao       ->  ${descricao}
@@ -286,65 +292,66 @@ input, select {
             categoria       ->  ${categoria}
             imagem          ->  null(meanwhile)
             `
-            // console.log(strTeste)
-            
-            if (assunto == '' || descricao == '' || categoria == '') {
-              console.log("Entrou no IF aqui...");
-              document.getElementById("erromsg").style.display = 'flex';
-            }else{
+          // console.log(strTeste)
 
-              var xhr = new XMLHttpRequest();
-              xhr.open("POST", "AbrindoChamado.php", true);
-              xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-              xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                  console.log(xhr.responseText);
-                }
-              };
-              var data = "assunto=" + encodeURIComponent(assunto) +
+          if (assunto == '' || descricao == '' || categoria == '') {
+            console.log("Entrou no IF aqui...");
+            document.getElementById("erromsg").style.display = 'flex';
+          } else {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "AbrindoChamado.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+              }
+            };
+            var data = "assunto=" + encodeURIComponent(assunto) +
               "&descricao=" + encodeURIComponent(descricao) +
               "&equipamento=" + encodeURIComponent(equipamento) +
               "&categoria=" + encodeURIComponent(categoria);
             xhr.send(data);
             showModal();
           }
-            
-          }
-          function showModal(){
 
-            var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-            myModal.show();
-          }
+        }
+        function showModal() {
 
-          function verifySelect(){
-            if(document.getElementById("categoria")[1].selected == true){
-              document.querySelector(".hardware-div").style.display="flex";
-            }else
-            if(document.getElementById("categoria")[2].selected == true){
-              document.querySelector(".hardware-div").style.display="none";
+          var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+          myModal.show();
+        }
+
+        function verifySelect() {
+          if (document.getElementById("categoria")[1].selected == true) {
+            document.querySelector(".hardware-div").style.display = "flex";
+          } else
+            if (document.getElementById("categoria")[2].selected == true) {
+              document.querySelector(".hardware-div").style.display = "none";
             }
-          }
+        }
 
-          function verificaEquipamento(){
-            var selectCategoria = document.getElementById("categoria");
-            var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
-            
-            if(categoria == "hardware"){
-              var stiID = document.getElementById("stiID").value;
-              var equipamento = document.getElementById("equipamentoNome");
-              console.log(stiID);
+        function verificaEquipamento() {
+          var selectCategoria = document.getElementById("categoria");
+          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
 
-              if(stiID == 100){ //posteriormente inserir um select na tabela tbequipamentos aqui.
-                equipamento.value = "deu certo";
-              }else
-                equipamento.value="nao encontrado"
-            }
+          if (categoria == "hardware") {
+            var stiID = document.getElementById("stiID").value;
+            var equipamento = document.getElementById("equipamentoNome");
+            console.log(stiID);
+
+            if (stiID == 100) { //posteriormente inserir um select na tabela tbequipamentos aqui.
+              equipamento.value = "deu certo";
+            } else
+              equipamento.value = "nao encontrado"
           }
-        </script>
+        }
+      </script>
 
     </div>
-</div>
-</div> 
-    
+  </div>
+  </div>
+
 </body>
+
 </html>
