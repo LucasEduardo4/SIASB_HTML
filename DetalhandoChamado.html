@@ -1,9 +1,12 @@
+<!-- Voltar no DetalhandoChamado.php (falta fazer os joins pra substituir os ID's pelos nomes) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+    <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+
     <title>Detalhando Chamado</title>
 </head>
 <body>
@@ -15,11 +18,11 @@
                 <h5 class="card-title">Detalhes do Chamado</h5>
                 <p class="card-text" id="numChamado">Chamado nº </p>
                 <hr>
-                <p class="card-text">Assunto:</p>
+                <p class="card-text" id="assunto">Assunto: </p>
                 <hr>
-                <p class="card-text">Descrição:</p>
+                <p class="card-text" id="descricao">Descrição: </p>
                 <hr>
-                <p class="card-text">Logs:</p>
+                <p class="card-text">Logs: </p>
               </div>
             </div>
           </div>
@@ -27,11 +30,11 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Informações Adicionais</h5>
-                <p class="card-text">Autor:</p>
-                <p class="card-text">Analista Responsável:</p>
-                <p class="card-text">Data de Abertura:</p>
-                <p class="card-text">Status:</p>
-                <p class="card-text">Equipamento:</p>
+                <p class="card-text" id="autor">Autor: </p>
+                <p class="card-text" id="responsavel">Analista Responsável: </p>
+                <p class="card-text" id="dataAbertura">Data de Abertura: </p>
+                <p class="card-text" id="status">Status: </p>
+                <p class="card-text" id="equipamento">Equipamento: </p>
               </div>
             </div>
           </div>
@@ -39,5 +42,49 @@
       </div>
       
     <script src="sidebars/bootstrap.bundle.min.js"></script>
+  <script>
+    var url = new URL(window.location.href);
+    var IDChamado = url.searchParams.get("IDChamado"); //22
+
+    connection('ChamadoID=' + encodeURIComponent(IDChamado));
+
+  function connection(data){      
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "DetalhandoChamado.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // console.log(xhr.responseText);
+        unParse(xhr.responseText);
+      }
+    };
+    xhr.send(data);
+  }
+
+    function unParse(data) {
+      var dadosObjeto = JSON.parse(data)
+      var IDChamado = dadosObjeto.IDChamado;
+      var assunto = dadosObjeto.assunto;
+      var descricao = dadosObjeto.descricao;
+      var dataAbertura = dadosObjeto.dataAbertura;
+      var status_chamado = dadosObjeto.status_chamado;
+      var responsavel = dadosObjeto.responsavel;
+      var autor = dadosObjeto.autor;
+      var equipamento = dadosObjeto.equipamento;
+      var imagem = dadosObjeto.imagem;
+      var categoria = dadosObjeto.categoria;
+
+      document.getElementById("assunto").innerHTML += assunto;
+      document.getElementById("descricao").innerHTML += '<br>'+ descricao;
+      document.getElementById("dataAbertura").innerHTML += dataAbertura;
+      document.getElementById("status").innerHTML += status_chamado;
+      document.getElementById("responsavel").innerHTML += responsavel;
+      document.getElementById("autor").innerHTML += autor;
+      document.getElementById("equipamento").innerHTML += equipamento;
+      document.getElementById("numChamado").innerHTML += IDChamado;
+      document.getElementById("categoria").innerHTML += categoria;
+      document.getElementById("imagem").innerHTML += imagem;
+    }
+  </script>
 </body>
 </html>

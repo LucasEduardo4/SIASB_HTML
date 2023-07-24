@@ -69,6 +69,9 @@ if ($result_id_usuario) {
 
     <style>
 
+        
+
+
 body {
             font-family: Arial, sans-serif;
         }

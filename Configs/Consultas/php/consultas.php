@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "<tr>
                 <td>".$IDPessoa."</td>
                 <td id='nomeCompleto'>".$nomeCompleto."</td>
-                <td>".$cpf."</td>
+                <td id='CPF'>".$cpf."</td>
                 <td>".$matricula."</td>
                 <td>".$setor."</td>
                 <td>".$secao."</td>
@@ -102,10 +102,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['select_ready_equipment'])){
 
         $sql = "
-        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, st.descricao_setor, sc.descricao_secao FROM TBEquipamentos e
+        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, sc.descricao_secao FROM TBEquipamentos e
         join TBTipo_Equipamentos te on te.IDTipo = e.tipo
         join TBPessoa p on p.IDPessoa = e.usuario
-        join TBSetor st on e.setor = st.IDSetor
         join TBSecao sc on e.secao = sc.IDSecao
         ";
 
@@ -121,7 +120,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $ip = $row["ip"];
                 $tipo = $row["tipo"];
                 $nomeCompleto = $row["nomeCompleto"];
-                $setor = $row['descricao_setor'];
                 $secao = $row["descricao_secao"];
 
                 echo "<tr>
@@ -130,7 +128,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <td>".$ip."</td>
                 <td>".$tipo."</td>
                 <td>".$nomeCompleto."</td>
-                <td>".$setor."</td>
                 <td>".$secao."</td>
                 </tr>";
             }
@@ -156,10 +153,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $nomeCadastrado = $row['nome'];
             }
         }
-        if($nomeCadastrado == ''){
-            echo '<p name="userAvailable" id="1" >Nome de Usuário Disponível</p>';
-        }else
-            echo '<p name="userAvailable" id="2" >Nome de Usuário Indisponível</p>';
 
         $stmt->close();
         $conn->close();
@@ -179,9 +172,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $idUsuario = $_POST['idUsuario'];
         $adm = $_POST['adm'];
 
+        $hashed_password = password_hash($senha, PASSWORD_DEFAULT);
+
         $sql = "INSERT INTO TBUsuario (IDUsuario, nome, senha, administrador, habilitado) VALUES (?, ?, ?, ?, 1)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isss", $idUsuario, $nome, $senha, $adm);
+        $stmt->bind_param("isss", $idUsuario, $nome, $hashed_password, $adm);
         $stmt->execute();
         $result = $stmt->get_result();        
     }

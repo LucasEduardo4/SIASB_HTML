@@ -44,6 +44,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         echo json_encode($resultArray);
     }
 } 
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['Select_Person_on_secao'])){
         $secao = $_POST['Select_Person_on_secao'];
@@ -61,6 +62,28 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
         
+    }
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['submitForm'])){
+        $stiId = $_POST['stiID'];
+        $descricao = $_POST['descricao'];
+        $ip = $_POST['ip'];
+        $tipo = $_POST['tipo'];
+        $secao = $_POST['secao'];
+        $usuario = $_POST['usuario'];
+
+        $sql = "INSERT INTO TBEquipamentos (sti_ID, descricao, ip, tipo, usuario, secao) VALUES ('$stiId', '$descricao', '$ip', '$tipo', '$usuario', '$secao')";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if($result){
+            echo "Equipamento cadastrado com sucesso!";
+        }else{
+            echo "Erro ao cadastrar equipamento!";
+        }
     }
 }
 ?>

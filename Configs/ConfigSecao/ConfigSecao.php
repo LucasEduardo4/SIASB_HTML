@@ -50,8 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $gerente = $row1["nomeCompleto"];
             $gerentes[$IDPessoa] = $gerente;
         }
+        
         $resultArray['gerentes'] = $gerentes;
-
         // Consulta 2: SELECT * FROM TBSecao
         $sql2 = "SELECT * FROM TBSecao";
         $stmt2 = $conn->prepare($sql2);
