@@ -15,14 +15,17 @@
           <div class="col-md-8">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Detalhes do Chamado</h5>
-                <p class="card-text" id="numChamado">Chamado nº </p>
+                <h4 class="card-title">Detalhes do Chamado</h4>
+                <h5 class="card-text" id="numChamado">Chamado nº </h5>
                 <hr>
-                <p class="card-text" id="assunto">Assunto: </p>
+                <h5 class="card-text" id="assunto">Assunto: </h5>
                 <hr>
                 <p class="card-text" id="descricao">Descrição: </p>
                 <hr>
                 <p class="card-text">Logs: </p>
+                <div class="resultados_log" id="resultados_log">
+                  <p></p>
+                </div>
               </div>
             </div>
           </div>
@@ -73,7 +76,11 @@
       var equipamento = dadosObjeto.equipamento;
       var imagem = dadosObjeto.imagem;
       var categoria = dadosObjeto.categoria;
+      // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
 
+
+      dataAbertura = formatarDataHora(dataAbertura);
+      
       document.getElementById("assunto").innerHTML += assunto;
       document.getElementById("descricao").innerHTML += '<br>'+ descricao;
       document.getElementById("dataAbertura").innerHTML += dataAbertura;
@@ -82,9 +89,28 @@
       document.getElementById("autor").innerHTML += autor;
       document.getElementById("equipamento").innerHTML += equipamento;
       document.getElementById("numChamado").innerHTML += IDChamado;
-      document.getElementById("categoria").innerHTML += categoria;
-      document.getElementById("imagem").innerHTML += imagem;
+      // document.getElementById("categoria").innerHTML += categoria; ainda nao exibimos
+      // document.getElementById("imagem").innerHTML += imagem;
+      // if(ligacaoChamadoID == null){
+      //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
+      // }
     }
+
+    
+
+    function formatarDataHora(dataOriginal) {
+      const date = new Date(dataOriginal);
+      const dia = ('0' + date.getDate()).slice(-2);
+      const mes = ('0' + (date.getMonth() + 1)).slice(-2);
+      const ano = date.getFullYear().toString().slice(-2);
+      const horas = ('0' + date.getHours()).slice(-2);
+      const minutos = ('0' + date.getMinutes()).slice(-2);
+
+      return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+    }
+
+
+    
   </script>
 </body>
 </html>
