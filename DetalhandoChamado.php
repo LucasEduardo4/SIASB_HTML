@@ -109,7 +109,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $sql="SET @responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '$responsavel');
         INSERT INTO tblog_chamado(IDLog, mensagem, dataAlteracao, responsavel, status, referencia)
         VALUES (NULL, '$mensagem', NOW(), @responsavel, $status, $referencia)";
-
+        echo $sql;
         if (mysqli_multi_query($conn, $sql)) {
             echo "Novo status do chamado adicionado com sucesso!";
         } else {
@@ -120,5 +120,29 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 }
 
+if($_SERVER['REQUEST_METHOD']=== 'POST'){
+    if(isset($_POST['verificarSetor'])){
+        $conn = mysqli_connect("localhost", "root", "", "siasb");
+        $IDUsuario = $_SESSION['username'];
+        $sql = "SELECT p.setor FROM TBUsuario u
+                join tbpessoa p on p.IDPessoa = u.IDUsuario
+                where u.nome = '$IDUsuario'";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result){
+            if($result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $setor = $row["setor"];
+                    if($setor == '1'){
+                        echo "1"; //tecnologia
+                    }else
+                        echo "0"; //qqr outro
+                }
+            }
+        }
+    }
+}
 
 ?>

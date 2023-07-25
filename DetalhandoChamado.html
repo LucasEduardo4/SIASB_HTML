@@ -10,7 +10,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
+  <style>
+    .responsavel_tecnologia {
+      display: none;
+    }
+  </style>
 
   <title>Detalhando Chamado</title>
 </head>
@@ -39,7 +43,7 @@
       </div>
       <div class="col-md-4">
         <div class="container my-3 p-0">
-          <button type="button" class="btn btn-success" onclick="alterarChamado()">
+          <button type="button" class="btn btn-success responsavel_tecnologia" id="responsavel_tecnologia" onclick="alterarChamado()">
             Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
           </button>
         </div>
@@ -56,8 +60,6 @@
       </div>
     </div>
   </div>
-  <p class="m-5">os triggers tem que ser para: quando alterar o status do log, e também o usuário responsável pelo
-    chamado.</p>
 
   <script src="sidebars/bootstrap.bundle.min.js"></script>
   <script>
@@ -65,6 +67,8 @@
     var IDChamado = url.searchParams.get("IDChamado"); //22
 
     connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
+
+    verificaSetor();
 
     function connection(data, operation) {
       var xhr = new XMLHttpRequest();
@@ -74,11 +78,17 @@
         if (xhr.readyState === 4 && xhr.status === 200) {
           if (operation == 1) {
 
-            console.log(xhr.responseText);
+            // console.log(xhr.responseText);
             unParse(xhr.responseText);
           } else
             if (operation == 2) {
+              // console.log(xhr.responseText);
+            }else
+            if(operation == 'verificarSetor'){
               console.log(xhr.responseText);
+              if(xhr.responseText == '1'){
+                controlarResponsavel_Tecnologia();
+              }
             }
         }
       };
@@ -171,6 +181,16 @@
       const minutos = ('0' + date.getMinutes()).slice(-2);
 
       return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+    }
+
+    function verificaSetor(){
+        var data = "verificarSetor=" + encodeURIComponent('1');
+        connection(data, 'verificarSetor');
+    }
+    
+    function controlarResponsavel_Tecnologia(){
+        var responsavel_tecnologia = document.getElementById("responsavel_tecnologia");
+        responsavel_tecnologia.style.display = "inline";
     }
 
     function alterarChamado() {
