@@ -65,9 +65,77 @@ if ($result_id_usuario) {
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 
 
     <style>
+
+        /* Definir uma fonte mais elegante */
+        body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    color: #333;
+    text-align: center;
+}
+
+.anotacoes-list {
+    list-style: none;
+    padding: 0;
+}
+
+.anotacao-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.data {
+    margin: 0;
+    font-weight: bold;
+    color: #555;
+}
+
+.conteudo {
+    margin: 10px 0;
+}
+
+.botoes {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.botoes button {
+    margin-left: 10px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botoes button:hover {
+    background-color: #0056b3;
+}
+
+
 
         
 
@@ -412,17 +480,26 @@ body {
 
 
 <!-- Adicione este código PHP para exibir as anotações -->
-<div>
-    <h3>Ultimas Anotações Salvas:</h3>
-    <ul >
-        <?php foreach ($anotacoes_usuario as $anotacao) { ?>
-            <li id="conteudo_salvo">
-                <span>Data: <?php echo $anotacao['dia']; ?></span><br>
-                <span>Anotação: <?php echo $anotacao['mensagem']; ?></span>
-            </li>
-        <?php } ?>
-    </ul>
-</div>
+
+<div class="container">
+        <h3>Minhas Anotações:</h3>
+        <ul class="anotacoes-list">
+            <?php foreach ($anotacoes_usuario as $anotacao) { ?>
+                <li class="anotacao-item">
+                    <p class="data">Data: <?php echo $anotacao['dia']; ?></p>
+                    <p class="conteudo">Anotação: <?php echo $anotacao['mensagem']; ?></p>
+                    <div class="botoes">
+                        <button class="editar">Editar</button>
+                        <button class="excluir">Excluir</button>
+                    </div>
+                </li>
+            <?php } ?>
+        </ul>
+    </div>
+
+
+
+
 
 <!-- Mais código HTML, se houver -->
 
