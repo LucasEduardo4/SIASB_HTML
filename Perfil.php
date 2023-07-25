@@ -10,6 +10,27 @@ if (!isset($_SESSION['username'])) {
 <html>
 <head>
     <title>Informações do Usuário</title>
+
+
+    <style>
+        .container {
+            display: flex; /* Torna os elementos filhos em um flex container */
+        }
+        .div1, .div2 {
+            flex: 1; /* Define a proporção de espaço que cada div irá ocupar */
+            padding: 10px; /* Opcional: adiciona espaçamento interno às divs */
+            box-sizing: border-box; /* Opcional: inclui o padding na largura total */
+        }
+        .div1 {
+            background-color: #f0f0f0; /* Cor de fundo da primeira div */
+        }
+        .div2 {
+            background-color: #ccc; /* Cor de fundo da segunda div */
+        }
+    </style>
+
+
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,6 +56,11 @@ if (!isset($_SESSION['username'])) {
             color: #666;
         }
     </style>
+
+
+</head>
+
+
 </head>
 <body>
     <div id="user-info">
@@ -52,8 +78,9 @@ if (!isset($_SESSION['username'])) {
 
 
 
-        //================================================================
-        $username = $_SESSION['username'];
+        //===============================================================
+        $usuario_ = $_SESSION['username'];
+        $userID = $usuario_; // Substitua pelo ID do usuário que deseja atualizar
 
         $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
         $stmt = $conn->prepare($sql);
@@ -88,19 +115,68 @@ if (!isset($_SESSION['username'])) {
         ?>
     </div>
 
-    <!-- //================================================================ -->
+    
+    <!------------------------------------------- SUBINDO IMAGEM PARA FOTO DE PERFIL --------------------------------------->
 
-    <!-- REALIZANDO A ALTERAÇÃO DA SENHA -->
+    <div class="container">
+        <div class="div1">
+            <!-- Conteúdo da primeira div aqui -->
+            <h1 style="font-size: 15px;">Adicione uma foto de perfil</h1>
+    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="imagem" id="imagemInput">
+        <button type="submit">Alterar Foto</button>
+    </form>
 
-    <h2>Alteração de Senha</h2>
+
+
+    <div id="mensagemSucesso" style="display: none; color: green;">
+        <p style="padding-top: 5px;"> Foto De Perfil Atualizada com Sucesso !! </p>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const imageUrl = data.imageUrl;
+                    document.getElementById('mensagemSucesso').style.display = 'block';
+
+
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error(error));
+        });
+    </script>
+        </div>
+
+
+
+
+        
+    <div class="div2">
+            <!-- Conteúdo da segunda div aqui -->
+
+             <!-- REALIZANDO A ALTERAÇÃO DA SENHA -->
+            <h2 style="font-size: 15px;" >Alteração de Senha</h2>
 
     <form method="POST">
 
     <label for="nova_senha">Nova Senha:</label>
     <input type="password" id="nova_senha" name="nova_senha" required><br><br>
 
-    <input type="submit" value="Enviar">
+    <input type="submit" value="Alterar Senha">
     </form>
+
 
     <!-- PHP REALIZANDO A ALTERAÇÃO DA SENHA -->
 
@@ -149,8 +225,11 @@ if (!isset($_SESSION['username'])) {
     $conn->close();
 } 
 ?>
+    </div>
+    </div>
 
 
+ 
 </body>
 </html>
 
