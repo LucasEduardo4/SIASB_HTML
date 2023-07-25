@@ -22,16 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "Erro na consulta SQL: " . $conn->error;
         }
+        // IDChamado, dataAbertura, assunto, status_chamado
         
-        
+        $sql = "SELECT IDChamado, dataAbertura, assunto, sc.descricao as 'status_chamado' FROM TBChamados"; // Consulta básica ADM:
+
+        $sql .= " join tbstatus_chamado sc on status_chamado = sc.IDStatus";
+
         if($administrador){
-            $sql = "SELECT * FROM TBChamados WHERE 1=1"; // Consulta básica ADM:
-            // echo "<br> consulta básica ADM";
+            $sql .= " WHERE 1=1"; // Consulta básica ADM:
         }else{
-            $sql = "SELECT * FROM TBChamados WHERE autor = '$IDUsuario'"; //Consulta básica Usuário comum
-            // echo "<br> consulta básica Uusário Comum";
+            $sql .= " AND autor = '$IDUsuario'"; //Consulta básica Usuário comum
         }
-        
+
         $dataOption = $_POST['dataOption'];
         $dataDe = $_POST['dataDe'];
         $dataAte = $_POST['dataAte'];
@@ -56,10 +58,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($dataOption == 2) {
             $sql .= " AND dataFechamento BETWEEN '$dataDeFormatted' AND '$dataAteFormatted'";
         }
-        
-        if ($status != '') {
+        if($status == 'inicial'){
+            $sql .= " AND status_chamado != '4'";
+
+        }else        
+        if ($status != 'inicial' && $status != 5) {
             $sql .= " AND status_chamado = '$status'";
-        }
+        }else
+        if ($status == 5){
+            // $sql .= " AND status_chamado = *";
+            $sql .= " ORDER BY IDChamado ASC";
+            // echo $sql;
+        }    
         
         // Executa a consulta SQL
         $result = $conn->query($sql);
@@ -69,48 +79,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dataAbertura = $row["dataAbertura"];
                 $assunto = $row["assunto"];
                 $status_chamado = $row["status_chamado"];
-                
+ 
                 // Adicionar os valores na tabela HTML com ícones de ação
                 echo "
+                <a href='detalhandoChamado.html?IDChamado=".$IDChamado."'>
                 <div class='FaixaForm'>
                 <div class='CamposResultados' id='IDChamado'> <p style='padding-left: 10px;'>".$IDChamado."</p> </div>
                 <div class='CamposResultados'> <p>".$dataAbertura."</p> </div>
                 <div class='CamposResultados'> <p>".$assunto."</p> </div>
                 <div class='CamposResultados'> <p>".$status_chamado."</p> </div>
-                <div class='CamposResultados responsavel_tecnologia'> <h1 class='bi bi-gear' onclick='detalharChamado(this)'></h1> </div>
                 </div>
+                </a>
                 ";
+                // <div class='CamposResultados responsavel_tecnologia'> <h1 class='bi bi-gear' onclick='detalharChamado(this)'></h1> </div>
             }
         } else {
+            echo $sql;
+            echo "<br>";
             echo "Nenhum resultado encontrado para este usuário.";
         }
     }
 }
 
-if($_SERVER['REQUEST_METHOD']=== 'POST'){
-    if(isset($_POST['verificarSetor'])){
-        $conn = mysqli_connect("localhost", "root", "", "siasb");
-        $IDUsuario = $_SESSION['username'];
-        $sql = "SELECT p.setor FROM TBUsuario u
-                join tbpessoa p on p.IDPessoa = u.IDUsuario
-                where u.nome = '$IDUsuario'";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if($result){
-            if($result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $setor = $row["setor"];
-                    if($setor == '1'){
-                        echo "1";
-                    }else
-                        echo "0";
-                }
-            }
-        }
-        // http://10.0.0.118:9090/siasb_html/VendoChamados.html
-        // echo $result;
-    }
-}
 ?>
