@@ -23,8 +23,26 @@ if ($conn->connect_error) {
 
 // Supondo que você tenha o ID do usuário em uma variável chamada $userID
 
+        // =================================================== REALIZANDO TESTES =================================================
+        $usuario_ = $_SESSION['username'];
+        // Substitua pelo ID do usuário que deseja atualizar
+        // $userID = $usuario_; 
 
-$userID = 1; // Substitua pelo ID do usuário que você deseja mostrar a imagem de perfil
+        $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $usuario_);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Encontrou resultados
+            $row = $result->fetch_assoc();
+            $Meu_ID = $row["IDUsuario"];
+        }
+        // =================================================== REALIZANDO TESTES =================================================
+
+
+$userID = $Meu_ID; // Substitua pelo ID do usuário que você deseja mostrar a imagem de perfil
 
 // Consulta SQL para obter o caminho da imagem de perfil para o usuário específico
 $sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $userID";

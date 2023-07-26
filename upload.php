@@ -38,9 +38,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagem'])) {
             die("Conexão com o banco de dados falhou: " . $conn->connect_error);
         }
 
+
+
+
+        // =================================================== REALIZANDO TESTES =================================================
+        $usuario_ = $_SESSION['username'];
+        // Substitua pelo ID do usuário que deseja atualizar
+        // $userID = $usuario_; 
+
+        $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $usuario_);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Encontrou resultados
+            $row = $result->fetch_assoc();
+            $Meu_ID = $row["IDUsuario"];
+        }
+        // =================================================== REALIZANDO TESTES =================================================
+
+
+
+
+
         // Verificar se o registro do usuário já existe na tabela
         // Supondo que você tenha uma variável com o ID do usuário
-        $userID = 1; // Substitua pelo ID do usuário que deseja atualizar
+        $userID = $Meu_ID; // Substitua pelo ID do usuário que deseja atualizar
 
         $sqlCheckUser = "SELECT IDUsuario FROM tbusuario WHERE IDUsuario = $userID";
         $resultCheckUser = $conn->query($sqlCheckUser);
