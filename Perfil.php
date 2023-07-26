@@ -153,6 +153,10 @@ if (!isset($_SESSION['username'])) {
                     const imageUrl = data.imageUrl;
                     document.getElementById('mensagemSucesso').style.display = 'block';
 
+                    setTimeout(function() {
+                        parent.location.reload()
+                    }, 2000);
+
 
                 } else {
                     alert(data.message);

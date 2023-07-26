@@ -2,7 +2,7 @@
 // Verifica se o usuário está autenticado
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php"); // Redireciona para a página de login se não estiver autenticado
+    header("Location: login.html"); // Redireciona para a página de login se não estiver autenticado
     exit();
 }
 ?>
@@ -53,7 +53,7 @@ if ($result->num_rows > 0) {
     $imageUrl = $row['icone']; // Caminho da imagem de perfil do usuário
 } else {
     // Usuário não encontrado na tabela tbusuario ou não possui imagem de perfil
-    $imageUrl = 'C:\xampp\htdocs\SIASB_HTML\uploads\borboleta teste.jpg'; // Defina uma imagem padrão para casos em que o usuário não possui imagem de perfil
+    $imageUrl = 'uploads/imagem teste.jpg'; // Defina uma imagem padrão para casos em que o usuário não possui imagem de perfil
 }
 
 $conn->close();

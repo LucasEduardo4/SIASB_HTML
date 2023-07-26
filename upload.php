@@ -2,7 +2,7 @@
 // Verifica se o usuário está autenticado
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php"); // Redireciona para a página de login se não estiver autenticado
+    header("Location: login.html"); // Redireciona para a página de login se não estiver autenticado
     exit();
 }
 ?>
