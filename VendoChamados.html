@@ -289,6 +289,13 @@
                         var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
 
                         dataAte.value = dataAtual;
+                    }else
+                    if(dataOption == 2){
+                        document.getElementById("status").value = 4;
+                    }
+                    else
+                    if(dataOption == 1){
+                        document.getElementById("status").value = 5;
                     }
                 }
 
