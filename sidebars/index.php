@@ -24,7 +24,7 @@ if ($conn->connect_error) {
 // Supondo que você tenha o ID do usuário em uma variável chamada $userID
 
 
-$userID = "SELECT IDUsuario FROM tbusuario WHERE IDUsuario = "; // Substitua pelo ID do usuário que você deseja mostrar a imagem de perfil
+$userID = 1; // Substitua pelo ID do usuário que você deseja mostrar a imagem de perfil
 
 // Consulta SQL para obter o caminho da imagem de perfil para o usuário específico
 $sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $userID";
@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
     $imageUrl = $row['icone']; // Caminho da imagem de perfil do usuário
 } else {
     // Usuário não encontrado na tabela tbusuario ou não possui imagem de perfil
-    $imageUrl = 'caminho/para/imagem/default.jpg'; // Defina uma imagem padrão para casos em que o usuário não possui imagem de perfil
+    $imageUrl = 'C:\xampp\htdocs\SIASB_HTML\uploads\borboleta teste.jpg'; // Defina uma imagem padrão para casos em que o usuário não possui imagem de perfil
 }
 
 $conn->close();
@@ -392,7 +392,7 @@ body.escuro {
       <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 
 
-          
+    <!-- AQUI ESTOU REALIZANDO A INSERÇÃO DA IMAGEM DE PERFIL -->
     <div id="imagemContainer">
         <img src="<?php echo $imageUrl; ?>" alt="" width="50" height="50" class="rounded-circle me-2">
     </div>

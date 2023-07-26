@@ -80,11 +80,12 @@ if (!isset($_SESSION['username'])) {
 
         //===============================================================
         $usuario_ = $_SESSION['username'];
-        $userID = $usuario_; // Substitua pelo ID do usuário que deseja atualizar
+        // Substitua pelo ID do usuário que deseja atualizar
+        // $userID = $usuario_; 
 
         $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $username);
+        $stmt->bind_param("s", $usuario_);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -93,6 +94,9 @@ if (!isset($_SESSION['username'])) {
             $row = $result->fetch_assoc();
             $Meu_ID = $row["IDUsuario"];
         }
+
+
+        
 
         // Consulta para recuperar as informações do usuário
         $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
