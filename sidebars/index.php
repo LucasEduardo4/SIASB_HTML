@@ -172,11 +172,13 @@ body.escuro {
   color: #333;
   border-radius: 5px;
   margin-bottom: 10px; /* Alteração: adiciona margem inferior */
+  font-weight: bold;
 }
 
 .menu-item.active {
-  background-color: #007bff;
+  background-color: #00a51a;
   color: white;
+  font-weight: bold;
 }
 
 
@@ -587,6 +589,7 @@ automática da página. -->
 	else {
 		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
 	}
+
 	// ]]>
 </script>
 <!-- Code injected by live-server -->
