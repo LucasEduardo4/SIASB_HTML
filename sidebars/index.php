@@ -53,7 +53,8 @@ if ($result->num_rows > 0) {
     $imageUrl = $row['icone']; // Caminho da imagem de perfil do usuário
 } else {
     // Usuário não encontrado na tabela tbusuario ou não possui imagem de perfil
-    $imageUrl = 'uploads/imagem teste.jpg'; // Defina uma imagem padrão para casos em que o usuário não possui imagem de perfil
+    $imageUrl = 'uploads/flor teste.jpg'; 
+    // Defina uma imagem padrão para casos em que o usuário não possui imagem de perfil
 }
 
 $conn->close();

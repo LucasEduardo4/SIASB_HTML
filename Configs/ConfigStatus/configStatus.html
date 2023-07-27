@@ -52,11 +52,9 @@
         </tr>
     </table>
     <div id="resultado"></div>
-        <h3>Tela funcionando 100%</h3>
-        <p>Mas existem algumas alterações válidas:</p>
-        <ul>
-            <li>Adicionar uma verificação se quer realmente excluir</li>
-        </ul>
+        
+
+    
     <script>
         function init() {
             loadStatus()
@@ -112,6 +110,8 @@
             xhr.send("novoStatus=" + encodeURIComponent(novoStatus));
         }
 
+
+
         function setupEditButtons() {
             var editButtons = document.getElementsByClassName("bi bi-pencil");
             var saveButtons = document.getElementsByClassName("bi bi-check-square");
@@ -135,10 +135,16 @@
 
                     var removeButton = removeButtons[i];
                     removeButton.addEventListener("click", function() {
-                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
-                        var ref = element.cells[0].innerText;
-                        removeValue(ref);
-                    });
+                    // Pergunta ao usuário se deseja realmente excluir a anotação
+                    var confirmExclusao = confirm("Tem certeza que deseja excluir este status?"); //essa função abre um alerta com a mensagem selecionada
+
+                    if (confirmExclusao) {
+                    var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                    var ref = element.cells[0].innerText;
+                    removeValue(ref);
+    }
+});
+
                 })(i);
             }
         }

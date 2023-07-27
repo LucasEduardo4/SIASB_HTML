@@ -27,6 +27,10 @@ if (!isset($_SESSION['username'])) {
         .div2 {
             background-color: #ccc; /* Cor de fundo da segunda div */
         }
+        .alt_senha
+        {
+            color: green;
+        }
     </style>
 
 
@@ -139,6 +143,8 @@ if (!isset($_SESSION['username'])) {
         <p style="padding-top: 5px;"> Foto De Perfil Atualizada com Sucesso !! </p>
     </div>
 
+    
+
     <script>
         document.getElementById('uploadForm').addEventListener('submit', function (event) {
             event.preventDefault();
@@ -222,7 +228,9 @@ if (!isset($_SESSION['username'])) {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss", $hashed_password, $usuario_);
         if ($stmt->execute()) {
-            echo "Senha atualizada com sucesso!";
+            echo "<p class='alt_senha'>Senha atualizada com sucesso!</p>";
+            
+            
 
             
             

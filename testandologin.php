@@ -1,35 +1,15 @@
-<?php
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit();
-}
-?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Informações do Usuário</title>
-
-
-    <style>
-        .container {
-            display: flex; /* Torna os elementos filhos em um flex container */
-        }
-        .div1, .div2 {
-            flex: 1; /* Define a proporção de espaço que cada div irá ocupar */
-            padding: 10px; /* Opcional: adiciona espaçamento interno às divs */
-            box-sizing: border-box; /* Opcional: inclui o padding na largura total */
-        }
-        .div1 {
-            background-color: #f0f0f0; /* Cor de fundo da primeira div */
-        }
-        .div2 {
-            background-color: #ccc; /* Cor de fundo da segunda div */
-        }
-    </style>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
+    <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
+    <link rel="stylesheet" href="../lib/stylesheet.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="./../../flowSite/verificaSessao.js"></script>
 
     <style>
         body {
@@ -39,198 +19,164 @@ if (!isset($_SESSION['username'])) {
             padding: 0;
         }
 
-        h2 {
-            color: #333;
+        header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px;
+            background-color: #32a852;
+            color: #fff;
+            font-size: 20px;
         }
 
-        #user-info {
-            background-color: #fff;
-            margin: 20px;
-            padding: 20px;
+        header a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            color: #d4d4d4;
+        }
+
+        header i {
+            margin-right: 5px;
+        }
+
+        h3 {
+            color: #32a852;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        label {
+            color: #32a852;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        #user-info p {
-            margin: 10px 0;
-            color: #666;
+        button {
+            background-color: #32a852;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button i {
+            margin-right: 5px;
+        }
+
+        button:hover {
+            background-color: #2d944a;
+        }
+
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #32a852;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #d4d4d4;
+        }
+
+        table caption {
+            color: #32a852;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #resultado {
+            color: #32a852;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        #resultado h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        #resultado p {
+            font-size: 16px;
         }
     </style>
 
-
+    <title>Configurar Status</title>
 </head>
 
-
-</head>
-<body>
-    <div id="user-info">
-        <?php
-        // Conexão com o banco de dados
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "siasb";
-
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        if ($conn->connect_error) {
-            die("Falha na conexão com o banco de dados: " . $conn->connect_error);
-        }
-
-
-
-        //===============================================================
-        $usuario_ = $_SESSION['username'];
-        $userID = $usuario_; // Substitua pelo ID do usuário que deseja atualizar
-
-        $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            // Encontrou resultados
-            $row = $result->fetch_assoc();
-            $Meu_ID = $row["IDUsuario"];
-        }
-
-        // Consulta para recuperar as informações do usuário
-        $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            echo "<h2>Informações do Usuário</h2>";
-            echo "<p><strong>ID:</strong> " . $row['IDPessoa'] . "</p>";
-            echo "<p><strong>Nome Completo:</strong> " . $row['nomeCompleto'] . "</p>";
-            echo "<p><strong>CPF:</strong> " . $row['cpf'] . "</p>";
-            echo "<p><strong>Matrícula:</strong> " . $row['matricula'] . "</p>";
-            echo "<p><strong>Setor:</strong> " . $row['setor'] . "</p>";
-            echo "<p><strong>Seção:</strong> " . $row['secao'] . "</p>";
-            echo "<p><strong>Email:</strong> " . $row['email'] . "</p>";
-        } else {
-            echo "Nenhum usuário encontrado.";
-        }
-        $conn->close();
-        ?>
+<header>
+    <div>
+        <a href="../index.html">
+            <i class="bi-arrow-left-circle bi-lg"></i>
+            <span>Voltar</span>
+        </a>
     </div>
+</header>
 
-    
-    <!------------------------------------------- SUBINDO IMAGEM PARA FOTO DE PERFIL --------------------------------------->
-
-    <div class="container">
-        <div class="div1">
-            <!-- Conteúdo da primeira div aqui -->
-            <h1 style="font-size: 15px;">Adicione uma foto de perfil</h1>
-    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="imagem" id="imagemInput">
-        <button type="submit">Alterar Foto</button>
+<body onload="init()">
+    <h3>Configurar Status Chamado</h3>
+    <hr>
+    <form>
+        <label for="novoStatus">Adicionar novo status:</label>
+        <input type="text" name="novoStatus" required>
+        <button onclick="submitForm()"><i class="bi bi-plus"></i>Adicionar</button>
     </form>
-
-
-
-    <div id="mensagemSucesso" style="display: none; color: green;">
-        <p style="padding-top: 5px;"> Foto De Perfil Atualizada com Sucesso !! </p>
+    <table id="tableStatus">
+        <caption>Status Existentes:</caption>
+        <thead>
+            <tr>
+                <th>ID Status</th>
+                <th>Descrição status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="resultado">
+        <h3>Tela funcionando 100%</h3>
+        <p>Mas existem algumas alterações válidas:</p>
+        <ul>
+            <li>Adicionar uma verificação se quer realmente excluir</li>
+        </ul>
     </div>
-
     <script>
-        document.getElementById('uploadForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const imageUrl = data.imageUrl;
-                    document.getElementById('mensagemSucesso').style.display = 'block';
-
-
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => console.error(error));
-        });
+        // Restante do seu script permanece inalterado
     </script>
-        </div>
-
-
-
-
-        
-    <div class="div2">
-            <!-- Conteúdo da segunda div aqui -->
-
-             <!-- REALIZANDO A ALTERAÇÃO DA SENHA -->
-            <h2 style="font-size: 15px;" >Alteração de Senha</h2>
-
-    <form method="POST">
-
-    <label for="nova_senha">Nova Senha:</label>
-    <input type="password" id="nova_senha" name="nova_senha" required><br><br>
-
-    <input type="submit" value="Alterar Senha">
-    </form>
-
-
-    <!-- PHP REALIZANDO A ALTERAÇÃO DA SENHA -->
-
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Conectar ao banco de dados
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "siasb";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Falha na conexão com o banco de dados: " . $conn->connect_error);
-    }
-
-    // Dados desejados para atualização
-    $usuario_ = $_SESSION['username'];
-    $nova_senha = $_POST['nova_senha'];
-
-    // Verificar se o usuário existe
-    $sql = "SELECT * FROM tbusuario WHERE nome = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $usuario_);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        // Atualizar a senha
-        $hashed_password = password_hash($nova_senha, PASSWORD_DEFAULT);
-
-        $sql = "UPDATE tbusuario SET senha = ? WHERE nome = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss", $hashed_password, $usuario_);
-        if ($stmt->execute()) {
-            echo "Senha atualizada com sucesso!";
-        } else {
-            echo "Erro ao atualizar a senha: " . $stmt->error;
-        }
-
-        $stmt->close();
-    } else {
-        echo "Usuário não encontrado.";
-    }
-
-    $conn->close();
-} 
-?>
-    </div>
-    </div>
-
-
- 
 </body>
+
 </html>
-
-
