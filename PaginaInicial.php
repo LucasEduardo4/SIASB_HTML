@@ -30,6 +30,9 @@ $usuario_ = $_SESSION['username'];
 // Faça a consulta para obter o ID do usuário
 $sql_id_usuario = "SELECT IDUsuario FROM tbusuario WHERE nome = '$usuario_'";
 
+$nome_user = "SELECT nomeCompleto FROM tbusuario WHERE nome = '$usuario_'";
+
+
 $result_id_usuario = mysqli_query($conn, $sql_id_usuario);
 
 if ($result_id_usuario) {
@@ -407,6 +410,7 @@ body {
     <div class="container">
 
     
+
         <header>
             <h1>Bem-vindo, <?php echo $_SESSION['username']; ?>!</h1>
             <p>Aqui está o conteúdo restrito do painel de controle.</p>
