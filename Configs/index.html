@@ -1,6 +1,6 @@
-<!-- <?php include('../flowSite/verificaSessao.php');  ?> -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,88 +8,149 @@
     <title>Main Configs</title>
     <script src="../flowSite/verificaSessao.js"></script>
     <style>
-        a p{
-            background-color: black;
-            color: white;
-            width: fit-content;
-            border-radius: 6px;
-            padding: 5px;
-            margin-left: 30px;
+
+
+        body {
+            font-family: Arial, sans-serif;
+            
         }
-        a{
-            text-decoration: none;
+
+        header {
+            text-align: center;
+            margin: 20px 0;
         }
-        #center{
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        hr {
+            border: 1px solid #ddd;
+        }
+
+        #center {
             display: flex;
+            justify-content: space-between;
             margin: auto;
+            max-width: 800px;
         }
-        #lft{
-            /* border: solid 1px blue; */
-            width: 30%;
-            margin-left: auto;
-            border-right: solid 1px;
-            text-align: left;
+
+        .panel {
+            background-color: #ffffff;
+            padding: 30px;
+            padding-top: 50px;
+            margin-top: 60px;
+            border-radius: 8px;
+            box-shadow: 0 30px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            width: 45%;
         }
-        #rgt{
-            /* border:solid 1px red; */
-            width: 30%;
-            margin-right: auto;
-            margin-left: 40px;
+
+        .panel p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            
+        }
+
+        .panel a {
+            display: block;
+            background-image: linear-gradient(45deg, #33a852, #022c11);
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-image 0.3s; /* Transição de 0.3 segundos no degradê */
+        }
+
+
+        .panel a:hover {
+            background-image: linear-gradient(45deg, #0c642e, #6ce78d);
+        }
+
+        .modal-dialog {
+            max-width: 400px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .modal-body {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .modal-footer .btn {
+            background-color: #dc3545;
+            color: #fff;
+            border-radius: 6px;
+            padding: 10px 20px;
+            transition: background-color 0.2s;
+        }
+
+        .modal-footer .btn:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
+
 <body>
-    <header class="container container-fluid m-3">
-        <h1>Painel de Controle</h1>
+    <header >
+        <h1 style="font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; padding-top: 30px; font-size: 45px;">Painel de Controle</h1>
         <p>Tela exclusiva para administradores</p>
         <hr>
     </header>
     <div id="center">
-        <div id="lft">
-            <p>Configurações:</p>
-            <a href="ConfigStatus/configStatus.html"><p>Configurar Status</p></a>
-            <a href="ConfigSetor/ConfigSetor.html"><p>Configurar Setor</p></a>
-            <a href="ConfigSecao/ConfigSecao.html"><p>Configurar Seção</p></a>
-            <a href="ConfigEquipamento/ConfigTipoEquipamento.html"><p>Configurar Tipo Equipamento</p></a>
-            <a type="button" data-bs-toggle="modal" data-bs-target="#myModal"><p>Abrir Pop Up</p></a>
-            
+        <div class="panel">
+            <p style="font-size: 25px; font-weight: bold; text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Configurações</p>
+            <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigStatus/configStatus.html">CONFIGURAR STATUS</a>
+            <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigSetor/ConfigSetor.html">CONFIGURAR SETOR</a>
+            <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigSecao/ConfigSecao.html">CONFIGURAR SEÇÃO </a>
+            <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigEquipamento/ConfigTipoEquipamento.html">CONFIGURAR TIPO EQUIPAMENTO</a>
+            <a style="font-weight: bolder; color: white; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"  type="button" data-bs-toggle="modal" data-bs-target="#myModal">ABRIR POP UP</a>
         </div>
-        <div id="rgt">
-            <p>Consultas</p>
-            <a href="Consultas/Pessoa.html"><p>Pessoas</p></a>
-            <a href="Consultas/Equipamentos.html"><p>Equipamentos</p></a>
-
+        <div class="panel">
+            <p style="font-size: 25px; font-weight: bold; text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Consultas</p>
+            <a style="font-weight: bolder;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="Consultas/Pessoa.html">PESSOAS</a>
+            <a style="font-weight: bolder;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="Consultas/Equipamentos.html">EQUIPAMENTOS</a>
         </div>
-
-        <div class="modal" id="myModal">
-            <div class="modal-dialog">
-              <div class="modal-content">
-          
+    </div>
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                  <h4 class="modal-title">Modal Heading</h4>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="form-group" style="background-color: gainsboro; border-radius: 6px; width: fit-content; margin-left: 10px;">
                     codigoSolicitacao
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque iusto commodi dolorum aperiam eos. Autem temporibus voluptas porro nisi velit ipsa aspernatur eligendi illo distinctio. Impedit officia repudiandae laudantium maxime?</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque iusto commodi dolorum aperiam eos.
+                        Autem temporibus voluptas porro nisi velit ipsa aspernatur eligendi illo distinctio. Impedit
+                        officia repudiandae laudantium maxime?</p>
                 </div>
-          
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
-          
-              </div>
             </div>
-          </div>
+        </div>
     </div>
     <div class="container container-fluid">
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
+
 </html>

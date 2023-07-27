@@ -95,6 +95,8 @@ if (!isset($_SESSION['username'])) {
             $Meu_ID = $row["IDUsuario"];
         }
 
+        
+
 
         
 
@@ -221,9 +223,14 @@ if (!isset($_SESSION['username'])) {
         $stmt->bind_param("ss", $hashed_password, $usuario_);
         if ($stmt->execute()) {
             echo "Senha atualizada com sucesso!";
+
+            
+            
         } else {
             echo "Erro ao atualizar a senha: " . $stmt->error;
         }
+
+        
 
         $stmt->close();
     } else {
