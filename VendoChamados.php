@@ -94,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // <div class='CamposResultados responsavel_tecnologia'> <h1 class='bi bi-gear' onclick='detalharChamado(this)'></h1> </div>
             }
         } else {
-            echo $sql;
-            echo "<br>";
+            // echo $sql;
+            // echo "<br>";
             echo "Nenhum resultado encontrado para este usuário.";
         }
     }

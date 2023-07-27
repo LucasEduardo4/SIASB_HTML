@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+    <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
+    <link rel="icon" href="../icons/warning.png" sizes="192x192" />
+    <title>Relatórios</title>
+
+    <style>
+        .esse {
+            border: solid 3px black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container container-fluid esse" style="margin: auto; max-width: fit-content;">
+        <div class="mb-5">
+            <h3>Filtrar por:</h3>
+        </div>
+        <div class="my-3">
+            <label for="filtroDataAbertura">Data de Abertura:</label>
+            <input type="date" name="filtroDataAbertura" id="filtroDataAbertura" class="form-control">
+        </div>
+        <div class="my-3">
+            <label for="filtroDataFechamento">Data de Fechamento:</label>
+            <input type="date" name="filtroDataFechamento" id="filtroDataFechamento" class="form-control">
+        </div>
+        <div class="my-3">
+            <label for="filtroResponsavel">Responsável:</label>
+            <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
+                <option value="">Selecione um usuário</option>
+            </select>
+        </div>
+        <div class="my-3">
+            <label for="filtroAutor">Autor:</label>
+            <select name="filtroAutor" id="filtroAutor" class="form-control">
+                <option value="">Selecione um usuário</option>
+            </select>
+        </div>
+        <div class="my-3">
+            <label for="filtroTipo">Status do chamado:</label>
+            <select name="filtroTipo" id="filtroTipo" class="form-control">
+                <option value="1">Aberto</option>
+                <option value="2">Andamento</option>
+                <option value="3">Pendente</option>
+                <option value="4">Fechado</option>
+                <option value="5">TODOS</option>
+            </select>
+        </div>
+        <div class="my-3">
+            <label for="filtroEquipamento">Equipamento:</label>
+            <select name="filtroEquipamento" id="filtroEquipamento" class="form-control">
+                <option value="">Selecione um equipamento</option>
+            </select>
+        </div>
+        <div class="my-3">
+            <label for="filtroSetor">Setor:</label>
+            <select name="filtroSetor" id="filtroSetor" class="form-control">
+                <option value="">Selecione um setor</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="container container-fluid esse" style="margin: auto; max-width: fit-content;">
+        <label for="ordenar">Ordenar por:</label>
+        <select name="ordenar" id="ordenar" class="form-control">
+            <option value="1">Data de Abertura</option>
+            <option value="2">Data de Fechamento</option>
+            <option value="3">Status</option>
+        </select>
+        <br>
+        <div class="form-check">
+            <input type="checkbox" id="crescente" class="form-check-input" checked>
+            <label for="crescente" class="form-check-label">Crescente</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" id="decrescente" class="form-check-input">
+            <label for="decrescente" class="form-check-label">Decrescente</label>
+        </div>
+    </div>
+
+    <div class="container">
+        <button class="btn btn-primary mt-3">Gerar relatório</button>
+    </div>
+
+    <footer>
+        <div class="container mx-3 footer footer" style="margin-top: 600px;">
+            <h3>A fazer:</h3>
+            <p>Filtrar por autor</p>
+            <p>Filtrar por responsável</p>
+            <p>Filtrar por Data de Abertura</p>
+            <p>Filtrar por Data de Fechamento</p>
+            <p>Filtrar por equipamento</p>
+            <p>Filtrar por tipo de equipamento</p>
+            <p>¿Filtrar por setor/Seção ?</p>
+            <p><br><br>Agrupar por...</p>
+            <p>Ordenar por...</p>
+        </div>
+    </footer>
+</body>
+
+</html>
