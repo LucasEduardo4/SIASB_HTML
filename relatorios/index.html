@@ -11,82 +11,123 @@
 
     <style>
         .esse {
-            border: solid 3px black;
+            /* border: solid 3px black; */
+            box-shadow: 1px 2px 3px black;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        #global {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
         }
     </style>
 </head>
 
 <body>
-    <div class="container container-fluid esse" style="margin: auto; max-width: fit-content;">
-        <div class="mb-5">
-            <h3>Filtrar por:</h3>
+    <div id="global">
+        <div class="container container-fluid my-3 esse"
+            style="margin: auto; max-width: fit-content; margin: 10px 10px;"> <!-- left -->
+            <div class="mb-5">
+                <h3>Filtrar por:</h3>
+            </div>
+            <div class="my-3">
+                <label for="filtroDataAbertura">Data de Abertura:</label>
+                <input type="date" name="filtroDataAbertura" id="filtroDataAbertura" class="form-control">
+            </div>
+            <div class="my-3">
+                <label for="filtroDataFechamento">Data de Fechamento:</label>
+                <input type="date" name="filtroDataFechamento" id="filtroDataFechamento" class="form-control">
+            </div>
+            <div class="my-3">
+                <label for="filtroResponsavel">Responsável:</label>
+                <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
+                    <option value="" selected hidden>Selecione um usuário</option>
+
+                </select>
+            </div>
+            <div class="my-3">
+                <label for="filtroAutor">Autor:</label>
+                <select name="filtroAutor" id="filtroAutor" class="form-control">
+                    <option value="" selected hidden>Selecione um usuário</option>
+
+                </select>
+            </div>
+            <div class="my-3">
+                <label for="filtroTipo">Status do chamado:</label>
+                <select name="filtroTipo" id="filtroTipo" class="form-control">
+                    <option value="1">Aberto</option>
+                    <option value="2">Andamento</option>
+                    <option value="3">Pendente</option>
+                    <option value="4">Fechado</option>
+                    <option value="5" selected>TODOS</option>
+                </select>
+            </div>
+            <div class="my-3">
+                <label for="filtroEquipamento">Equipamento:</label>
+                <select name="filtroEquipamento" id="filtroEquipamento" class="form-control">
+                    <option value="" selected hidden>Selecione um equipamento</option>
+
+                </select>
+            </div>
+            <div class="my-3">
+                <label for="filtroSetor">Setor:</label>
+                <select name="filtroSetor" id="filtroSetor" class="form-control">
+                    <option value="" selected hidden>Selecione um setor</option>
+                </select>
+            </div>
         </div>
-        <div class="my-3">
-            <label for="filtroDataAbertura">Data de Abertura:</label>
-            <input type="date" name="filtroDataAbertura" id="filtroDataAbertura" class="form-control">
+
+        <div class="container container-fluid"
+            style="margin: auto; max-width: fit-content; margin-top:100px; margin: 10px 10px;">
+            <!-- right -->
+            <div class="container container-fluid esse my-2">
+                <label for="ordenar">Ordenar por:</label>
+                <select name="ordenar" id="ordenar" class="form-control">
+                    <option value="" selected hidden>Escolha uma opção</option>
+                    <option value="1">Data de Abertura</option>
+                    <option value="2">Data de Fechamento</option>
+                    <option value="3">Status</option>
+                </select>
+                <br>
+                <div class="form-check">
+                    <input type="radio" name="ordem" id="crescente" class="form-check-input" checked>
+                    <label for="crescente" class="form-check-label">Crescente</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" name="ordem" id="decrescente" class="form-check-input">
+                    <label for="decrescente" class="form-check-label">Decrescente</label>
+                </div>
+            </div>
+
+            <div class="container container-fluid esse mt-3" style="margin: auto;">
+                <div class="form-check p-0">
+
+                    <label for="" class="form-check-label">Agrupar Por:</label>
+                    <select name="" id="" class="form-control">
+                    <option value="" selected hidden>Escolha uma opções</option>
+                    <option>ID</option>>
+                    <option>Assunto</option>>
+                    <option>Data</option>>
+                    <option>Abertura</option>>
+                    <option>Data Fechamento</option>>
+                    <option>Responsável</option>>
+                    <option>Equipamento</option>>
+                    <option>Autor</option>>
+                    <option>Status</option>>
+                </select>
+            </div>
+                    
+                <div class="container px-3">
+                    <button class="btn btn-primary mt-3">Gerar relatório</button>
+                </div>
+            </div>
         </div>
-        <div class="my-3">
-            <label for="filtroDataFechamento">Data de Fechamento:</label>
-            <input type="date" name="filtroDataFechamento" id="filtroDataFechamento" class="form-control">
-        </div>
-        <div class="my-3">
-            <label for="filtroResponsavel">Responsável:</label>
-            <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
-                <option value="">Selecione um usuário</option>
-            </select>
-        </div>
-        <div class="my-3">
-            <label for="filtroAutor">Autor:</label>
-            <select name="filtroAutor" id="filtroAutor" class="form-control">
-                <option value="">Selecione um usuário</option>
-            </select>
-        </div>
-        <div class="my-3">
-            <label for="filtroTipo">Status do chamado:</label>
-            <select name="filtroTipo" id="filtroTipo" class="form-control">
-                <option value="1">Aberto</option>
-                <option value="2">Andamento</option>
-                <option value="3">Pendente</option>
-                <option value="4">Fechado</option>
-                <option value="5">TODOS</option>
-            </select>
-        </div>
-        <div class="my-3">
-            <label for="filtroEquipamento">Equipamento:</label>
-            <select name="filtroEquipamento" id="filtroEquipamento" class="form-control">
-                <option value="">Selecione um equipamento</option>
-            </select>
-        </div>
-        <div class="my-3">
-            <label for="filtroSetor">Setor:</label>
-            <select name="filtroSetor" id="filtroSetor" class="form-control">
-                <option value="">Selecione um setor</option>
-            </select>
+        <div style="margin-top: 20px;"> 
+            <iframe src="preview.php" width="900px" height="680px" frameborder="1"></iframe>
         </div>
     </div>
-
-    <div class="container container-fluid esse" style="margin: auto; max-width: fit-content;">
-        <label for="ordenar">Ordenar por:</label>
-        <select name="ordenar" id="ordenar" class="form-control">
-            <option value="1">Data de Abertura</option>
-            <option value="2">Data de Fechamento</option>
-            <option value="3">Status</option>
-        </select>
-        <br>
-        <div class="form-check">
-            <input type="checkbox" id="crescente" class="form-check-input" checked>
-            <label for="crescente" class="form-check-label">Crescente</label>
-        </div>
-        <div class="form-check">
-            <input type="checkbox" id="decrescente" class="form-check-input">
-            <label for="decrescente" class="form-check-label">Decrescente</label>
-        </div>
-    </div>
-
-    <div class="container">
-        <button class="btn btn-primary mt-3">Gerar relatório</button>
-    </div>
-
     <footer>
         <div class="container mx-3 footer footer" style="margin-top: 600px;">
             <h3>A fazer:</h3>
@@ -99,6 +140,11 @@
             <p>¿Filtrar por setor/Seção ?</p>
             <p><br><br>Agrupar por...</p>
             <p>Ordenar por...</p>
+            <p>Interessante pré visualizar antes de gerar o pdf</p>
+            <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao
+                usuário)</p>
+            <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
+                pessoa.</p>
         </div>
     </footer>
 </body>

@@ -65,7 +65,9 @@ $conn->close();
 
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
+  <!-- <script src="../flowSite/verificaSessao.js"></script> -->
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+
   <head><script src="../assets/js/color-modes.js"></script>
     
     <meta charset="utf-8">
