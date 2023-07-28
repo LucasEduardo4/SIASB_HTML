@@ -86,10 +86,40 @@ $conn->close();
 
     <style>
 
+      /* SIDEBAR DO CANTO SUPERIOR DO SISTEMA */
+
+      .sidebar {
+    width: 100%; /* Largura total da página */
+    background-color: #00a383; /* Cor de fundo da sidebar */
+    padding: 20px; /* Espaçamento interno */
+}
+
+/* Estilos para os links na sidebar */
+.sidebar ul {
+    list-style-type: none; /* Remover marcadores da lista */
+    padding: 0; /* Remover espaçamento interno da lista */
+    display: flex; /* Tornar os links flexíveis (dispostos horizontalmente) */
+}
+
+.sidebar li {
+    margin-right: 20px; /* Espaçamento entre os itens da lista */
+}
+
+.sidebar a {
+    text-decoration: none; /* Remover sublinhado dos links */
+    color: #333; /* Cor dos links */
+}
+
+/* Estilos para o conteúdo principal */
+.content {
+    padding: 20px; /* Espaçamento interno */
+}
+
+
     /* Estilo para a div do perfil */
     #imagemContainer {
-        width: 80px; /* Defina o tamanho desejado da div do perfil */
-        height: 80px;
+        width: 68px; /* Defina o tamanho desejado da div do perfil */
+        height: 68px;
         border-radius: 50%; /* Torna as bordas da div redondas para criar o formato de perfil */
         overflow: hidden; /* Esconde qualquer conteúdo que exceda os limites da div */
     }
@@ -141,6 +171,7 @@ body.escuro {
     min-width: 160px;
     padding: 10px;
     border-radius: 5%;
+    color: white;
 }
 
 /* .dropdown:hover .dropdown-content {  //CASO EU QUEIRA ATIVAR O HOUVER
@@ -169,7 +200,8 @@ body.escuro {
 .menu-item {
   cursor: pointer;
   padding: 10px;
-  background-color: white;
+  /* background-color: white; */
+  margin-right: 180px;
   color: #333;
   border-radius: 5px;
   margin-bottom: 10px; /* Alteração: adiciona margem inferior */
@@ -177,7 +209,6 @@ body.escuro {
 }
 
 .menu-item.active {
-  background-color: #00a51a;
   color: white;
   font-weight: bold;
 }
@@ -349,16 +380,43 @@ body.escuro {
   </symbol>
 </svg>
 
+<!-- CÓDIGO DA SIDEBAR SUPERIOR -->
+
+
+<div class="sidebar">
+        <!-- Conteúdo da sidebar aqui -->
+        <h2>SIASB</h2>
+        <ul>
+            <li><a href="#">NOTIFICAÇÃO</a></li>
+            <li><a href="#">ENGRENAGEM</a></li>
+            <li><a href="#">PERFIL</a></li>
+        </ul>
+    </div>
+
+
+
+
+
+
+
 <main class="d-flex flex-nowrap">
   <h1 class="visually-hidden">Sidebars</h1>
 
   <!-- POSSO REALIZAR AS ALTERAÇÕES ATRAVÉS DO DFLEX NESSE CAMPO-->
-  <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
+  <!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 100px;"> -->
+
+  <!-- <div style="background-color: green; padding-left:300px; padding-bottom:20px;" > -->
+
+  </div>
+
+  <div style="width: 70px; background-color: #00a383; padding-right:10px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
 
       <!-- <img class="bi pe-none me-2" width="40" height="32"><use xlink:href="  "></use></img> -->
 
-      <img src="https://saae.lucimarketing.com.br/wp-content/uploads/2023/03/logo-teste.png" alt="saaeb barretos" width="120" height="32">
+      <!-- LOGO DO SAAE PARA A SIDEBAR -->
+
+      <!-- <img style="padding-left:12px; padding-top: 10px;" src="uploads\Icone-Saae.png" alt="saaeb barretos" width="55" height="48"> -->
       
       <!-- <span class="fs-4">SIASB</span> -->
       
@@ -377,32 +435,30 @@ body.escuro {
 
         <div onclick="abrirHome()" >
           <li onclick="alterarCor(this)" class="menu-item">
-            <p> Home </p>
+            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" width="35" height="32">
           </li>
         </div>
         
 
 
-        <div class="dropdown" onclick="abrirDropdown()">
-          <li onclick="alterarCor(this)" class="menu-item">
-              <p>Chamados</p>
+    <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
+        <div onclick="abrirIframe('Ver Chamados')">
+          <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
+          <img  src="..\Icones Site\CHAMADO BRANCO.png"" alt="saaeb barretos" width="60" height="32" >
           </li>
-          <div class="dropdown-content">
-              <p onclick="abrirIframe('Abrir Chamado')">Abrir Chamado</p>
-              <p onclick="abrirIframe('Ver Chamados')">Ver Chamados</p>
-          </div>
+
       </div>        
 
 
         <div onclick="abrirSite()">
-          <li onclick="alterarCor(this)" class="menu-item">
-            <p>  Site </p>
+          <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
+          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" width="60" height="32">
           </li>
         </div>
 
         <div onclick="abrirConfiguracoes()">
           <li onclick="alterarCor(this)" class="menu-item">
-            <p> Painel de Controle </p>
+          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" width="35" height="32">
           </li>
         </div>
 
@@ -419,7 +475,7 @@ body.escuro {
     </div>
 
 
-        <strong style="padding-left: 10px;"><?php echo $_SESSION['username']; ?></strong>
+        <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
         

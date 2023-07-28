@@ -6644,7 +6644,7 @@ fieldset:disabled .btn {
 }
 .text-bg-dark {
     color: #fff !important;
-    background-color: RGBA(33, 37, 41, var(--bs-bg-opacity, 1)) !important;
+    background-color: RGBA(0, 163, 131 var(--bs-bg-opacity, 1)) !important;
 }
 .link-primary {
     color: RGBA(var(--bs-primary-rgb), var(--bs-link-opacity, 1)) !important;
