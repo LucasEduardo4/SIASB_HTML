@@ -22,10 +22,20 @@
             flex-wrap: wrap;
             flex-direction: row;
         }
+
+        #FiltrosSelecionados {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        #FiltrosSelecionados p {
+            flex: 0 0 calc(50% - 10px);
+            margin: 5px;
+        }
     </style>
 </head>
 
-<body>
+<body onload="selectInicial()">
     <div id="global">
         <div class="container container-fluid my-3 esse"
             style="margin: auto; max-width: fit-content; margin: 10px 10px;"> <!-- left -->
@@ -43,20 +53,19 @@
             <div class="my-3">
                 <label for="filtroResponsavel">Responsável:</label>
                 <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
-                    <option value="" selected hidden>Selecione um usuário</option>
-
                 </select>
             </div>
             <div class="my-3">
                 <label for="filtroAutor">Autor:</label>
-                <select name="filtroAutor" id="filtroAutor" class="form-control">
+                <select name="filtroAutor" id="filtroAutor" title="Só aparecem usuários que ja abriram chamado"
+                    class="form-control">
                     <option value="" selected hidden>Selecione um usuário</option>
 
                 </select>
             </div>
             <div class="my-3">
-                <label for="filtroTipo">Status do chamado:</label>
-                <select name="filtroTipo" id="filtroTipo" class="form-control">
+                <label for="filtroStatus">Status do chamado:</label>
+                <select name="filtroStatus" id="filtroStatus" class="form-control">
                     <option value="1">Aberto</option>
                     <option value="2">Andamento</option>
                     <option value="3">Pendente</option>
@@ -65,15 +74,15 @@
                 </select>
             </div>
             <div class="my-3">
-                <label for="filtroEquipamento">Equipamento:</label>
-                <select name="filtroEquipamento" id="filtroEquipamento" class="form-control">
-                    <option value="" selected hidden>Selecione um equipamento</option>
+                <label for="filtroTipoEquipamento">Tipo Equipamento:</label>
+                <select name="filtroTipoEquipamento" id="filtroTipoEquipamento" class="form-control" disabled>
+                    <option value="" selected hidden>Selecione um tipo</option>
 
                 </select>
             </div>
             <div class="my-3">
                 <label for="filtroSetor">Setor:</label>
-                <select name="filtroSetor" id="filtroSetor" class="form-control">
+                <select name="filtroSetor" id="filtroSetor" class="form-control" disabled>
                     <option value="" selected hidden>Selecione um setor</option>
                 </select>
             </div>
@@ -86,18 +95,18 @@
                 <label for="ordenar">Ordenar por:</label>
                 <select name="ordenar" id="ordenar" class="form-control">
                     <option value="" selected hidden>Escolha uma opção</option>
-                    <option value="1">Data de Abertura</option>
-                    <option value="2">Data de Fechamento</option>
-                    <option value="3">Status</option>
+                    <option value="dataAbertura">Data de Abertura</option>
+                    <option value="dataFechamento">Data de Fechamento</option>
+                    <option value="status_chamado">Status</option>
                 </select>
                 <br>
                 <div class="form-check">
-                    <input type="radio" name="ordem" id="crescente" class="form-check-input" checked>
-                    <label for="crescente" class="form-check-label">Crescente</label>
+                    <input type="radio" name="ordem" value="crescente" id="crescente" class="form-check-input" checked>
+                    <label for="crescente" class="form-check-label" value="crescente">Crescente</label>
                 </div>
                 <div class="form-check">
-                    <input type="radio" name="ordem" id="decrescente" class="form-check-input">
-                    <label for="decrescente" class="form-check-label">Decrescente</label>
+                    <input type="radio" name="ordem" value="decrescente" id="decrescente" class="form-check-input">
+                    <label for="decrescente" class="form-check-label" value="decrescente">Decrescente</label>
                 </div>
             </div>
 
@@ -105,46 +114,206 @@
                 <div class="form-check p-0">
 
                     <label for="" class="form-check-label">Agrupar Por:</label>
-                    <select name="" id="" class="form-control">
-                    <option value="" selected hidden>Escolha uma opções</option>
-                    <option>ID</option>>
-                    <option>Assunto</option>>
-                    <option>Data</option>>
-                    <option>Abertura</option>>
-                    <option>Data Fechamento</option>>
-                    <option>Responsável</option>>
-                    <option>Equipamento</option>>
-                    <option>Autor</option>>
-                    <option>Status</option>>
-                </select>
-            </div>
-                    
+                    <select name="" id="agruparPor" class="form-control">
+                        <option value="" selected hidden>Escolha uma opções</option>
+                        <option value="IDChamado">ID</option>>
+                        <option value="Assunto">Assunto</option>>
+                       <option value="dataAbertura">Data Abertura</option>>
+                        <option value="dataFechamento">Data Fechamento</option>>
+                        <option value="responsavel">Responsável</option>>
+                        <option value="equipamento">Equipamento</option>>
+                        <option value="autor">Autor</option>>
+                        <option value="status_chamado">Status</option>>
+                    </select>
+                </div>
+
                 <div class="container px-3">
-                    <button class="btn btn-primary mt-3">Gerar relatório</button>
+                    <button class="btn btn-primary mt-3" onclick="submitFilters()">Visualizar Relatório</button>
                 </div>
             </div>
         </div>
-        <div style="margin-top: 20px;"> 
-            <iframe src="preview.php" width="900px" height="680px" frameborder="1"></iframe>
+        <div id="responseDiv" style="margin-top: 20px; width: 900px; height: fit-content;" class="esse">
+            <hr>
+            <p>Filtros Selecionados:</p>
+            <div id="FiltrosSelecionados"></div>
+            <hr>
+            <p>(Exibindo apenas os 10 primeiros resultados)</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Assunto</td>
+                        <td>dataAbertura</td>
+                        <td>dataFechamento</td>
+                        <td>responsavel</td>
+                        <td>equipamento</td>
+                        <td>autor</td>
+                        <td>status_chamado</td>
+                    </tr>
+                </thead>
+                <tbody id="responseTable">
+
+                </tbody>
+            </table>
+            <!-- <iframe src="preview.php" width="900px" height="680px" frameborder="1"></iframe> -->
         </div>
+        <hr>
     </div>
+    <script>
+        function selectInicial() {
+            var data = 'SelectInicial=1';
+            var response = connection(data, 'POST', 'SelectInicial');
+            // console.log(response);
+        }
+
+        function submitFilters() {
+            var filtroDataAbertura = document.getElementById("filtroDataAbertura");
+            var filtroDataFechamento = document.getElementById("filtroDataFechamento");
+            var filtroResponsavel = document.getElementById("filtroResponsavel");
+            var filtroAutor = document.getElementById("filtroAutor");
+            var filtroStatus = document.getElementById("filtroStatus");
+            var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
+            var filtroSetor = document.getElementById("filtroSetor");
+            var ordenar = document.getElementById("ordenar");
+            var agruparPor = document.getElementById("agruparPor");
+            var ordem = document.getElementsByName("ordem");
+            if(ordem[1].checked==true){
+                ordem = ordem[1];
+            }else{
+                ordem = ordem[0];
+            }
+            // var ordemSelecionada = document.querySelector('input[name="ordem"]:checked').value;
+
+
+            var data = "filtroDataAbertura=" + encodeURIComponent(filtroDataAbertura.value) +
+                "&filtroDataFechamento=" + encodeURIComponent(filtroDataFechamento.value) +
+                "&filtroResponsavel=" + encodeURIComponent(filtroResponsavel.value) +
+                "&filtroAutor=" + encodeURIComponent(filtroAutor.value) +
+                "&filtroStatus=" + encodeURIComponent(filtroStatus.value) +
+                "&filtroTipoEquipamento=" + encodeURIComponent(filtroTipoEquipamento.value) +
+                "&filtroSetor=" + encodeURIComponent(filtroSetor.value) +
+                "&ordenar=" + encodeURIComponent(ordenar.value) +
+                "&ordem=" + encodeURIComponent(ordem.value) +
+                "&agruparPor=" + encodeURIComponent(agruparPor.value);
+
+
+            // console.log(data);
+            connection(data, 'POST', 'exibir');
+            verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
+
+            function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor) {
+                var FiltrosSelecionados = document.getElementById("FiltrosSelecionados");
+                FiltrosSelecionados.innerHTML = '';
+                if (filtroDataAbertura.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Data de Abertura: " + filtroDataAbertura.value + "</p>";
+                }
+                if (filtroDataFechamento.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Data de Fechamento: " + filtroDataFechamento.value + "</p>";
+                }
+                if (filtroResponsavel.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Responsável: " + filtroResponsavel.value + "</p>";
+                }
+                if (filtroAutor.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Autor: " + filtroAutor.value + "</p>";
+                }
+                if (filtroStatus.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Status: " + filtroStatus.value + "</p>";
+                }
+                if (filtroTipoEquipamento.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Tipo de Equipamento: " + filtroTipoEquipamento.value + "</p>";
+                }
+                if (filtroSetor.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Setor: " + filtroSetor.value + "</p>";
+                }
+                if (ordenar.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Ordenar por: " + ordenar.value + "</p>";
+                }
+                if (ordem.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Ordem: " + ordem.value + "</p>";
+                }
+                if (agruparPor.value != "") {
+                    FiltrosSelecionados.innerHTML += "<p> Agrupar por: " + agruparPor.value + "</p>";
+                }
+
+            }
+        }
+
+        function unParse(data) {
+            var dadosObjeto = JSON.parse(data)
+            // recebendo os dados do php
+            var responsaveis = dadosObjeto.responsaveis;
+            var usuarios = dadosObjeto.usuarios;
+            var status = dadosObjeto.status;
+            var tipo_equipamento = dadosObjeto.tipo_equipamento;
+            var setor = dadosObjeto.setor;
+            // declarando as variaveis que recebem os campos dos seects
+            let selectResponsavel = document.getElementById("filtroResponsavel");
+            let selectAutor = document.getElementById("filtroAutor");
+            let selectStatus = document.getElementById("filtroStatus");
+            let selectTipoEquipamento = document.getElementById("filtroTipoEquipamento");
+            let selectSetor = document.getElementById("filtroSetor");
+            //configurando uma mensagem padrão para cada select
+            selectResponsavel.innerHTML = '<option value="" selected hidden>Selecione um usuário</option>';
+            selectAutor.innerHTML = '<option value="" selected hidden>Selecione um usuário</option>';
+            selectStatus.innerHTML = '<option value="" selected hidden>Selecione um status</option>';
+            selectTipoEquipamento.innerHTML = '<option value="" selected hidden>Selecione um tipo</option>';
+            selectSetor.innerHTML = '<option value="" selected hidden>Selecione um setor</option>';
+            // adicionando os dados nos selects
+            for (let key in responsaveis) {
+                let value = responsaveis[key];
+                selectResponsavel.innerHTML += `<option value="${key}">${value}</option>`;
+            }
+            for (let key in usuarios) {
+                let value = usuarios[key];
+                selectAutor.innerHTML += `<option value="${key}">${value}</option>`;
+            }
+            for (let key in status) {
+                let value = status[key];
+                selectStatus.innerHTML += `<option value="${key}">${value}</option>`;
+            }
+            for (let key in tipo_equipamento) {
+                let value = tipo_equipamento[key];
+                selectTipoEquipamento.innerHTML += `<option value="${key}">${value}</option>`;
+            }
+            for (let key in setor) {
+                let value = setor[key];
+                selectSetor.innerHTML += `<option value="${key}">${value}</option>`;
+            }
+
+
+        }
+
+        function connection(data, method, output) {
+            var xhr = new XMLHttpRequest();
+            xhr.open(method, "preview.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (output == 'exibir') {
+                        var responseTable = document.getElementById("responseTable");
+                        responseTable.innerHTML = xhr.responseText;
+                    } else
+                        if (output == 'SelectInicial') {
+                            // console.log(xhr.response);
+                            unParse(xhr.response);
+
+                        }
+
+                }
+            }
+            xhr.send(data);
+        } 
+    </script>
     <footer>
         <div class="container mx-3 footer footer" style="margin-top: 600px;">
             <h3>A fazer:</h3>
-            <p>Filtrar por autor</p>
-            <p>Filtrar por responsável</p>
-            <p>Filtrar por Data de Abertura</p>
-            <p>Filtrar por Data de Fechamento</p>
-            <p>Filtrar por equipamento</p>
-            <p>Filtrar por tipo de equipamento</p>
-            <p>¿Filtrar por setor/Seção ?</p>
-            <p><br><br>Agrupar por...</p>
-            <p>Ordenar por...</p>
             <p>Interessante pré visualizar antes de gerar o pdf</p>
             <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao
                 usuário)</p>
             <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
                 pessoa.</p>
+            <p>Não esquecer... de deixar uma opção para selecionar quais colunas devem ser impressas, a configuração deve ser bem parecida com
+                a dos sql do php, tipo, caso tal opção esteja marcada, tal coluna deve aparecer na consulta, caso não, cai no else, e continua.</p>
         </div>
     </footer>
 </body>
