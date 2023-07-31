@@ -91,9 +91,14 @@ $conn->close();
       /* SIDEBAR DO CANTO SUPERIOR DO SISTEMA */
 
       .sidebar {
-    width: 100%; /* Largura total da página */
+    width: 97%; /* Largura total da página */
     background-color: #00a383; /* Cor de fundo da sidebar */
-    padding: 20px; /* Espaçamento interno */
+    padding: 10px; /* Espaçamento interno */
+    padding-left: 20px;
+    margin-left: 60px;
+    position: absolute;
+    padding-top: 20px;
+    display: flex;
 }
 
 /* Estilos para os links na sidebar */
@@ -104,7 +109,7 @@ $conn->close();
 }
 
 .sidebar li {
-    margin-right: 20px; /* Espaçamento entre os itens da lista */
+    margin-right: 10px; /* Espaçamento entre os itens da lista */
 }
 
 .sidebar a {
@@ -120,8 +125,8 @@ $conn->close();
 
     /* Estilo para a div do perfil */
     #imagemContainer {
-        width: 68px; /* Defina o tamanho desejado da div do perfil */
-        height: 68px;
+        width: 60px; /* Defina o tamanho desejado da div do perfil */
+        height: 60px;
         border-radius: 50%; /* Torna as bordas da div redondas para criar o formato de perfil */
         overflow: hidden; /* Esconde qualquer conteúdo que exceda os limites da div */
     }
@@ -140,6 +145,7 @@ $conn->close();
 /* Tema claro */
 body{
   background-color: #f6f6f6;
+
 }
 
 body.claro {
@@ -411,7 +417,7 @@ body.escuro {
 
   </div>
 
-  <div style="width: 70px; background-color: #00a383; padding-right:10px;">
+  <div style=" width: 60px; background-color: #00a383; padding-bottom:10px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
 
       <!-- <img class="bi pe-none me-2" width="40" height="32"><use xlink:href="  "></use></img> -->
@@ -432,12 +438,12 @@ body.escuro {
 
 
     <!-- ALTERAÇÃO REFEITA DA HOME COM LISTA DE PARAGRAFOS -->
-    <nav class="menu">
+    <nav  class="menu">
       <ul>
 
         <div onclick="abrirHome()" >
           <li onclick="alterarCor(this)" class="menu-item">
-            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" width="35" height="32">
+            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" width="25" height="22">
           </li>
         </div>
         
@@ -446,7 +452,7 @@ body.escuro {
     <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
         <div onclick="abrirIframe('Ver Chamados')">
           <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-          <img  src="..\Icones Site\CHAMADO BRANCO.png"" alt="saaeb barretos" width="60" height="32" >
+          <img  src="..\Icones Site\CHAMADO BRANCO.png"" alt="saaeb barretos" width="50" height="22" >
           </li>
 
       </div>        
@@ -454,13 +460,13 @@ body.escuro {
 
         <div onclick="abrirSite()">
           <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" width="60" height="32">
+          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" width="50" height="22">
           </li>
         </div>
 
         <div onclick="abrirConfiguracoes()">
           <li onclick="alterarCor(this)" class="menu-item">
-          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" width="35" height="32">
+          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" width="25" height="22">
           </li>
         </div>
 

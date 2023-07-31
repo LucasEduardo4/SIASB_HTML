@@ -75,7 +75,7 @@ if ($result_id_usuario) {
     <style>
 
         /* Definir uma fonte mais elegante */
-        body {
+    body {
     font-family: "Helvetica Neue", Arial, sans-serif;
     background-color: #f2f2f2;
     margin: 0;
@@ -303,7 +303,7 @@ body {
         }
 
         h1 {
-            color: blue;
+            color: #00a383;
             margin-top: 0;
         }
 
