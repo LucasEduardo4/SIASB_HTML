@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #FiltrosSelecionados {
+            display: flex;
+            flex-wrap: wrap;
+            /* Faz com que os parágrafos sejam exibidos em linhas */
+        }
+        
+        #FiltrosSelecionados p {
+            flex: 0 0 calc(50% - 10px);
+            /* Cada parágrafo ocupa metade da largura da div com um espaçamento de 10px */
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="FiltrosSelecionados">
+        <p>Data de Abertura: 2023-07-10 |</p>
+        <p>Data de Fechamento: 2023-07-26 |</p>
+        <p>Responsável: 1 |</p>
+        <p>Autor: 2 |</p>
+        <p>Status: 1 |</p>
+        <p>Ordem: undefined |</p>
+    </div>
+</body>
+
+</html>
