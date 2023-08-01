@@ -91,7 +91,7 @@ $conn->close();
       /* SIDEBAR DO CANTO SUPERIOR DO SISTEMA */
 
       .sidebar {
-    width: 97%; /* Largura total da página */
+    width: 90%; /* Largura total da página */
     background-color: #00a383; /* Cor de fundo da sidebar */
     padding: 10px; /* Espaçamento interno */
     padding-left: 20px;
@@ -99,6 +99,9 @@ $conn->close();
     position: absolute;
     padding-top: 20px;
     display: flex;
+    justify-content: flex-end;
+    z-index: 0;
+
 }
 
 /* Estilos para os links na sidebar */
@@ -106,6 +109,8 @@ $conn->close();
     list-style-type: none; /* Remover marcadores da lista */
     padding: 0; /* Remover espaçamento interno da lista */
     display: flex; /* Tornar os links flexíveis (dispostos horizontalmente) */
+    
+    
 }
 
 .sidebar li {
@@ -224,6 +229,9 @@ body.escuro {
 
       #myIframe {
       width: 100%;
+      /* position: relative;
+      display: flex; */
+      padding-top: 110px;
       }
 
       .cor_ativado {
@@ -393,12 +401,32 @@ body.escuro {
 
 <div class="sidebar">
         <!-- Conteúdo da sidebar aqui -->
-        <h2>SIASB</h2>
+        
         <ul>
             <li><a href="#">NOTIFICAÇÃO</a></li>
             <li><a href="#">ENGRENAGEM</a></li>
             <li><a href="#">PERFIL</a></li>
         </ul>
+        <div class="dropdown">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+
+
+    <!-- AQUI ESTOU REALIZANDO A INSERÇÃO DA IMAGEM DE PERFIL -->
+    <div id="imagemContainer">
+        <img src="<?php echo $imageUrl; ?>" alt="" width="50" height="50" class="rounded-circle me-2">
+    </div>
+
+
+        <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+        
+        <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
+        <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a onclick="encerrarSessao()"class="dropdown-item" href="#">SAIR</a></li>
+      </ul>
+    </div>
     </div>
 
 
