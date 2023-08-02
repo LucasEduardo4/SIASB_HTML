@@ -17,17 +17,45 @@
             /* Cada parágrafo ocupa metade da largura da div com um espaçamento de 10px */
             margin: 5px;
         }
+        .general{
+            width: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div id="FiltrosSelecionados">
-        <p>Data de Abertura: 2023-07-10 |</p>
-        <p>Data de Fechamento: 2023-07-26 |</p>
-        <p>Responsável: 1 |</p>
-        <p>Autor: 2 |</p>
-        <p>Status: 1 |</p>
-        <p>Ordem: undefined |</p>
+        <form action="preview.php" method="post">
+            <input type="text" class="general" name="gerarRelatorio" value="1">
+            <input type="text" class="general" name="geraPDF" value="1">
+            <input type="text" class="general" name="filtroDataAbertura" value="">
+            <input type="text" class="general" name="filtroDataFechamento" value="">
+            <input type="text" class="general" name="filtroResponsavel" value="">
+            <input type="text" class="general" name="filtroAutor" value="">
+            <input type="text" class="general" name="filtroStatus" value="">
+            <input type="text" class="general" name="filtroTipoEquipamento" value="">
+            <input type="text" class="general" name="filtroSetor" value="">
+            <input type="text" class="general" name="ordenar" value="">
+            <input type="text" class="general" name="ordem" value="crescente">
+            <input type="text" class="general" name="agruparPor" value="">
+
+
+            <input type="submit"  value="Gerar PDF" name="" id="">
+        </form>
+<!-- 
+    gerarRelatorio=1
+    &geraPDF=1
+    &filtroDataAbertura=
+    &filtroDataFechamento=
+    &filtroResponsavel=
+    &filtroAutor=
+    &filtroStatus=
+    &filtroTipoEquipamento=
+    &filtroSetor=
+    &ordenar=
+    &ordem=crescente
+    &agruparPor=
+ -->
     </div>
 </body>
 

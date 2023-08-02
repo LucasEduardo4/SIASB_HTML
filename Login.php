@@ -59,7 +59,7 @@ if ($result->num_rows > 0) {
           // Senha correta, redirecione para a página protegida
           session_start();
           $_SESSION['username'] = $_POST['username'];
-          header('Location: sidebars/index.html');
+          header('Location: sidebars/index.php');
           exit;
         }
       }

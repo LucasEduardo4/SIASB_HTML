@@ -7,6 +7,8 @@
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
     <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
     <link rel="icon" href="../icons/warning.png" sizes="192x192" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <title>Relatórios</title>
 
     <style>
@@ -27,65 +29,133 @@
             display: flex;
             flex-wrap: wrap;
         }
-        
+
         #FiltrosSelecionados p {
             flex: 0 0 calc(50% - 10px);
             margin: 5px;
+        }
+
+        .pointer:hover {
+            cursor: pointer;
+        }
+
+        #limpaFiltros h5::selection {
+            background-color: transparent;
+            color: black;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .borda {
+            border-bottom: solid 1px grey;
+            padding-bottom: 30px;
+        }
+
+        .ocultar {
+            display: none;
+        }
+        .center{
+            display: flex;
+            margin: auto;
+            margin-bottom: -10px;
+            margin-top: 10px;
+        }
+        #floatmsg{
+            position: absolute;
+            width: 300px;
+            border: solid 3px black;
+            top: 680px;
+            left: 240px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body onload="selectInicial()">
+    <div id="floatmsg">
+        <p>Fiz uma pausa nessa tela.. para configurar o equipamento e imagem no Chamado. quando voltar nela, configurar esses dois botões <br> <<<----</p>
+    </div>
     <div id="global">
         <div class="container container-fluid my-3 esse"
             style="margin: auto; max-width: fit-content; margin: 10px 10px;"> <!-- left -->
             <div class="mb-5">
                 <h3>Filtrar por:</h3>
             </div>
-            <div class="my-3">
-                <label for="filtroDataAbertura">Data de Abertura:</label>
-                <input type="date" name="filtroDataAbertura" id="filtroDataAbertura" class="form-control">
-            </div>
-            <div class="my-3">
-                <label for="filtroDataFechamento">Data de Fechamento:</label>
-                <input type="date" name="filtroDataFechamento" id="filtroDataFechamento" class="form-control">
-            </div>
-            <div class="my-3">
-                <label for="filtroResponsavel">Responsável:</label>
-                <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
-                </select>
-            </div>
-            <div class="my-3">
-                <label for="filtroAutor">Autor:</label>
-                <select name="filtroAutor" id="filtroAutor" title="Só aparecem usuários que ja abriram chamado"
-                    class="form-control">
-                    <option value="" selected hidden>Selecione um usuário</option>
+            <form id="formularioFiltros">
+                <div class="my-3 borda" id="divDataAbertura">
+                    <label for="">Data de Abertura:</label>
+                    <br>
+                    <select name="" id="selectDataAbertura" class="center"
+                        onchange="exibeIntervalo(document.getElementById('divDataAbertura'), this.value)">
+                        <option value="0">A partir de</option>
+                        <option value="1">Intervalo</option>
+                    </select>
+                    <br>
+                    <label for="" class="ocultar">De:</label>
+                    <input type="date" name="filtroDEDataAbertura" id="filtroDEDataAbertura" class="form-control">
+                    <label for="" class="ocultar">Até:</label>
+                    <input type="date" name="filtroATEDataAbertura" id="filtroATEDataAbertura"
+                        class="form-control ocultar">
+                </div>
+                <div class="my-3 borda" id="divDataFechamento">
+                    <label for="filtroDataFechamento">Data de Fechamento:</label>
+                    <br>
+                    <select name="" id="selectDataFechamento" class="center"
+                        onchange="exibeIntervalo(document.getElementById('divDataFechamento'), this.value)">
+                        <option value="2">Fechado Até</option>
+                        <option value="3">Intervalo</option>
+                    </select>
+                    <br>
+                    <label for="" class="ocultar">De:</label>
+                    <input type="date" name="filtroDataFechamento" id="filtroDEDataFechamento" class="form-control">
+                    <label for="" class="ocultar">Até:</label>
+                    <input type="date" name="filtroDataFechamento" id="filtroATEDataFechamento" class="form-control ocultar">
+                </div>
+                <div class="my-3">
+                    <label for="filtroResponsavel">Responsável:</label>
+                    <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
+                    </select>
+                </div>
+                <div class="my-3">
+                    <label for="filtroAutor">Autor:</label>
+                    <select name="filtroAutor" id="filtroAutor" title="Só aparecem usuários que ja abriram chamado"
+                        class="form-control">
+                        <option value="" selected hidden>Selecione um usuário</option>
 
-                </select>
-            </div>
-            <div class="my-3">
-                <label for="filtroStatus">Status do chamado:</label>
-                <select name="filtroStatus" id="filtroStatus" class="form-control">
-                    <option value="1">Aberto</option>
-                    <option value="2">Andamento</option>
-                    <option value="3">Pendente</option>
-                    <option value="4">Fechado</option>
-                    <option value="5" selected>TODOS</option>
-                </select>
-            </div>
-            <div class="my-3">
-                <label for="filtroTipoEquipamento">Tipo Equipamento:</label>
-                <select name="filtroTipoEquipamento" id="filtroTipoEquipamento" class="form-control" disabled>
-                    <option value="" selected hidden>Selecione um tipo</option>
+                    </select>
+                </div>
+                <div class="my-3">
+                    <label for="filtroStatus">Status do chamado:</label>
+                    <select name="filtroStatus" id="filtroStatus" class="form-control">
+                        <option value="1">Aberto</option>
+                        <option value="2">Andamento</option>
+                        <option value="3">Pendente</option>
+                        <option value="4">Fechado</option>
+                        <option value="5" selected>TODOS</option>
+                    </select>
+                </div>
+                <div class="my-3">
+                    <label for="filtroTipoEquipamento">Tipo Equipamento:</label>
+                    <select name="filtroTipoEquipamento" id="filtroTipoEquipamento" class="form-control" disabled>
+                        <option value="" selected hidden>Selecione um tipo</option>
 
-                </select>
-            </div>
-            <div class="my-3">
-                <label for="filtroSetor">Setor:</label>
-                <select name="filtroSetor" id="filtroSetor" class="form-control" disabled>
-                    <option value="" selected hidden>Selecione um setor</option>
-                </select>
-            </div>
+                    </select>
+                </div>
+                <div class="my-3">
+                    <label for="filtroSetor">Setor:</label>
+                    <select name="filtroSetor" id="filtroSetor" class="form-control" disabled>
+                        <option value="" selected hidden>Selecione um setor</option>
+                    </select>
+                </div>
+                <div class="container ">
+                    <a onclick="LimpaFiltros()" id="limpaFiltros" class="pointer">
+                        <h5>Limpar Filtros<i class="bi bi-eraser"></i></h5>
+                    </a>
+                </div>
         </div>
 
         <div class="container container-fluid"
@@ -94,7 +164,7 @@
             <div class="container container-fluid esse my-2">
                 <label for="ordenar">Ordenar por:</label>
                 <select name="ordenar" id="ordenar" class="form-control">
-                    <option value="" selected hidden>Escolha uma opção</option>
+                    <option value="" selected hidden>Escolha abaixo</option>
                     <option value="dataAbertura">Data de Abertura</option>
                     <option value="dataFechamento">Data de Fechamento</option>
                     <option value="status_chamado">Status</option>
@@ -115,10 +185,10 @@
 
                     <label for="" class="form-check-label">Agrupar Por:</label>
                     <select name="" id="agruparPor" class="form-control">
-                        <option value="" selected hidden>Escolha uma opções</option>
+                        <option value="" selected hidden>Escolha abaixo</option>
                         <option value="IDChamado">ID</option>>
                         <option value="Assunto">Assunto</option>>
-                       <option value="dataAbertura">Data Abertura</option>>
+                        <option value="dataAbertura">Data Abertura</option>>
                         <option value="dataFechamento">Data Fechamento</option>>
                         <option value="responsavel">Responsável</option>>
                         <option value="equipamento">Equipamento</option>>
@@ -126,49 +196,135 @@
                         <option value="status_chamado">Status</option>>
                     </select>
                 </div>
-
+                </form>
                 <div class="container px-3">
                     <button class="btn btn-primary mt-3" onclick="submitFilters()">Visualizar Relatório</button>
                 </div>
             </div>
+            <div class="container container-fluid esse mt-3">
+
+                <p>Salvar em arquivo:</p>
+                <img class="pointer" onclick="submitFilters('pdf')" src="../icons/PDF_file_icon.svg.png"
+                    alt="Ícone do PDF" width="45px">
+                <img class="pointer" onclick="submitFilters('xlsx')" src="../icons/excel.png" alt="Ícone do Excel"
+                    width="50px;">
+            </div>
         </div>
-        <div id="responseDiv" style="margin-top: 20px; width: 900px; height: fit-content;" class="esse">
+        <div id="responseDiv" style="margin-top: 20px; width: 800px; height: fit-content;" class="esse">
             <hr>
             <p>Filtros Selecionados:</p>
             <div id="FiltrosSelecionados"></div>
             <hr>
-            <p>(Exibindo apenas os 10 primeiros resultados)</p>
+            <p id="top10" style="text-align: center; display: none;">(Exibindo apenas os 10 primeiros resultados)</p>
             <table class="table">
                 <thead>
                     <tr>
                         <td>ID</td>
                         <td>Assunto</td>
-                        <td>dataAbertura</td>
-                        <td>dataFechamento</td>
-                        <td>responsavel</td>
-                        <td>equipamento</td>
-                        <td>autor</td>
-                        <td>status_chamado</td>
+                        <td>Data Abertura</td>
+                        <td>Data Fechamento</td>
+                        <td>Responsavel</td>
+                        <td>Equipamento</td>
+                        <td>Autor</td>
+                        <td>Status</td>
                     </tr>
                 </thead>
                 <tbody id="responseTable">
 
                 </tbody>
+
             </table>
-            <!-- <iframe src="preview.php" width="900px" height="680px" frameborder="1"></iframe> -->
+            <p id="errormsg" style="text-align: center; color: red; display: none;">Nenhum resultado encontrado</p>
         </div>
         <hr>
     </div>
     <script>
-        function selectInicial() {
-            var data = 'SelectInicial=1';
-            var response = connection(data, 'POST', 'SelectInicial');
-            // console.log(response);
+
+        function exibeIntervalo(divId, valor) {
+            var selectDataAbertura = document.getElementById('selectDataAbertura');
+            var selectDataFechamento = document.getElementById('selectDataFechamento');
+            var elementosOcultos = divId.getElementsByClassName('ocultar');
+
+            if (valor === '0') {
+                console.log('dataFechamento = 1')
+                for (var i = 0; i < elementosOcultos.length; i++) {
+                    elementosOcultos[i].style.display = 'none';
+                }
+            } else
+                if (valor === '1') {
+                    for (var i = 0; i < elementosOcultos.length; i++) {
+                        elementosOcultos[i].style.display = 'inline';
+                    }
+                }
+
+            if (valor === '2') {
+                for (var i = 0; i < elementosOcultos.length; i++) {
+                    elementosOcultos[i].style.display = 'none';
+                }
+            } else
+                if (valor === '3') {
+                    for (var i = 0; i < elementosOcultos.length; i++) {
+                        elementosOcultos[i].style.display = 'inline';
+                    }
+                }
         }
 
-        function submitFilters() {
-            var filtroDataAbertura = document.getElementById("filtroDataAbertura");
-            var filtroDataFechamento = document.getElementById("filtroDataFechamento");
+        function redirecionarComPOST() {
+            // Crie um formulário dinamicamente
+            var form = document.createElement('form');
+            var formularioExistente = document.getElementById('formularioFiltros');
+
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', 'preview.php');
+
+            // Campos ocultos
+            var camposOcultos = [
+                { name: 'gerarRelatorio', value: '1' },
+                { name: 'geraPDF', value: '1' },
+                { name: 'filtroDataAbertura', value: formularioExistente.filtroDEDataAbertura.value }, //<------ o problema está nesse form oculto... adicionar os campos novos
+                { name: 'filtroDataFechamento', value: formularioExistente.filtroDEDataFechamento.value },
+                { name: 'filtroResponsavel', value: formularioExistente.filtroResponsavel.value },
+                { name: 'filtroAutor', value: formularioExistente.filtroAutor.value },
+                { name: 'filtroStatus', value: formularioExistente.filtroStatus.value },
+                { name: 'filtroTipoEquipamento', value: formularioExistente.filtroTipoEquipamento.value },
+                { name: 'filtroSetor', value: formularioExistente.filtroSetor.value },
+                { name: 'ordenar', value: formularioExistente.ordenar.value },
+                { name: 'ordem', value: formularioExistente.ordem.value },
+                { name: 'agruparPor', value: formularioExistente.agruparPor.value },
+                { name: 'filtroATEDataAbertura', value: formularioExistente.filtroATEDataAbertura.value },
+                { name: 'filtroATEDataFechamento', value: formularioExistente.filtroATEDataFechamento.value}
+
+            ];
+            // Adicione os campos ocultos ao formulário
+            camposOcultos.forEach(function (campo) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', campo.name);
+                input.setAttribute('value', campo.value);
+                form.appendChild(input);
+            });
+
+            // Submeta o formulário automaticamente
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function geraRelatorio(opcao) {
+            if (opcao == 1) {
+                var data = 'gerarRelatorio=1' + '&geraPDF=1'
+                connection(data, 'POST', 'redirect')
+                //gera PDF
+            } else
+                if (opcao == 2) {
+                    var data = 'gerarRelatorio=1' + '&geraExcel=1'
+                    connection(data, 'POST', 'redirect')
+                    //gera Excel
+                }
+        }
+
+        function LimpaFiltros() {
+            var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
+            var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
             var filtroResponsavel = document.getElementById("filtroResponsavel");
             var filtroAutor = document.getElementById("filtroAutor");
             var filtroStatus = document.getElementById("filtroStatus");
@@ -177,9 +333,49 @@
             var ordenar = document.getElementById("ordenar");
             var agruparPor = document.getElementById("agruparPor");
             var ordem = document.getElementsByName("ordem");
-            if(ordem[1].checked==true){
+            var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
+            var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
+
+            filtroDEDataAbertura.value = "";
+            filtroDEDataFechamento.value = "";
+            filtroATEDataAbertura.value = "";
+            filtroATEDataFechamento.value = "";
+            filtroResponsavel.value = "";
+            filtroAutor.value = "";
+            filtroStatus.value = "";
+            filtroTipoEquipamento.value = "";
+            filtroSetor.value = "";
+            ordenar.value = "";
+            agruparPor.value = "";
+            ordem[0].checked = true;
+            ordem[1].checked = false;
+            exibeIntervalo(document.getElementById('divDataAbertura'), 0);
+            exibeIntervalo(document.getElementById('divDataFechamento'), 2);
+
+        }
+
+        function selectInicial() {
+            var data = 'SelectInicial=1';
+            var response = connection(data, 'POST', 'SelectInicial');
+            // console.log(response);
+        }
+
+        function submitFilters(relatorio) {
+            var filtroDataAbertura = document.getElementById("filtroDEDataAbertura");
+            var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
+            var filtroDataFechamento = document.getElementById("filtroDEDataFechamento");
+            var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
+            var filtroResponsavel = document.getElementById("filtroResponsavel");
+            var filtroAutor = document.getElementById("filtroAutor");
+            var filtroStatus = document.getElementById("filtroStatus");
+            var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
+            var filtroSetor = document.getElementById("filtroSetor");
+            var ordenar = document.getElementById("ordenar");
+            var agruparPor = document.getElementById("agruparPor");
+            var ordem = document.getElementsByName("ordem");
+            if (ordem[1].checked == true) {
                 ordem = ordem[1];
-            }else{
+            } else {
                 ordem = ordem[0];
             }
             // var ordemSelecionada = document.querySelector('input[name="ordem"]:checked').value;
@@ -194,12 +390,26 @@
                 "&filtroSetor=" + encodeURIComponent(filtroSetor.value) +
                 "&ordenar=" + encodeURIComponent(ordenar.value) +
                 "&ordem=" + encodeURIComponent(ordem.value) +
-                "&agruparPor=" + encodeURIComponent(agruparPor.value);
+                "&agruparPor=" + encodeURIComponent(agruparPor.value) +
+                "&filtroATEDataAbertura=" + encodeURIComponent(filtroATEDataAbertura.value) +
+                "&filtroATEDataFechamento=" + encodeURIComponent(filtroATEDataFechamento.value);
 
 
             // console.log(data);
-            connection(data, 'POST', 'exibir');
-            verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
+            if (!relatorio) {
+                connection(data, 'POST', 'exibir');
+                console.log(data);
+
+                verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
+            } else
+                if (relatorio == 'pdf') {
+                    // var data = data + "&gerarRelatorio=1" + "&geraPDF=1";
+                    // var data = 'gerarRelatorio=1' + '&geraPDF=1' + '&' + data;
+                    var data = data + '&gerarRelatorio=1' + '&geraPDF=1';
+                    console.log(data);
+
+                    connection(data, 'POST', 'relatorio')
+                }
 
             function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor) {
                 var FiltrosSelecionados = document.getElementById("FiltrosSelecionados");
@@ -291,18 +501,31 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     if (output == 'exibir') {
                         var responseTable = document.getElementById("responseTable");
-                        responseTable.innerHTML = xhr.responseText;
+                        if (xhr.responseText == 1) {
+                            document.getElementById("errormsg").style.display = "block";
+                            var top10 = document.getElementById("top10").style.display = "block";
+                            responseTable.innerHTML = '';
+                        } else {
+                            responseTable.innerHTML = xhr.responseText;
+                            document.getElementById("errormsg").style.display = "none";
+                            var top10 = document.getElementById("top10").style.display = "block";
+                        }
                     } else
                         if (output == 'SelectInicial') {
                             // console.log(xhr.response);
                             unParse(xhr.response);
 
-                        }
+                        } else
+                            if (output == 'relatorio') {
+                                // console.log(xhr.responseText);
+                                redirecionarComPOST();
 
+                            }
                 }
             }
             xhr.send(data);
-        } 
+        }
+
     </script>
     <footer>
         <div class="container mx-3 footer footer" style="margin-top: 600px;">
@@ -312,8 +535,10 @@
                 usuário)</p>
             <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
                 pessoa.</p>
-            <p>Não esquecer... de deixar uma opção para selecionar quais colunas devem ser impressas, a configuração deve ser bem parecida com
-                a dos sql do php, tipo, caso tal opção esteja marcada, tal coluna deve aparecer na consulta, caso não, cai no else, e continua.</p>
+            <p>Não esquecer... de deixar uma opção para selecionar quais colunas devem ser impressas, a configuração
+                deve ser bem parecida com
+                a dos sql do php, tipo, caso tal opção esteja marcada, tal coluna deve aparecer na consulta, caso não,
+                cai no else, e continua.</p>
         </div>
     </footer>
 </body>

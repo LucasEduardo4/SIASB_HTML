@@ -1,9 +1,13 @@
 var xhr = new XMLHttpRequest();
 
 var currentPath = window.location.pathname;
-var pathArray = currentPath.split('/');
 
-var basePath = '/'+pathArray[1]+ '/flowSite/verificaSessao.php'
+if(currentPath == 'blank'){
+    basePath = '/siasb_html/flowSite/verificaSessao.php'
+}else{
+    var pathArray = currentPath.split('/');
+    var basePath = '/'+pathArray[1]+ '/flowSite/verificaSessao.php'
+}
 
 xhr.open("POST", basePath, true);
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
