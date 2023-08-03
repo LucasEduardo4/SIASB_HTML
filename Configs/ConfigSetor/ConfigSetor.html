@@ -12,14 +12,171 @@
 
 
     <title>Config Setor</title>
-    <style>
+    <!-- <style>
         #cadastro{
             display:none;
         }
         #novo:hover{
             text-decoration: underline;
         }
-    </style>
+    </style> -->
+
+    
+<style>
+    /* Global Styles */
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header Styles */
+    .header {
+        background-color: #ffffff;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .back-button {
+        color: #000000;
+        text-decoration: none;
+        margin-right: 10px;
+        float: left;
+        margin-left: 30px;
+    }
+
+    .title {
+        margin: 0;
+        padding-right: 32%;
+        font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+        padding-top: 30px; 
+        font-size: 45px;
+        color: #000000;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 50px;
+        padding-left: 100px;
+        padding-right: 100px;
+        /* background-color: #f0f0f0; */
+        border-radius: 15px;
+        box-shadow:  10px 11px rgba(0, 0, 0, 0.1);
+
+        text-align: center; /* Center text in the main content */
+    }
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .add-status-form {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .add-status-form label {
+        margin-right: 10px;
+    }
+
+    .add-status-form input[type="text"] {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .add-status-form button {
+        background-color: #00a383;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        margin-left: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .add-status-form button i {
+        margin-right: 5px;
+    }
+
+    /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 40px;
+        border-radius: 10px;
+        overflow: hidden;
+        /* background-color: #fff; */
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+        
+    }
+
+    .table-heading {
+        background: linear-gradient(135deg, #007bff, #00cc99);
+        color: #fff;
+    }
+
+    .table-heading th {
+        padding: 4px;
+    }
+
+    table th,
+    table td {
+        padding: 12px;
+        /* border: 1px solid #00cc99; */
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Button Styles */
+    button {
+        background-color: #00cc99;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    button i {
+        margin-right: 5px;
+    }
+
+    button:hover {
+        background-color: #007bff;
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+        .main-content {
+            padding: 10px;
+        }
+
+        .add-status-form {
+            flex-direction: column;
+            
+        }
+
+        .add-status-form input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+
+</style>
 </head>
 <header>
     <div>
@@ -28,7 +185,6 @@
     </div>
 </header>
 <body onload="init()">
-    <h3>Configurar Setor</h3>
     <hr>
     <h3 id="novo" onclick="novoSetor();">Cadastrar novo setor: <i class="bi bi-plus-circle"></i></h3>
 
