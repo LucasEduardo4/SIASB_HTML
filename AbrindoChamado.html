@@ -4,10 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Abrindo Chamado</title>
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup -->
+
 
 
   <style>
@@ -198,7 +200,7 @@
       <div style="border: 2px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
       <h2> </h2>
       <!-- Conteúdo adicional da div inferior -->
-      <form class="blue-theme-form">
+      <form class="blue-theme-form" enctype="multipart/form-data">
 
         <div style="margin-top: 30px;" class="top-div">
           <div class="assunto-div">
@@ -242,35 +244,48 @@
       <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
         class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
 
-      <div class="modal" id="myModal"> <!-- mensagem de confirmação-->
-        <div class="modal-dialog">
-          <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <h4 class="modal-title">Confirmação</h4>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-              <p>O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando
-                houver alteração no status.</p>
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal"
-                onclick="window.location.href='VendoChamados.html'">Fechar</button>
-            </div>
-
-          </div>
-        </div>
-      </div>
       <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
       <script src="sidebars/bootstrap.bundle.min.js"></script>
       <script>
+
         function enviarFormulario() {
+          var assunto = document.getElementById("assunto").value;
+          var descricao = document.getElementById("descricao").value;
+          var imagemInput = document.getElementById("imagem");
+          var selectCategoria = document.getElementById("categoria");
+          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
+          var equipamento = "NULL";
+
+          if (categoria == "hardware") {
+            equipamento = document.getElementById("stiID").value;
+          }
+
+          if (assunto == '' || descricao == '' || categoria == '') {
+            document.getElementById("erromsg").style.display = 'flex';
+          } else {
+            var formData = new FormData();
+            formData.append("assunto", assunto);
+            formData.append("descricao", descricao);
+            formData.append("equipamento", equipamento);
+            formData.append("categoria", categoria);
+            formData.append("imagem", imagemInput.files[0]);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "AbrindoChamado.php", true);
+
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                // console.log(xhr.responseText);
+              }
+            };
+
+            xhr.send(formData);
+            exibirPopup();
+          }
+        }
+
+
+        function OLDenviarFormulario() {
           var assunto = document.getElementById("assunto").value;
           var descricao = document.getElementById("descricao").value;
           var imagem = document.getElementById("imagem").value;
@@ -281,22 +296,7 @@
           if (categoria == "hardware") {
             equipamento = document.getElementById("stiID").value;
           }
-          strTeste = `
-            IDChamado       ->  Auto_Increment
-            assunto         ->  ${assunto},
-            descricao       ->  ${descricao}
-            dataAbertura    ->  $datetime = date('Y-m-d H:i:s');
-            status_chamado  ->  1 //(Aberto)
-            responsavel     ->  NULL //depois será alterado
-            autor           ->  $_SESSION['username']
-            equipamento     ->  ${equipamento}
-            categoria       ->  ${categoria}
-            imagem          ->  null(meanwhile)
-            `
-          // console.log(strTeste)
-
           if (assunto == '' || descricao == '' || categoria == '') {
-            console.log("Entrou no IF aqui...");
             document.getElementById("erromsg").style.display = 'flex';
           } else {
 
@@ -313,14 +313,29 @@
               "&equipamento=" + encodeURIComponent(equipamento) +
               "&categoria=" + encodeURIComponent(categoria);
             xhr.send(data);
-            showModal();
+            exibirPopup();
           }
 
         }
-        function showModal() {
 
-          var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-          myModal.show();
+        function exibirPopup() {
+          Swal.fire({
+            icon: 'success',
+            title: 'Confirmação',
+            text: 'O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.',
+            showConfirmButton: true,
+            confirmButtonText: 'Entendi',
+            timer: 10000,
+            timerProgressBar: true, // Mostrar barra de progresso do timer
+          }).then((result) => {
+            // Após o tempo do timer, redireciona para a página desejada
+            window.location.href = 'VendoChamados.html';
+            // Verificar se o botão foi clicado
+            if (result.isConfirmed) {
+              // Redirecionar para a página desejada
+              window.location.href = 'VendoChamados.html';
+            }
+          });
         }
 
         function verifySelect() {

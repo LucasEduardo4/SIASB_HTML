@@ -66,7 +66,6 @@ $conn->close();
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <!-- <script src="../flowSite/verificaSessao.js"></script> -->
-  <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 
   <head><script src="../assets/js/color-modes.js"></script>
     
@@ -81,9 +80,14 @@ $conn->close();
       <meta name="generator" content="Hugo 0.112.5"> -->
       
     <title>HOME INICIAL SIASB</title>
+    <script src="/siasb_html/flowSite/verificaSessao.js"></script>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link href="bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192"/>    
+    <script src="bootstrap.bundle.min.js"></script>
+    <script src="sidebars.js"></script><!-- Code injected by live-server -->
+
+
 
 
     <style>
@@ -627,9 +631,7 @@ body.escuro {
 <!--  Esse Script Padrão é responsável por carregar bibliotecas e scripts adicionais, bem como fornecer recursos de interatividade e atualização 
 automática da página. -->
 
-<script src="bootstrap.bundle.min.js"></script>
 
-    <script src="sidebars.js"></script><!-- Code injected by live-server -->
 <script>
 	// <![CDATA[  <-- For SVG support
 	if ('WebSocket' in window) {

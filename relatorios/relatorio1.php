@@ -41,7 +41,8 @@ if ($result->num_rows > 0) {
         );
     }
 
-    function imprimeDados($dados){
+    function imprimeDados($dados)
+    {
 
         echo "<pre>";
         // print_r($dados);
@@ -51,7 +52,7 @@ if ($result->num_rows > 0) {
             }
             echo "<br>";
         }
-        
+
         echo "</pre>";
     }
 }
@@ -61,12 +62,13 @@ if ($result->num_rows > 0) {
 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
 
 // ------------------ FUNCTIONS --------------------- \\
-function convertData($data) {
+function convertData($data)
+{
     $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
     if ($dataHora === false) {
         return "--";
     }
-    
+
     return $dataHora->format('d/m/y H:i');
 }
 // -------------------- GLOBAL ---------------------- \\
@@ -102,7 +104,7 @@ $alturaResults = 5;
 
 $pdf->Cell(0, 10, 'Filtros selecionados:', 0, 1, 'L');
 $pdf->Cell(0, 10, 'Período:', 0, 1, 'L');
-$pdf->Cell(0,10, 'Whatever.. depois eu coloco coisas aqui' );
+$pdf->Cell(0, 10, 'Whatever.. depois eu coloco coisas aqui');
 // $pdf->Cell($pdf->GetStringWidth('Data de Abertura: X até Y') + 20, 10, 'Data de Abertura: X até Y', 0, 0, 'C');
 // $pdf->Cell(0, 10, 'Status: Aberto', 0, 0, 'C');
 
@@ -127,7 +129,7 @@ foreach ($dados as $registro) {
     $pdf->Cell($LID, $alturaResults, $registro['IDChamado'], $border, 0, 'C');
     $pdf->Cell($Lassunto, $alturaResults, $registro['assunto'], $border, 0, 'C');
     // $pdf->Cell($Ldescricao, $alturaResults, $registro['descricao'], $border, 0, 'C');
-    $pdf->Cell($LdataAbertura, $alturaResults, convertData($registro['dataAbertura']) , $border, 0, 'C');
+    $pdf->Cell($LdataAbertura, $alturaResults, convertData($registro['dataAbertura']), $border, 0, 'C');
     $pdf->Cell($LdataFechamento, $alturaResults, convertData($registro['dataFechamento']), $border, 0, 'C');
     // Usar MultiCell para permitir texto em várias linhas na coluna "responsavel"
     $pdf->Cell($Lresponsavel, $alturaResults, $registro['responsavel'], $border, 0, 'C');
@@ -137,6 +139,6 @@ foreach ($dados as $registro) {
     $pdf->Ln();
 }
 
-$pdf-> Output('relatorio.pdf', 'I')
+$pdf->Output('relatorio.pdf', 'I');
 // imprimeDados($dados);
 ?>
