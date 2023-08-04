@@ -35,7 +35,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $imagem = $row["imagem"];
                     $categoria = $row["categoria"];
                     // $ligacaoChamadoID = $row["ligacaoChamadoID"];
-                    
+
+                    // echo '<p>Chamado ID: ' . $IDChamado . '</p>';
+                    // echo '<p>Assunto: ' . $assunto . '</p>';
+                    // echo '<p>Descrição: ' . $descricao . '</p>';
+                    // echo '<p>Data de Abertura: ' . $dataAbertura . '</p>';
+                    // echo '<p>Status do Chamado: ' . $status_chamado . '</p>';
+                    // echo '<p>Responsável: ' . $responsavel . '</p>';
+                    // echo '<p>Autor: ' . $autor . '</p>';
+                    // echo '<p>Equipamento: ' . $equipamento . '</p>';
+                    // echo '<p>Categoria: ' . $categoria . '</p>';
+                    // echo '<img src="data:image/jpeg;base64,' . base64_encode($imagem) . '" width="800" alt="Imagem do chamado" />';
+                
                     $resultArray['IDChamado'] = $IDChamado;
                     $resultArray['assunto'] = $assunto;
                     $resultArray['descricao'] = $descricao;
@@ -44,9 +55,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $resultArray['responsavel'] = $responsavel;
                     $resultArray['autor'] = $autor;
                     $resultArray['equipamento'] = $equipamento;
-                    $resultArray['imagem'] = $imagem;
+                    // $resultArray['imagem'] = $imagem;
+                    $resultArray['imagem'] = base64_encode($imagem);
                     $resultArray['categoria'] = $categoria;
                     // $resultArray['ligacaoChamadoID'] = $ligacaoChamadoID;
+
+                    // if (!empty($imagem) && file_exists($imagem)) {
+                    //     // Lê o conteúdo do arquivo de imagem
+                    //     $imagemConteudo = file_get_contents($imagem);
+                    
+                    //     // Converte o conteúdo da imagem em base64
+                    //     $imagemBase64 = base64_encode($imagemConteudo);
+                    
+                    //     // Adiciona a imagem ao array de dados
+                    //     $dados['imagem'] = $imagemBase64;
+                    // } else {
+                    //     // Caso não haja imagem, atribui um valor vazio à chave 'imagem'
+                    //     $resultArray['imagem'] = '<br>Nenhuma imagem a ser exibida<br>';
+                    // }
                 }
             }
         }
