@@ -1,40 +1,41 @@
-
-
 <?php
-// excluir_anotacao.php
+// Conexão com o banco de dados (substitua os valores conforme a sua configuração)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
 
-// Verifica se foi passado um ID válido na URL para excluir a anotação específica
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $idAnotacao = $_GET['id'];
+// Conectar ao banco de dados
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Realize a conexão com o banco de dados (substitua os valores pelos apropriados para o seu ambiente)
-    $host = "localhost";
-    $usuario = "root";
-    $senha = "";
-    $bancoDeDados = "siasb";
-
-    $conexao = mysqli_connect($host, $usuario, $senha, $bancoDeDados);
-
-    // Verifica se a conexão foi bem-sucedida
-    if (!$conexao) {
-        die("Erro na conexão: " . mysqli_connect_error());
-    }
-
-    // Construa e execute a consulta SQL para excluir a anotação do banco de dados
-    $consultaExcluir = "DELETE FROM tbagenda WHERE IDAgenda = $idAnotacao";
-
-    if (mysqli_query($conexao, $consultaExcluir)) {
-        // A anotação foi excluída com sucesso
-        echo "Anotação excluída com sucesso!";
-    } else {
-        // Ocorreu um erro ao excluir a anotação
-        echo "Erro ao excluir a anotação: " . mysqli_error($conexao);
-    }
-
-    // Feche a conexão com o banco de dados
-    mysqli_close($conexao);
-} else {
-    // Se não foi fornecido um ID válido na URL, redirecione para a página principal ou exiba uma mensagem de erro
-    echo "ID de anotação inválido.";
+// Verificar a conexão
+if ($conn->connect_error) {
+  die("Falha na conexão: " . $conn->connect_error);
 }
+
+// Verificar se o ID da anotação foi recebido na requisição POST
+if (isset($_POST["id"])) {
+  $anotacaoId = $_POST["id"];
+
+  
+
+  // Montar a consulta SQL para excluir a anotação do banco de dados
+  $sql = "DELETE FROM tbagenda WHERE IDAgenda = $anotacaoId";
+  echo $anotacaoId;
+//   echo "venha conferir";
+  
+
+  // Executar a consulta
+  if ($conn->query($sql) === TRUE) {
+    // Responder com sucesso se a exclusão foi realizada com sucesso
+    
+    echo "Anotação excluída com sucesso!";
+  } else {
+    // Responder com erro se a exclusão falhou
+    echo "Erro ao excluir a anotação: " . $conn->error;
+  }
+}
+
+// Fechar a conexão com o banco de dados
+$conn->close();
 ?>

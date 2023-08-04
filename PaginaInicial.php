@@ -495,13 +495,53 @@ body {
                     <p class="conteudo">Anotação: <?php echo $anotacao['mensagem']; ?></p>
                     <div class="botoes">
                         <button class="editar">Editar</button>
-                        <button class="excluir">Excluir</button>
+                        <button class="excluir" data-id="<?php echo $anotacao['id']; ?>">Excluir</button>
                     </div>
                 </li>
             <?php } ?>
         </ul>
+        <div id="resposta"></div>
+
     </div>
 
+
+<script>
+function handleExcluirClick(event) {
+  var button = event.target;
+  var anotacaoId = button.getAttribute("data-id");
+
+  // Fazer a requisição AJAX usando jQuery
+  $.ajax({
+    url: "excluir_anotacao.php", // O arquivo PHP que irá processar a exclusão
+    type: "POST",
+    data: {
+      id: anotacaoId, // Enviar o ID da anotação a ser excluída
+      success: function (response) {
+    // Exibe a resposta em um elemento HTML com id "resposta"
+    document.getElementById("resposta").textContent = response;
+  },
+      
+    },
+    success: function (response) {
+      // Remover a anotação da lista após a exclusão no banco de dados
+      var listItem = button.closest(".anotacao-item");
+      listItem.remove();
+      console.log(response);
+
+    },
+    error: function (xhr, status, error) {
+      console.error(error); // Tratar erro, se necessário (opcional)
+    },
+  });
+}
+
+// Adicionar um ouvinte de eventos para os botões "Excluir"
+var excluirButtons = document.getElementsByClassName("excluir");
+for (var i = 0; i < excluirButtons.length; i++) {
+  excluirButtons[i].addEventListener("click", handleExcluirClick);
+}
+
+</script>
 
 
 
