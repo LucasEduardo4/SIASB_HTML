@@ -22,7 +22,8 @@ if (isset($_POST["id"])) {
   // Montar a consulta SQL para excluir a anotação do banco de dados
   $sql = "DELETE FROM tbagenda WHERE IDAgenda = $anotacaoId";
   echo $anotacaoId;
-//   echo "venha conferir";
+
+  //   echo "venha conferir";
   
 
   // Executar a consulta
