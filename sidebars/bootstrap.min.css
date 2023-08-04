@@ -1784,8 +1784,8 @@ progress {
     border-color: var(--bs-table-border-color);
 }
 .table > :not(caption) > * > * {
-    padding: 0.5rem 0.5rem;
-    color: var(--bs-table-color-state, var(--bs-table-color-type, var(--bs-table-color)));
+    /* padding: 0.5rem 0.5rem; */
+    /* color: var(--bs-table-color-state, var(--bs-table-color-type, var(--bs-table-color))); */
 
 
     /* ================================================================AQUI EU EDITEI================================ */
@@ -1826,7 +1826,7 @@ progress {
     --bs-table-color-type: var(--bs-table-striped-color);
 
     /* ============================================AQUI EU EDITEI============================================ */
-    /* --bs-table-bg-type: var(--bs-table-striped-bg); */
+    --bs-table-bg-type: var(--bs-table-striped-bg); 
 }
 .table-striped-columns > :not(caption) > tr > :nth-child(2n) {
     --bs-table-color-type: var(--bs-table-striped-color);
@@ -2195,6 +2195,7 @@ textarea.form-control-lg {
     --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
     display: block;
     width: 100%;
+    margin-left: 10px;
     padding: 0.375rem 2.25rem 0.375rem 0.75rem;
     font-size: 1rem;
     font-weight: 400;
@@ -2971,7 +2972,7 @@ fieldset:disabled .btn {
 }
 .btn-success {
     --bs-btn-color: #fff;
-    --bs-btn-bg: #198754;
+    --bs-btn-bg: #00a383;
     --bs-btn-border-color: #198754;
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #157347;

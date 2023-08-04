@@ -40,7 +40,7 @@ if ($result_id_usuario) {
     $id_usuario = $row_id_usuario['IDUsuario'];
 
     // Faça a consulta para recuperar as anotações do usuário com base no ID do usuário
-    $sql_anotacoes = "SELECT mensagem, dia FROM tbagenda WHERE IDUsuario = '$id_usuario'";
+    $sql_anotacoes = "SELECT mensagem, dia, IDAgenda FROM tbagenda WHERE IDUsuario = '$id_usuario'";
 
     $result_anotacoes = mysqli_query($conn, $sql_anotacoes);
 
@@ -495,7 +495,7 @@ body {
                     <p class="conteudo">Anotação: <?php echo $anotacao['mensagem']; ?></p>
                     <div class="botoes">
                         <button class="editar">Editar</button>
-                        <button class="excluir" data-id="<?php echo $anotacao['id']; ?>">Excluir</button>
+                        <button class="excluir" data-id="<?php echo $anotacao['IDAgenda']; ?>">Excluir</button>
                     </div>
                 </li>
             <?php } ?>
@@ -509,6 +509,8 @@ body {
 function handleExcluirClick(event) {
   var button = event.target;
   var anotacaoId = button.getAttribute("data-id");
+//   console.log(event); 
+
 
   // Fazer a requisição AJAX usando jQuery
   $.ajax({
@@ -519,6 +521,7 @@ function handleExcluirClick(event) {
       success: function (response) {
     // Exibe a resposta em um elemento HTML com id "resposta"
     document.getElementById("resposta").textContent = response;
+
   },
       
     },
@@ -526,7 +529,7 @@ function handleExcluirClick(event) {
       // Remover a anotação da lista após a exclusão no banco de dados
       var listItem = button.closest(".anotacao-item");
       listItem.remove();
-      console.log(response);
+      
 
     },
     error: function (xhr, status, error) {
@@ -534,6 +537,26 @@ function handleExcluirClick(event) {
     },
   });
 }
+
+
+//FORMA REDUZIDA DE REALIZAR A EXCLUSÃO
+// $.ajax({
+//     url: "excluir_anotacao.php",
+//     type: "POST",
+//     data: {
+//         id: anotacaoId,
+//     },
+//     success: function (response) {
+//         document.getElementById("resposta").textContent = response;
+//         var listItem = button.closest(".anotacao-item");
+//         listItem.remove();
+//     },
+//     error: function (xhr, status, error) {
+//         console.error(error);
+//     },
+// });
+
+
 
 // Adicionar um ouvinte de eventos para os botões "Excluir"
 var excluirButtons = document.getElementsByClassName("excluir");
