@@ -249,6 +249,8 @@
                 console.log('dataFechamento = 1')
                 for (var i = 0; i < elementosOcultos.length; i++) {
                     elementosOcultos[i].style.display = 'none';
+                    var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
+                    filtroATEDataAbertura.value = "";
                 }
             } else
                 if (valor === '1') {
@@ -260,6 +262,8 @@
             if (valor === '2') {
                 for (var i = 0; i < elementosOcultos.length; i++) {
                     elementosOcultos[i].style.display = 'none';
+                    var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
+                    filtroATEDataFechamento.value = "";
                 }
             } else
                 if (valor === '3') {
@@ -519,7 +523,6 @@
                             if (output == 'relatorio') {
                                 // console.log(xhr.responseText);
                                 redirecionarComPOST();
-
                             }
                 }
             }
@@ -539,6 +542,9 @@
                 deve ser bem parecida com
                 a dos sql do php, tipo, caso tal opção esteja marcada, tal coluna deve aparecer na consulta, caso não,
                 cai no else, e continua.</p>
+                <p>Acrescentar funcionalidade: Sintético x Analítico</p>
+                <p>Adicionar alerta para quando selecionado Intervalo, tornar obrigatorio o preenchimento dos 2 campos</p>
+                <p>nos filtros de data, adicionar "Até Hoje"</p>
         </div>
     </footer>
 </body>

@@ -184,9 +184,9 @@
 
   <div class="container">
     <div style="border-radius: 5px;" class="div-superior">
-      <div style="border-radius: 10px;" class="logo"> 
-        <img src="..\SIASB_HTML\Icones Site\TELEFONE.png"alt="saaeb barretos" width="40" height="40" > 
-        </div>
+      <div style="border-radius: 10px;" class="logo">
+        <img src="..\SIASB_HTML\Icones Site\TELEFONE.png" alt="saaeb barretos" width="40" height="40">
+      </div>
       <h2 style="color: #00a383;">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
       <p>
         Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
@@ -242,7 +242,7 @@
 
       </form>
       <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
-        class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
+        class="btn btn-success" onclick="OLDenviarFormulario()">ENVIAR</button>
 
       <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
       <script src="sidebars/bootstrap.bundle.min.js"></script>
@@ -259,36 +259,41 @@
           if (categoria == "hardware") {
             equipamento = document.getElementById("stiID").value;
           }
-
           if (assunto == '' || descricao == '' || categoria == '') {
             document.getElementById("erromsg").style.display = 'flex';
           } else {
-            var formData = new FormData();
-            formData.append("assunto", assunto);
-            formData.append("descricao", descricao);
-            formData.append("equipamento", equipamento);
-            formData.append("categoria", categoria);
-            formData.append("imagem", imagemInput.files[0]);
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "AbrindoChamado.php", true);
+            if (assunto === '' || descricao === '' || categoria == '') {
+              document.getElementById("erromsg").style.display = 'flex';
+            } else {
+              var formData = new FormData();
+              formData.append("assunto", assunto);
+              formData.append("descricao", descricao);
+              formData.append("equipamento", equipamento);
+              formData.append("categoria", categoria);
+              formData.append("imagem", imagemInput.files[0]);
 
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4 && xhr.status === 200) {
-                // console.log(xhr.responseText);
-              }
-            };
+              var xhr = new XMLHttpRequest();
+              xhr.open("POST", "AbrindoChamado.php", true);
 
-            xhr.send(formData);
-            exibirPopup();
+              xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  // console.log(xhr.responseText);
+                }
+              };
+
+              xhr.send(formData);
+              exibirPopup();
+            }
           }
         }
+
 
 
         function OLDenviarFormulario() {
           var assunto = document.getElementById("assunto").value;
           var descricao = document.getElementById("descricao").value;
-          var imagem = document.getElementById("imagem").value;
+          var imagem = document.getElementById("imagem").files[0];
           var selectCategoria = document.getElementById("categoria");
           var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
           var equipamento = "NULL";
@@ -311,7 +316,8 @@
             var data = "assunto=" + encodeURIComponent(assunto) +
               "&descricao=" + encodeURIComponent(descricao) +
               "&equipamento=" + encodeURIComponent(equipamento) +
-              "&categoria=" + encodeURIComponent(categoria);
+              "&categoria=" + encodeURIComponent(categoria)
+              "&imagem=" + encodeURIComponent(imagem);
             xhr.send(data);
             exibirPopup();
           }

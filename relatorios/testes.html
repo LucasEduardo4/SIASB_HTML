@@ -11,13 +11,14 @@
             flex-wrap: wrap;
             /* Faz com que os parágrafos sejam exibidos em linhas */
         }
-        
+
         #FiltrosSelecionados p {
             flex: 0 0 calc(50% - 10px);
             /* Cada parágrafo ocupa metade da largura da div com um espaçamento de 10px */
             margin: 5px;
         }
-        .general{
+
+        .general {
             width: 10px;
         }
     </style>
@@ -40,9 +41,9 @@
             <input type="text" class="general" name="agruparPor" value="">
 
 
-            <input type="submit"  value="Gerar PDF" name="" id="">
+            <input type="submit" value="Gerar PDF" name="" id="">
         </form>
-<!-- 
+        <!-- 
     gerarRelatorio=1
     &geraPDF=1
     &filtroDataAbertura=
@@ -56,6 +57,13 @@
     &ordem=crescente
     &agruparPor=
  -->
+    </div>
+    <div>
+        <h2>Segundo teste</h2>
+        <form action="../DetalhandoChamado.php" method="POST">
+            <input type="number" name="ChamadoID">
+            <input type="submit" value="Enviar">
+        </form>
     </div>
 </body>
 
