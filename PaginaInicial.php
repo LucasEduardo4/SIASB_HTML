@@ -357,6 +357,17 @@ body {
         }
     </style>
 
+<style>
+    .editar-anotacao {
+        display: none;
+    }
+
+    .special-day {
+    background-color: red;
+}
+</style>
+
+
 <script>
         function exibirHorarioAtual() {
             var horasAtual = new Date();
@@ -481,28 +492,131 @@ body {
             </form>
         </div>
 
-        <!-- Código HTML existente -->
+        <!-- IREI COLOCAR O CÓDIGO PARA ALTERAR A COR DO CALENDÁRIO AQUI -->
+
+<!-- Seu código HTML aqui (incluindo o calendário e o popup de anotações) -->
+
+<script>
+    // ... Código existente ...
+
+    // Função para exibir todas as anotações e datas especiais do banco de dados
+    function showAllNotes() {
+        // ... Código existente ...
+
+        // Aqui você fará a busca das datas especiais do banco de dados e adicionará a classe para destacar em vermelho
+        fetch('datas_anotacao.php')
+            .then(response => response.json())
+            .then(data => {
+                // data conterá as datas especiais vindas do banco de dados
+                for (var i = 0; i < data.length; i++) {
+                    var specialDate = data[i].date; // Data no formato 'yyyy-mm-dd'
+
+                    // Verificar se a data é válida e adicionar a classe para destacar em vermelho
+                    if (notesData[specialDate]) {
+                        var cell = document.querySelector('td[data-date="' + specialDate + '"]');
+                        if (cell) {
+                            cell.classList.add('special-day');
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar as datas especiais:', error);
+            });
+    }
+
+    // ... Código existente ...
+
+</script>
+
+
+
+
+
+
 
 
 <!-- Adicione este código PHP para exibir as anotações -->
 
 <div class="container">
-        <h3>Minhas Anotações:</h3>
-        <ul class="anotacoes-list">
-            <?php foreach ($anotacoes_usuario as $anotacao) { ?>
-                <li class="anotacao-item">
-                    <p class="data">Data: <?php echo $anotacao['dia']; ?></p>
-                    <p class="conteudo">Anotação: <?php echo $anotacao['mensagem']; ?></p>
-                    <div class="botoes">
-                        <button class="editar">Editar</button>
-                        <button class="excluir" data-id="<?php echo $anotacao['IDAgenda']; ?>">Excluir</button>
-                    </div>
-                </li>
-            <?php } ?>
-        </ul>
-        <div id="resposta"></div>
+    <h3>Minhas Anotações:</h3>
+    <ul class="anotacoes-list">
+        <?php foreach ($anotacoes_usuario as $anotacao) { ?>
+            <li class="anotacao-item">
+                <p class="data">Data: <?php echo $anotacao['dia']; ?></p>
+                <p class="conteudo" contenteditable="true" data-id="<?php echo $anotacao['IDAgenda']; ?>">
+                    <?php echo $anotacao['mensagem']; ?>
+                </p>
+                <div class="botoes">
+                    <button class="excluir" data-id="<?php echo $anotacao['IDAgenda']; ?>">Excluir</button>
+                </div>
+            </li>
+        <?php } ?>
+    </ul>
+</div>
 
-    </div>
+
+<!-- REALIZANDO OS PROCEDIMENTOS DE EDITAR AS ANOTAÇÕES -->
+
+<script>
+function handleExcluirClick(event) {
+    var button = event.target;
+    var anotacaoId = button.getAttribute("data-id");
+
+    // Fazer a requisição AJAX usando JavaScript puro (sem jQuery)
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "excluir_anotacao.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Remover a anotação da lista após a exclusão no banco de dados
+                var listItem = button.closest(".anotacao-item");
+                listItem.remove();
+            } else {
+                console.error("Erro ao excluir anotação:", xhr.responseText);
+            }
+        }
+    };
+    xhr.send("id=" + encodeURIComponent(anotacaoId));
+}
+
+function handleContentEditableBlur(event) {
+    var pElement = event.target;
+    var anotacaoId = pElement.getAttribute("data-id");
+    var novoConteudo = pElement.textContent;
+
+    // Fazer a requisição AJAX para atualizar a anotação no banco de dados
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "atualizar_anotacao.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status !== 200) {
+                console.error("Erro ao atualizar anotação:", xhr.responseText);
+            }
+        }
+    };
+
+    xhr.send("id=" + encodeURIComponent(anotacaoId) + "&novo_conteudo=" + encodeURIComponent(novoConteudo));
+}
+
+// Adicionar um ouvinte de eventos para os botões "Excluir"
+var excluirButtons = document.getElementsByClassName("excluir");
+for (var i = 0; i < excluirButtons.length; i++) {
+    excluirButtons[i].addEventListener("click", handleExcluirClick);
+}
+
+// Adicionar um ouvinte de eventos para os elementos com a classe "conteudo"
+var conteudoElements = document.getElementsByClassName("conteudo");
+for (var i = 0; i < conteudoElements.length; i++) {
+    conteudoElements[i].addEventListener("blur", handleContentEditableBlur);
+}
+</script>
+
+
+
+
 
 
 <script>
