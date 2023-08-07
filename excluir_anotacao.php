@@ -39,4 +39,29 @@ if (isset($_POST["id"])) {
 
 // Fechar a conexão com o banco de dados
 $conn->close();
+
+// Verifique se há uma solicitação POST com o ID da anotação e o novo conteúdo
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"]) && isset($_POST["novo_conteudo"])) {
+  $id = $_POST["id"];
+  $novo_conteudo = $_POST["novo_conteudo"];
+
+  // Atualize o conteúdo da anotação no banco de dados
+  $sql = "UPDATE tbagenda SET mensagem = ? WHERE IDAgenda = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("si", $novo_conteudo, $id);
+
+  if ($stmt->execute()) {
+      // Resposta de sucesso
+      echo "Anotação atualizada com sucesso!";
+  } else {
+      // Resposta de erro
+      echo "Erro ao atualizar anotação: " . $stmt->error;
+  }
+
+  $stmt->close();
+  $conn->close();
+}
+
+
 ?>
+
