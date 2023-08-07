@@ -10,7 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $equipamento = $_POST['equipamento'];
         $categoria = $_POST['categoria'];
         $username = $_SESSION['username'];
-        $imagem = $_POST['imagem'];
+        // $imagem = $_POST['imagem'];
+        // $imagem = '';
 
         $getUserID = "SELECT IDUsuario FROM TBusuario WHERE nome = '$username'";
         $result = mysqli_query($conn, $getUserID);
@@ -20,9 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $datetime = date('Y-m-d H:i:s');
 
         // Recebendo a imagem
-        // $imagem = $_FILES['imagem']['tmp_name'];
-        // $imagem_nome = $_FILES['imagem']['name'];
-        // $imagem_tipo = $_FILES['imagem']['type'];
+        $imagem = $_FILES['imagem']['tmp_name'];
+        $imagem_nome = $_FILES['imagem']['name'];
+        $imagem_tipo = $_FILES['imagem']['type'];
 
         // Convertendo a imagem para dados binários (blob)
         $imagem_blob = addslashes(file_get_contents($imagem));
@@ -38,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             if (mysqli_affected_rows($conn) > 0) {
                 echo "Novo chamado adicionado com sucesso!";
             } else {
-                echo "caiu no segundo else-> " .  mysqli_info($conn);
+                echo "caiu no segundo else-> " .  mysqli_info($conn); //ver pq caiu no else
+                echo $sql;
             }
         }
 

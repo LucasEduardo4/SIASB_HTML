@@ -242,7 +242,7 @@
 
       </form>
       <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
-        class="btn btn-success" onclick="OLDenviarFormulario()">ENVIAR</button>
+        class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
 
       <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
       <script src="sidebars/bootstrap.bundle.min.js"></script>
@@ -286,42 +286,6 @@
               exibirPopup();
             }
           }
-        }
-
-
-
-        function OLDenviarFormulario() {
-          var assunto = document.getElementById("assunto").value;
-          var descricao = document.getElementById("descricao").value;
-          var imagem = document.getElementById("imagem").files[0];
-          var selectCategoria = document.getElementById("categoria");
-          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
-          var equipamento = "NULL";
-
-          if (categoria == "hardware") {
-            equipamento = document.getElementById("stiID").value;
-          }
-          if (assunto == '' || descricao == '' || categoria == '') {
-            document.getElementById("erromsg").style.display = 'flex';
-          } else {
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "AbrindoChamado.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log(xhr.responseText);
-              }
-            };
-            var data = "assunto=" + encodeURIComponent(assunto) +
-              "&descricao=" + encodeURIComponent(descricao) +
-              "&equipamento=" + encodeURIComponent(equipamento) +
-              "&categoria=" + encodeURIComponent(categoria)
-              "&imagem=" + encodeURIComponent(imagem);
-            xhr.send(data);
-            exibirPopup();
-          }
-
         }
 
         function exibirPopup() {
