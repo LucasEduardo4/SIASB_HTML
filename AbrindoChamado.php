@@ -17,16 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $result = mysqli_query($conn, $getUserID);
         $row = mysqli_fetch_assoc($result);
         $userID = $row['IDUsuario'];
-        
+
         $datetime = date('Y-m-d H:i:s');
+        //verifica se tem imagem:
+        if (isset($_FILES['imagem'])) {
+            // Recebendo a imagem
+            $imagem = $_FILES['imagem']['tmp_name'];
+            $imagem_nome = $_FILES['imagem']['name'];
+            $imagem_tipo = $_FILES['imagem']['type'];
 
-        // Recebendo a imagem
-        $imagem = $_FILES['imagem']['tmp_name'];
-        $imagem_nome = $_FILES['imagem']['name'];
-        $imagem_tipo = $_FILES['imagem']['type'];
-
-        // Convertendo a imagem para dados binários (blob)
-        $imagem_blob = addslashes(file_get_contents($imagem));
+            // Convertendo a imagem para dados binários (blob)
+            $imagem_blob = addslashes(file_get_contents($imagem));
+        } else {
+            $imagem_blob = null;
+        }
 
         $sql = "
         SET @UltimoID = (SELECT MAX(IDChamado) FROM tbchamados);
@@ -39,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             if (mysqli_affected_rows($conn) > 0) {
                 echo "Novo chamado adicionado com sucesso!";
             } else {
-                echo "caiu no segundo else-> " .  mysqli_info($conn); //ver pq caiu no else
+                echo "caiu no segundo else-> " . mysqli_info($conn); //ver pq caiu no else
                 echo $sql;
             }
         }
