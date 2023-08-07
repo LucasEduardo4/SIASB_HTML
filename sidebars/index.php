@@ -2,7 +2,7 @@
 // Verifica se o usuário está autenticado
 session_start();
 if (!isset($_SESSION['username'])) {
-  header("Location: login.html"); // Redireciona para a página de login se não estiver autenticado
+  header("Location: ../login.html"); // Redireciona para a página de login se não estiver autenticado
   exit();
 }
 ?>
@@ -81,7 +81,7 @@ $conn->close();
       <meta name="generator" content="Hugo 0.112.5"> -->
 
   <title>HOME INICIAL SIASB</title>
-  <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+  <!-- <script src="/siasb_html/flowSite/verificaSessao.js"></script> -----  Não funciona, já que está verificando a sessão no começo desse arquivo -->
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
   <link href="bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192" />
@@ -121,10 +121,12 @@ $conn->close();
 
       background-color: gainsboro;
     }
-    .sidebar_icon:hover{
+
+    .sidebar_icon:hover {
       cursor: pointer;
     }
-    #notificationSign{
+
+    #notificationSign {
       margin: 10px;
       width: 35px;
       /* border: solid 1px black; */
@@ -362,7 +364,6 @@ $conn->close();
     .bd-mode-toggle {
       z-index: 1500;
     }
-
   </style>
 
 
@@ -580,6 +581,43 @@ $conn->close();
 
 
     <script>
+      document.getElementById("notificationSign").addEventListener("click", function () {
+        // Criar o elemento iframe
+        var iframe = document.createElement("iframe");
+
+        // Definir o atributo "src" para o arquivo HTML que conterá as notificações
+        iframe.src = "notificacoes.html";
+
+        // Estilizar o iframe para ser exibido como uma camada flutuante
+        iframe.style.position = "fixed";
+        iframe.style.top = "0";
+        iframe.style.right = "20px";
+        iframe.style.width = "450px";
+        iframe.style.height = "100%";
+        iframe.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
+        iframe.style.border = "none";
+        iframe.style.zIndex = "9999";
+
+        // Adicionar o iframe à página
+        document.body.appendChild(iframe);
+
+        // Adicionar um evento de clique fora do iframe para fechá-lo
+        document.addEventListener("click", fecharIframe);
+      });
+
+      // Função para fechar o iframe
+      function fecharIframe(event) {
+        var iframe =document.getElementById("myIframe");
+        // Verificar se o clique ocorreu fora do iframe
+        if (event.target !== iframe && !iframe.contains(event.target)) {
+          // Remover o iframe da página
+          document.body.removeChild(iframe);
+          // Remover o evento de clique fora do iframe
+          document.removeEventListener("click", fecharIframe);
+        }
+      }
+
+
       function encerrarSessao() {
 
         var currentPath = window.location.pathname;

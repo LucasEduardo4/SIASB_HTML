@@ -4,8 +4,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_POST['Select'])){
         $conn = mysqli_connect("localhost", "root", "", "siasb");
         $username = $_SESSION['username'];
-        $sql = "SELECT * FROM tbusuario where nome = '$username'";
-        $administrador = 0;
+        $sql = "SELECT * FROM tbusuario u join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
+        
+
+        $setor = 0;
 
         $result = $conn->query($sql);
         if ($result) {
@@ -13,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 while ($row = $result->fetch_assoc()) {
                     $IDUsuario = $row["IDUsuario"];
                     $nome = $row["nome"];
-                    $administrador = $row["administrador"];
+                    $setor = $row["setor"];
                     // Adicionar os valores na tabela HTML com ícones de ação
                 }
             } else {
-                $administrador = 0;
+                $setor = 0;
             }
         } else {
             echo "Erro na consulta SQL: " . $conn->error;
@@ -28,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sql .= " join tbstatus_chamado sc on status_chamado = sc.IDStatus";
 
-        if($administrador){
+        if($setor == 1){ //setor 1 == tecnologia
             $sql .= " WHERE 1=1"; // Consulta básica ADM:
         }else{
-            $sql .= " AND autor = '$IDUsuario'"; //Consulta básica Usuário comum
+            $sql .= " WHERE autor = '$IDUsuario'"; //Consulta básica Usuário comum
         }
 
         $dataOption = $_POST['dataOption'];
