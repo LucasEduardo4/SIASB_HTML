@@ -492,7 +492,10 @@ body {
             </form>
         </div>
 
-        <!-- IREI COLOCAR O CÓDIGO PARA ALTERAR A COR DO CALENDÁRIO AQUI -->
+
+        
+<!-- IREI COLOCAR O CÓDIGO PARA ALTERAR A COR DO CALENDÁRIO AQUI -->
+
 
 <!-- Seu código HTML aqui (incluindo o calendário e o popup de anotações) -->
 
@@ -501,9 +504,23 @@ body {
 
     // Função para exibir todas as anotações e datas especiais do banco de dados
     function showAllNotes() {
-        // ... Código existente ...
+        var notesList = document.getElementById('notes-list');
+        notesList.innerHTML = '';
+
+        for (var dateKey in notesData) {
+            if (notesData.hasOwnProperty(dateKey)) {
+                var note = document.createElement('li');
+                var noteDate = dateKey;
+                var noteContent = notesData[dateKey];
+                note.innerHTML = '<span class="note-date">' + noteDate + '</span>: ' + noteContent;
+                notesList.appendChild(note);
+            }
+        }
 
         // Aqui você fará a busca das datas especiais do banco de dados e adicionará a classe para destacar em vermelho
+        // Vou usar um exemplo simples usando PHP aqui (você pode modificar de acordo com a sua tecnologia do lado do servidor)
+
+        // Supondo que você tenha uma API que retorna as datas especiais em formato JSON
         fetch('datas_anotacao.php')
             .then(response => response.json())
             .then(data => {
@@ -519,13 +536,9 @@ body {
                         }
                     }
                 }
-            })
-            .catch(error => {
-                console.error('Erro ao buscar as datas especiais:', error);
             });
     }
 
-    // ... Código existente ...
 
 </script>
 
