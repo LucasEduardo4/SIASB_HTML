@@ -8,58 +8,39 @@ if (!isset($_SESSION['username'])) {
 ?>
 
 <?php
-// Conexão com o banco de dados (substitua pelas suas informações)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "siasb";
+    // Conexão com o banco de dados (substitua pelas suas informações)
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "siasb";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexão
-if ($conn->connect_error) {
-  die("Conexão com o banco de dados falhou: " . $conn->connect_error);
-}
+    // Verificar conexão
+    if ($conn->connect_error) {
+        die("Conexão com o banco de dados falhou: " . $conn->connect_error);
+    }
 
-// Supondo que você tenha o ID do usuário em uma variável chamada $userID
+    $userID = 1; // Replace with the actual user ID
 
-// =================================================== REALIZANDO TESTES =================================================
-$usuario_ = $_SESSION['username'];
-// Substitua pelo ID do usuário que deseja atualizar
-// $userID = $usuario_; 
+    $sqlFetchImage = "SELECT icone FROM tbusuario WHERE IDUsuario = ?";
+    $stmtFetchImage = $conn->prepare($sqlFetchImage);
+    $stmtFetchImage->bind_param("i", $userID);
+    $stmtFetchImage->execute();
+    $stmtFetchImage->bind_result($imageData);
+    $stmtFetchImage->fetch();
+    $stmtFetchImage->close();
 
-$sql = "SELECT * FROM tbusuario WHERE nome = ? ";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $usuario_);
-$stmt->execute();
-$result = $stmt->get_result();
+    $conn->close();
 
-if ($result->num_rows > 0) {
-  // Encontrou resultados
-  $row = $result->fetch_assoc();
-  $Meu_ID = $row["IDUsuario"];
-}
-// =================================================== REALIZANDO TESTES =================================================
-
-
-$userID = $Meu_ID; // Substitua pelo ID do usuário que você deseja mostrar a imagem de perfil
-
-// Consulta SQL para obter o caminho da imagem de perfil para o usuário específico
-$sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $userID";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  $row = $result->fetch_assoc();
-  $imageUrl = $row['icone']; // Caminho da imagem de perfil do usuário
-} else {
-  // Usuário não encontrado na tabela tbusuario ou não possui imagem de perfil
-  $imageUrl = 'uploads/flor teste.jpg';
-  // Defina uma imagem padrão para casos em que o usuário não possui imagem de perfil
-}
-
-$conn->close();
-?>
-
+    if ($imageData) {
+        // Display the image using base64 encoding
+        $base64Image = base64_encode($imageData);
+        echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
+    } else {
+        echo "Image not found.";
+    }
+    ?>
 
 
 
