@@ -493,54 +493,79 @@ body {
         </div>
 
 
-        
+
 <!-- IREI COLOCAR O CÓDIGO PARA ALTERAR A COR DO CALENDÁRIO AQUI -->
 
-
-<!-- Seu código HTML aqui (incluindo o calendário e o popup de anotações) -->
-
 <script>
-    // ... Código existente ...
+  
+    // Objeto para armazenar as anotações
+    var notesData = {};
 
-    // Função para exibir todas as anotações e datas especiais do banco de dados
-    function showAllNotes() {
+    // Obter elementos HTML
+    var monthSelect = document.getElementById('month-select');
+    var yearSelect = document.getElementById('year-select');
+
+    // Preencher dropdown de anos com os últimos 20 anos
+    var currentYear = new Date().getFullYear();
+    for (var i = currentYear; i >= currentYear - 20; i--) {
+        var option = document.createElement('option');
+        option.value = i;
+        option.text = i;
+        yearSelect.appendChild(option);
+    }
+
+    // Função para obter o calendário do mês selecionado
+    function getCalendar() {
+        // Resto do código do calendário aqui...
+
+        // Atualizar a exibição das anotações e das datas especiais
+        showAllData();
+    }
+
+    // Função para exibir o popup de anotações
+    // Resto do código do popup de anotações aqui...
+
+    // Função para fechar o popup de anotações
+    // Resto do código para fechar o popup de anotações aqui...
+
+    // Função para lidar com o envio do formulário de anotações
+    // Resto do código para lidar com o envio do formulário de anotações aqui...
+
+    // Função para formatar a data no formato brasileiro (dd/mm/yyyy)
+    // Resto do código para formatar a data aqui...
+
+    // Função para exibir todas as anotações e datas especiais
+    function showAllData() {
+        var calendarBody = document.getElementById('calendar-body');
         var notesList = document.getElementById('notes-list');
+        calendarBody.innerHTML = '';
         notesList.innerHTML = '';
 
-        for (var dateKey in notesData) {
-            if (notesData.hasOwnProperty(dateKey)) {
-                var note = document.createElement('li');
-                var noteDate = dateKey;
-                var noteContent = notesData[dateKey];
-                note.innerHTML = '<span class="note-date">' + noteDate + '</span>: ' + noteContent;
-                notesList.appendChild(note);
-            }
-        }
+        // Atualizar a exibição das anotações
+        showAllNotes();
 
         // Aqui você fará a busca das datas especiais do banco de dados e adicionará a classe para destacar em vermelho
-        // Vou usar um exemplo simples usando PHP aqui (você pode modificar de acordo com a sua tecnologia do lado do servidor)
-
-        // Supondo que você tenha uma API que retorna as datas especiais em formato JSON
         fetch('datas_anotacao.php')
             .then(response => response.json())
-            .then(data => {
-                // data conterá as datas especiais vindas do banco de dados
-                for (var i = 0; i < data.length; i++) {
-                    var specialDate = data[i].date; // Data no formato 'yyyy-mm-dd'
-
+            .then(dates => {
+                // dates conterá as datas especiais vindas do banco de dados
+                dates.forEach(specialDate => {
                     // Verificar se a data é válida e adicionar a classe para destacar em vermelho
-                    if (notesData[specialDate]) {
-                        var cell = document.querySelector('td[data-date="' + specialDate + '"]');
-                        if (cell) {
-                            cell.classList.add('special-day');
-                        }
+                    var cell = document.querySelector('td[data-date="' + specialDate + '"]');
+                    if (cell) {
+                        cell.classList.add('special-day');
                     }
-                }
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao buscar as datas especiais:', error);
             });
     }
 
+    // Resto do código...
 
 </script>
+
 
 
 

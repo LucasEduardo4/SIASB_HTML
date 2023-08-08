@@ -1,21 +1,38 @@
 <?php
-// Configurar a conexão com o banco de dados (substitua pelos seus dados)
-$host = 'localhost';
-$dbname = 'siasb';
-$username = 'root';
-$password = '';
+// Configuração de conexão com o banco de dados (substitua pelos seus dados)
+$host = 'localhost';          // Por exemplo: 'localhost' ou o endereço do seu servidor de banco de dados
+$dbname = 'siasb';  // O nome do seu banco de dados
+$username = 'root';  // O nome de usuário do seu banco de dados
+$password = '';    // A senha do seu banco de dados
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Conectar ao banco de dados usando MySQLi
+    $conn = new mysqli($host, $username, $password, $dbname);
+
+    // Verificar se houve algum erro na conexão
+    if ($conn->connect_error) {
+        die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+    }
 
     // Executar a consulta SQL para buscar as datas especiais
-    $stmt = $conn->query("SELECT dataAbertura FROM tbchamados");
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "SELECT dataAbertura FROM tbchamados";
+    $result = $conn->query($sql);
 
-    // Retornar os dados como JSON
+    // Montar um array com as datas especiais
+    $dates = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $dates[] = $row["dataAbertura"];
+        }
+    }
+
+    // Fechar a conexão com o banco de dados
+    $conn->close();
+
+    // Retornar os resultados como JSON
     header('Content-Type: application/json');
-    echo json_encode($result);
-} catch (PDOException $e) {
+    echo json_encode($dates);
+} catch (Exception $e) {
     echo "Erro na conexão com o banco de dados: " . $e->getMessage();
 }
+?>
