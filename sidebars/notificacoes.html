@@ -1,27 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
     <title>Notificações</title>
     <style>
-        #body{
+        html {
+            background-color: rgba(0, 0, 0, 0.01);
+
+        }
+
+        body {
             display: flex;
             justify-content: space-between;
             margin: auto;
             margin-right: 30px;
-            margin-top: 50px;
+            margin-top: 0px;
             width: 400px;
             border: solid 1px black;
             border-radius: 20px;
-            height: 70vh;
+            height: 400px;
+        }
+
+        .navBar {
+            border: solid 1px black;
+            border-radius: 10px;
+            box-shadow: 2px 3px 1px black;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        .navBar.selected {
+            background-color: #e6e6e6;
+        }
+
+        #data {
+            font-size: 12px;
+            color: #808080;
+            margin-bottom: 0px;
+            border-bottom: none;
+            width: fit-content;
+            border-radius: 5px;
+        }
+
+        #mensagem {
+            border-bottom: solid 1px black;
+            border-radius: 5px;
+            width: 100%;
+
         }
     </style>
 </head>
-<body id="body">
-    <div class="container" >
-        <button id="btnFecharIframe">Fechar</button>
 
+<body id="body" onload="init()">
+    <div class="container" id="toplevel">
+        <div class="row text-center">
+            <div class="col-12">
+                <h2>Notificações</h2>
+            </div>
+            <hr>
+        </div>
+        <div class="row text-center">
+            <div class="col-6">
+                <p id="novas" class="navBar selected" onclick="verificaClique(1)">Novas</p>
+            </div>
+            <div class="col-6">
+                <p id="historico" class="navBar" onclick="verificaClique(2)">Histórico</p>
+            </div>
+            <hr>
+        </div>
+        <div class="container" id="novasMensagens">
+            <div class="row">
+                <p id="data">Hoje</p>
+                <p id="mensagem">10:30 - Houve Alteração no Chamado X</p>
+            </div>
+            <div class="row">
+                <p id="data">Ontem</p>
+                <p id="mensagem">10:30 - Houve Alteração no Chamado X</p>
+            </div>
+        </div>
+        <div class="container" id="historicoMensagens" style="display: none;">
+            <div class="row">
+                <p id="data">05/08</p>
+                <p id="mensagem">10:30 - Alteração teste chamado</p>
+            </div>
+            <div class="row">
+                <p id="data">03/08</p>
+                <p id="mensagem">10:30 -Chamado X foi finalizado</p>
+            </div>
+        </div>
     </div>
+    <script>
+        function init() {
+            connection('verifyUser=');
+        }
+
+        function unParse(data) {
+            var dadosObjeto = JSON.parse(data);
+
+            var dadosObjetoHTML = document.getElementById("dadosObjetoHTML");
+
+            for (var i = 0; i < dadosObjeto.length; i++) {
+                var linha = "IDNotificação: " + dadosObjeto[i].IDNotificacao +
+                    ", Status: " + dadosObjeto[i].status +
+                    ", Visualizado: " + dadosObjeto[i].visualizado +
+                    ", Excluído: " + dadosObjeto[i].excluido +
+                    ", Destino: " + dadosObjeto[i].destino +
+                    ", Chamado Referência: " + dadosObjeto[i].chamadoReferencia +
+                    ", Data: " + dadosObjeto[i].data;
+                    console.log(linha);
+            }
+        }
+
+
+        function verificaClique(item) {
+            var novas = document.getElementById("novas");
+            var historico = document.getElementById("historico");
+            var novasMensagens = document.getElementById("novasMensagens");
+            var historicoMensagens = document.getElementById("historicoMensagens");
+
+            if (item == 1) {
+                novas.classList.add("selected")
+                historico.classList.remove("selected")
+                historicoMensagens.style.display = "none";
+                novasMensagens.style.display = "block";
+
+            } else {
+                novas.classList.remove("selected")
+                historico.classList.add("selected")
+                historicoMensagens.style.display = "block";
+                novasMensagens.style.display = "none";
+            }
+            console.log("Entrou nessa função");
+
+        }
+        function connection(data) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "notificacoes.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    unParse(xhr.responseText);
+                    // console.log(xhr.responseText);
+                }
+            }
+            xhr.send(data);
+        }
+    </script>
 </body>
+
 </html>
