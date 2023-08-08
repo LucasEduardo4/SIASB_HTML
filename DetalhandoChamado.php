@@ -55,24 +55,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $resultArray['responsavel'] = $responsavel;
                     $resultArray['autor'] = $autor;
                     $resultArray['equipamento'] = $equipamento;
-                    // $resultArray['imagem'] = $imagem;
                     $resultArray['imagem'] = base64_encode($imagem);
                     $resultArray['categoria'] = $categoria;
-                    // $resultArray['ligacaoChamadoID'] = $ligacaoChamadoID;
 
-                    // if (!empty($imagem) && file_exists($imagem)) {
-                    //     // Lê o conteúdo do arquivo de imagem
-                    //     $imagemConteudo = file_get_contents($imagem);
-                    
-                    //     // Converte o conteúdo da imagem em base64
-                    //     $imagemBase64 = base64_encode($imagemConteudo);
-                    
-                    //     // Adiciona a imagem ao array de dados
-                    //     $dados['imagem'] = $imagemBase64;
-                    // } else {
-                    //     // Caso não haja imagem, atribui um valor vazio à chave 'imagem'
-                    //     $resultArray['imagem'] = '<br>Nenhuma imagem a ser exibida<br>';
-                    // }
                 }
             }
         }
@@ -114,12 +99,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
         
-        $resultArray['logs'] = $resultLogs;
-            
+        $resultArray['logs'] = $resultLogs;     
             echo json_encode($resultArray);
-            
-    
-        
     }
 }
 

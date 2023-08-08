@@ -364,6 +364,18 @@ $conn->close();
     .bd-mode-toggle {
       z-index: 1500;
     }
+    #map { /* Obs. esse mapa é para fechar a janela de notificação ao clicar fora */
+            width: 100px;
+            height: 100px;
+            /* background-color: rgba(0, 0, 0, 0.01); */
+            font-size: 16px;
+            position: fixed;
+            top: 0px;
+            left:70px;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
   </style>
 
 
@@ -372,6 +384,7 @@ $conn->close();
 </head>
 
 <body cz-shortcut-listen="true">
+  <div id="Principal"></div>
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="check2" viewBox="0 0 16 16">
       <path
@@ -475,8 +488,10 @@ $conn->close();
   </svg>
 
   <!-- CÓDIGO DA SIDEBAR SUPERIOR -->
-
-  <div class="sidebar_icon">
+  <div id="centerBox">
+        <div id="map"><!-- Essa di é apenas para deiaxr um mapa na tela, para que seja possível fechar a notificação quando é clicada--></div>
+    </div>
+  <div class="sidebar_icon" onclick="abrirNotificacao(event)";>
     <!-- Conteúdo da sidebar aqui -->
     <img src="..\Icones Site\NOTIFICACAO.png" id="notificationSign" alt="saaeb barretos" width="40">
   </div>
@@ -490,6 +505,7 @@ $conn->close();
     <!-- <div style="background-color: green; padding-left:300px; padding-bottom:20px;" > -->
 
     </div>
+
 
     <div style=" width: 60px; background-color: #00a383; padding-bottom:10px;">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
@@ -581,42 +597,68 @@ $conn->close();
 
 
     <script>
-      document.getElementById("notificationSign").addEventListener("click", function () {
-        // Criar o elemento iframe
-        var iframe = document.createElement("iframe");
+      var iframe = document.createElement("iframe");
 
-        // Definir o atributo "src" para o arquivo HTML que conterá as notificações
-        iframe.src = "notificacoes.html";
+      iframe.src = "notificacoes.html";
+      iframe.style.position = "fixed";
+      iframe.style.top = "50px";
+      iframe.style.right = "10px";
+      // iframe.style.width = "100%";
+      iframe.style.width = "405px";
+      iframe.style.height = "400px";
+      iframe.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
+      iframe.style.zIndex = "9999";
+      iframe.style.position= "absolute";
+      iframe.id = "myNotifications"
+      iframe.hidden = true;
 
-        // Estilizar o iframe para ser exibido como uma camada flutuante
-        iframe.style.position = "fixed";
-        iframe.style.top = "0";
-        iframe.style.right = "20px";
-        iframe.style.width = "450px";
-        iframe.style.height = "100%";
-        iframe.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
-        iframe.style.border = "none";
-        iframe.style.zIndex = "9999";
 
-        // Adicionar o iframe à página
-        document.body.appendChild(iframe);
+      document.body.appendChild(iframe);
 
-        // Adicionar um evento de clique fora do iframe para fechá-lo
-        document.addEventListener("click", fecharIframe);
-      });
 
-      // Função para fechar o iframe
-      function fecharIframe(event) {
-        var iframe =document.getElementById("myIframe");
-        // Verificar se o clique ocorreu fora do iframe
-        if (event.target !== iframe && !iframe.contains(event.target)) {
-          // Remover o iframe da página
-          document.body.removeChild(iframe);
-          // Remover o evento de clique fora do iframe
-          document.removeEventListener("click", fecharIframe);
+      function abrirNotificacao(event) {
+        var mapa =document.getElementById("map");
+        // Parar a propagação do evento de click para o <body>
+        if (event) {
+          event.stopPropagation();
+        }
+
+        var iframe = document.getElementById("myNotifications");
+
+        if (iframe.hidden) {
+          // Se o iframe está oculto, vamos mostrá-lo
+          iframe.hidden = false;
+          mapa.style.display = "block";
+
+          function clickListener(event) {
+            // Verificar se o clique foi dentro do iframe
+            var isClickedInsideIframe = iframe.contains(event.target);
+            if (!isClickedInsideIframe) {
+              // Se o clique foi fora do iframe, ocultá-lo
+              iframe.hidden = true;
+              mapa.style.display = "none";
+              // Remover o event listener após ocultar o iframe
+              document.body.removeEventListener("click", clickListener);
+            }
+          }
+
+          // Adicionar o event listener no <body> para escutar cliques fora do iframe
+          document.body.addEventListener("click", clickListener);
+        } else {
+          // Se o iframe já está aberto, vamos fechá-lo diretamente
+          iframe.hidden = true;
         }
       }
+// VOLTAR AQUI <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------------------------------------------------------------------------------------------------------------------------
+      function fecharNotificacao(event) {
+        // Parar a propagação do evento de click para o <body>
+        if (event) {
+          event.stopPropagation();
+        }
 
+        var iframe = document.getElementById("myNotifications");
+        iframe.hidden = true;
+      }
 
       function encerrarSessao() {
 
@@ -804,7 +846,7 @@ automática da página. -->
   // // ]]>
   </script>
 
-
+  </div>
 </body>
 
 </html>
