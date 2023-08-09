@@ -362,9 +362,26 @@ body {
         display: none;
     }
 
-    .special-day {
-    background-color: red;
-}
+    .notes-popup {
+        position: relative;
+    }
+
+    .close-popup {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+
+    .selected-date {
+            background-color: green;
+            color: green;
+  }
+
 </style>
 
 
@@ -483,93 +500,52 @@ body {
             <tbody id="calendar-body"></tbody>
         </table>
 
-        <div id="notes-popup" class="notes-popup">
-            <h2>Anotações</h2>
-            <form id="notes-form">
-                <input type="hidden" id="selected-date" name="selected-date">
-                <textarea id="notes-content" class="notes-content" name="notes-content" placeholder="Faça suas anotações aqui"></textarea>
-                <button type="submit" class="notes-submit">Salvar</button>
-            </form>
-        </div>
+<div id="notes-popup" class="notes-popup">
+    <button id="close-popup" class="close-popup">x</button>
+    <h2>Anotações</h2>
+    <form id="notes-form">
+        <input type="hidden" id="selected-date" name="selected-date">
+        <textarea id="notes-content" class="notes-content" name="notes-content" placeholder="Faça suas anotações aqui"></textarea>
+        <button type="submit" class="notes-submit">Salvar</button>
+    </form>
+</div>
+
+<script>
+    const closePopupButton = document.getElementById('close-popup');
+    const notesPopup = document.getElementById('notes-popup');
+
+    closePopupButton.addEventListener('click', () => {
+        notesPopup.style.display = 'none';
+    });
+
+</script>
 
 
 
 <!-- IREI COLOCAR O CÓDIGO PARA ALTERAR A COR DO CALENDÁRIO AQUI -->
 
 <script>
-  
-    // Objeto para armazenar as anotações
-    var notesData = {};
+        function getCalendar() {
+            // Implemente a lógica para atualizar a tabela de calendário aqui
 
-    // Obter elementos HTML
-    var monthSelect = document.getElementById('month-select');
-    var yearSelect = document.getElementById('year-select');
+            // Suponhamos que você queira destacar a data 5 de agosto
+            const targetDate = new Date(2023, 7, 5); // Note que os meses são indexados de 0 a 11
 
-    // Preencher dropdown de anos com os últimos 20 anos
-    var currentYear = new Date().getFullYear();
-    for (var i = currentYear; i >= currentYear - 20; i--) {
-        var option = document.createElement('option');
-        option.value = i;
-        option.text = i;
-        yearSelect.appendChild(option);
-    }
-
-    // Função para obter o calendário do mês selecionado
-    function getCalendar() {
-        // Resto do código do calendário aqui...
-
-        // Atualizar a exibição das anotações e das datas especiais
-        showAllData();
-    }
-
-    // Função para exibir o popup de anotações
-    // Resto do código do popup de anotações aqui...
-
-    // Função para fechar o popup de anotações
-    // Resto do código para fechar o popup de anotações aqui...
-
-    // Função para lidar com o envio do formulário de anotações
-    // Resto do código para lidar com o envio do formulário de anotações aqui...
-
-    // Função para formatar a data no formato brasileiro (dd/mm/yyyy)
-    // Resto do código para formatar a data aqui...
-
-    // Função para exibir todas as anotações e datas especiais
-    function showAllData() {
-        var calendarBody = document.getElementById('calendar-body');
-        var notesList = document.getElementById('notes-list');
-        calendarBody.innerHTML = '';
-        notesList.innerHTML = '';
-
-        // Atualizar a exibição das anotações
-        showAllNotes();
-
-        // Aqui você fará a busca das datas especiais do banco de dados e adicionará a classe para destacar em vermelho
-        fetch('datas_anotacao.php')
-            .then(response => response.json())
-            .then(dates => {
-                // dates conterá as datas especiais vindas do banco de dados
-                dates.forEach(specialDate => {
-                    // Verificar se a data é válida e adicionar a classe para destacar em vermelho
-                    var cell = document.querySelector('td[data-date="' + specialDate + '"]');
-                    if (cell) {
-                        cell.classList.add('special-day');
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao buscar as datas especiais:', error);
+            // Encontre o elemento de data correspondente na tabela
+            const calendarCells = document.querySelectorAll("#calendar-body td");
+            calendarCells.forEach(cell => {
+                const cellDate = new Date(cell.getAttribute("data-date"));
+                if (cellDate.toDateString() === targetDate.toDateString()) {
+                    cell.classList.add("selected-date");
+                } else {
+                    cell.classList.remove("selected-date");
+                }
             });
-    }
+        }
 
-    // Resto do código...
-
-</script>
-
-
-
-
-
+        // Chame a função getCalendar() para iniciar o calendário
+        getCalendar();
+    </script>
 
 
 
@@ -774,7 +750,7 @@ for (var i = 0; i < excluirButtons.length; i++) {
                 var cell = document.createElement('td');
                 cell.innerText = day;
 
-                // Adicionar classe 'current-day' ao dia atual
+                // Adicionar classe 'current-day' ao dia atual ================================================================================
                 if (selectedMonth === currentMonth && selectedYear === currentDate.getFullYear() && day === currentDate.getDate()) {
                     cell.classList.add('current-day');
                 }

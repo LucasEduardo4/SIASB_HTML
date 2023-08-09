@@ -1,38 +1,39 @@
+
 <?php
-// Configuração de conexão com o banco de dados (substitua pelos seus dados)
-$host = 'localhost';          // Por exemplo: 'localhost' ou o endereço do seu servidor de banco de dados
-$dbname = 'siasb';  // O nome do seu banco de dados
-$username = 'root';  // O nome de usuário do seu banco de dados
-$password = '';    // A senha do seu banco de dados
+// Conexão com o banco de dados (substitua com suas próprias informações)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
 
-try {
-    // Conectar ao banco de dados usando MySQLi
-    $conn = new mysqli($host, $username, $password, $dbname);
+// Criar conexão
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Verificar se houve algum erro na conexão
-    if ($conn->connect_error) {
-        die("Erro na conexão com o banco de dados: " . $conn->connect_error);
-    }
-
-    // Executar a consulta SQL para buscar as datas especiais
-    $sql = "SELECT dataAbertura FROM tbchamados";
-    $result = $conn->query($sql);
-
-    // Montar um array com as datas especiais
-    $dates = array();
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $dates[] = $row["dataAbertura"];
-        }
-    }
-
-    // Fechar a conexão com o banco de dados
-    $conn->close();
-
-    // Retornar os resultados como JSON
-    header('Content-Type: application/json');
-    echo json_encode($dates);
-} catch (Exception $e) {
-    echo "Erro na conexão com o banco de dados: " . $e->getMessage();
+// Verificar a conexão
+if ($conn->connect_error) {
+    die("Conexão falhou: " . $conn->connect_error);
 }
+
+// Consulta SQL para buscar as datas especiais na coluna 'dataAbertura' da tabela 'tbchamados'
+$sql = "SELECT dataAbertura FROM tbchamados"; // Substitua com sua consulta SQL
+
+$result = $conn->query($sql);
+
+$specialDate = array();
+
+if ($result->num_rows > 0) {
+    // Loop através dos resultados e adicionar as datas ao array
+    while($row = $result->fetch_assoc()) {
+        $specialDate[] = $row["dataAbertura"];
+    }
+} else {
+    // Caso não haja resultados
+    echo "Nenhuma data especial encontrada.";
+}
+
+// Fechar conexão com o banco de dados
+$conn->close();
+
+// Retornar as datas em formato JSON
+echo json_encode($specialDate);
 ?>
