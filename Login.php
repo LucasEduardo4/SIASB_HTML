@@ -74,7 +74,7 @@ if ($result->num_rows > 0) {
 
     // Exibir outros campos conforme necessário
 } else {
-    header('Location: Login.html?error=true');
+    header('Location: Login.html?error=error');
 }
 
 $stmt->close();

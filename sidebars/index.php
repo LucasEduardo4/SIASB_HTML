@@ -8,40 +8,63 @@ if (!isset($_SESSION['username'])) {
 ?>
 
 <?php
-    // Conexão com o banco de dados (substitua pelas suas informações)
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "siasb";
+// Conexão com o banco de dados (substitua pelas suas informações)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Verificar conexão
-    if ($conn->connect_error) {
-        die("Conexão com o banco de dados falhou: " . $conn->connect_error);
+// Verificar conexão
+if ($conn->connect_error) {
+  die("Conexão com o banco de dados falhou: " . $conn->connect_error);
+}
+
+$userID = 1; // Replace with the actual user ID
+
+$sqlFetchImage = "SELECT icone FROM tbusuario WHERE IDUsuario = ?";
+$stmtFetchImage = $conn->prepare($sqlFetchImage);
+$stmtFetchImage->bind_param("i", $userID);
+$stmtFetchImage->execute();
+$stmtFetchImage->bind_result($imageData);
+$stmtFetchImage->fetch();
+$stmtFetchImage->close();
+
+$conn->close();
+
+if ($imageData) {
+  // Display the image using base64 encoding
+  $base64Image = base64_encode($imageData);
+  echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
+} else {
+  echo "Image not found.";
+}
+
+
+
+?>
+<script>
+  function foo(idNotificacao, nova) {
+    var iframe = document.getElementById("myNotifications");
+    iframe.hidden = true;
+    var iframeContainer = document.getElementById('myIframe');
+    iframeContainer.src = "../detalhandoChamado.html?IDChamado=" + idNotificacao;
+    var mapa = document.getElementById("map");
+    mapa.style.display = 'none'
+    verificaNovaNotificacao(nova);
+  }
+  
+  function verificaNovaNotificacao(nova){
+    var circle = document.getElementsByClassName("circle")[0];
+    if(nova == 'true'){
+      circle.style.display = 'block';
+    }else
+    if(nova == 'false'){
+      circle.style.display = 'none';
     }
-
-    $userID = 1; // Replace with the actual user ID
-
-    $sqlFetchImage = "SELECT icone FROM tbusuario WHERE IDUsuario = ?";
-    $stmtFetchImage = $conn->prepare($sqlFetchImage);
-    $stmtFetchImage->bind_param("i", $userID);
-    $stmtFetchImage->execute();
-    $stmtFetchImage->bind_result($imageData);
-    $stmtFetchImage->fetch();
-    $stmtFetchImage->close();
-
-    $conn->close();
-
-    if ($imageData) {
-        // Display the image using base64 encoding
-        $base64Image = base64_encode($imageData);
-        echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
-    } else {
-        echo "Image not found.";
-    }
-    ?>
-
+  }
+</script>
 
 
 <!doctype html>
@@ -66,6 +89,8 @@ if (!isset($_SESSION['username'])) {
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
   <link href="bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
   <script src="bootstrap.bundle.min.js"></script>
   <script src="sidebars.js"></script><!-- Code injected by live-server -->
 
@@ -345,18 +370,40 @@ if (!isset($_SESSION['username'])) {
     .bd-mode-toggle {
       z-index: 1500;
     }
-    #map { /* Obs. esse mapa é para fechar a janela de notificação ao clicar fora */
-            width: 100px;
-            height: 100px;
-            /* background-color: rgba(0, 0, 0, 0.01); */
-            font-size: 16px;
-            position: fixed;
-            top: 0px;
-            left:70px;
-            width: 100%;
-            height: 100%;
-            display: none;
-        }
+
+    #map {
+      /* Obs. esse mapa é para fechar a janela de notificação ao clicar fora */
+      width: 100px;
+      height: 100px;
+      /* background-color: rgba(0, 0, 0, 0.01); */
+      font-size: 16px;
+      position: fixed;
+      top: 0px;
+      left: 70px;
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    .circleDiv {
+      position: relative;
+      display: inline-block;
+    }
+
+    .circle {
+      position: absolute;
+      /* top: 30px; */
+      /* top: 13px; */
+      top: 38px;
+      right: 40px;
+      /* right: 27px; */
+      width: 15px;
+      height: 15px;
+      background-color: red;
+      border-radius: 50%;
+      border: solid 1px black;
+      display: none;
+    }
   </style>
 
 
@@ -470,11 +517,16 @@ if (!isset($_SESSION['username'])) {
 
   <!-- CÓDIGO DA SIDEBAR SUPERIOR -->
   <div id="centerBox">
-        <div id="map"><!-- Essa di é apenas para deiaxr um mapa na tela, para que seja possível fechar a notificação quando é clicada--></div>
+    <div id="map">
+      <!-- Essa div é apenas para deiaxr um mapa na tela, para que seja possível fechar a notificação quando é clicada-->
     </div>
-  <div class="sidebar_icon" onclick="abrirNotificacao(event)";>
-    <!-- Conteúdo da sidebar aqui -->
+  </div>
+  <div class="sidebar_icon" onclick="abrirNotificacao(event)" ;>
+  <div class='circleDiv' id="circle">
     <img src="..\Icones Site\NOTIFICACAO.png" id="notificationSign" alt="saaeb barretos" width="40">
+    <div class="circle"></div>
+  </div>
+
   </div>
 
   <main class="d-flex flex-nowrap">
@@ -589,7 +641,7 @@ if (!isset($_SESSION['username'])) {
       iframe.style.height = "400px";
       iframe.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
       iframe.style.zIndex = "9999";
-      iframe.style.position= "absolute";
+      iframe.style.position = "absolute";
       iframe.id = "myNotifications"
       iframe.hidden = true;
 
@@ -598,7 +650,7 @@ if (!isset($_SESSION['username'])) {
 
 
       function abrirNotificacao(event) {
-        var mapa =document.getElementById("map");
+        var mapa = document.getElementById("map");
         // Parar a propagação do evento de click para o <body>
         if (event) {
           event.stopPropagation();
@@ -630,7 +682,7 @@ if (!isset($_SESSION['username'])) {
           iframe.hidden = true;
         }
       }
-// VOLTAR AQUI <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------------------------------------------------------------------------------------------------------------------------
+      // VOLTAR AQUI <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------------------------------------------------------------------------------------------------------------------------
       function fecharNotificacao(event) {
         // Parar a propagação do evento de click para o <body>
         if (event) {

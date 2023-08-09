@@ -1,95 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Inicial.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Inicial.css">
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
-    
-    <style>
-        .custom-fade-in {
-          animation-duration: 2s !important;
-        }
-      #error{
-        border: solid 1px red;
-        border-radius: 5px;
-        padding: 10px;
-        text-align: center;
-        color: white;
-        background-color: red;
-        display: none;
-      }
-      #temp{
-        height: 450px;
-        /* border: solid 3px red; */
-        display:flex;
-        flex-direction: column;
-        flex-basis: auto;
-        flex-flow:wrap;
-        height: fit-content;
-      }
-      #temp a{
-        padding: 10px;
-        border: solid 1px black;
-        border-radius: 10px;
-        margin:2px;
-        color: white;
-        text-decoration: none;
-        background-color: black;
-      }
-    </style>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
-    <title>Login</title>
 
-    <p  ></p>
+  <style>
+    .custom-fade-in {
+      animation-duration: 2s !important;
+    }
+
+    .error {
+      border: solid 1px red;
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+      color: white;
+      background-color: red;
+      min-width: 380px;
+      display: none;
+    }
+
+    #temp {
+      height: 450px;
+      /* border: solid 3px red; */
+      display: flex;
+      flex-direction: column;
+      flex-basis: auto;
+      flex-flow: wrap;
+      height: fit-content;
+    }
+
+    #temp a {
+      padding: 10px;
+      border: solid 1px black;
+      border-radius: 10px;
+      margin: 2px;
+      color: white;
+      text-decoration: none;
+      background-color: black;
+    }
+  </style>
+
+  <title>Login</title>
 </head>
-<body>
-    <div class="container">
-        <h1>SIASB</h1>
-        <form action="Login.php" method="post">
-          <div class="form-group">
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" placeholder="Entre com o seu Usuario">
-          </div>
-          <div class="form-group">
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" placeholder="Entre com a sua senha">
-          </div>
-          <div class="form-group">
-            <button type="submit">Login</button>
-          </div>
-          <div class="form-group bg-danger text-white p-3 animate__animated animate__fadeIn custom-fade-in">
-           <p id="error">Você precisa realizar o login para acessar o sistema.</p>          
-          </div>
-        </form>
-        <div class="footer">
-          <a href="Cadastro.html">Cadastro</a>
-          <a href="Esqueci_Senha.html">Esqueci minha senha</a>
-        </div>
-        
-      </div>
-<footer>
 
-  <div id="temp" style="width: 485px; margin:auto; padding-top: 30px; ">
-    <a href="sidebars/index.php">Abrir Chamado</a>
-    <a href="Configs/ConfigStatus/configStatus.html">Config Status</a>
-    <a href="Configs/Consultas/Pessoa.html">Consulta Pessoas</a>
+<body>
+  <div class="container">
+    <h1>SIASB</h1>
+    <form action="Login.php" method="post">
+      <div class="form-group">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" name="username" placeholder="Entre com o seu Usuario">
+      </div>
+      <div class="form-group">
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" placeholder="Entre com a sua senha">
+      </div>
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+      <div class="form-group bg-danger text-white p-3 animate__animated animate__fadeIn custom-fade-in">
+        <p id="error" class="error">Você precisa realizar o login para acessar o sistema</p>
+        <p class="error" id="fail">Nome de usuário ou senha inválidos</p>
+      </div>
+    </form>
+    <div class="footer">
+      <a href="Cadastro.html">Cadastro</a>
+      <a href="Esqueci_Senha.html">Esqueci minha senha</a>
+    </div>
 
   </div>
-  
-</footer>
+  <footer>
+
+    <div id="temp" style="width: 485px; margin:auto; padding-top: 30px; ">
+      <a href="sidebars/index.php">Abrir Chamado</a>
+      <a href="Configs/ConfigStatus/configStatus.html">Config Status</a>
+      <a href="Configs/Consultas/Pessoa.html">Consulta Pessoas</a>
+
+    </div>
+
+  </footer>
 </body>
 <script>
-var url = new URL(window.location.href);
-var error = url.searchParams.get("error");
+  var url = new URL(window.location.href);
+  var error = url.searchParams.get("error");
+  console.log(error);
 
-if (error === "true") {
-  document.getElementById("error").style.display="inline"
-}
+  if (error === "true") {
+    document.getElementById("error").style.display = "block"
+  } else
+    if (error === "error") {
+      document.getElementById("fail").style.display = "block"
+    }
 
 
 </script>
+
 </html>
