@@ -8,6 +8,7 @@
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup -->
 
 
@@ -172,9 +173,22 @@
       animation-duration: 0.5s !important;
     }
 
+    .custom-slide-in {
+      animation-duration: 1s !important;
+    }
+
     .my-custom-icon {
       font-size: 200px;
       /* Defina o tamanho desejado */
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield; /* Remove as setas no Firefox */
     }
   </style>
 
@@ -222,9 +236,14 @@
 
         <div class="hardware-div animate__animated animate__fadeInDown custom-fade-in">
           <label for="stiID">STI_ID:</label>
-          <input style="width: 150px;" type="text" id="stiID" name="stiID" onblur="verificaEquipamento()">
+          <input style="width: 150px;" type="number" id="stiID" name="stiID" onblur="verificaEquipamento()">
           <label for="nomeEquipamento"> Equipamento:</label>
-          <input type="text" id="equipamentoNome" disabled value="">
+          <input type="text" id="equipamentoNome" class="animate__animated animate__slideInRight custom-slide-in"
+            disabled value="">
+          <h2 style="margin-left: 10px; display: none;" id="plusCircle" title="Cadastrar equipamento"><i
+              id="cadastroIcone" onclick='breveCadastro(this)'
+              class="bi bi-plus-circle-fill animate__animated animate__slideInRight custom-slide-in"></i></h2>
+          <!-- Se nao for encontrado, exibir um icone para fazer um mini cadastro -->
         </div>
 
         <div style="margin-top: 0px;" class="descricao-div">
@@ -247,6 +266,25 @@
       <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
       <script src="sidebars/bootstrap.bundle.min.js"></script>
       <script>
+        function breveCadastro(icone) {
+          var equipamento = document.getElementById("equipamentoNome");
+          if (icone.id == 'cadastroReady') {
+            // equipamento.value = equipamento.value;
+            equipamento.disabled = true;
+            icone.classList.add("bi-plus-circle-fill");
+            icone.classList.remove("bi-check-circle-fill");
+            icone.id = 'cadastroIcone';
+          }else{
+
+            equipamento.value = ''
+            equipamento.placeholder = 'Digite o nome do equipamento:';
+            equipamento.disabled = false;
+            icone.classList.remove("bi-plus-circle-fill");
+            icone.classList.add("bi-check-circle-fill");
+            icone.id = 'cadastroReady';
+            //bi bi-check-circle-fill
+          }
+        }
 
         function enviarFormulario() {
           var assunto = document.getElementById("assunto").value;
@@ -324,13 +362,44 @@
           if (categoria == "hardware") {
             var stiID = document.getElementById("stiID").value;
             var equipamento = document.getElementById("equipamentoNome");
-            console.log(stiID);
 
-            if (stiID == 100) { //posteriormente inserir um select na tabela tbequipamentos aqui.
-              equipamento.value = "deu certo";
-            } else
-              equipamento.value = "nao encontrado"
+            connection('stiID=' + stiID, 1, 'AbrindoChamado.php');
           }
+        }
+
+        function foo(response) {
+          var equipamento = document.getElementById("equipamentoNome");
+          var circle = document.getElementById("plusCircle");
+
+          if (response == 'Equipamento nao encontrado') {
+            console.log("nao encontrado");
+            equipamento.style.width = '950px';
+            circle.style.display = 'block';
+          } else if (response != 'Equipamento nao encontrado') {
+            equipamento.disabled = true;
+            equipamento.style.width = '100%';
+            circle.style.display = 'none';
+            console.log("encontrado");
+          }
+        }
+
+        function connection(data, output, file) {
+          var equipamento = document.getElementById("equipamentoNome");
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", file, true);
+          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              if (output == 1) {
+                var response = xhr.responseText;
+                // console.log(response);
+                equipamento.value = response;
+                foo(response);
+              }
+            }
+          }
+          xhr.send(data);
         }
       </script>
 

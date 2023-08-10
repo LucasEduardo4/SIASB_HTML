@@ -70,6 +70,7 @@
         <div class="row text-center">
             <div class="col-12">
                 <h2>Notificações</h2>
+
             </div>
             <hr>
         </div>
@@ -84,11 +85,10 @@
         </div>
         <div class="container" id="novasMensagens"></div>
         <!-- Dados inseridos dinamicamente  -->
-        <div class="container" id="historicoMensagens" style="display: none;">
+        <div class="container" id="historicoMensagens">
             <!-- Dados inseridos dinamicamente  -->
         </div>
     </div>
-
     <script>
         function init() {
             connection('verifyUser=', 1, 'notificacoes.php');
@@ -104,17 +104,22 @@
             var dadosObjeto = JSON.parse(data);
             var novasMensagens = document.getElementById("novasMensagens");
             var historicoMensagens = document.getElementById("historicoMensagens");
-//VOLTAR NO ICONE AQUI..................
             for (var i = 0; i < dadosObjeto.length; i++) {
+                if(dadosObjeto[i].excluido == 1){
+                    console.log('Não exibido:' + dadosObjeto[i].IDNotificacao)
+                }else
                 if (dadosObjeto[i].visualizado == 1) {
                     historicoMensagens.innerHTML = historicoMensagens.innerHTML + `
-                    <div class="row opt" onclick="clicouNotificacao(${dadosObjeto[i].IDNotificacao})">
-                        <p id='data'>
-                            ${getDate(dadosObjeto[i].data, 'novaMSG/dia')}
+                    <div class="row">
+                        <p id='data' style='display:block;'>
+                            ${getDate(dadosObjeto[i].data, 'novaMSG/dia')} - ${getDate(dadosObjeto[i].data, 'novaMSG/hora')}
                         </p>
-                        <p id='${dadosObjeto[i].IDNotificacao}' class='mensagem'>
-                            ${getDate(dadosObjeto[i].data, 'novaMSG/hora')} - ${mensagemGenerica(dadosObjeto[i].status, dadosObjeto[i].chamadoReferencia)} 
-                        </p><span class='class='bi bi-trash''></span>
+                        <div class="mensagem-container" style="display: flex; align-items: center;">
+                            <p id='${dadosObjeto[i].IDNotificacao}' onclick="clicouNotificacao(${dadosObjeto[i].IDNotificacao})" class='mensagem opt' style='width: 340px; margin-right: 10px;'>
+                                ${mensagemGenerica(dadosObjeto[i].status, dadosObjeto[i].chamadoReferencia)} 
+                            </p>
+                            <i onclick='excluiNotificacao(${dadosObjeto[i].IDNotificacao})' title='Excluir' class='bi bi-trash opt'></i>
+                        </div>
                     </div>`
                 } else
                     novasMensagens.innerHTML = novasMensagens.innerHTML + `
@@ -127,17 +132,12 @@
                         </p>
                     </div>`
             }
-            // OLD -> Funcionando 100%
-            // for (var i = 0; i < dadosObjeto.length; i++) {
-            //     var linha = "IDNotificação: " + dadosObjeto[i].IDNotificacao +
-            //            ", Status: " + dadosObjeto[i].status +
-            //         ", Visualizado: " + dadosObjeto[i].visualizado +
-            //         ", Excluído: " + dadosObjeto[i].excluido +
-            //            ", Destino: " + dadosObjeto[i].destino +
-            //            ", Chamado Referência: " + dadosObjeto[i].chamadoReferencia +
-            //            ", Data: " + dadosObjeto[i].data;
-            //         console.log(linha);
-            // }
+        }
+
+        function excluiNotificacao(id) {
+            var data = 'excluiNotificacao=' + id;
+            connection(data, 2, 'notificacoes.php');
+            verificaClique(2)
         }
 
         function getDate(date, saida) {
@@ -195,23 +195,14 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     if (output == 1) {
                         unParse(xhr.responseText);
-                        connection(verificaNova(), 4, 'index.php');
+                        window.parent.verificaNovaNotificacao(verificaNova())
                     } else
                         if (output == 2) {
                             window.location.reload();
                         } else
                             if (output == 3) {
-                                // console.log(data);
                                 window.parent.foo(data, verificaNova());
-                                // connection(verificaNova(),4, 'index.php');
-
-                            } else
-                                if (output == 4) {
-                                    window.parent.verificaNovaNotificacao(data);
-
-
-                                }
-                    // console.log(xhr.responseText);
+                            }
                 }
             }
             xhr.send(data);
@@ -219,14 +210,13 @@
 
         function verificaNova() {
             var novasMensagens = document.getElementById("novasMensagens");
-            var historicoMensagens = document.getElementById("historicoMensagens");
             if (novasMensagens.textContent != '') {
                 return 'true';
             } else {
                 return 'false';
             }
         }
-
+        verificaClique(1);
         function verificaClique(item) {
             var novas = document.getElementById("novas");
             var historico = document.getElementById("historico");

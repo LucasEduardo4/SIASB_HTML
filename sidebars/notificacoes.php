@@ -89,5 +89,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ;
 }
 
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['excluiNotificacao'])){
+        $idNotificacao = $_POST['excluiNotificacao'];
+        $sql = "UPDATE tbnotificacoes SET excluido = 1 WHERE IDNotificacao = '$idNotificacao'";
+        $result = $conn->query($sql);
+        // if($result){
+        //     echo "Notificação excluida";
+        // }else{
+        //     echo "Erro na consulta SQL: " . $conn->error;
+        // }
+    }
+}
+
 
 ?>
