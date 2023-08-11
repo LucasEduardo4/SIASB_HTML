@@ -64,16 +64,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if($result){
             $row = mysqli_fetch_assoc($result);
             if($row){
-
                 $descricao = $row['descricao'];
             }else
                 $descricao = 'Equipamento nao encontrado';
         }else{
             echo "Digite um STI_ID valido (números inteiros)";
         }
-
         echo $descricao;
-        
     }
 }
 ?>
