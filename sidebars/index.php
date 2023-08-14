@@ -33,13 +33,14 @@ $stmtFetchImage->close();
 
 $conn->close();
 
-if ($imageData) {
-  // Display the image using base64 encoding
-  $base64Image = base64_encode($imageData);
-  echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
-} else {
-  echo "Image not found.";
-}
+    if ($imageData) {
+        // Display the image using base64 encoding
+        $base64Image = base64_encode($imageData);
+        // echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
+    } else {
+        echo "Image not found.";
+    }
+    ?>
 
 
 
