@@ -127,7 +127,7 @@ h3 {
 .botoes button {
     margin-left: 10px;
     padding: 8px 15px;
-    border: none;
+    /* border: none; */
     border-radius: 3px;
     background-color: #007bff;
     color: #fff;
