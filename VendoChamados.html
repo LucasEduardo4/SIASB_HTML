@@ -128,14 +128,31 @@
             background-color: #004235b6;
             border-radius: 3px;
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+        }
+
+        .FaixaFormResults {
+            background-color: white;
+            color: black;
+            border-radius: 3px;
+            display: flex;
+            margin-bottom: 5px;
+            height: 40px;
+            border-bottom: solid 1px grey;
+            /* margin-top: 20px; */
         }
 
         /* VOU UTILIZAR PARA A PARTE DE CIMA E PARA PARTE DE BAIXO */
         .CamposResultados {
             width: 100%;
             display: inline-block;
-            color: #ffffff;
+            color: white;
+        }
+
+        .cells{
+            display: inline-block;
+            color: black;
+            width: 100%;
         }
 
         #temp {
@@ -171,8 +188,9 @@
 <body onload="init()">
     <div class="container">
         <div style="border-radius: 5px;" class="div-superior">
-            <div style="border-radius: 10px;" class="logo"> 
-                <img src="..\SIASB_HTML\Icones Site\TELEFONE.png"> </div>
+            <div style="border-radius: 10px;" class="logo">
+                <img src="..\SIASB_HTML\Icones Site\TELEFONE.png">
+            </div>
             <h2 style="color: #004235b6; font-size: 21px;">ABRIR CHAMADO</h2>
             <button onclick="window.location.href = 'AbrindoChamado.html'">
                 Novo Chamado
@@ -242,7 +260,7 @@
     </form>
 
     <div class="resultados" id="resultadosContainer" style="display: none;">
-        <div class="FaixaForm">
+        <div class="FaixaForm" style="color: white;">
             <div class="CamposResultados">
                 <p style="padding-left: 10px;"> ID da Solicitação </p>
             </div>
@@ -290,14 +308,14 @@
                         var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
 
                         dataAte.value = dataAtual;
-                    }else
-                    if(dataOption == 2){
-                        document.getElementById("status").value = 4;
-                    }
-                    else
-                    if(dataOption == 1){
-                        document.getElementById("status").value = 5;
-                    }
+                    } else
+                        if (dataOption == 2) {
+                            document.getElementById("status").value = 4;
+                        }
+                        else
+                            if (dataOption == 1) {
+                                document.getElementById("status").value = 5;
+                            }
                 }
 
                 filtroForm.addEventListener('submit', function (event) {

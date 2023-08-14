@@ -52,4 +52,25 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     }
 }
 
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['stiID'])){
+        $conn = mysqli_connect("localhost", "root", "", "siasb");
+
+        $stiID = $_POST['stiID'];
+        $descricao = '';
+
+        $sql = "SELECT descricao from tbequipamentos WHERE sti_id = $stiID";
+        $result = mysqli_query($conn, $sql);
+        if($result){
+            $row = mysqli_fetch_assoc($result);
+            if($row){
+                $descricao = $row['descricao'];
+            }else
+                $descricao = 'Equipamento nao encontrado';
+        }else{
+            echo "Digite um STI_ID valido (números inteiros)";
+        }
+        echo $descricao;
+    }
+}
 ?>

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
             // Adicionar os valores na tabela HTML com ícones de ação
             echo "<tr><td id='id-".$idValue."'>".$idValue."</td><td id='desc-".$idValue."'>".$descValue."</td><td>
             <span class='bi bi-pencil' aria-hidden='true' id='edit-btn-".$idValue."'></span> 
-            <span class='bi bi-trash' aria-hidden='true' id='trash-btn-".$idValue."'></span></span>
+            <span class='bi bi-trash' aria-hidden='true' id='trash-btn-".$idValue."'></span>
             <span class='bi bi-check-square' aria-hidden='true' id='save-btn-".$idValue."'></span></td></tr>";
             // echo "<tr><td>".$idValue."</td><td id='desc-".$idValue."'>".$descValue."</td><td><a href='editar.php?id=".$idValue."'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a> <a href='excluir.php?id=".$idValue."'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a></td></tr>";
         }

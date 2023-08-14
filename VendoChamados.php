@@ -85,19 +85,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Adicionar os valores na tabela HTML com ícones de ação
                 echo "
                 <a href='detalhandoChamado.html?IDChamado=".$IDChamado."'>
-                <div class='FaixaForm'>
-                <div class='CamposResultados' id='IDChamado'> <p style='padding-left: 10px;'>".$IDChamado."</p> </div>
-                <div class='CamposResultados'> <p>".$dataAbertura."</p> </div>
-                <div class='CamposResultados'> <p>".$assunto."</p> </div>
-                <div class='CamposResultados'> <p>".$status_chamado."</p> </div>
+                <div class='FaixaFormResults'>
+                <div class='cells' id='IDChamado'> <p style='padding-left: 10px;'>".$IDChamado."</p> </div>
+                <div class='cells'><p>".$dataAbertura."</p></div>
+                <div class='cells'><p>".$assunto."</p></div>
+                <div class='cells'><p>".$status_chamado."</p></div>
                 </div>
                 </a>
                 ";
                 // <div class='CamposResultados responsavel_tecnologia'> <h1 class='bi bi-gear' onclick='detalharChamado(this)'></h1> </div>
             }
         } else {
-            // echo $sql;
-            // echo "<br>";
             echo "Nenhum resultado encontrado para este usuário.";
         }
     }

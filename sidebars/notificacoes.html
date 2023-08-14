@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <title>Notificações</title>
     <style>
         html {
@@ -45,11 +47,20 @@
             border-radius: 5px;
         }
 
-        #mensagem {
+        .mensagem {
             border-bottom: solid 1px black;
             border-radius: 5px;
             width: 100%;
+        }
 
+        a {
+            text-decoration: none;
+            color: black;
+
+        }
+
+        .opt {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -59,6 +70,7 @@
         <div class="row text-center">
             <div class="col-12">
                 <h2>Notificações</h2>
+
             </div>
             <hr>
         </div>
@@ -71,50 +83,140 @@
             </div>
             <hr>
         </div>
-        <div class="container" id="novasMensagens">
-            <div class="row">
-                <p id="data">Hoje</p>
-                <p id="mensagem">10:30 - Houve Alteração no Chamado X</p>
-            </div>
-            <div class="row">
-                <p id="data">Ontem</p>
-                <p id="mensagem">10:30 - Houve Alteração no Chamado X</p>
-            </div>
-        </div>
-        <div class="container" id="historicoMensagens" style="display: none;">
-            <div class="row">
-                <p id="data">05/08</p>
-                <p id="mensagem">10:30 - Alteração teste chamado</p>
-            </div>
-            <div class="row">
-                <p id="data">03/08</p>
-                <p id="mensagem">10:30 -Chamado X foi finalizado</p>
-            </div>
+        <div class="container" id="novasMensagens"></div>
+        <!-- Dados inseridos dinamicamente  -->
+        <div class="container" id="historicoMensagens">
+            <!-- Dados inseridos dinamicamente  -->
         </div>
     </div>
     <script>
         function init() {
-            connection('verifyUser=');
+            connection('verifyUser=', 1, 'notificacoes.php');
+
         }
 
-        function unParse(data) {
+        function clicouNotificacao(idNotificacao) {
+            connection(idNotificacao, 3, 'index.php')
+            connection('clicouNotificacao=' + idNotificacao, 2, 'notificacoes.php');//atualiza o status da notificação
+        }
+
+        function unParse(data, output) {
             var dadosObjeto = JSON.parse(data);
-
-            var dadosObjetoHTML = document.getElementById("dadosObjetoHTML");
-
+            var novasMensagens = document.getElementById("novasMensagens");
+            var historicoMensagens = document.getElementById("historicoMensagens");
             for (var i = 0; i < dadosObjeto.length; i++) {
-                var linha = "IDNotificação: " + dadosObjeto[i].IDNotificacao +
-                    ", Status: " + dadosObjeto[i].status +
-                    ", Visualizado: " + dadosObjeto[i].visualizado +
-                    ", Excluído: " + dadosObjeto[i].excluido +
-                    ", Destino: " + dadosObjeto[i].destino +
-                    ", Chamado Referência: " + dadosObjeto[i].chamadoReferencia +
-                    ", Data: " + dadosObjeto[i].data;
-                    console.log(linha);
+                if(dadosObjeto[i].excluido == 1){
+                    console.log('Não exibido:' + dadosObjeto[i].IDNotificacao)
+                }else
+                if (dadosObjeto[i].visualizado == 1) {
+                    historicoMensagens.innerHTML = historicoMensagens.innerHTML + `
+                    <div class="row">
+                        <p id='data' style='display:block;'>
+                            ${getDate(dadosObjeto[i].data, 'novaMSG/dia')} - ${getDate(dadosObjeto[i].data, 'novaMSG/hora')}
+                        </p>
+                        <div class="mensagem-container" style="display: flex; align-items: center;">
+                            <p id='${dadosObjeto[i].IDNotificacao}' onclick="clicouNotificacao(${dadosObjeto[i].IDNotificacao})" class='mensagem opt' style='width: 340px; margin-right: 10px;'>
+                                ${mensagemGenerica(dadosObjeto[i].status, dadosObjeto[i].chamadoReferencia)} 
+                            </p>
+                            <i onclick='excluiNotificacao(${dadosObjeto[i].IDNotificacao})' title='Excluir' class='bi bi-trash opt'></i>
+                        </div>
+                    </div>`
+                } else
+                    novasMensagens.innerHTML = novasMensagens.innerHTML + `
+                    <div class="row opt" onclick="clicouNotificacao(${dadosObjeto[i].IDNotificacao})">
+                        <p id='data'>
+                            ${getDate(dadosObjeto[i].data, 'novaMSG/dia')}
+                        </p>
+                        <p id='${dadosObjeto[i].IDNotificacao}' class='mensagem'>
+                            ${getDate(dadosObjeto[i].data, 'novaMSG/hora')} ${mensagemGenerica(dadosObjeto[i].status, dadosObjeto[i].chamadoReferencia)}
+                        </p>
+                    </div>`
             }
         }
 
+        function excluiNotificacao(id) {
+            var data = 'excluiNotificacao=' + id;
+            connection(data, 2, 'notificacoes.php');
+            verificaClique(2)
+        }
 
+        function getDate(date, saida) {
+            var data = new Date(date);
+            var hoje = new Date();
+
+            var dia = data.getDate();
+            var mes = data.getMonth();
+            var ano = data.getFullYear();
+            var hora = data.getHours();
+            var minuto = data.getMinutes();
+            var segundo = data.getSeconds();
+            var dataFormatada = dia + '/' + (mes++) + '/' + ano + ' ' + hora + ':' + minuto + ':' + segundo;
+            if (saida == 'novaMSG/dia') {
+                if (mesmoDia(data, hoje)) {
+                    return 'Hoje';
+                } else if (mesmoDia(data, new Date(hoje.getTime() - 24 * 60 * 60 * 1000))) {
+                    return 'Ontem';
+                } else {
+                    return dia + '/' + (mes++) + '/' + ano;
+                }
+            } else
+                if (saida == 'novaMSG/hora') {
+                    return formatTime(hora, minuto);
+                } else
+                    if (saida == 'historicoMSG/dia') {
+                        return dia + '/' + (mes++) + '/' + ano;
+                    } else
+                        if (saida == 'historicoMSG/hora') {
+                            return formatTime(hora, minuto);
+                        }
+            function mesmoDia(date1, date2) {
+                return date1.getFullYear() === date2.getFullYear() &&
+                    date1.getMonth() === date2.getMonth() &&
+                    date1.getDate() === date2.getDate();
+            }
+            function formatTime(hours, minutes) {
+                return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+            }
+        }
+
+        function mensagemGenerica(status, chamado) {
+            if (status == 1 || status == 2 || status == 3) {
+                return `Houve Alteração no Chamado ${chamado}`;
+            } else if (status == 4) {
+                return `O chamado nº${chamado} foi finalizado`;
+            }
+        }
+
+        function connection(data, output, file) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", file, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (output == 1) {
+                        unParse(xhr.responseText);
+                        window.parent.verificaNovaNotificacao(verificaNova())
+                    } else
+                        if (output == 2) {
+                            window.location.reload();
+                        } else
+                            if (output == 3) {
+                                window.parent.foo(data, verificaNova());
+                            }
+                }
+            }
+            xhr.send(data);
+        }
+
+        function verificaNova() {
+            var novasMensagens = document.getElementById("novasMensagens");
+            if (novasMensagens.textContent != '') {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        }
+        verificaClique(1);
         function verificaClique(item) {
             var novas = document.getElementById("novas");
             var historico = document.getElementById("historico");
@@ -133,20 +235,6 @@
                 historicoMensagens.style.display = "block";
                 novasMensagens.style.display = "none";
             }
-            console.log("Entrou nessa função");
-
-        }
-        function connection(data) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "notificacoes.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    unParse(xhr.responseText);
-                    // console.log(xhr.responseText);
-                }
-            }
-            xhr.send(data);
         }
     </script>
 </body>

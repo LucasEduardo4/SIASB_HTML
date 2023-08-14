@@ -8,35 +8,35 @@ if (!isset($_SESSION['username'])) {
 ?>
 
 <?php
-    // Conexão com o banco de dados (substitua pelas suas informações)
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "siasb";
+// Conexão com o banco de dados (substitua pelas suas informações)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Verificar conexão
-    if ($conn->connect_error) {
-        die("Conexão com o banco de dados falhou: " . $conn->connect_error);
-    }
+// Verificar conexão
+if ($conn->connect_error) {
+  die("Conexão com o banco de dados falhou: " . $conn->connect_error);
+}
 
-    $userID = 1; // Replace with the actual user ID
+$userID = 1; // Replace with the actual user ID
 
-    $sqlFetchImage = "SELECT icone FROM tbusuario WHERE IDUsuario = ?";
-    $stmtFetchImage = $conn->prepare($sqlFetchImage);
-    $stmtFetchImage->bind_param("i", $userID);
-    $stmtFetchImage->execute();
-    $stmtFetchImage->bind_result($imageData);
-    $stmtFetchImage->fetch();
-    $stmtFetchImage->close();
+$sqlFetchImage = "SELECT icone FROM tbusuario WHERE IDUsuario = ?";
+$stmtFetchImage = $conn->prepare($sqlFetchImage);
+$stmtFetchImage->bind_param("i", $userID);
+$stmtFetchImage->execute();
+$stmtFetchImage->bind_result($imageData);
+$stmtFetchImage->fetch();
+$stmtFetchImage->close();
 
-    $conn->close();
+$conn->close();
 
     if ($imageData) {
         // Display the image using base64 encoding
         $base64Image = base64_encode($imageData);
-        // echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
+        echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
     } else {
         echo "Image not found.";
     }
@@ -44,44 +44,30 @@ if (!isset($_SESSION['username'])) {
 
 
 
+?>
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-<!-- <script src="../flowSite/verificaSessao.js"></script> -->
 
 <head>
-  <script src="../assets/js/color-modes.js"></script>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-
-
-  <!-- <meta name="description" content="SISTEMA DE GERENCIAMENTO DE CHAMADO">
-      <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-      <meta name="generator" content="Hugo 0.112.5"> -->
-
   <title>HOME INICIAL SIASB</title>
-  <!-- <script src="/siasb_html/flowSite/verificaSessao.js"></script> -----  Não funciona, já que está verificando a sessão no começo desse arquivo -->
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
   <link href="bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="sidebars.css" rel="stylesheet">
+
+
   <script src="bootstrap.bundle.min.js"></script>
   <script src="sidebars.js"></script><!-- Code injected by live-server -->
-
-
-
+  <!-- <script src="../assets/js/color-modes.js"></script> -->
 
   <style>
-    /* SIDEBAR DO CANTO SUPERIOR DO SISTEMA */
-
     .sidebar {
       width: 97%;
-      /* Largura total da página */
       background-color: #00a383;
-      /* Cor de fundo da sidebar */
       padding: 5px;
-      /* Espaçamento interno */
       padding-left: 20px;
       margin-left: 60px;
       position: absolute;
@@ -110,65 +96,40 @@ if (!isset($_SESSION['username'])) {
     #notificationSign {
       margin: 10px;
       width: 35px;
-      /* border: solid 1px black; */
     }
 
-    /* Estilos para os links na sidebar */
     .sidebar ul {
       list-style-type: none;
-      /* Remover marcadores da lista */
       padding: 0;
-      /* Remover espaçamento interno da lista */
       display: flex;
-      /* Tornar os links flexíveis (dispostos horizontalmente) */
-
-
     }
 
     .sidebar li {
       margin-right: 10px;
-      /* Espaçamento entre os itens da lista */
     }
 
     .sidebar a {
       text-decoration: none;
-      /* Remover sublinhado dos links */
       color: #333;
-      /* Cor dos links */
     }
 
-    /* Estilos para o conteúdo principal */
     .content {
       padding: 20px;
-      /* Espaçamento interno */
     }
 
-
-    /* Estilo para a div do perfil */
     #imagemContainer {
       width: 60px;
-      /* Defina o tamanho desejado da div do perfil */
       height: 60px;
       border-radius: 50%;
-      /* Torna as bordas da div redondas para criar o formato de perfil */
       overflow: hidden;
-      /* Esconde qualquer conteúdo que exceda os limites da div */
     }
 
-    /* Estilo para a imagem */
     #imagemContainer img {
       width: 100%;
-      /* A imagem ocupará todo o espaço da div */
       height: 100%;
       object-fit: cover;
-      /* Faz com que a imagem cubra todo o espaço disponível sem distorcer */
     }
 
-
-
-    /* REALIZANDO A ALTERAÇÃO NO TEMA DE CLARO PARA ESCURO */
-
-    /* Tema claro */
     body {
       background-color: #f6f6f6;
 
@@ -179,13 +140,10 @@ if (!isset($_SESSION['username'])) {
       color: #ffffff;
     }
 
-    /* Tema escuro */
     body.escuro {
       background-color: #525252;
       color: #454545;
     }
-
-    /* ABRINDO DROPBOX NA OPÇÃO DOS CHAMADOS */
 
     .menu {
       list-style: none;
@@ -208,15 +166,6 @@ if (!isset($_SESSION['username'])) {
       color: white;
     }
 
-    /* .dropdown:hover .dropdown-content {  //CASO EU QUEIRA ATIVAR O HOUVER
-    display: block; 
-} */
-
-
-
-    /* REALIZANDO AS ALTERAÇÕES DO DESIGN DO MENU ATIVADO E DESATIVADO */
-
-
     .menu {
 
       padding: 10px;
@@ -228,19 +177,16 @@ if (!isset($_SESSION['username'])) {
       padding: 0;
       display: flex;
       flex-direction: column;
-      /* Alteração: altera a direção para vertical */
     }
 
 
     .menu-item {
       cursor: pointer;
       padding: 10px;
-      /* background-color: white; */
       margin-right: 180px;
       color: #333;
       border-radius: 5px;
       margin-bottom: 10px;
-      /* Alteração: adiciona margem inferior */
       font-weight: bold;
     }
 
@@ -252,9 +198,6 @@ if (!isset($_SESSION['username'])) {
 
     #myIframe {
       width: 100%;
-      /* position: relative;
-      display: flex; */
-      /* padding-top: 110px; */
     }
 
     .cor_ativado {
@@ -270,8 +213,6 @@ if (!isset($_SESSION['username'])) {
       cursor: pointer;
 
     }
-
-    /* CUSTOMIZAÇÃO DAS OPÇÕES DE NAVEGAÇÃO */
 
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -345,23 +286,39 @@ if (!isset($_SESSION['username'])) {
     .bd-mode-toggle {
       z-index: 1500;
     }
-    #map { /* Obs. esse mapa é para fechar a janela de notificação ao clicar fora */
-            width: 100px;
-            height: 100px;
-            /* background-color: rgba(0, 0, 0, 0.01); */
-            font-size: 16px;
-            position: fixed;
-            top: 0px;
-            left:70px;
-            width: 100%;
-            height: 100%;
-            display: none;
-        }
+
+    #map {
+      /* Obs. esse mapa é para fechar a janela de notificação ao clicar fora */
+      width: 100px;
+      height: 100px;
+      font-size: 16px;
+      position: fixed;
+      top: 0px;
+      left: 70px;
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    .circleDiv {
+      position: relative;
+      display: inline-block;
+    }
+
+    .circle {
+      position: absolute;
+      top: 38px;
+      right: 40px;
+      width: 15px;
+      height: 15px;
+      background-color: red;
+      border-radius: 50%;
+      border: solid 1px black;
+      display: none;
+    }
   </style>
 
-
   <!-- Custom styles for this template -->
-  <link href="sidebars.css" rel="stylesheet">
 </head>
 
 <body cz-shortcut-listen="true">
@@ -430,7 +387,7 @@ if (!isset($_SESSION['username'])) {
   </div>
 
 
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <!-- <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="bootstrap" viewBox="0 0 118 94">
       <title>Bootstrap</title>
       <path fill-rule="evenodd" clip-rule="evenodd"
@@ -466,15 +423,20 @@ if (!isset($_SESSION['username'])) {
         d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z">
       </path>
     </symbol>
-  </svg>
+  </svg> -->
 
   <!-- CÓDIGO DA SIDEBAR SUPERIOR -->
   <div id="centerBox">
-        <div id="map"><!-- Essa di é apenas para deiaxr um mapa na tela, para que seja possível fechar a notificação quando é clicada--></div>
+    <div id="map">
+      <!-- Essa div é apenas para deiaxr um mapa na tela, para que seja possível fechar a notificação quando é clicada-->
     </div>
-  <div class="sidebar_icon" onclick="abrirNotificacao(event)";>
-    <!-- Conteúdo da sidebar aqui -->
-    <img src="..\Icones Site\NOTIFICACAO.png" id="notificationSign" alt="saaeb barretos" width="40">
+  </div>
+  <div class="sidebar_icon" onclick="abrirNotificacao(event)" ;>
+    <div class='circleDiv' id="circle">
+      <img src="..\Icones Site\NOTIFICACAO.png" id="notificationSign" alt="saaeb barretos" width="40">
+      <div class="circle"></div>
+    </div>
+
   </div>
 
   <main class="d-flex flex-nowrap">
@@ -486,8 +448,6 @@ if (!isset($_SESSION['username'])) {
     <!-- <div style="background-color: green; padding-left:300px; padding-bottom:20px;" > -->
 
     </div>
-
-
     <div style=" width: 60px; background-color: #00a383; padding-bottom:10px;">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
 
@@ -511,7 +471,7 @@ if (!isset($_SESSION['username'])) {
 
           <div onclick="abrirHome()">
             <li onclick="alterarCor(this)" class="menu-item">
-              <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" width="25" height="22">
+              <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
             </li>
           </div>
 
@@ -520,7 +480,7 @@ if (!isset($_SESSION['username'])) {
           <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
           <div onclick="abrirIframe('Ver Chamados')">
             <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-              <img src="..\Icones Site\CHAMADO BRANCO.png"" alt=" saaeb barretos" width="50" height="22">
+              <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
             </li>
 
           </div>
@@ -528,13 +488,13 @@ if (!isset($_SESSION['username'])) {
 
           <div onclick="abrirSite()">
             <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-              <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" width="50" height="22">
+              <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
             </li>
           </div>
 
           <div onclick="abrirConfiguracoes()">
             <li onclick="alterarCor(this)" class="menu-item">
-              <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" width="25" height="22">
+              <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
             </li>
           </div>
 
@@ -571,35 +531,51 @@ if (!isset($_SESSION['username'])) {
 
     <!-- TIRANDO A PARTE QUE DIVIDE O MENU DA TELA PRINCIPAL DE CONTEUDO -->
     <div class="b-example-vr"></div>
-
-
     <iframe id="myIframe" frameborder="0"></iframe>
 
-
-
     <script>
-      var iframe = document.createElement("iframe");
 
+
+      function verificaNovaNotificacao(nova) {
+        var circle = document.getElementsByClassName("circle")[0];
+        if (nova == 'true') {
+          circle.style.display = 'block';
+        } else
+          if (nova == 'false') {
+            circle.style.display = 'none';
+          }
+        }
+
+        function foo(idNotificacao, nova) {
+          var iframe = document.getElementById("myNotifications");
+          iframe.hidden = true;
+          var iframeContainer = document.getElementById('myIframe');
+          iframeContainer.src = "../detalhandoChamado.html?IDChamado=" + idNotificacao;
+          var mapa = document.getElementById("map");
+          mapa.style.display = 'none'
+          verificaNovaNotificacao(nova);
+        }
+      
+
+
+      var iframe = document.createElement("iframe");
       iframe.src = "notificacoes.html";
       iframe.style.position = "fixed";
-      iframe.style.top = "50px";
+      iframe.style.top = "80px";
       iframe.style.right = "10px";
       // iframe.style.width = "100%";
       iframe.style.width = "405px";
       iframe.style.height = "400px";
       iframe.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
       iframe.style.zIndex = "9999";
-      iframe.style.position= "absolute";
+      iframe.style.position = "absolute";
       iframe.id = "myNotifications"
       iframe.hidden = true;
 
-
       document.body.appendChild(iframe);
 
-
       function abrirNotificacao(event) {
-        var mapa =document.getElementById("map");
-        // Parar a propagação do evento de click para o <body>
+        var mapa = document.getElementById("map");
         if (event) {
           event.stopPropagation();
         }
@@ -607,7 +583,6 @@ if (!isset($_SESSION['username'])) {
         var iframe = document.getElementById("myNotifications");
 
         if (iframe.hidden) {
-          // Se o iframe está oculto, vamos mostrá-lo
           iframe.hidden = false;
           mapa.style.display = "block";
 
@@ -615,24 +590,19 @@ if (!isset($_SESSION['username'])) {
             // Verificar se o clique foi dentro do iframe
             var isClickedInsideIframe = iframe.contains(event.target);
             if (!isClickedInsideIframe) {
-              // Se o clique foi fora do iframe, ocultá-lo
               iframe.hidden = true;
               mapa.style.display = "none";
-              // Remover o event listener após ocultar o iframe
               document.body.removeEventListener("click", clickListener);
             }
           }
 
-          // Adicionar o event listener no <body> para escutar cliques fora do iframe
           document.body.addEventListener("click", clickListener);
         } else {
-          // Se o iframe já está aberto, vamos fechá-lo diretamente
           iframe.hidden = true;
         }
       }
-// VOLTAR AQUI <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------------------------------------------------------------------------------------------------------------------------
+      // VOLTAR AQUI <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------------------------------------------------------------------------------------------------------------------------
       function fecharNotificacao(event) {
-        // Parar a propagação do evento de click para o <body>
         if (event) {
           event.stopPropagation();
         }
@@ -648,16 +618,13 @@ if (!isset($_SESSION['username'])) {
 
         var basePath = '/' + pathArray[1] + '/flowSite/encerrarSessao.php'
         var xhr = new XMLHttpRequest();
-        // xhr.open("POST",'/Siasb_HTML/flowSite/encerrarSessao.php', true);
         xhr.open("POST", basePath, true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-              // tableSetor.innerHTML += xhr.responseText;
               if (xhr.responseText == "true") {
                 window.location.href = `/${pathArray[1]}/Login.html`;
-                // window.location.reload();
               }
             }
           }
@@ -666,7 +633,6 @@ if (!isset($_SESSION['username'])) {
         console.log("Envia a req.")
 
       }
-      //ALTERAR CLASSE DO ELEMENTO, DESATIVADO PARA ATIVADO
 
       function alterarCor(elemento) {
         var menuItens = document.querySelectorAll('.menu-item');
@@ -743,15 +709,6 @@ if (!isset($_SESSION['username'])) {
 
     </script>
   </main>
-
-
-
-
-
-  <!--  Esse Script Padrão é responsável por carregar bibliotecas e scripts adicionais, bem como fornecer recursos de interatividade e atualização 
-automática da página. -->
-
-
   <script>
   //   // <![CDATA[  <-- For SVG support
   //   if ('WebSocket' in window) {
@@ -826,8 +783,6 @@ automática da página. -->
   //   }
   // // ]]>
   </script>
-
-  </div>
 </body>
 
 </html>
