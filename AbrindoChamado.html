@@ -242,9 +242,9 @@
           <label for="nomeEquipamento"> Equipamento:</label>
           <input type="text" id="equipamentoNome" class="animate__animated animate__slideInRight" disabled value="">
           <h2 style="margin-left: 10px; display: none;" class="animate__animated animate__slideInRight custom-slide-in"
-            id="plusCircle" title="Cadastrar equipamento"><i id="cadastroIcone" onclick='breveCadastro(this)'
+            id="plusCircle" title="Cadastrar equipamento"><i id="cadastroIcone" onclick='handleCadastro(this, 0)'
               class="bi bi-plus-circle-fill"></i></h2>
-          <input type="checkbox" name="ExisteEquipamento" id="ExisteEquipamento" disabled>
+          <input type="checkbox" name="ExisteEquipamento" id="ExisteEquipamento" disabled hidden>
           <!-- Se nao for encontrado, exibir um icone para fazer um mini cadastro -->
         </div>
 
@@ -289,27 +289,27 @@
         // }
         function handleCadastro(icone, response) {
           var equipamento = document.getElementById("equipamentoNome");
-          var circle = document.getElementById("plusCircle");
+          // var circle = document.getElementById("plusCircle");
           var existe = document.getElementById("ExisteEquipamento");
 
           if (response === 'Equipamento nao encontrado') {
-            equipamento.style.width = '950px';
+            // equipamento.style.width = '950';
             equipamento.placeholder = 'Equipamento nao encontrado, digite uma breve descrição sobre o equipamento:';
-            circle.style.display = 'block';
+            // circle.style.display = 'block';
             equipamento.value = '';
             equipamento.disabled = false;
-            icone.classList.remove("bi-plus-circle-fill");
-            icone.classList.add("bi-check-circle-fill");
-            icone.id = 'cadastroReady';
+            // icone.classList.remove("bi-plus-circle-fill");
+            // icone.classList.add("bi-check-circle-fill");
+            // icone.id = 'cadastroReady';
             existe.checked = true;
           } else if (response !== 'Equipamento nao encontrado') {
             equipamento.style.width = '100%';
             equipamento.placeholder = '';
-            circle.style.display = 'none';
+            // circle.style.display = 'none';
             equipamento.disabled = true;
-            icone.classList.add("bi-plus-circle-fill");
-            icone.classList.remove("bi-check-circle-fill");
-            icone.id = 'cadastroIcone';
+            // icone.classList.add("bi-plus-circle-fill");
+            // icone.classList.remove("bi-check-circle-fill");
+            // icone.id = 'cadastroIcone';
             existe.checked = false;
           }
         }
@@ -346,6 +346,7 @@
           var selectCategoria = document.getElementById("categoria");
           var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
           var equipamento = "NULL";
+          var existeEquipamento = document.getElementById("ExisteEquipamento");
 
           if (categoria == "hardware") {
             equipamento = document.getElementById("stiID").value;
@@ -358,6 +359,7 @@
               document.getElementById("erromsg").style.display = 'flex';
             } else {
               var formData = new FormData();
+              formData.append("existeEquipamento", existeEquipamento.checked);
               formData.append("assunto", assunto);
               formData.append("descricao", descricao);
               formData.append("equipamento", equipamento);
@@ -369,11 +371,12 @@
 
               xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                  // console.log(xhr.responseText);
+                  console.log(xhr.responseText);
                 }
               };
 
               xhr.send(formData);
+              // console.log(formData.assunto, formData.existeEquipamento);
               exibirPopup();
             }
           }

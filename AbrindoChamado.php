@@ -10,8 +10,36 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $equipamento = $_POST['equipamento'];
         $categoria = $_POST['categoria'];
         $username = $_SESSION['username'];
+        $existeEquipamento = $_POST['existeEquipamento'];
         // $imagem = $_POST['imagem'];
         // $imagem = '';
+
+
+        //verifica se o equipamento existe
+        //adicionar o equipamento no banco de dados
+        if($existeEquipamento == true){
+            echo "Entrou aqui \n";
+            $sql1 = "
+            SET @UltimoID = (SELECT MAX(sti_ID) FROM tbequipamentos);
+            SET @UltimoID = IFNULL(@UltimoID, 0) + 1;
+            INSERT INTO TBequipamentos(sti_id, descricao,tipo, usuario) values(@UltimoID, $equipamento, 1, '$username')
+            ";
+            if (mysqli_multi_query($conn, $sql1)) {
+                if (mysqli_affected_rows($conn) > 0) {
+                    echo "Novo equipamento adicionado com sucesso!";
+                } else {
+                    echo "caiu no segundo else-> " . mysqli_info($conn); //ver pq caiu no else
+                    echo $sql1;
+                }
+            }else
+                echo "Erro ao adicionar equipamento";
+        } 
+
+
+
+        // SET @UltimoID = (SELECT MAX(sti_ID) FROM tbequipamentos);
+        // INSERT INTO TBequipamentos(sti_id, descricao,tipo, usuario) values(@UltimoID, 106, 1, root)
+  
 
         $getUserID = "SELECT IDUsuario FROM TBusuario WHERE nome = '$username'";
         $result = mysqli_query($conn, $getUserID);
