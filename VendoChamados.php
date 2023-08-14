@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class='cells' id='IDChamado'> <p style='padding-left: 10px;'>".$IDChamado."</p> </div>
                 <div class='cells'><p>".$dataAbertura."</p></div>
                 <div class='cells'><p>".$assunto."</p></div>
-                <div class='cells'><p>".$status_chamado."</p></div>
+                <div class='cells'><p class='statusColors $status_chamado'>".$status_chamado."</p></div>
                 </div>
                 </a>
                 ";

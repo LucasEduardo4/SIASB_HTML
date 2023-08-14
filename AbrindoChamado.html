@@ -347,9 +347,11 @@
           var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
           var equipamento = "NULL";
           var existeEquipamento = document.getElementById("ExisteEquipamento");
-
+          var equipamentoNome = "NULL";
+          
           if (categoria == "hardware") {
             equipamento = document.getElementById("stiID").value;
+            var equipamentoNome = document.getElementById("equipamentoNome").value;
           }
           if (assunto == '' || descricao == '' || categoria == '') {
             document.getElementById("erromsg").style.display = 'flex';
@@ -363,6 +365,7 @@
               formData.append("assunto", assunto);
               formData.append("descricao", descricao);
               formData.append("equipamento", equipamento);
+              formData.append("equipamentoNome", equipamentoNome);
               formData.append("categoria", categoria);
               formData.append("imagem", imagemInput.files[0]);
 

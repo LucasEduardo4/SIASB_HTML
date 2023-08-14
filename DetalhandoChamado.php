@@ -29,6 +29,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $descricao = $row["descricao"];
                     $dataAbertura = $row["dataAbertura"];
                     $status_chamado = $row["status_chamado"];
+                    $status_chamado = "<p class='statusColors $status_chamado'>$status_chamado</p>";
                     $responsavel = $row["responsavel"];
                     $autor = $row["autor"];
                     $equipamento = $row["equipamento"];

@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
         
-        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email, p.gestor, u.IDUsuario, u.administrador, u.habilitado
+        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.secao, p.email, p.gestor, u.IDUsuario, u.administrador, u.habilitado
                 FROM TBPessoa p
                 JOIN TBSetor st ON p.setor = st.IDSetor
                 JOIN TBSecao sc ON p.secao = sc.IDSecao
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cpf = $row["cpf"];
                 $matricula = $row["matricula"];
                 $setor = $row["descricao_setor"];
-                $secao = $row["descricao_secao"];
+                $secao = $row["secao"];
                 $email = $row['email'];
                 $gerente = $row['gestor'];
                 $IDUsuario = $row['IDUsuario'];
@@ -101,11 +101,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['select_ready_equipment'])){
 
+        // $sql = "
+        // SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, sc.descricao_secao FROM TBEquipamentos e
+        // join TBTipo_Equipamentos te on te.IDTipo = e.tipo
+        // join TBPessoa p on p.IDPessoa = e.usuario
+        // join TBSecao sc on e.secao = sc.IDSecao
+        // ";
         $sql = "
-        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, sc.descricao_secao FROM TBEquipamentos e
+        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, e.secao FROM TBEquipamentos e
         join TBTipo_Equipamentos te on te.IDTipo = e.tipo
         join TBPessoa p on p.IDPessoa = e.usuario
-        join TBSecao sc on e.secao = sc.IDSecao
         ";
 
         $stmt = $conn->prepare($sql);
@@ -120,7 +125,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $ip = $row["ip"];
                 $tipo = $row["tipo"];
                 $nomeCompleto = $row["nomeCompleto"];
-                $secao = $row["descricao_secao"];
+                $secao = $row["secao"];
 
                 echo "<tr>
                 <td>".$sti_id."</td>
