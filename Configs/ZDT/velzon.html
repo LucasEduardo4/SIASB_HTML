@@ -1,0 +1,2238 @@
+<!doctype html>
+<html lang="en" data-layout="horizontal" data-topbar="dark" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-layout-mode="dark">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Binary Guardian</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.png">
+
+    <link href="assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" />
+	
+	<!-- plugin css -->
+	<link href="assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Layout config Js -->
+    <script src="assets/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <!-- <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css" /> -->
+    <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
+    <!-- Icons Css -->
+    <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="assets/css/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body >
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <header id="page-topbar">
+    <div class="layout-width">
+        <div class="navbar-header">
+            <div class="d-flex">
+                <!-- LOGO -->
+                <div class="navbar-brand-box horizontal-logo">
+                    <a href="index.html" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="assets/images/logo-dark.png" alt="" height="17">
+                        </span>
+                    </a>
+
+                    <a href="index.html" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="assets/images/logo-light.png" alt="" height="37">
+                        </span>
+                    </a>
+                </div>
+
+                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none" id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+
+                <!-- App Search-->
+                <div class="app-search d-none d-md-block">
+                    <div class="position-relative">
+						
+                      <div class="app-menu navbar-menu">
+					   <ul class="navbar-nav" id="navbar-nav">
+                           <li class="nav-item">
+                               <a class="nav-link menu-link" href="#sidebarDashboards">
+                                   <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Dashboards</span>
+                               </a>
+                           </li> <!-- end Dashboard Menu -->
+                           <li class="nav-item">
+                               <a class="nav-link menu-link" href="#sidebarApps">
+                                   <i class="mdi mdi-account-reactivate-outline"></i> <span data-key="t-apps">Self Trade</span>
+                               </a>
+                           </li>
+						</ul>
+						 </div>
+						 
+                    </div>
+                </div>
+            </div>
+			
+
+			
+			<!-- Right Side Menu -->
+            <div class="d-flex align-items-center">
+				<!-- ========== App Menu ========== -->
+				
+				<div class="app-menu navbar-menu">
+				    <div id="scrollbar" >
+				        <div class="container-fluid ">
+				
+				            <div id="two-column-menu" >
+				            </div>
+							
+				            <ul class="navbar-nav" id="navbar-nav" style="border: 1px solid #fff; width: 50%; position: relative; float: left;">
+				                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarDashboards">
+				                        <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Dashboards</span>
+				                    </a>
+				                </li> <!-- end Dashboard Menu -->
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarApps">
+				                        <i class="mdi mdi-account-reactivate-outline"></i> <span data-key="t-apps">Self Trade</span>
+				                    </a>
+				                </li>
+				
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarLayouts">
+				                        <i class="mdi mdi-shield-refresh-outline"></i> <span data-key="t-layouts">Insured Trade</span>
+				                    </a>
+				                </li> <!-- end Dashboard Menu -->
+								
+								<hr class="text-muted">
+								
+								
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarAuth">
+				                        <i class="mdi mdi-card-account-details-star-outline"></i> <span data-key="t-authentication">My Contract</span>
+				                    </a>
+				                </li>
+				
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarPages">
+				                        <i class="mdi mdi-wallet-plus-outline"></i> <span data-key="t-pages">My Assets</span>
+				                    </a>
+				                </li>
+				
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarLanding">
+				                        <i class="mdi mdi-account-switch-outline"></i> <span data-key="t-landing">My Team</span>
+				                    </a>
+				                </li>
+				
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarUI">
+				                        <i class="mdi mdi-account-circle-outline"></i> <span data-key="t-base-ui">Profile</span>
+				                    </a>     
+				                </li>
+				
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarAdvanceUI">
+				                        <i class="mdi mdi-safe-square-outline"></i> <span data-key="t-advance-ui">Security</span>
+				                    </a>
+				                </li>
+				
+								<hr class="text-muted">
+							
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#">
+				                        <i class="ri-line-chart-fill"></i> <span data-key="t-widgets">Market</span>
+				                    </a>
+				                </li>
+				
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarForms">
+				                        <i class="mdi mdi-form-select"></i> <span data-key="t-forms">Announcements</span>
+				                    </a>
+				                </li>
+				
+				                <li class="nav-item">
+				                    <a class="nav-link menu-link" href="#sidebarTables">
+				                        <i class="ri-chat-smile-2-line"></i> <span data-key="t-tables">Supports</span>
+				                    </a>
+				                </li>
+				            </ul>
+				        </div>
+				        <!-- Sidebar -->
+				    </div>
+				
+				    <!--div class="sidebar-background"></div-->
+				</div>
+				
+				<!-- Left Sidebar End -->
+
+
+
+
+
+                <div class="dropdown d-md-none topbar-head-dropdown header-item">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="bx bx-search fs-22"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-search-dropdown">
+                        <form class="p-3">
+                            <div class="form-group m-0">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                                    <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="dropdown ms-1 topbar-head-dropdown header-item">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img id="header-lang-img" src="assets/images/flags/us.svg" alt="Header Language" height="20" class="rounded">
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item language py-2" data-lang="en" title="English">
+                            <img src="assets/images/flags/us.svg" alt="user-image" class="me-2 rounded" height="18">
+                            <span class="align-middle">English</span>
+                        </a>
+
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ch" title="Chinese">
+                            <img src="assets/images/flags/china.svg" alt="user-image" class="me-2 rounded" height="18">
+                            <span class="align-middle">����</span>
+                        </a>
+
+                    </div>
+                </div>
+
+
+
+                <div class="ms-1 header-item d-none d-sm-flex">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" data-toggle="fullscreen">
+                        <i class='bx bx-fullscreen fs-22'></i>
+                    </button>
+                </div>
+
+                <div class="ms-1 header-item d-none d-sm-flex">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode shadow-none">
+                        <i class='bx bx-moon fs-22'></i>
+                    </button>
+                </div>
+
+                <div class="dropdown topbar-head-dropdown ms-1 header-item">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class='bx bx-bell fs-22'></i>
+                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+
+                        <div class="dropdown-head bg-primary bg-pattern rounded-top">
+                            <div class="p-3">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
+                                    </div>
+                                    <div class="col-auto dropdown-tabs">
+                                        <span class="badge badge-soft-light fs-13"> 4 New</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="px-2 pt-2">
+                                <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
+                                    <li class="nav-item waves-effect waves-light">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
+                                            All (4)
+                                        </a>
+                                    </li>
+                                    <li class="nav-item waves-effect waves-light">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#messages-tab" role="tab" aria-selected="false">
+                                            Messages
+                                        </a>
+                                    </li>
+                                    <li class="nav-item waves-effect waves-light">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#alerts-tab" role="tab" aria-selected="false">
+                                            Alerts
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-content" id="notificationItemsTabContent">
+                            <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
+                                <div data-simplebar style="max-height: 300px;" class="pe-2">
+                                    <div class="text-reset notification-item d-block dropdown-item position-relative">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-soft-info text-info rounded-circle fs-16">
+                                                    <i class="bx bx-badge-check"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-2 lh-base">Your <b>Elite</b> author Graphic
+                                                        Optimization <span class="text-secondary">reward</span> is
+                                                        ready!
+                                                    </h6>
+                                                </a>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> Just 30 sec ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check01">
+                                                    <label class="form-check-label" for="all-notification-check01"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-reset notification-item d-block dropdown-item position-relative active">
+                                        <div class="d-flex">
+                                            <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
+                                                </a>
+                                                <div class="fs-13 text-muted">
+                                                    <p class="mb-1">Answered to your comment on the cash flow forecast's
+                                                        graph 🔔.</p>
+                                                </div>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> 48 min ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check02" checked>
+                                                    <label class="form-check-label" for="all-notification-check02"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-reset notification-item d-block dropdown-item position-relative">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-16">
+                                                    <i class='bx bx-message-square-dots'></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-2 fs-13 lh-base">You have received <b class="text-success">20</b> new messages in the conversation
+                                                    </h6>
+                                                </a>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check03">
+                                                    <label class="form-check-label" for="all-notification-check03"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-reset notification-item d-block dropdown-item position-relative">
+                                        <div class="d-flex">
+                                            <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
+                                                </a>
+                                                <div class="fs-13 text-muted">
+                                                    <p class="mb-1">We talked about a project on linkedin.</p>
+                                                </div>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> 4 hrs ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check04">
+                                                    <label class="form-check-label" for="all-notification-check04"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="my-3 text-center">
+                                        <button type="button" class="btn btn-soft-success waves-effect waves-light">View
+                                            All Notifications <i class="ri-arrow-right-line align-middle"></i></button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane fade py-2 ps-2" id="messages-tab" role="tabpanel" aria-labelledby="messages-tab">
+                                <div data-simplebar style="max-height: 300px;" class="pe-2">
+                                    <div class="text-reset notification-item d-block dropdown-item">
+                                        <div class="d-flex">
+                                            <img src="assets/images/users/avatar-3.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">James Lemire</h6>
+                                                </a>
+                                                <div class="fs-13 text-muted">
+                                                    <p class="mb-1">We talked about a project on linkedin.</p>
+                                                </div>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> 30 min ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="messages-notification-check01">
+                                                    <label class="form-check-label" for="messages-notification-check01"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-reset notification-item d-block dropdown-item">
+                                        <div class="d-flex">
+                                            <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
+                                                </a>
+                                                <div class="fs-13 text-muted">
+                                                    <p class="mb-1">Answered to your comment on the cash flow forecast's
+                                                        graph 🔔.</p>
+                                                </div>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="messages-notification-check02">
+                                                    <label class="form-check-label" for="messages-notification-check02"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-reset notification-item d-block dropdown-item">
+                                        <div class="d-flex">
+                                            <img src="assets/images/users/avatar-6.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Kenneth Brown</h6>
+                                                </a>
+                                                <div class="fs-13 text-muted">
+                                                    <p class="mb-1">Mentionned you in his comment on 📃 invoice #12501.
+                                                    </p>
+                                                </div>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> 10 hrs ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="messages-notification-check03">
+                                                    <label class="form-check-label" for="messages-notification-check03"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-reset notification-item d-block dropdown-item">
+                                        <div class="d-flex">
+                                            <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <div class="flex-1">
+                                                <a href="#!" class="stretched-link">
+                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
+                                                </a>
+                                                <div class="fs-13 text-muted">
+                                                    <p class="mb-1">We talked about a project on linkedin.</p>
+                                                </div>
+                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                    <span><i class="mdi mdi-clock-outline"></i> 3 days ago</span>
+                                                </p>
+                                            </div>
+                                            <div class="px-2 fs-15">
+                                                <div class="form-check notification-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="messages-notification-check04">
+                                                    <label class="form-check-label" for="messages-notification-check04"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="my-3 text-center">
+                                        <button type="button" class="btn btn-soft-success waves-effect waves-light">View
+                                            All Messages <i class="ri-arrow-right-line align-middle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
+                                <div class="w-25 w-sm-50 pt-3 mx-auto">
+                                    <img src="assets/images/svg/bell.svg" class="img-fluid" alt="user-pic">
+                                </div>
+                                <div class="text-center pb-5 mt-2">
+                                    <h6 class="fs-18 fw-semibold lh-base">Hey! You have no any notifications </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown ms-sm-3 header-item topbar-user">
+                    <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar">
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Member</span>
+                            </span>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <!-- item-->
+                        <h6 class="dropdown-header">Welcome Anna!</h6>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
+                        <a class="dropdown-item" href="#"><span class="badge bg-soft-success text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+      
+        
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Dashboards</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">HOME</a></li>
+                                        <li class="breadcrumb-item active">Dashboards</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+
+						
+						<!--Purchase Packages/Balanced/Trading View panel start-->
+                        <div class="col-xxl-9 order-xxl-0 order-first">
+                            <div class="d-flex flex-column h-100">
+                                <div class="row h-100">
+									<!--Purchase Packages panel start-->
+									<div class="col-lg-6 col-md-6">
+                                        <div class="card">
+                                            <div class="card-body" style="height: 120px;">
+												<div class="d-flex align-items-center">
+												    <div class="flex-grow-1 ms-3">
+												        <p class="fs-16 lh-base">Choose your packages <i class="mdi mdi-arrow-right"></i></p>
+												        <button type="button" class="btn btn-primary waves-effect w-lg waves-light" data-bs-toggle="modal" data-bs-target="#zoomInModal3">Purchase Package</button>
+												    </div>
+													
+													<!-- Purchase Package Modal Blur -->
+													<div id="zoomInModal3" class="modal modal-lg fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+													    <div class="modal-dialog modal-dialog-centered">
+													        <div class="modal-content border-0 overflow-hidden">
+													            <div class="card-header modal-header p-3">
+													                <h4 class="card-title mb-0">Purchase Package</h4>
+													                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													            </div>
+													            
+													            <div class="modal-body ">
+																	<!--Pack1-->
+																	<div class="card pricing-box">
+																	        <div class="card-body bg-light m-2">
+																	            <div class="d-flex align-items-center mb-3">
+																					<div class="d-flex align-items-center">
+																					    <div class="flex-shrink-0">
+																					        <i class="ri-shield-star-line display-6 text-primary"></i>
+																					    </div>
+																					    <div class="flex-grow-1 ms-3">
+																					        <h4 class="mb-0 fw-semibold text-primary">B 00252</h4>
+																					    </div>
+																					</div>
+																	                <div class="ms-auto">
+																	                    <h4 class="fw-semibold mb-0">$252</h4>
+																	                </div>
+																	            </div>
+																	            <div class="d-grid gap-2" >
+																	                <button class="btn btn-primary waves-effect waves-light" type="button">Purchase Package</button>
+																	            </div>
+																	        </div>
+																	    
+																	</div>
+																	<!--end Pack1-->
+																	
+																	<!--Pack2-->
+																	<div class="card pricing-box ribbon-box right">
+																	        <div class="card-body bg-light m-2">
+																				<div class="ribbon-two ribbon-two-danger"><span>Popular</span></div>
+																	            <div class="d-flex align-items-center mb-3">
+																					
+																					<div class="d-flex align-items-center">
+																					    <div class="flex-shrink-0">
+																					        <i class="ri-shield-star-line display-6 text-primary"></i>
+																					    </div>
+																					    <div class="flex-grow-1 ms-3">
+																					        <h4 class="mb-0 fw-semibold text-primary">B 00630</h4>
+																					    </div>
+																					</div>
+																	                <div class="ms-auto">
+																	                    <h4 class="fw-semibold mb-0">$630</h4>
+																	                </div>
+																	            </div>
+																	            <div class="d-grid gap-2" >
+																	                <button class="btn btn-primary waves-effect waves-light" type="button">Purchase Package</button>
+																	                
+																	            </div>
+																	        </div>
+																	    
+																	</div>
+																	<!--end Pack2-->
+																	
+																	<!--Pack3-->
+																	<div class="card pricing-box">
+																	        <div class="card-body bg-light m-2">
+																	            <div class="d-flex align-items-center mb-3">
+																					
+																					<div class="d-flex align-items-center">
+																					    <div class="flex-shrink-0">
+																					        <i class="ri-shield-star-line display-6 text-primary"></i>
+																					    </div>
+																					    <div class="flex-grow-1 ms-3">
+																					        <h4 class="mb-0 fw-semibold text-primary">B 01260</h4>
+																					    </div>
+																					</div>
+																	                <div class="ms-auto">
+																	                    <h4 class="fw-semibold mb-0">$1,260</h4>
+																	                </div>
+																	            </div>
+																	            <div class="d-grid gap-2" >
+																	                <button class="btn btn-primary waves-effect waves-light" type="button">Purchase Package</button>
+																	                
+																	            </div>
+																	        </div>
+																	    
+																	</div>
+																	<!--end Pack3-->
+																	
+																	<!--Pack4-->
+																	<div class="card pricing-box">
+																	        <div class="card-body bg-light m-2">
+																	            <div class="d-flex align-items-center mb-3">
+																					
+																					<div class="d-flex align-items-center">
+																					    <div class="flex-shrink-0">
+																					        <i class="ri-shield-star-line display-6 text-primary"></i>
+																					    </div>
+																					    <div class="flex-grow-1 ms-3">
+																					        <h4 class="mb-0 fw-semibold text-primary">B 03780</h4>
+																					    </div>
+																					</div>
+																	                <div class="ms-auto">
+																	                    <h4 class="fw-semibold mb-0">$3,780</h4>
+																	                </div>
+																	            </div>
+																	            <div class="d-grid gap-2" >
+																	                <button class="btn btn-primary waves-effect waves-light" type="button">Purchase Package</button>
+																	                
+																	            </div>
+																	        </div>
+																	    
+																	</div>
+																	<!--end Pack4-->
+																	
+																	<!--Pack5-->
+																	<div class="card pricing-box">
+																	        <div class="card-body bg-light m-2">
+																	            <div class="d-flex align-items-center mb-3">
+																					
+																					<div class="d-flex align-items-center">
+																					    <div class="flex-shrink-0">
+																					        <i class="ri-shield-star-line display-6 text-primary"></i>
+																					    </div>
+																					    <div class="flex-grow-1 ms-3">
+																					        <h4 class="mb-0 fw-semibold text-primary">B 06300</h4>
+																					    </div>
+																					</div>
+																	                <div class="ms-auto">
+																	                    <h4 class="fw-semibold mb-0">$6,300</h4>
+																	                </div>
+																	            </div>
+																	            <div class="d-grid gap-2" >
+																	                <button class="btn btn-primary waves-effect waves-light" type="button">Purchase Package</button>
+																	                
+																	            </div>
+																	        </div>
+																	    
+																	</div>
+																	<!--end Pack5-->
+																	
+																	<!--Pack6-->
+																	<div class="card pricing-box">
+																	        <div class="card-body bg-light m-2">
+																	            <div class="d-flex align-items-center mb-3">
+																					
+																					<div class="d-flex align-items-center">
+																					    <div class="flex-shrink-0">
+																					        <i class="ri-shield-star-line display-6 text-primary"></i>
+																					    </div>
+																					    <div class="flex-grow-1 ms-3">
+																					        <h4 class="mb-0 fw-semibold text-primary">B 12600</h4>
+																					    </div>
+																					</div>
+																	                <div class="ms-auto">
+																	                    <h4 class="fw-semibold mb-0">$12,600</h4>
+																	                </div>
+																	            </div>
+																	            <div class="d-grid gap-2" >
+																	                <button class="btn btn-primary waves-effect waves-light" type="button">Purchase Package</button>
+																	                
+																	            </div>
+																	        </div>
+																	    
+																	</div>
+																	<!--end Pack6-->
+													            </div><!-- Modal Body-->
+													        </div><!-- /.modal-content -->
+													    </div><!-- /.modal-dialog -->
+													</div><!-- /.modal -->
+													<!-- end Purchase Package Modal Blur -->
+													
+												    <div class="col-sm-5">
+												        <div class="ms-3">
+												            <img src="assets/images/btc-banner.png" class="img-fluid" alt="" width="100%">
+												        </div>
+												    </div>
+												</div>
+                                            
+											
+											</div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end col -->
+                                    <!--end Purchase Packages panel start-->
+									
+									<!--Balanced panel start-->
+									<div class="col-lg-6 col-md-6" >
+                                        <div class="card">
+                                            <div class="card-body" style="height: 120px;">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <p class="text-uppercase fw-semibold fs-12 text-muted mb-3">Balance <span class="badge text-bg-success">USDT</span></p>
+                                                        <h2 class="mb-1">$7872.0801</h2>
+														<h5 class="mb-0 text-muted">8,131.65 USD</h5>
+                                                    </div>
+													 <div>
+                                                    <button type="button" class="btn btn-secondary btn-label waves-effect waves-light mt-5" data-bs-toggle="modal" data-bs-target="#zoomInModal">
+														<i class="ri-upload-2-fill label-icon align-middle fs-16 me-2"></i> Transfer</button>
+														
+                                                    <button type="button" class="btn btn-success btn-label waves-effect waves-light mt-5" data-bs-toggle="modal" data-bs-target="#zoomInModal2">
+														<i class="ri-download-2-fill label-icon align-middle fs-16 me-2"></i> Receive</button>
+													</div>
+													
+													<!-- Transfer Modal Blur -->
+													<div id="zoomInModal" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+													    <div class="modal-dialog modal-dialog-centered">
+													        <div class="modal-content border-0 overflow-hidden">
+													            <div class="card-header modal-header p-3">
+													                <h4 class="card-title mb-0">Transfer</h4>
+													                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													            </div>
+													            
+													            <div class="modal-body">
+													                <form>
+													                    <div class="mb-3">
+													                        <select class="form-control" data-choices name="choices-single-default" id="choices-single-default">
+													                            <option value="">Please select</option>
+													                            <option value="Choice 1">USDT</option>
+													                            <option value="Choice 2">ETH</option>
+													                            <option value="Choice 3">BTC</option>
+													                        </select>
+													                    </div>
+													                    <div class="mb-3">
+													                        <label for="addressInput" class="form-label">Wallet Address</label>
+													                        <input type="email" class="form-control" id="address" placeholder="Please enter or paste address">
+													                    </div>
+													                    <div class="mb-3">
+													                        <label for="amout" class="form-label">Amount</label>
+													                        <input type="text" class="form-control" id="amount" placeholder="Minimum amount 1">
+																			<p class="fs-6 text-muted custom-padding-text">Balance available 0 undefined</p>
+													                    </div>
+													                    
+													                    <div class="text-end">
+													                        <button type="submit" class="btn btn-secondary w-sm">Next</button>
+													                    </div>
+													                </form>
+													            </div>
+													        </div><!-- /.modal-content -->
+													    </div><!-- /.modal-dialog -->
+													</div><!-- /.modal -->
+													<!-- end Transfer Modal Blur -->
+													
+													<!-- Receive Modal Blur -->
+													<div id="zoomInModal2" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+													    <div class="modal-dialog modal-dialog-centered">
+													        <div class="modal-content border-0 overflow-hidden">
+													            <div class="card-header modal-header p-3">
+													                <h4 class="card-title mb-0">Receive</h4>
+													                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													            </div>
+													            
+													            <div class="modal-body ">
+																	<div class="mt-1">
+																	    <div class="text-center"><img src="assets/images/qr.png" alt="qr" width="200px"></div>
+																	    <div class="text-center"> <button type="submit" class="btn btn-secondary w-sm">Download QR Code</button></div>
+																		<br>
+																		<h5 class="mb-2">Address</h5>
+																		<div class="form-icon right">
+																		    <input type="email" class="form-control form-control-icon" id="iconrightInput" placeholder="A19cb7E8f784bfCE4B4A620ac0e76F8D">
+																		    <i class="ri-file-copy-2-line"> </i>
+																		</div>
+																		<br>
+																		<h6 class="mb-1 text-muted">Reminder</h6>
+																		<ul class="ps-4 mb-0" style="text-align: left; color: darkgrey;">
+																		    <li class="py-1"><small class="text-muted">Please don't transfer any digital assets not support by 
+																			platform to the above address. Otherwise, you many lose your assets permanently.</small></li>
+																			<li class="py-1"><small class="text-muted">Minimum deposit amount 10.00.</small></li>
+																		    <li class="py-1"><small class="text-muted">Any amount less than the minimum will not be credited nor refunded.</small></li>
+																			<li class="py-1"><small class="text-muted">Your address won't change often. If there are any changes, 
+																			we will notify you via announcement or email. Please make sure that your computer and browser are secure 
+																			and your information is protected from being tampered or leaked.</small></li>
+																			<li class="py-1"><small class="text-muted">Wallet address should start with A1.</small></li>
+																		</ul>
+																	</div>
+																	
+																	
+																	
+																	
+																	
+													            </div>
+													        </div><!-- /.modal-content -->
+													    </div><!-- /.modal-dialog -->
+													</div><!-- /.modal -->
+													<!-- end Receive Modal Blur -->
+													
+													
+													
+                                                </div>
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end col -->
+									<!--end Balanced panel start-->
+                                </div><!-- end row -->
+								
+								<!--Trading View panel start-->
+								<div class="row">
+								    <div class="col-xl-12">
+								        <div class="card">
+								            <!-- TradingView Widget BEGIN -->
+								            <div class="tradingview-widget-container">
+								              <div id="tradingview_d67f8"></div>
+								              
+								              <div class="row align-items-start">
+												  <div class="col-sm-3">
+												      <div class="tradingview-widget"><a href="https://www.tradingview.com/symbols/BTCUSDT/?exchange=BINANCE" 
+													  rel="noopener" target="_blank">
+												  	 <span class="blue-text" style="text-align: left;">BTCUSDT Chart</span></a> by TradingView</div>
+												  </div>
+								                  <div class="col-sm-9 custom-padding1">
+								                      <button type="button" class="btn btn-success waves-effect w-lg waves-light">Buy Long</button>  
+								            		   <button type="button" class="btn btn-danger waves-effect w-lg waves-light">Sell Short</button>
+								                  </div>
+								              </div>
+								              <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+								              <script type="text/javascript">
+								              new TradingView.widget(
+								              {
+								              "width": "100%",
+								              "height": 450,
+								              "symbol": "BINANCE:BTCUSDT",
+								              "interval": "1",
+								              "timezone": "Etc/UTC",
+								              "theme": "light",
+								              "style": "1",
+								              "locale": "en",
+								              "toolbar_bg": "#ffffff",
+								              "enable_publishing": false,
+								              "allow_symbol_change": true,
+								              "container_id": "tradingview_d67f8"
+								            }
+								              );
+								              </script>
+								            </div>
+								            <!-- TradingView Widget END -->
+								        </div><!-- end card -->
+								    </div><!-- end col -->
+								</div><!-- end row -->
+								<!--end Trading View panel start-->
+			
+                            </div>
+                        </div><!-- end col -->
+						<!--end Purchase Packages/Balanced/Trading View panel start-->
+						
+						
+						<!--Result panel start-->
+						<div class="col-xxl-3" >
+						    <div class="card card-height-100" >
+						        <div class="alert alert-danger rounded-top alert-solid alert-label-icon border-0 rounded-0 m-0 d-flex align-items-center" role="alert">
+						            <i class="ri-medal-line label-icon"></i>
+						            <div class="flex-grow-1 text-truncate">
+						                Result
+						            </div>
+						            
+						        </div><!-- end cardheader -->
+						        <div class="card-body">
+						            <div class="d-flex p-2" >
+						                <div class="flex-shrink-0">
+						                    <div class="avatar-sm me-3">
+						                        <span class="avatar-title bg-soft-danger rounded-circle fs-1">
+						                            <i class="ri-gift-2-line text-danger"></i>
+						                        </span>
+						                    </div>
+						                </div>
+						                <div>
+						                    <h5 class="mb-1">Bet ID: 351402</h5>
+						                    <h5 class="mb-1 text-muted">Price: 4</h5>
+						                </div>
+						            </div>
+									<hr style="padding: 0; margin: 0;">
+						            <ul class="list-group list-group-flush border-dashed mb-0 mt-3 pt-2" >
+						                <li class="list-group-item px-0" >
+						                    <div class="d-flex">
+						                        <div class="flex-grow-1 ms-2">
+						                            <h6 class="mb-1">Contract ID</h6>
+						                        </div>
+						                        <div class="flex-shrink-0 text-end">
+						                            <h6 class="mb-1">288630</h6>
+						                        </div>
+						                    </div>
+						                </li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Draw ID</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">11227</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Date</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2022-10-04</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Time</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">09:38:41</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Result</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Win</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Current Height</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">44755810</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Sequence</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">1</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Type</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Double</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Amount</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">4.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Covered</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0">
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Guess Block </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">44755825</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+						            </ul><!-- end -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!--end Result panel start-->
+                    </div><!-- end row -->
+
+
+					<!--double/sngle panel start-->
+					<div class="row">
+					    <div class="col-xl-12">
+					        <div class="card" >
+					            <div class="card-body p-0">
+					                <div>
+					                    <img src="assets/images/bet.jpg" alt="pic" style="width: 100%; height: auto;">
+					                </div>
+					            </div><!-- end cardbody -->
+								<hr style="padding: 0;  margin: 0;">
+								<div class="row align-items-start">
+									<div class="col-sm-12 custom-padding1 text-center">
+									<button type="button" class="btn btn-secondary w-lg waves-effect waves-light">Contract</button>
+									</div>
+								</div>
+					        </div><!-- end card -->
+					    </div><!-- end col -->
+					</div><!-- end row -->
+					<!--end double/sngle panel start-->
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="swiper cryptoSlider">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <div class="dropdown">
+                                                        <a class="text-reset" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Details</a>
+                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="assets/images/svg/crypto-icons/btc.svg" class="bg-light rounded-circle p-1 avatar-xs img-fluid shadow" alt="">
+                                                    <h6 class="ms-2 mb-0 fs-14">Bitcoin</h6>
+                                                </div>
+                                                <div class="row align-items-end g-0">
+                                                    <div class="col-6">
+                                                        <h5 class="mb-1 mt-4">$1,523,647</h5>
+                                                        <p class="text-success fs-13 fw-medium mb-0">+13.11%<span class="text-muted ms-2 fs-10 text-uppercase">(btc)</span>
+                                                        </p>
+                                                    </div><!-- end col -->
+                                                    <div class="col-6">
+                                                        <div class="apex-charts crypto-widget" data-colors='["--vz-success" , "--vz-transparent"]' id="bitcoin_sparkline_charts" dir="ltr"></div>
+                                                    </div><!-- end col -->
+                                                </div><!-- end row -->
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end -->
+
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <div class="dropdown">
+                                                        <a class="text-reset" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Details</a>
+                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="assets/images/svg/crypto-icons/ltc.svg" class="bg-light rounded-circle p-1 avatar-xs img-fluid shadow" alt="">
+                                                    <h6 class="ms-2 mb-0 fs-14">Litecoin</h6>
+                                                </div>
+                                                <div class="row align-items-end g-0">
+                                                    <div class="col-6">
+                                                        <h5 class="mb-1 mt-4">$2,145,687</h5>
+                                                        <p class="text-success fs-13 fw-medium mb-0">+15.08%<span class="text-muted ms-2 fs-10 text-uppercase">(ltc)</span>
+                                                        </p>
+                                                    </div><!-- end col -->
+                                                    <div class="col-6">
+                                                        <div class="apex-charts crypto-widget" data-colors='["--vz-success", "--vz-transparent"]' id="litecoin_sparkline_charts" dir="ltr"></div>
+                                                    </div><!-- end col -->
+                                                </div><!-- end row -->
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end -->
+
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <div class="dropdown">
+                                                        <a class="text-reset" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Details</a>
+                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="assets/images/svg/crypto-icons/etc.svg" class="bg-light rounded-circle p-1 avatar-xs img-fluid shadow" alt="">
+                                                    <h6 class="ms-2 mb-0 fs-14">Eathereum</h6>
+                                                </div>
+                                                <div class="row align-items-end g-0">
+                                                    <div class="col-6">
+                                                        <h5 class="mb-1 mt-4">$3,312,870</h5>
+                                                        <p class="text-success fs-13 fw-medium mb-0">+08.57%<span class="text-muted ms-2 fs-10 text-uppercase">(etc)</span>
+                                                        </p>
+                                                    </div><!-- end col -->
+                                                    <div class="col-6">
+                                                        <div class="apex-charts crypto-widget" data-colors='["--vz-success", "--vz-transparent"]' id="eathereum_sparkline_charts" dir="ltr"></div>
+                                                    </div><!-- end col -->
+                                                </div><!-- end row -->
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end -->
+
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <div class="dropdown">
+                                                        <a class="text-reset" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Details</a>
+                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="assets/images/svg/crypto-icons/bnb.svg" class="bg-light rounded-circle p-1 avatar-xs img-fluid shadow" alt="">
+                                                    <h6 class="ms-2 mb-0 fs-14">Binance</h6>
+                                                </div>
+                                                <div class="row align-items-end g-0">
+                                                    <div class="col-6">
+                                                        <h5 class="mb-1 mt-4">$1,820,045</h5>
+                                                        <p class="text-danger fs-13 fw-medium mb-0">-09.21%<span class="text-muted ms-2 fs-10 text-uppercase">(bnb)</span>
+                                                        </p>
+                                                    </div><!-- end col -->
+                                                    <div class="col-6">
+                                                        <div class="apex-charts crypto-widget" data-colors='["--vz-danger", "--vz-transparent"]' id="binance_sparkline_charts" dir="ltr"></div>
+                                                    </div><!-- end col -->
+                                                </div><!-- end row -->
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end -->
+
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <div class="dropdown">
+                                                        <a class="text-reset" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Details</a>
+                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="assets/images/svg/crypto-icons/dash.svg" class="bg-light rounded-circle p-1 avatar-xs img-fluid shadow" alt="">
+                                                    <h6 class="ms-2 mb-0 fs-14">Dash</h6>
+                                                </div>
+                                                <div class="row align-items-end g-0">
+                                                    <div class="col-6">
+                                                        <h5 class="mb-1 mt-4">$9,458,153</h5>
+                                                        <p class="text-success fs-13 fw-medium mb-0">+12.07%<span class="text-muted ms-2 fs-10 text-uppercase">(dash)</span>
+                                                        </p>
+                                                    </div><!-- end col -->
+                                                    <div class="col-6">
+                                                        <div class="apex-charts crypto-widget" data-colors='["--vz-success", "--vz-transparent"]' id="dash_sparkline_charts" dir="ltr"></div>
+                                                    </div><!-- end col -->
+                                                </div><!-- end row -->
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end -->
+
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <div class="dropdown">
+                                                        <a class="text-reset" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Details</a>
+                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="assets/images/svg/crypto-icons/usdt.svg" class="bg-light rounded-circle p-1 avatar-xs img-fluid shadow" alt="">
+                                                    <h6 class="ms-2 mb-0 fs-14">Tether</h6>
+                                                </div>
+                                                <div class="row align-items-end g-0">
+                                                    <div class="col-6">
+                                                        <h5 class="mb-1 mt-4">$5,201,458</h5>
+                                                        <p class="text-success fs-13 fw-medium mb-0">+14.99%<span class="text-muted ms-2 fs-10 text-uppercase">(usdt)</span>
+                                                        </p>
+                                                    </div><!-- end col -->
+                                                    <div class="col-6">
+                                                        <div class="apex-charts crypto-widget" data-colors='["--vz-success", "--vz-transparent"]' id="tether_sparkline_charts" dir="ltr"></div>
+                                                    </div><!-- end col -->
+                                                </div><!-- end row -->
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end -->
+
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <div class="dropdown">
+                                                        <a class="text-reset" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" href="#">Details</a>
+                                                            <a class="dropdown-item" href="#">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="assets/images/svg/crypto-icons/neo.svg" class="bg-light rounded-circle p-1 avatar-xs img-fluid shadow" alt="">
+                                                    <h6 class="ms-2 mb-0 fs-14">NEO</h6>
+                                                </div>
+                                                <div class="row align-items-end g-0">
+                                                    <div class="col-6">
+                                                        <h5 class="mb-1 mt-4">$6,147,957</h5>
+                                                        <p class="text-danger fs-13 fw-medium mb-0">-05.07%<span class="text-muted ms-2 fs-10 text-uppercase">(neo)</span>
+                                                        </p>
+                                                    </div><!-- end col -->
+                                                    <div class="col-6">
+                                                        <div class="apex-charts crypto-widget" data-colors='["--vz-danger", "--vz-transparent"]' id="neo_sparkline_charts" dir="ltr"></div>
+                                                    </div><!-- end col -->
+                                                </div><!-- end row -->
+                                            </div><!-- end card body -->
+                                        </div><!-- end card -->
+                                    </div><!-- end -->
+                                </div><!-- end swiper wrapper -->
+                            </div><!-- end swiper -->
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+
+                    <div class="row">
+						<!-- Package1 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none1">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse1" 
+													role="button" aria-expanded="true" aria-controls="collapse1">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse1">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package1 start-->
+						
+						<!-- Package2 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none2">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse2" 
+													role="button" aria-expanded="true" aria-controls="collapse2">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse2">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package2 start-->
+						
+						
+						<!-- Package3 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none3">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse3" 
+													role="button" aria-expanded="true" aria-controls="collapse3">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse3">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package3 start-->
+					
+						<!-- Package4 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none4">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse4" 
+													role="button" aria-expanded="true" aria-controls="collapse4">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse4">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package4 start-->
+						
+						<!-- Package5 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none5">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse5" 
+													role="button" aria-expanded="true" aria-controls="collapse5">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse5">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package5 start-->
+						
+						
+						<!-- Package6 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none6">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse6" 
+													role="button" aria-expanded="true" aria-controls="collapse6">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse6">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package6 start-->
+						
+						<!-- Package7 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none7">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse7" 
+													role="button" aria-expanded="true" aria-controls="collapse7">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse7">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package7 start-->
+						
+						<!-- Package8 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none8">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse8" 
+													role="button" aria-expanded="true" aria-controls="collapse8">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse8">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package8 start-->
+						
+						
+						<!-- Package9 start-->
+						<div class="col-xxl-4 col-lg-6" id="card-none9">
+						    <div class="card">
+						        <div class="card-header align-items-center d-flex">
+										<span class="badge text-bg-secondary btn-lg">B 00252</span>
+									    <h4 class="card-title mb-0 flex-grow-1 custom-padding-package-title"> Package Value 252.00</h4>
+										<div class="flex-shrink-0">
+										    <ul class="list-inline card-toolbar-menu d-flex align-items-center" style="padding-bottom: 0; margin-bottom: 0;">
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reload"><i class="ri-inbox-archive-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="bottom" title="Purchase Insurance"><i class="ri-umbrella-line"></i></button></li>
+												<li class="list-inline-item"><button type="button" class="btn btn-light btn-icon btn-sm waves-effect data-bs-toggle="tooltip" data-bs-placement="left" title="Contract Transaction"><i class="ri-file-text-line"></i></button></li>
+										        <li class="list-inline-item">
+										            <a class="align-middle minimize-card" data-bs-toggle="collapse" href="#collapse9" 
+													role="button" aria-expanded="true" aria-controls="collapse9">
+													<i class="btn btn-light btn-sm waves-effect ri-add-fill align-middle plus"></i>
+													<i class="btn btn-light btn-sm waves-effect ri-subtract-fill align-middle minus"></i>
+										            </a>
+										        </li>
+										    </ul>
+										</div>
+						        </div><!-- end card-header -->
+						        <div class="card-body">
+									<ul class="list-group list-group-flush border-dashed" >
+									    <li class="list-group-item px-0" >
+									        <div class="d-flex">
+									            <div class="flex-grow-1 ms-2">
+									                <h6 class="mb-1">Contract ID</h6>
+									            </div>
+									            <div class="flex-shrink-0 text-end">
+									                <h6 class="mb-1">288630</h6>
+									            </div>
+									        </div>
+									    </li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Balance</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">252.00</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<div class="collapse" id="collapse9">
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Payout</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2.40</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										 
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Expiry </h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">2023-09-28</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Insurance Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										<li class="list-group-item px-0" >
+										    <div class="d-flex">
+										        <div class="flex-grow-1 ms-2">
+										            <h6 class="mb-1">Contract Status</h6>
+										        </div>
+										        <div class="flex-shrink-0 text-end">
+										            <h6 class="mb-1">Available</h6>
+										        </div>
+										    </div>
+										</li><!-- end -->
+										</div>
+						            </ul><!-- end ul -->
+						        </div><!-- end card body -->
+						    </div><!-- end card -->
+						</div><!-- end col -->
+						<!-- end Package9 start-->
+					</div><!-- end row -->
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            COPYRIGHT  <script>document.write(new Date().getFullYear())</script> BINARY GUARDIAN. ALL RIGHTS RESERVED.
+                        </div>
+                        <!--div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Design & Develop by Themesbrand
+                            </div>
+                        </div-->
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+
+
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+
+
+
+ 
+
+    <!-- JAVASCRIPT -->
+    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="assets/libs/node-waves/waves.min.js"></script>
+    <script src="assets/libs/feather-icons/feather.min.js"></script>
+    <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="assets/js/plugins.js"></script>
+	
+	<!-- apexcharts -->
+	<script src="assets/libs/apexcharts/apexcharts.min.js"></script>
+	
+	<!-- Dashboard init -->
+	<script src="assets/js/pages/dashboard-analytics.init.js"></script>
+
+    <!-- Swiper Js -->
+    <script src="assets/libs/swiper/swiper-bundle.min.js"></script>
+
+    <!-- CRM js -->
+    <script src="assets/js/pages/dashboard-crypto.init.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/app.js"></script>
+	
+    <!-- Masonry plugin -->
+    <script src="assets/libs/masonry-layout/masonry.pkgd.min.js"></script>
+    
+    <script src="assets/js/pages/card.init.js"></script>
+	
+
+
+
+
+	
+
+</body>
+
+</html>
