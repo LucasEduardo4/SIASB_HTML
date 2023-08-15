@@ -1,14 +1,14 @@
 <?php
-// Verifica se o usuário está autenticado
 session_start();
 if (!isset($_SESSION['username'])) {
-  header("Location: ../login.html"); // Redireciona para a página de login se não estiver autenticado
-  exit();
+    header("Location: login.php");
+    exit();
 }
 ?>
 
+
 <?php
-// Conexão com o banco de dados (substitua pelas suas informações)
+// Conectar ao banco de dados
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -16,35 +16,46 @@ $dbname = "siasb";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexão
+// Verificar a conexão
 if ($conn->connect_error) {
-  die("Conexão com o banco de dados falhou: " . $conn->connect_error);
+    die("Conexão falhou: " . $conn->connect_error);
 }
 
-$userID = 1; // Replace with the actual user ID
 
-$sqlFetchImage = "SELECT icone FROM tbusuario WHERE IDUsuario = ?";
-$stmtFetchImage = $conn->prepare($sqlFetchImage);
-$stmtFetchImage->bind_param("i", $userID);
-$stmtFetchImage->execute();
-$stmtFetchImage->bind_result($imageData);
-$stmtFetchImage->fetch();
-$stmtFetchImage->close();
+	$usuario_ = $_SESSION['username'];
+        
+        $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $usuario_);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Encontrou resultados
+            $row = $result->fetch_assoc();
+            $Meu_ID = $row["IDUsuario"];
+        }
+
+        // $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbusuario  WHERE IDUsuario = $Meu_ID";
+
+$sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $Meu_ID";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $imageData = $row['icone']; // Use 'icone' em vez de 'imagem_coluna'
+} else {
+    echo "Imagem não encontrada.";
+    exit;
+}
 
 $conn->close();
-
-    if ($imageData) {
-        // Display the image using base64 encoding
-        $base64Image = base64_encode($imageData);
-        // echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
-    } else {
-        echo "Image not found.";
-    }
-    ?>
-
-
-
 ?>
+
+
+<!-- ============================================================================================================= -->
+
+
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
 
@@ -117,6 +128,8 @@ $conn->close();
       padding: 20px;
     }
 
+    /* IMAGEM ANTIGA QUE EU ESTAVA UTILIZANDO */
+
     #imagemContainer {
       width: 60px;
       height: 60px;
@@ -129,6 +142,8 @@ $conn->close();
       height: 100%;
       object-fit: cover;
     }
+
+    /* ================================== */
 
     body {
       background-color: #f6f6f6;
@@ -311,7 +326,7 @@ $conn->close();
       right: 40px;
       width: 15px;
       height: 15px;
-      background-color: red;
+      background-color: rgb(64, 163, 131);
       border-radius: 50%;
       border: solid 1px black;
       display: none;
@@ -508,12 +523,35 @@ $conn->close();
 
 
           <!-- AQUI ESTOU REALIZANDO A INSERÇÃO DA IMAGEM DE PERFIL -->
-          <div id="imagemContainer">
-            <img src="<?php echo $imageUrl; ?>" alt="" width="50" height="50" class="rounded-circle me-2">
-          </div>
+          <!-- <div id="imagemContainer">
+             <img src="<?php echo $imageUrl; ?>" alt="" width="50" height="50" class="rounded-circle me-2"> 
+          </div> -->
+
+              
+      
+    <div style="">
+        <div id="anexosContainer"></div>
+    </div>
+
+    <script>
+
+    var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
+    if (imagem) {
+        document.getElementById("anexosContainer").innerHTML +=
+            '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="50" height="50" alt="" /></p>';
+    } else {
+        document.getElementById("anexosContainer").innerHTML +=
+            '<p>Nenhuma imagem anexada para este chamado.</p>';
+    }
+    </script>
 
 
-          <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+  <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+
+
+
+
         </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
 
