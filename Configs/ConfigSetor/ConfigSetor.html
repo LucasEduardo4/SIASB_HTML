@@ -27,6 +27,7 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
+            background-color: rgba(74, 161, 133, 0.336);
         }
 
         /* Header Styles */
@@ -49,12 +50,17 @@
         }
 
         .title {
-            margin: auto;
-            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+            /* margin: auto; */
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             padding-top: 30px; 
-            font-size: 45px;
+            padding-bottom: 30px;
+            padding-right: 1070px;
+            margin-top: 200px;
+            font-size: 26px;
             color: #000000;
+            
         }
+        
 
         /* Main Content Styles */
         .main-content {
@@ -93,7 +99,7 @@
         }
 
         .add-status-form button {
-            background-color: #00a383;
+            background-color: #065d44eb;
             color: #fff;
             border: none;
             padding: 8px 15px;
@@ -129,8 +135,8 @@
 
         .table-dark {
 
-            --bs-table-striped-bg:#00a383;
-            --bs-table-hover-bg:#00a383;
+            --bs-table-striped-bg:#004134;
+            --bs-table-hover-bg:#00382d;
 
 
         }
@@ -158,7 +164,7 @@
 
         /* Button Styles */
         button {
-            background-color: #00cc99;
+            background-color: #003b2d;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -212,7 +218,7 @@
     <hr>
     <h3 style="font-size: 18px" id="novo" onclick="novoSetor();"> ADICIONAR NOVO SETOR: <i class="bi bi-plus-circle"></i></h3>
 
-    <div id="cadastro" class="container-fluid p-5 border">
+    <div style="background-color: rgba(219, 219, 219, 0.315); border-radius: 3%;" id="cadastro" class="container-fluid p-5 border">
         <form >
             <div class="mb-3">
                 <label for="" class="form-label">NOME SETOR</label>
@@ -227,7 +233,7 @@
         </form>
 
             <div class="text-center">
-                <button class="btn btn-success" onclick="adicionarSetor()">ADICIONAR SETOR</button>
+                <button class="btn btn-success" style="background-color: #004b39;;" onclick="adicionarSetor()">ADICIONAR SETOR</button>
             </div>
             <p id="response"></p>
 
