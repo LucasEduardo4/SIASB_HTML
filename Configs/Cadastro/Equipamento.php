@@ -74,11 +74,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $secao = $_POST['secao'];
         $usuario = $_POST['usuario'];
 
-        $sql = "INSERT INTO TBEquipamentos (sti_ID, descricao, ip, tipo, usuario, secao) VALUES ('$stiId', '$descricao', '$ip', '$tipo', '$usuario', '$secao')";
+        $sql = "INSERT INTO TBEquipamentos (sti_ID, descricao, ip, tipo, usuario, secao) VALUES ('$stiId', '$descricao', '$ip', '$tipo', '$usuario', '$secao')
+        ON DUPLICATE KEY UPDATE sti_id = '$stiId', descricao = '$descricao', ip = '$ip', tipo = '$tipo', usuario = '$usuario', secao = '$secao'";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
-        
         if($result){
             echo "Equipamento cadastrado com sucesso!";
         }else{

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,28 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../lib/stylesheet.css">
   <script src="./../../flowSite/verificaSessao.js"></script>
+  <style>
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      background-color: #f2f2f2;
+      color: #666;
+      transition: background-color 0.3s, color 0.3s;
+      margin-bottom: 0px;
+      border-radius: 4px 4px 0px 0px;
+    }
 
+    .selected {
+      background-color: white;
+      color: black;
+      border-bottom: 1px solid white;
+    }
+    #cadastrar{
+      cursor: pointer;
+    }
+  </style>
 </head>
 <header>
   <div>
@@ -18,6 +40,7 @@
     </a>
   </div>
 </header>
+
 <body onload="init()">
 
   <div class="d-flex align-items-start">
@@ -26,13 +49,17 @@
       <p>Filtros:</p>
     </div>
     <div id="dir" class="flex-fill">
-    <p></p>
-      <button class="btn btn-primary" onclick="window.location.href='../Cadastro/Equipamento.html'">Adicionar Equipamento</button>
+      <p></p>
+      <button class="btn btn-primary" onclick="window.location.href='../Cadastro/Equipamento.html'">Adicionar
+        Equipamento</button>
     </div>
   </div>
+  <div style="display: flex; height: 45px;">
+    <p class="tab selected" onclick="handleTab(1)">Equipamentos Cadastrados</p>
+    <p class="tab" onclick="handleTab(2)">Equipamentos Não Cadastrados</p>
+  </div>
 
-
-  <div class="box-sqr">
+  <div class="box-sqr" style="margin-top: 0px;" id="cadastrados">
     <table id="tableEquipment" class="table table-striped table-hover">
       <tr class="table table-dark ">
         <th>sti_ID</th>
@@ -44,9 +71,55 @@
       </tr>
     </table>
   </div>
+  <div class="box-sqr" id="naocadastrados" style="display: none;">
+    <table id="tableEquipmentNaoCadastrado" class="table table-striped table-hover">
+      <tr class="table table-dark ">
+        <th>sti_ID</th>
+        <th>Descrição</th>
+        <th>IP</th>
+        <th>Tipo</th>
+        <th>Usuário</th>
+        <!-- <th>Seção</th> -->
+        <th>Cadastrar</th>
+      </tr>
+    </table>
+  </div>
   <script>
+    function handleTab(opt) {
+      if (opt == 1) {
+        document.getElementById("cadastrados").style.display = "block";
+        document.getElementById("naocadastrados").style.display = "none";
+        document.getElementsByClassName("tab")[0].classList.add("selected");
+        document.getElementsByClassName("tab")[1].classList.remove("selected");
+      } else {
+        document.getElementById("cadastrados").style.display = "none";
+        document.getElementById("naocadastrados").style.display = "block";
+        document.getElementsByClassName("tab")[1].classList.add("selected");
+        document.getElementsByClassName("tab")[0].classList.remove("selected");
+      }
+    }
     function init() {
       displayEquipments();
+    }
+    function cadastrarEquip(equip) {
+      // console.log(equip);
+      window.location.href = "../Cadastro/Equipamento.html?equip=" + JSON.stringify(equip);
+    }
+
+    function unParse(data) {
+      var dadosObjeto = JSON.parse(data)
+      var tableEquipment = document.getElementById("tableEquipment");
+      var tableEquipmentNaoCadastrado = document.getElementById("tableEquipmentNaoCadastrado")
+      var equipamentos = dadosObjeto.equipamentos;
+      // console.log(dadosObjeto)
+
+      for (let i in dadosObjeto) {
+        if (dadosObjeto[i].tipo != 'Sem Cadastro') {
+          tableEquipment.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td>" + dadosObjeto[i].secao + "</td></tr>";
+        } else {
+          tableEquipmentNaoCadastrado.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td><span id='cadastrar' class='text-bg-success' onclick='cadastrarEquip(" +JSON.stringify(dadosObjeto[i]) + ")' style='padding: 5px;border-radius:6px;'>Cadastrar</span></td></tr>";
+        }
+      }
     }
 
     function displayEquipments() {
@@ -56,7 +129,8 @@
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            tableEquipment.innerHTML += xhr.responseText;
+            // tableEquipment.innerHTML += xhr.responseText;
+            unParse(xhr.responseText);
 
           } else {
             tableEquipment.innerHTML += "Falha ao carregar os equipamentos";
@@ -67,22 +141,25 @@
 
     }
 
-    function setupEditButtons() {
-      var sqrchk = document.getElementsByClassName("bi bi-check-square");
-      var sqr = document.getElementsByClassName("bi bi-square");
 
-      for (var i = 0; i < editButtons.length; i++) {
-        (function (id) {
 
-          var removeButton = removeButtons[i];
-          removeButton.addEventListener("click", function () {
-            var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
-            var ref = element.cells[0].innerText;
-            removeValue(ref);
-          });
-        })(i);
-      }
-    }
+    // function setupEditButtons() {
+    //   var sqrchk = document.getElementsByClassName("bi bi-check-square");
+    //   var sqr = document.getElementsByClassName("bi bi-square");
+
+    //   for (var i = 0; i < editButtons.length; i++) {
+    //     (function (id) {
+
+    //       var removeButton = removeButtons[i];
+    //       removeButton.addEventListener("click", function () {
+    //         var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+    //         var ref = element.cells[0].innerText;
+    //         removeValue(ref);
+    //       });
+    //     })(i);
+    //   }
+    // }
   </script>
 </body>
+
 </html>

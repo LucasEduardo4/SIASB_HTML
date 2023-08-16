@@ -108,7 +108,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         // join TBSecao sc on e.secao = sc.IDSecao
         // ";
         $sql = "
-        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, e.secao FROM TBEquipamentos e
+        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, p.IDPessoa, e.secao FROM TBEquipamentos e
         join TBTipo_Equipamentos te on te.IDTipo = e.tipo
         join TBPessoa p on p.IDPessoa = e.usuario
         ";
@@ -117,26 +117,36 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
+        $dataArray = array(); // Para conter todas as linhas de dados
 
-                $sti_id = $row["sti_id"];
-                $descricao = $row["descricao"];
-                $ip = $row["ip"];
-                $tipo = $row["tipo"];
-                $nomeCompleto = $row["nomeCompleto"];
-                $secao = $row["secao"];
-
-                echo "<tr>
-                <td>".$sti_id."</td>
-                <td>".$descricao."</td>
-                <td>".$ip."</td>
-                <td>".$tipo."</td>
-                <td>".$nomeCompleto."</td>
-                <td>".$secao."</td>
-                </tr>";
-            }
+        while ($row = $result->fetch_assoc()) {
+            // Use os dados dos arrays associativos para preencher os valores correspondentes
+            $sti_id = $row["sti_id"];
+            $descricao = $row["descricao"];
+            $ip = $row["ip"];
+            $tipo = $row["tipo"];
+            $nomeCompleto = $row["nomeCompleto"];
+            $IDPessoa = $row["IDPessoa"];
+            $secao = $row["secao"];
+        
+            // Construa um array associativo para esta linha de dados
+            $equipamentos = array(
+                "sti_id" => $sti_id,
+                "descricao" => $descricao,
+                "ip" => $ip,
+                "tipo" => $tipo,
+                "nomeCompleto" => $nomeCompleto,
+                "IDPessoa" => $IDPessoa,
+                "secao" => $secao
+            );
+        
+            // Adicione o array associativo da linha de dados ao array de dados
+            $dataArray[] = $equipamentos;
         }
+        
+        // Retorne os dados em formato JSON para uso futuro
+        echo json_encode($dataArray);
+        
 
         $stmt->close();
         $conn->close();

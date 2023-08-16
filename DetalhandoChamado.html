@@ -257,7 +257,9 @@
       }
 
       function unParse(data) {
+        console.log(data)
         var dadosObjeto = JSON.parse(data)
+        console.log(dadosObjeto);
         var IDChamado = dadosObjeto.IDChamado;
         var assunto = dadosObjeto.assunto;
         var descricao = dadosObjeto.descricao;
