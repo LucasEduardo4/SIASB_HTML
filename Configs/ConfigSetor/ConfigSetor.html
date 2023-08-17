@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../../icons/warning.png" sizes="192x192"/>
+    <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
     <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
     <link rel="stylesheet" href="../lib/stylesheet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -13,14 +14,16 @@
 
     <title>Config Setor</title>
     <style>
-        #cadastro{
-            display:none;
-        }
-        #novo:hover{
-            text-decoration: underline;
+        #cadastro {
+            display: none;
         }
 
-       
+        #novo:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+
         /* Global Styles */
         body {
             font-family: Arial, sans-serif;
@@ -50,8 +53,8 @@
 
         .title {
             margin: auto;
-            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
-            padding-top: 30px; 
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding-top: 30px;
             font-size: 45px;
             color: #000000;
         }
@@ -59,15 +62,16 @@
         /* Main Content Styles */
         .main-content {
             max-width: 1200px;
-            margin:auto;
+            margin: auto;
             padding: 50px;
             padding-left: 100px;
             padding-right: 100px;
             /* background-color: #f0f0f0; */
             border-radius: 15px;
-            box-shadow:  10px 11px rgba(0, 0, 0, 0.1);
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
 
-            text-align: center; /* Center text in the main content */
+            text-align: center;
+            /* Center text in the main content */
         }
 
         h2 {
@@ -116,21 +120,21 @@
             /* background-color:white; */
 
             /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-            
+
         }
 
 
         /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
-        .table > :not(caption) > * > * {
+        .table> :not(caption)>*>* {
 
-            background-color:white;
+            background-color: white;
 
         }
 
         .table-dark {
 
-            --bs-table-striped-bg:#00a383;
-            --bs-table-hover-bg:#00a383;
+            --bs-table-striped-bg: #00a383;
+            --bs-table-hover-bg: #00a383;
 
 
         }
@@ -183,7 +187,7 @@
 
             .add-status-form {
                 flex-direction: column;
-                
+
             }
 
             .add-status-form input[type="text"] {
@@ -191,7 +195,6 @@
                 margin-bottom: 10px;
             }
         }
-
     </style>
 
 
@@ -202,29 +205,31 @@
 <body onload="init()">
     <header class="header">
 
-            <a href="../index.html" class="back-button"><i style="font-size: 40px" class="bi-arrow-left-circle bi-lg"></i></a>
-            <h1 class="title">CONFIGURAÇÕES SETOR</h1>
+        <a href="../index.html" class="back-button"><i style="font-size: 40px"
+                class="bi-arrow-left-circle bi-lg"></i></a>
+        <h1 class="title">CONFIGURAÇÕES SETOR</h1>
 
     </header>
 
-<main class="main-content">
-    
-    <hr>
-    <h3 style="font-size: 18px" id="novo" onclick="novoSetor();"> ADICIONAR NOVO SETOR: <i class="bi bi-plus-circle"></i></h3>
+    <main class="main-content">
 
-    <div id="cadastro" class="container-fluid p-5 border">
-        <form >
-            <div class="mb-3">
-                <label for="" class="form-label">NOME SETOR</label>
-                <input type="text" class="form-control" id="novoSetor">
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">RESPONSÁVEL</label>
-                <select name="" id="selects" class="form-select">
-                    <!-- <option value="" disabled selected hidden>-------------------------</option> -->
-                </select>
-            </div>
-        </form>
+        <hr>
+        <h3 style="font-size: 18px" id="novo" onclick="novoSetor();"> ADICIONAR NOVO SETOR: <i id="iconeNovoSetor"
+                class="bi bi-plus-circle"></i></h3>
+
+        <div id="cadastro" class="container-fluid p-5 border">
+            <form>
+                <div class="mb-3">
+                    <label for="" class="form-label">NOME SETOR</label>
+                    <input type="text" class="form-control" id="novoSetor">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">RESPONSÁVEL</label>
+                    <select name="" id="selects" class="form-select">
+                        <!-- <option value="" disabled selected hidden>-------------------------</option> -->
+                    </select>
+                </div>
+            </form>
 
             <div class="text-center">
                 <button class="btn btn-success" onclick="adicionarSetor()">ADICIONAR SETOR</button>
@@ -232,85 +237,90 @@
             <p id="response"></p>
 
 
-    </div>
-    <br><br>
-    <h3 style="font-size: 18px; margin-bottom: 20px;">SETORES CADASTRADOS:</h3>
-    <table class="table table-striped table-hover" id="tableSetor">
-        <tr class="table table-dark">
-            <th>ID Setor</th>
-            <th style="padding-left:90px">Nome Setor</th>
-            <th>Responsável</th>
-        </tr>
-        <tr></tr>
-    </table>
+        </div>
+        <br><br>
+        <h3 style="font-size: 18px; margin-bottom: 20px;">SETORES CADASTRADOS:</h3>
+        <table class="table table-striped table-hover" id="tableSetor">
+            <tr class="table table-dark">
+                <th>ID Setor</th>
+                <th style="padding-left:90px">Nome Setor</th>
+                <th>Responsável</th>
+            </tr>
+            <tr></tr>
+        </table>
 
-</main>
+    </main>
 
     <script>
-    function init() {
-      loadSetores();
-    }
-    
-    function loadSetores(){
+        function init() {
+            loadSetores();
+        }
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "ConfigSetor.php", true)
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function(){
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    tableSetor.innerHTML += xhr.responseText;
-                } else {
+        function loadSetores() {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "ConfigSetor.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        tableSetor.innerHTML += xhr.responseText;
+                    } else {
                         tableSetor.innerHTML += "Falha ao carregar os setores";
                     }
                 }
             };
             var data = "select_ready=" + encodeURIComponent(1)
             xhr.send(data);
-            
+
             var controle = 1; //para nao duplicar os dados.
             var consultaUnica = 1;
         }
-        function novoSetor(){
-            document.getElementById("cadastro").style.display="grid"
-            var controle =1;
+        function novoSetor() {
             var consultaUnica = 1;
-            if(controle == 1){
-            var novo = document.getElementById("novo");
-            novo.innerHTML = "Cadastrar novo Setor : <i class='bi bi-dash-circle'></i>"
-                
-            if(consultaUnica == 1){
-
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "ConfigSetor.php", true)
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function(){
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            selects.innerHTML = xhr.responseText;
-                        } else {
-                            selects.innerHTML= "Falha ao carregar as pessoas";
-                        }
-                    }
-                };
-                xhr.send("gerente=" + encodeURIComponent(1));
-                consultaUnica++;
-            }
-                controle++;
-            }else
-            if(controle != 1){
-                document.getElementById("cadastro").style.display="none"
+            var icone = document.getElementById("iconeNovoSetor");
+            
+            if (icone.classList.contains("bi-plus-circle")) {
+                document.getElementById("cadastro").style.display = "grid"
+                icone.classList.remove("bi-plus-circle");
+                icone.classList.add("bi-dash-circle");
                 var novo = document.getElementById("novo");
-                novo.innerHTML = "Cadastrar novo setor : <i class='bi bi-plus-circle'></i>"
-                controle=1;
-            }
+                novo.innerHTML = "Cadastrar novo Setor : <i id='iconeNovoSetor' class='bi bi-dash-circle'></i>"
+
+                if (consultaUnica == 1) {
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "ConfigSetor.php", true)
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                selects.innerHTML = xhr.responseText;
+                            } else {
+                                selects.innerHTML = "Falha ao carregar as pessoas";
+                            }
+                        }
+                    };
+                    xhr.send("gerente=" + encodeURIComponent(1));
+                    consultaUnica++;
+                }
+            } else
+                if (icone.classList.contains("bi-dash-circle")) {
+                    icone.classList.remove("bi-dash-circle");
+                    icone.classList.add("bi-plus-circle");
+
+                    document.getElementById("cadastro").style.display = "none"
+                    var novo = document.getElementById("novo");
+                    novo.innerHTML = "Cadastrar novo setor : <i id='iconeNovoSetor' class='bi bi-plus-circle'></i>"
+                    controle = 1;
+                }
         }
-        function adicionarSetor(){
+        function adicionarSetor() {
             var novo = document.getElementById("novoSetor").value;
             var foo = document.getElementById("selects");
             var response = document.getElementById("response")
             var i = 0;
-            
+
             while (i < foo.options.length) {  // Correção: use '<' em vez de '<=' para verificar o comprimento
                 if (foo.options[i].selected) {  // Correção: .selected é suficiente, não precisa comparar com 'true'
                     var responsavel = foo.options[i].value;
@@ -318,23 +328,24 @@
                 i++;
             }
             var xhr = new XMLHttpRequest();
-                xhr.open("POST", "ConfigSetor.php", true)
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function(){
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            window.location.reload();
-                            // window.location.href = "ConfigSetor.php";
-                            // response.innerHTML = xhr.responseText;
+            xhr.open("POST", "ConfigSetor.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.reload();
+                        // window.location.href = "ConfigSetor.php";
+                        // response.innerHTML = xhr.responseText;
 
-                        } else {
-                            console.error("Falha ao carregar as pessoas");
-                        }
+                    } else {
+                        console.error("Falha ao carregar as pessoas");
                     }
-                };
-                xhr.send("nomeSetor=" + encodeURIComponent(novo) + "&responsavel=" + encodeURIComponent(responsavel));
+                }
+            };
+            xhr.send("nomeSetor=" + encodeURIComponent(novo) + "&responsavel=" + encodeURIComponent(responsavel));
 
         }
     </script>
 </body>
+
 </html>

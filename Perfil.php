@@ -99,10 +99,6 @@ if (!isset($_SESSION['username'])) {
             $Meu_ID = $row["IDUsuario"];
         }
 
-        
-
-
-        
 
         // Consulta para recuperar as informações do usuário
         $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";

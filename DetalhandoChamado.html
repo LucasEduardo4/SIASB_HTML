@@ -1,3 +1,4 @@
+
 <!-- Voltar no DetalhandoChamado.php (falta fazer os joins pra substituir os ID's pelos nomes) -->
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +12,36 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <style>
+      body {
+    margin: 0;
+    display: flex;
+    background-color: #f0f0f0;
+  }
+  
+/* 
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
+
+  .floating-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    max-width: 88%; 
+    margin: 0 auto;
+     
+
+  }
+
     .responsavel_tecnologia {
       display: none;
     }
@@ -28,7 +59,50 @@
       max-width: 100%;
     }
 
-    .statusColors {
+    .container_card
+    {
+      background-color: brown;
+      border: 3px; border-color: black; 
+      background-color: rgb(255, 255, 255); 
+      padding-top: 40px; 
+      margin-top: 10px; 
+      border-radius: 8px; 
+      margin-bottom: 20px; 
+      padding-bottom: 30px;
+      padding-left: 30px;
+      padding-right: 10px;
+      position: relative;
+     
+      
+    }
+
+    .superior {
+        
+        background-color: rgba(5, 136, 0, 0.233); 
+        padding-top:40px; 
+        padding-bottom: 50px;
+        position: absolute;
+        width: 100%;
+       
+      }
+
+      .chamados {
+
+        width: 98%;
+        margin-top:7%;
+
+      }
+
+      .anexo
+      {
+        width: 64%;
+        padding-left: 0.6%;
+      }
+
+      
+
+
+      .statusColors {
       width: 100px;
       padding: 4px;
       color: white;
@@ -57,17 +131,46 @@
   <title>Detalhando Chamado</title>
 </head>
 
-<body>
+<body style="background-color: aliceblue;">
   <!-- <a href="javascript:history.back();" class="returnButton"> -->
   <a href="/SIASB_HTML/VendoChamados.html" class="returnButton">
     <h1><i class="bi-arrow-left-circle bi-lg"></i></h1>
   </a>
-  <div class="container">
+
+
+  <div class="superior">
+    <div >
+      <h4 class="floating-box" style="z-index: 10; font-size: 20px; ">Detalhes do Chamado</h4>
+    </div>
+  </div>
+
+  <div id="anexosContainer"></div>
+    
+  <script>
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "DetalhandoChamado.php", true);
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          var icone = xhr.responseText;
+          if (icone) {
+              document.getElementById("anexosContainer").innerHTML +=
+                  '<p> <img id="icone" src="data:image/jpeg;base64,' + icone + '" width="50" height="50" alt="Imagem do chamado" /></p>';
+          } else {
+              document.getElementById("anexosContainer").innerHTML +=
+                  '<p>Nenhuma imagem anexada para este chamado.</p>';
+          }
+      }
+  };
+  xhr.send();
+  </script>
+
+  
+  <div class="chamados">
     <div class="row">
       <div class="col-md-8">
-        <div class="card m-3">
-          <div class="card-body">
-            <h4 class="card-title">Detalhes do Chamado</h4>
+        <div  class="card m-3">
+          <div  class="card-body container_card">
+            
             <h5 class="card-text" id="numChamado">Chamado nº </h5>
             <hr>
             <h5 class="card-text" id="assunto">Assunto: </h5>
@@ -82,18 +185,13 @@
             </div>
           </div>
         </div>
-
       </div>
-      <div class="col-md-4">
-        <div class="container my-3 p-0">
-          <button type="button" class="btn btn-success responsavel_tecnologia" id="responsavel_tecnologia"
-            onclick="alterarChamado()">
-            Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
-          </button>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Informações Adicionais</h5>
+
+
+      <div style="z-index: 2;" class="col-md-4">
+        <div class="card" style="padding-bottom:8%; margin-top: 15px;">
+          <div class="card-body" >
+            <h5 >Informações Adicionais</h5>
             <p class="card-text" id="autor">Autor: </p>
             <p class="card-text" id="responsavel">Analista Responsável: </p>
             <p class="card-text" id="dataAbertura">Data de Abertura: </p>
@@ -103,10 +201,16 @@
             <p class="card-text" id="equipamento">Equipamento: </p>
           </div>
         </div>
+        <div class="container my-3 p-0">
+          <button type="button" class="btn btn-success responsavel_tecnologia" id="responsavel_tecnologia"
+            onclick="alterarChamado()">
+            Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
+          </button>
+        </div>
 
       </div>
     </div>
-    <div class="container">
+    <div class="anexo">
       <div class="row">
         <div class="card m-3">
           <div class="card-body">
@@ -168,6 +272,7 @@
         var imagem = dadosObjeto.imagem;
         var categoria = dadosObjeto.categoria;
         var logs = dadosObjeto.logs;
+        console.log(dadosObjeto);
         // console.log(logs);
         // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
 

@@ -54,7 +54,23 @@ if ($result_id_usuario) {
     // Trate o erro, se necessário
     echo "Erro ao obter ID do usuário: " . mysqli_error($conn);
 }
+?>
 
+<?php //terminar aqui.
+
+$conn = new mysqli('localhost', 'root', '', 'siasb');
+
+$_SESSION["nome"] = "Gabriel Fernandes";
+//criar um select com o banco de dados, para verificar se o IDPessoa é igual ao IDUsuario
+
+$sql = 'SET @ID = (SELECT IDPessoa FROM tbusuario WHERE nome = "' . $_SESSION["username"] . '")
+        SELECT nomeCompleto from tbpessoa where IDPessoa = @ID';
+
+$result = $conn->query($sql);
+$row = mysqli_fetch_assoc($result);
+while ($row = $result->fetch_assoc()) {
+    $nome = $row["nomeCompleto"];
+}
 ?>
 
 
@@ -62,89 +78,89 @@ if ($result_id_usuario) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Página Home</title>
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    
+
+
 
 
     <style>
-
         /* Definir uma fonte mais elegante */
-    body {
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
 
-.container {
-    max-width: 600px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-h3 {
-    color: #333;
-    text-align: center;
-}
+        h3 {
+            color: #333;
+            text-align: center;
+        }
 
-.anotacoes-list {
-    list-style: none;
-    padding: 0;
-}
+        .anotacoes-list {
+            list-style: none;
+            padding: 0;
+        }
 
-.anotacao-item {
-    margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
+        .anotacao-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
 
-.data {
-    margin: 0;
-    font-weight: bold;
-    color: #555;
-}
+        .data {
+            margin: 0;
+            font-weight: bold;
+            color: #555;
+        }
 
-.conteudo {
-    margin: 10px 0;
-}
+        .conteudo {
+            margin: 10px 0;
+        }
 
-.botoes {
-    display: flex;
-    justify-content: flex-end;
-}
+        .botoes {
+            display: flex;
+            justify-content: flex-end;
+        }
 
-.botoes button {
-    margin-left: 10px;
-    padding: 8px 15px;
-    /* border: none; */
-    border-radius: 3px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        .botoes button {
+            margin-left: 10px;
+            padding: 8px 15px;
+            /* border: none; */
+            border-radius: 3px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-.botoes button:hover {
-    background-color: #0056b3;
-}
-
-
-
-        
+        .botoes button:hover {
+            background-color: #0056b3;
+        }
 
 
-body {
+
+
+
+
+        body {
             font-family: Arial, sans-serif;
         }
 
@@ -185,7 +201,8 @@ body {
             margin-bottom: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: center;
             border: 1px solid #ddd;
@@ -204,7 +221,8 @@ body {
             font-weight: bold;
         }
 
-        .selected-day, td:hover {
+        .selected-day,
+        td:hover {
             background-color: #f5f5f5;
         }
 
@@ -244,7 +262,7 @@ body {
             font-size: 16px;
             border: none;
             border-radius: 4px;
-            background-color:blue;
+            background-color: blue;
             color: #fff;
             cursor: pointer;
         }
@@ -266,8 +284,7 @@ body {
             margin-bottom: 5px;
         }
 
-        .conteudo_salvo
-        {
+        .conteudo_salvo {
             font-weight: bold;
             margin-bottom: 20px;
             font-size: 30px;
@@ -357,35 +374,34 @@ body {
         }
     </style>
 
-<style>
-    .editar-anotacao {
-        display: none;
-    }
+    <style>
+        .editar-anotacao {
+            display: none;
+        }
 
-    .notes-popup {
-        position: relative;
-    }
+        .notes-popup {
+            position: relative;
+        }
 
-    .close-popup {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: none;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
 
-    .selected-date {
+        .selected-date {
             background-color: green;
             color: green;
-  }
+        }
+    </style>
 
-</style>
 
-
-<script>
+    <script>
         function exibirHorarioAtual() {
             var horasAtual = new Date();
             var hora = horasAtual.getHours();
@@ -410,7 +426,7 @@ body {
             setTimeout(exibirHorarioAtual, 1000);
         }
 
-            function exibirDataAtual() {
+        function exibirDataAtual() {
             var dataAtual = new Date();
             var dia = dataAtual.getDate();
             var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11
@@ -429,28 +445,33 @@ body {
             // Exibe a data atual na página
             document.getElementById('dataAtual').textContent = dataFormatada;
         }
-            
+
     </script>
 
 
 </head>
-<body onload="exibirHorarioAtual()" onload="exibirDataAtual()" style="background: none;" >
+
+<body onload="exibirHorarioAtual()" onload="exibirDataAtual()" style="background: none;">
     <div class="container">
 
-    
+
 
         <header>
-            <h1>Bem-vindo, <?php echo $_SESSION['username']; ?>!</h1>
+            <h1>Bem-vindo,
+                <?php echo $_SESSION['username']; ?>!
+            </h1>
             <p>Aqui está o conteúdo restrito do painel de controle.</p>
 
             <!-- Inclua o conteúdo adicional do painel de controle aqui -->
 
             <a href="../flowSite/encerrarSessao.php">Sair</a> <!-- Adicione o link de logout para encerrar a sessão -->
-             </header>
+        </header>
 
 
         <div class="welcome-message">
-            <h2>Olá, <?php echo $_SESSION['username']; ?> !</h2>
+            <h2>Olá,
+                <?php echo $_SESSION['username']; ?> !
+            </h2>
             <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
         </div>
 
@@ -462,476 +483,480 @@ body {
             </div>
         </div>
 
-         <div class="calendar-container">
-        <h1>Calendário</h1>
+        <div class="calendar-container">
+            <h1>Calendário</h1>
 
-        <div class="dropdown-container">
-            <select id="month-select" onchange="getCalendar()">
-                <option value="0">Janeiro</option>
-                <option value="1">Fevereiro</option>
-                <option value="2">Março</option>
-                <option value="3">Abril</option>
-                <option value="4">Maio</option>
-                <option value="5">Junho</option>
-                <option value="6">Julho</option>
-                <option value="7">Agosto</option>
-                <option value="8">Setembro</option>
-                <option value="9">Outubro</option>
-                <option value="10">Novembro</option>
-                <option value="11">Dezembro</option>
-            </select>
+            <div class="dropdown-container">
+                <select id="month-select" onchange="getCalendar()">
+                    <option value="0">Janeiro</option>
+                    <option value="1">Fevereiro</option>
+                    <option value="2">Março</option>
+                    <option value="3">Abril</option>
+                    <option value="4">Maio</option>
+                    <option value="5">Junho</option>
+                    <option value="6">Julho</option>
+                    <option value="7">Agosto</option>
+                    <option value="8">Setembro</option>
+                    <option value="9">Outubro</option>
+                    <option value="10">Novembro</option>
+                    <option value="11">Dezembro</option>
+                </select>
 
-            <select id="year-select" onchange="getCalendar()"></select>
-        </div>
+                <select id="year-select" onchange="getCalendar()"></select>
+            </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Domingo</th>
-                    <th>Segunda-feira</th>
-                    <th>Terça-feira</th>
-                    <th>Quarta-feira</th>
-                    <th>Quinta-feira</th>
-                    <th>Sexta-feira</th>
-                    <th>Sábado</th>
-                    
-                </tr>
-            </thead>
-            <tbody id="calendar-body"></tbody>
-        </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Domingo</th>
+                        <th>Segunda-feira</th>
+                        <th>Terça-feira</th>
+                        <th>Quarta-feira</th>
+                        <th>Quinta-feira</th>
+                        <th>Sexta-feira</th>
+                        <th>Sábado</th>
 
-<div id="notes-popup" class="notes-popup">
-    <button id="close-popup" class="close-popup">x</button>
-    <h2>Anotações</h2>
-    <form id="notes-form">
-        <input type="hidden" id="selected-date" name="selected-date">
-        <textarea id="notes-content" class="notes-content" name="notes-content" placeholder="Faça suas anotações aqui"></textarea>
-        <button type="submit" class="notes-submit">Salvar</button>
-    </form>
-</div>
+                    </tr>
+                </thead>
+                <tbody id="calendar-body"></tbody>
+            </table>
 
-<script>
-    const closePopupButton = document.getElementById('close-popup');
-    const notesPopup = document.getElementById('notes-popup');
+            <div id="notes-popup" class="notes-popup">
+                <button id="close-popup" class="close-popup">x</button>
+                <h2>Anotações</h2>
+                <form id="notes-form">
+                    <input type="hidden" id="selected-date" name="selected-date">
+                    <textarea id="notes-content" class="notes-content" name="notes-content"
+                        placeholder="Faça suas anotações aqui"></textarea>
+                    <button type="submit" class="notes-submit">Salvar</button>
+                </form>
+            </div>
 
-    closePopupButton.addEventListener('click', () => {
-        notesPopup.style.display = 'none';
-    });
+            <script>
+                const closePopupButton = document.getElementById('close-popup');
+                const notesPopup = document.getElementById('notes-popup');
 
-</script>
-
-
-
-<!-- IREI COLOCAR O CÓDIGO PARA ALTERAR A COR DO CALENDÁRIO AQUI -->
-
-<script>
-        function getCalendar() {
-            // Implemente a lógica para atualizar a tabela de calendário aqui
-
-            // Suponhamos que você queira destacar a data 5 de agosto
-            const targetDate = new Date(2023, 7, 5); // Note que os meses são indexados de 0 a 11
-
-            // Encontre o elemento de data correspondente na tabela
-            const calendarCells = document.querySelectorAll("#calendar-body td");
-            calendarCells.forEach(cell => {
-                const cellDate = new Date(cell.getAttribute("data-date"));
-                if (cellDate.toDateString() === targetDate.toDateString()) {
-                    cell.classList.add("selected-date");
-                } else {
-                    cell.classList.remove("selected-date");
-                }
-            });
-        }
-
-        // Chame a função getCalendar() para iniciar o calendário
-        getCalendar();
-    </script>
-
-
-
-
-<!-- Adicione este código PHP para exibir as anotações -->
-
-<div class="container">
-    <h3>Minhas Anotações:</h3>
-    <ul class="anotacoes-list">
-        <?php foreach ($anotacoes_usuario as $anotacao) { ?>
-            <li class="anotacao-item">
-                <p class="data">Data: <?php echo $anotacao['dia']; ?></p>
-                <p class="conteudo" contenteditable="true" data-id="<?php echo $anotacao['IDAgenda']; ?>">
-                    <?php echo $anotacao['mensagem']; ?>
-                </p>
-                <div class="botoes">
-                    <button class="excluir" data-id="<?php echo $anotacao['IDAgenda']; ?>">Excluir</button>
-                </div>
-            </li>
-        <?php } ?>
-    </ul>
-</div>
-
-
-<!-- REALIZANDO OS PROCEDIMENTOS DE EDITAR AS ANOTAÇÕES -->
-
-<script>
-function handleExcluirClick(event) {
-    var button = event.target;
-    var anotacaoId = button.getAttribute("data-id");
-
-    // Fazer a requisição AJAX usando JavaScript puro (sem jQuery)
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "excluir_anotacao.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Remover a anotação da lista após a exclusão no banco de dados
-                var listItem = button.closest(".anotacao-item");
-                listItem.remove();
-            } else {
-                console.error("Erro ao excluir anotação:", xhr.responseText);
-            }
-        }
-    };
-    xhr.send("id=" + encodeURIComponent(anotacaoId));
-}
-
-function handleContentEditableBlur(event) {
-    var pElement = event.target;
-    var anotacaoId = pElement.getAttribute("data-id");
-    var novoConteudo = pElement.textContent;
-
-    // Fazer a requisição AJAX para atualizar a anotação no banco de dados
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "atualizar_anotacao.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status !== 200) {
-                console.error("Erro ao atualizar anotação:", xhr.responseText);
-            }
-        }
-    };
-
-    xhr.send("id=" + encodeURIComponent(anotacaoId) + "&novo_conteudo=" + encodeURIComponent(novoConteudo));
-}
-
-// Adicionar um ouvinte de eventos para os botões "Excluir"
-var excluirButtons = document.getElementsByClassName("excluir");
-for (var i = 0; i < excluirButtons.length; i++) {
-    excluirButtons[i].addEventListener("click", handleExcluirClick);
-}
-
-// Adicionar um ouvinte de eventos para os elementos com a classe "conteudo"
-var conteudoElements = document.getElementsByClassName("conteudo");
-for (var i = 0; i < conteudoElements.length; i++) {
-    conteudoElements[i].addEventListener("blur", handleContentEditableBlur);
-}
-</script>
-
-
-
-
-
-
-<script>
-function handleExcluirClick(event) {
-  var button = event.target;
-  var anotacaoId = button.getAttribute("data-id");
-//   console.log(event); 
-
-
-  // Fazer a requisição AJAX usando jQuery
-  $.ajax({
-    url: "excluir_anotacao.php", // O arquivo PHP que irá processar a exclusão
-    type: "POST",
-    data: {
-      id: anotacaoId, // Enviar o ID da anotação a ser excluída
-      success: function (response) {
-    // Exibe a resposta em um elemento HTML com id "resposta"
-    document.getElementById("resposta").textContent = response;
-
-  },
-      
-    },
-    success: function (response) {
-      // Remover a anotação da lista após a exclusão no banco de dados
-      var listItem = button.closest(".anotacao-item");
-      listItem.remove();
-      
-
-    },
-    error: function (xhr, status, error) {
-      console.error(error); // Tratar erro, se necessário (opcional)
-    },
-  });
-}
-
-
-//FORMA REDUZIDA DE REALIZAR A EXCLUSÃO
-// $.ajax({
-//     url: "excluir_anotacao.php",
-//     type: "POST",
-//     data: {
-//         id: anotacaoId,
-//     },
-//     success: function (response) {
-//         document.getElementById("resposta").textContent = response;
-//         var listItem = button.closest(".anotacao-item");
-//         listItem.remove();
-//     },
-//     error: function (xhr, status, error) {
-//         console.error(error);
-//     },
-// });
-
-
-
-// Adicionar um ouvinte de eventos para os botões "Excluir"
-var excluirButtons = document.getElementsByClassName("excluir");
-for (var i = 0; i < excluirButtons.length; i++) {
-  excluirButtons[i].addEventListener("click", handleExcluirClick);
-}
-
-</script>
-
-
-
-
-
-<!-- Mais código HTML, se houver -->
-
-<!-- Código HTML existente -->
-
-
-
-        <!-- AQUI IRA APARECER TODAS AS ANOTAÇÕES QUE IRAM SER SALVAS // class="note-date" -->
-        <ul id="notes-list" class="notes-list"></ul>
-    </div>
-
-    <script>
-        // Objeto para armazenar as anotações
-        var notesData = {};
-
-        // Obter elementos HTML
-        var monthSelect = document.getElementById('month-select');
-        var yearSelect = document.getElementById('year-select');
-
-        // Preencher dropdown de anos com os últimos 20 anos
-        var currentYear = new Date().getFullYear();
-        for (var i = currentYear; i >= currentYear - 20; i--) {
-            var option = document.createElement('option');
-            option.value = i;
-            option.text = i;
-            yearSelect.appendChild(option);
-        }
-
-        // Função para obter o calendário do mês selecionado
-        function getCalendar() {
-            var selectedMonth = parseInt(monthSelect.value);
-            var selectedYear = parseInt(yearSelect.value);
-            var currentDate = new Date();
-            var currentMonth = currentDate.getMonth();
-            var calendarBody = document.getElementById('calendar-body');
-            var firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
-            var lastDay = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-
-            calendarBody.innerHTML = '';
-
-            var row = document.createElement('tr');
-
-            // Preencher células vazias no início do mês
-            for (var i = 0; i < firstDay; i++) {
-                var cell = document.createElement('td');
-                row.appendChild(cell);
-            }
-
-            // Preencher os dias do mês
-            for (var day = 1; day <= lastDay; day++) {
-                var cell = document.createElement('td');
-                cell.innerText = day;
-
-                // Adicionar classe 'current-day' ao dia atual ================================================================================
-                if (selectedMonth === currentMonth && selectedYear === currentDate.getFullYear() && day === currentDate.getDate()) {
-                    cell.classList.add('current-day');
-                }
-
-                // Adicionar evento de clique para exibir o popup de anotações
-                cell.addEventListener('click', function() {
-                    var selectedDate = new Date(selectedYear, selectedMonth, parseInt(this.innerText));
-                    var selectedDateString = formatDate(selectedDate);
-                    document.getElementById('selected-date').value = selectedDateString;
-                    showNotesPopup(selectedDateString);
+                closePopupButton.addEventListener('click', () => {
+                    notesPopup.style.display = 'none';
                 });
 
-                // Verificar se a data possui anotações
-                var dateKey = formatDate(new Date(selectedYear, selectedMonth, day));
-                if (notesData[dateKey]) {
-                    cell.classList.add('selected-day');
+            </script>
+
+
+
+            <!-- IREI COLOCAR O CÓDIGO PARA ALTERAR A COR DO CALENDÁRIO AQUI -->
+
+            <script>
+                function getCalendar() {
+                    // Implemente a lógica para atualizar a tabela de calendário aqui
+
+                    // Suponhamos que você queira destacar a data 5 de agosto
+                    const targetDate = new Date(2023, 7, 5); // Note que os meses são indexados de 0 a 11
+
+                    // Encontre o elemento de data correspondente na tabela
+                    const calendarCells = document.querySelectorAll("#calendar-body td");
+                    calendarCells.forEach(cell => {
+                        const cellDate = new Date(cell.getAttribute("data-date"));
+                        if (cellDate.toDateString() === targetDate.toDateString()) {
+                            cell.classList.add("selected-date");
+                        } else {
+                            cell.classList.remove("selected-date");
+                        }
+                    });
                 }
 
-                row.appendChild(cell);
+                // Chame a função getCalendar() para iniciar o calendário
+                getCalendar();
+            </script>
 
-                if (row.children.length === 7) {
-                    calendarBody.appendChild(row);
-                    row = document.createElement('tr');
+
+
+
+            <!-- Adicione este código PHP para exibir as anotações -->
+
+            <div class="container">
+                <h3>Minhas Anotações:</h3>
+                <ul class="anotacoes-list">
+                    <?php foreach ($anotacoes_usuario as $anotacao) { ?>
+                        <li class="anotacao-item">
+                            <p class="data">Data:
+                                <?php echo $anotacao['dia']; ?>
+                            </p>
+                            <p class="conteudo" contenteditable="true" data-id="<?php echo $anotacao['IDAgenda']; ?>">
+                                <?php echo $anotacao['mensagem']; ?>
+                            </p>
+                            <div class="botoes">
+                                <button class="excluir" data-id="<?php echo $anotacao['IDAgenda']; ?>">Excluir</button>
+                            </div>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+
+
+            <!-- REALIZANDO OS PROCEDIMENTOS DE EDITAR AS ANOTAÇÕES -->
+
+            <script>
+                function handleExcluirClick(event) {
+                    var button = event.target;
+                    var anotacaoId = button.getAttribute("data-id");
+
+                    // Fazer a requisição AJAX usando JavaScript puro (sem jQuery)
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "excluir_anotacao.php", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                // Remover a anotação da lista após a exclusão no banco de dados
+                                var listItem = button.closest(".anotacao-item");
+                                listItem.remove();
+                            } else {
+                                console.error("Erro ao excluir anotação:", xhr.responseText);
+                            }
+                        }
+                    };
+                    xhr.send("id=" + encodeURIComponent(anotacaoId));
+                }
+
+                function handleContentEditableBlur(event) {
+                    var pElement = event.target;
+                    var anotacaoId = pElement.getAttribute("data-id");
+                    var novoConteudo = pElement.textContent;
+
+                    // Fazer a requisição AJAX para atualizar a anotação no banco de dados
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "atualizar_anotacao.php", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status !== 200) {
+                                console.error("Erro ao atualizar anotação:", xhr.responseText);
+                            }
+                        }
+                    };
+
+                    xhr.send("id=" + encodeURIComponent(anotacaoId) + "&novo_conteudo=" + encodeURIComponent(novoConteudo));
+                }
+
+                // Adicionar um ouvinte de eventos para os botões "Excluir"
+                var excluirButtons = document.getElementsByClassName("excluir");
+                for (var i = 0; i < excluirButtons.length; i++) {
+                    excluirButtons[i].addEventListener("click", handleExcluirClick);
+                }
+
+                // Adicionar um ouvinte de eventos para os elementos com a classe "conteudo"
+                var conteudoElements = document.getElementsByClassName("conteudo");
+                for (var i = 0; i < conteudoElements.length; i++) {
+                    conteudoElements[i].addEventListener("blur", handleContentEditableBlur);
+                }
+            </script>
+
+
+
+
+
+
+            <script>
+                function handleExcluirClick(event) {
+                    var button = event.target;
+                    var anotacaoId = button.getAttribute("data-id");
+                    //   console.log(event); 
+
+
+                    // Fazer a requisição AJAX usando jQuery
+                    $.ajax({
+                        url: "excluir_anotacao.php", // O arquivo PHP que irá processar a exclusão
+                        type: "POST",
+                        data: {
+                            id: anotacaoId, // Enviar o ID da anotação a ser excluída
+                            success: function (response) {
+                                // Exibe a resposta em um elemento HTML com id "resposta"
+                                document.getElementById("resposta").textContent = response;
+
+                            },
+
+                        },
+                        success: function (response) {
+                            // Remover a anotação da lista após a exclusão no banco de dados
+                            var listItem = button.closest(".anotacao-item");
+                            listItem.remove();
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error); // Tratar erro, se necessário (opcional)
+                        },
+                    });
+                }
+
+
+                //FORMA REDUZIDA DE REALIZAR A EXCLUSÃO
+                // $.ajax({
+                //     url: "excluir_anotacao.php",
+                //     type: "POST",
+                //     data: {
+                //         id: anotacaoId,
+                //     },
+                //     success: function (response) {
+                //         document.getElementById("resposta").textContent = response;
+                //         var listItem = button.closest(".anotacao-item");
+                //         listItem.remove();
+                //     },
+                //     error: function (xhr, status, error) {
+                //         console.error(error);
+                //     },
+                // });
+
+
+
+                // Adicionar um ouvinte de eventos para os botões "Excluir"
+                var excluirButtons = document.getElementsByClassName("excluir");
+                for (var i = 0; i < excluirButtons.length; i++) {
+                    excluirButtons[i].addEventListener("click", handleExcluirClick);
+                }
+
+            </script>
+
+
+
+
+
+            <!-- Mais código HTML, se houver -->
+
+            <!-- Código HTML existente -->
+
+
+
+            <!-- AQUI IRA APARECER TODAS AS ANOTAÇÕES QUE IRAM SER SALVAS // class="note-date" -->
+            <ul id="notes-list" class="notes-list"></ul>
+        </div>
+
+        <script>
+            // Objeto para armazenar as anotações
+            var notesData = {};
+
+            // Obter elementos HTML
+            var monthSelect = document.getElementById('month-select');
+            var yearSelect = document.getElementById('year-select');
+
+            // Preencher dropdown de anos com os últimos 20 anos
+            var currentYear = new Date().getFullYear();
+            for (var i = currentYear; i >= currentYear - 20; i--) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.text = i;
+                yearSelect.appendChild(option);
+            }
+
+            // Função para obter o calendário do mês selecionado
+            function getCalendar() {
+                var selectedMonth = parseInt(monthSelect.value);
+                var selectedYear = parseInt(yearSelect.value);
+                var currentDate = new Date();
+                var currentMonth = currentDate.getMonth();
+                var calendarBody = document.getElementById('calendar-body');
+                var firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
+                var lastDay = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+
+                calendarBody.innerHTML = '';
+
+                var row = document.createElement('tr');
+
+                // Preencher células vazias no início do mês
+                for (var i = 0; i < firstDay; i++) {
+                    var cell = document.createElement('td');
+                    row.appendChild(cell);
+                }
+
+                // Preencher os dias do mês
+                for (var day = 1; day <= lastDay; day++) {
+                    var cell = document.createElement('td');
+                    cell.innerText = day;
+
+                    // Adicionar classe 'current-day' ao dia atual ================================================================================
+                    if (selectedMonth === currentMonth && selectedYear === currentDate.getFullYear() && day === currentDate.getDate()) {
+                        cell.classList.add('current-day');
+                    }
+
+                    // Adicionar evento de clique para exibir o popup de anotações
+                    cell.addEventListener('click', function () {
+                        var selectedDate = new Date(selectedYear, selectedMonth, parseInt(this.innerText));
+                        var selectedDateString = formatDate(selectedDate);
+                        document.getElementById('selected-date').value = selectedDateString;
+                        showNotesPopup(selectedDateString);
+                    });
+
+                    // Verificar se a data possui anotações
+                    var dateKey = formatDate(new Date(selectedYear, selectedMonth, day));
+                    if (notesData[dateKey]) {
+                        cell.classList.add('selected-day');
+                    }
+
+                    row.appendChild(cell);
+
+                    if (row.children.length === 7) {
+                        calendarBody.appendChild(row);
+                        row = document.createElement('tr');
+                    }
+                }
+
+                // Preencher células vazias no final do mês
+                while (row.children.length < 7) {
+                    var cell = document.createElement('td');
+                    row.appendChild(cell);
+                }
+
+                calendarBody.appendChild(row);
+
+                // Atualizar a exibição das anotações
+                showAllNotes();
+            }
+
+            // Função para exibir o popup de anotações
+            function showNotesPopup(selectedDate) {
+                var popup = document.getElementById('notes-popup');
+                popup.style.display = 'block';
+
+                // Verificar se a data já possui anotações
+                var notesContentInput = document.getElementById('notes-content');
+                notesContentInput.value = notesData[selectedDate] || '';
+
+                // Preencher o campo de data selecionada
+                document.getElementById('selected-date').value = selectedDate;
+            }
+
+            // Função para fechar o popup de anotações
+            function closeNotesPopup() {
+                var popup = document.getElementById('notes-popup');
+                popup.style.display = 'none';
+            }
+
+            // Função para lidar com o envio do formulário de anotações
+            document.getElementById('notes-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                var selectedDate = document.getElementById('selected-date').value;
+                var notesContent = document.getElementById('notes-content').value;
+
+                // Salvar as anotações no objeto de notas
+                notesData[selectedDate] = notesContent;
+
+                // Fechar o popup de anotações
+                closeNotesPopup();
+
+                // Atualizar a exibição das anotações
+                showAllNotes();
+            });
+
+            // Função para exibir todas as anotações
+            function showAllNotes() {
+                var notesList = document.getElementById('notes-list');
+                notesList.innerHTML = '';
+
+                for (var dateKey in notesData) {
+                    if (notesData.hasOwnProperty(dateKey)) {
+                        var note = document.createElement('li');
+                        var noteDate = dateKey;
+                        var noteContent = notesData[dateKey];
+                        note.innerHTML = '<span class="note-date">' + noteDate + '</span>: ' + noteContent;
+                        notesList.appendChild(note);
+                    }
                 }
             }
 
-            // Preencher células vazias no final do mês
-            while (row.children.length < 7) {
-                var cell = document.createElement('td');
-                row.appendChild(cell);
+            // Função para formatar a data no formato brasileiro (dd/mm/yyyy)
+            function formatDate(date) {
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+
+                return (
+                    year +
+                    '-' +
+                    (month < 10 ? '0' + month : month) +
+                    '-' +
+                    (day < 10 ? '0' + day : day)
+
+
+                    // (day < 10 ? '0' + day : day) +
+                    // '/' +
+                    // (month < 10 ? '0' + month : month) +
+                    // '/' +
+                    // year
+                );
             }
 
-            calendarBody.appendChild(row);
-
-            // Atualizar a exibição das anotações
+            var currentDate = new Date();
+            var currentMonth = currentDate.getMonth();
+            var currentYear = currentDate.getFullYear();
+            monthSelect.value = currentMonth;
+            yearSelect.value = currentYear;
+            getCalendar();
             showAllNotes();
-        }
 
-        // Função para exibir o popup de anotações
-        function showNotesPopup(selectedDate) {
-            var popup = document.getElementById('notes-popup');
-            popup.style.display = 'block';
-
-            // Verificar se a data já possui anotações
-            var notesContentInput = document.getElementById('notes-content');
-            notesContentInput.value = notesData[selectedDate] || '';
-
-            // Preencher o campo de data selecionada
-            document.getElementById('selected-date').value = selectedDate;
-        }
-
-        // Função para fechar o popup de anotações
-        function closeNotesPopup() {
-            var popup = document.getElementById('notes-popup');
-            popup.style.display = 'none';
-        }
-
-        // Função para lidar com o envio do formulário de anotações
-        document.getElementById('notes-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            var selectedDate = document.getElementById('selected-date').value;
-            var notesContent = document.getElementById('notes-content').value;
-
-            // Salvar as anotações no objeto de notas
-            notesData[selectedDate] = notesContent;
-
-            // Fechar o popup de anotações
-            closeNotesPopup();
-
-            // Atualizar a exibição das anotações
+            // Chamar a função para gerar o calendário e exibir as anotações
+            getCalendar();
             showAllNotes();
-        });
 
-        // Função para exibir todas as anotações
-        function showAllNotes() {
-            var notesList = document.getElementById('notes-list');
-            notesList.innerHTML = '';
 
-            for (var dateKey in notesData) {
-                if (notesData.hasOwnProperty(dateKey)) {
-                    var note = document.createElement('li');
-                    var noteDate = dateKey;
-                    var noteContent = notesData[dateKey];
-                    note.innerHTML = '<span class="note-date">' + noteDate + '</span>: ' + noteContent;
-                    notesList.appendChild(note);
-                }
+
+
+
+            // REALIZANDO TESTES PARA SALVAR AS ANOTAÇÕES
+
+            // Função para enviar as anotações para o servidor
+
+
+            document.getElementById('notes-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                var selectedDate = document.getElementById('selected-date').value;
+                var notesContent = document.getElementById('notes-content').value;
+
+                // Salvar as anotações no objeto de notas (opcionalmente, você pode fazer isso imediatamente após o usuário digitar a anotação)
+                notesData[selectedDate] = notesContent;
+
+                // Chamar a função para salvar as anotações no banco de dados
+                saveNotesToDatabase(selectedDate, notesContent);
+
+                // Fechar o popup de anotações
+                closeNotesPopup();
+
+                // Atualizar a exibição das anotações (opcionalmente, você pode fazer isso depois de receber a confirmação do servidor)
+                showAllNotes();
+            });
+
+
+
+
+            function saveNotesToDatabase(selectedDate, notesContent) {
+                // Fazer a requisição AJAX usando jQuery
+                $.ajax({
+                    url: 'salvar_anotacoes.php', // O arquivo PHP que vai salvar as anotações no banco de dados
+                    type: 'POST',
+                    data: {
+                        date: selectedDate,
+                        message: notesContent
+                    },
+                    success: function (response) {
+                        console.log(response); // Imprimir resposta do servidor (opcional)
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error); // Tratar erro, se necessário (opcional)
+                    }
+                });
             }
-        }
-
-        // Função para formatar a data no formato brasileiro (dd/mm/yyyy)
-        function formatDate(date) {
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-
-            return (
-                year + 
-                '-' + 
-                (month < 10 ? '0' + month : month) + 
-                '-' + 
-                (day < 10 ? '0' + day : day)
-
-
-                // (day < 10 ? '0' + day : day) +
-                // '/' +
-                // (month < 10 ? '0' + month : month) +
-                // '/' +
-                // year
-            );
-        }
-
-        var currentDate = new Date();
-        var currentMonth = currentDate.getMonth();
-        var currentYear = currentDate.getFullYear();
-        monthSelect.value = currentMonth;
-        yearSelect.value = currentYear;
-        getCalendar();
-        showAllNotes();
-
-        // Chamar a função para gerar o calendário e exibir as anotações
-        getCalendar();
-        showAllNotes();
 
 
 
-
-
-        // REALIZANDO TESTES PARA SALVAR AS ANOTAÇÕES
-    
-        // Função para enviar as anotações para o servidor
-
-
-    document.getElementById('notes-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    var selectedDate = document.getElementById('selected-date').value;
-    var notesContent = document.getElementById('notes-content').value;
-
-    // Salvar as anotações no objeto de notas (opcionalmente, você pode fazer isso imediatamente após o usuário digitar a anotação)
-    notesData[selectedDate] = notesContent;
-
-    // Chamar a função para salvar as anotações no banco de dados
-    saveNotesToDatabase(selectedDate, notesContent);
-
-    // Fechar o popup de anotações
-    closeNotesPopup();
-
-    // Atualizar a exibição das anotações (opcionalmente, você pode fazer isso depois de receber a confirmação do servidor)
-    showAllNotes();
-});
-
-
-
-
-    function saveNotesToDatabase(selectedDate, notesContent) {
-    // Fazer a requisição AJAX usando jQuery
-    $.ajax({
-        url: 'salvar_anotacoes.php', // O arquivo PHP que vai salvar as anotações no banco de dados
-        type: 'POST',
-        data: {
-            date: selectedDate,
-            message: notesContent
-        },
-        success: function(response) {
-            console.log(response); // Imprimir resposta do servidor (opcional)
-        },
-        error: function(xhr, status, error) {
-            console.error(error); // Tratar erro, se necessário (opcional)
-        }
-    });
-}
-
-
-
-    </script>
+        </script>
 
 
         <footer>
-            &copy; <p> 2023 Sistema de Chamados. Todos os direitos reservados. </p> 
+            &copy; <p> 2023 Sistema de Chamados. Todos os direitos reservados. </p>
         </footer>
     </div>
 </body>
+
 </html>

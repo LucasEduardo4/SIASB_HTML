@@ -252,11 +252,11 @@
 
             <div class="MeusCampos">
                 <label for="codigoSolicitacao">Código:</label>
-                <input type="text" id="codigoSolicitacao">
+                <input type="text" id="codigoSolicitacao" onchange="alteraData()"">
             </div>
-            <div class="MeusCampos">
+            <div class=" MeusCampos">
                 <label for="data">Data</label>
-                <select class="form-select" name="data" id="data" onchange="ateHoje()">
+                <select class="form-select" name="data" id="data" onchange="alteraData()">
                     <option value="" selected hidden>Selecione a opção</option>
                     <option value="1">Abertura</option>
                     <option value="2">Fechamento</option>
@@ -266,11 +266,11 @@
             </div>
             <div class="MeusCampos datas">
                 <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="text" id="dataDe" class="datas" placeholder="De:" readonly>
+                <input type="text" id="dataDe" class="datas" placeholder="De:" readonly required>
             </div>
             <div class="MeusCampos datas">
                 <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="text" id="dataAte" class="datas" placeholder="Até:" readonly>
+                <input type="text" id="dataAte" class="datas" placeholder="Até:" readonly required>
 
             </div>
             <div class="MeusCampos">
@@ -325,28 +325,39 @@
                     selectInicial();
                 }
 
-                function ateHoje() {
+                function alteraData() {
                     var selectData = document.getElementById("data");
                     var dataOption = selectData.options[selectData.selectedIndex].value;
+                    var currentDate = new Date();
+                    var day = currentDate.getDate();
+                    var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
+                    var year = currentDate.getFullYear();
+                    var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+                    
+
+                    // Formatar para "dd/mm/yyyy"
+
                     if (dataOption == 3) {
-                        dataDe.value = '01/01/2023';
-                        var currentDate = new Date();
-                        var day = currentDate.getDate();
-                        var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
-                        var year = currentDate.getFullYear();
-
-                        // Formatar para "dd/mm/yyyy"
-                        var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
-
                         dataAte.value = dataAtual;
                     } else
-                        if (dataOption == 2) {
-                            document.getElementById("status").value = 4;
-                        }
-                        else
-                            if (dataOption == 1) {
-                                document.getElementById("status").value = 5;
-                            }
+                    if (dataOption == 2) {
+                        dataDe.value = '01/01/2023';
+                        document.getElementById("status").value = 4;
+                        dataAte.value = dataAtual
+                    }
+                    else
+                    if (dataOption == 1) {
+                        dataDe.value = '01/01/2023';
+                        document.getElementById("status").value = 5;
+                        dataAte.value = dataAtual
+                    }else{
+                        dataDe.value = '01/01/2023';
+                        dataAte.value = dataAtual
+                        document.getElementById("status").value = 5;
+                        data.value=1;
+                    }
+
+
                 }
 
                 filtroForm.addEventListener('submit', function (event) {
