@@ -17,7 +17,7 @@
     display: flex;
     background-color: #f0f0f0;
   }
-  
+
 /* 
   .overlay {
     position: absolute;
@@ -36,8 +36,8 @@
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     position: relative;
-    max-width: 88%; 
-    margin: 0 auto;
+    max-width: 86%; 
+    margin-left: 90px;
      
 
   }
@@ -78,7 +78,7 @@
 
     .superior {
         
-        background-color: rgba(5, 136, 0, 0.233); 
+        background-color: rgba(64, 163, 132, 0.144);
         padding-top:40px; 
         padding-bottom: 50px;
         position: absolute;
@@ -125,6 +125,7 @@
 
     .Fechado {
       background-color: #e74c3c;
+      
     }
   </style>
 
@@ -133,8 +134,8 @@
 
 <body style="background-color: aliceblue;">
   <!-- <a href="javascript:history.back();" class="returnButton"> -->
-  <a href="/SIASB_HTML/VendoChamados.html" class="returnButton">
-    <h1><i class="bi-arrow-left-circle bi-lg"></i></h1>
+  <a href="/SIASB_HTML/VendoChamados.html" style="z-index: 10" class="returnButton">
+    <h1><i  class="bi-arrow-left-circle bi-lg"></i></h1>
   </a>
 
 
@@ -144,7 +145,9 @@
     </div>
   </div>
 
-  <div id="anexosContainer"></div>
+
+
+  <!-- <div id="anexosContainer"></div>
     
   <script>
   var xhr = new XMLHttpRequest();
@@ -162,7 +165,7 @@
       }
   };
   xhr.send();
-  </script>
+  </script> -->
 
   
   <div class="chamados">
@@ -299,6 +302,7 @@
         // if(ligacaoChamadoID == null){
         //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
         // }
+
         if (imagem) {
           document.getElementById("anexosContainer").innerHTML +=
             '<p>Imagem do chamado:<br> <img id="imagemChamado" src="data:image/jpeg;base64,' + imagem + '" width="auto" height="auto" alt="Imagem do chamado" /></p>';

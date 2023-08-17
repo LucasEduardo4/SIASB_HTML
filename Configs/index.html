@@ -11,11 +11,47 @@
 
     <style>
 
+/* body{
+    flex-wrap: wrap;
+    flex-direction: row;
 
-        body {
-            font-family: Arial, sans-serif;
-            
-        }
+} */
+
+a {
+    color: #00a383;
+}
+
+.caixas {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* min-height: 100vh; */
+    background-color: #f0f0f0;
+    flex-direction: row;
+    flex-flow: space-around;
+    align-items: stretch;
+    flex-grow:1;
+  }
+
+  .floating-box {
+    background-color: white;
+    padding: 100px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    
+  }
+
+  .flex-container {
+    flex-flow:space-around;
+  }
+
+img {
+    align-content: center;    
+}
+
+
 
         header {
             text-align: center;
@@ -111,14 +147,14 @@
         <p>Tela exclusiva para administradores</p>
         <hr>
     </header>
-    <div id="center">
+    <!-- <div id="center">
         <div class="panel">
             <p style="font-size: 23px; font-weight: bold; text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Configurações</p>
             <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigStatus/configStatus.html">CONFIGURAR STATUS</a>
+
             <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigSetor/ConfigSetor.html">CONFIGURAR SETOR</a>
             <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigSecao/ConfigSecao.html">CONFIGURAR SEÇÃO </a>
             <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigEquipamento/ConfigTipoEquipamento.html">CONFIGURAR TIPO EQUIPAMENTO</a>
-            <!-- <a style="font-weight: bolder; color: white; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"  type="button" data-bs-toggle="modal" data-bs-target="#myModal">ABRIR POP UP</a> -->
         </div>
         <div class="panel">
             <p style="font-size: 23px; font-weight: bold; text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Consultas</p>
@@ -127,38 +163,54 @@
             <p style="font-size: 23px; font-weight: bold; text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" class="mt-4">Relatórios</p>
             <a style="font-weight: bolder;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="../relatorios/index.html">Relatório Index</a>
         </div>
-    </div>
-
-
-    <!-- <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="form-group" style="background-color: gainsboro; border-radius: 6px; width: fit-content; margin-left: 10px;">
-                    codigoSolicitacao
-                </div>
-
-                <div class="modal-body">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque iusto commodi dolorum aperiam eos.
-                        Autem temporibus voluptas porro nisi velit ipsa aspernatur eligendi illo distinctio. Impedit
-                        officia repudiandae laudantium maxime?</p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
     </div> -->
 
+<div class="caixas">
 
-
-    <div class="container container-fluid">
+    <div style="text-align:center; flex-grow:1;" class="floating-box">
+        <img src="..\Icones Site\eng.png " alt=" saaeb barretos" height="100"> <p></p>
+        <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigStatus/configStatus.html">CONFIGURAR STATUS</a>
     </div>
+
+    <div style="text-align:center; flex-grow:1;" class="floating-box">
+        <img src="..\Icones Site\eng.png " alt=" saaeb barretos" height="100"> <p></p>
+        <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigSetor/ConfigSetor.html">CONFIGURAR SETOR</a>
+    </div>
+
+    <div style="text-align:center;flex-grow:1;" class="floating-box">
+        <img src="..\Icones Site\eng.png " alt=" saaeb barretos" height="100"> <p></p>
+        <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigSecao/ConfigSecao.html">CONFIGURAR SEÇÃO </a>
+    </div>
+
+    <div style="text-align:center;flex-grow:1;" class="floating-box">
+        <img src="..\Icones Site\eng.png " alt=" saaeb barretos" height="100"> <p></p>
+        <a style="font-weight: bolder; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="ConfigEquipamento/ConfigTipoEquipamento.html">CONFIGURAR TIPO EQUIPAMENTO</a>
+    </div>
+    
+</div>
+
+
+
+<div class="caixas">
+    <div style="text-align:center" class="floating-box">
+        <img src="..\Icones Site\eng.png " alt=" saaeb barretos" height="100"> <p></p>
+        <a style="font-weight: bolder;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="Consultas/Pessoa.html">PESSOAS</a>
+    </div>
+
+    <div style="text-align:center" class="floating-box">
+        <img src="..\Icones Site\eng.png " alt=" saaeb barretos" height="100"> <p></p>
+        <a style="font-weight: bolder;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="Consultas/Equipamentos.html">EQUIPAMENTOS</a>
+    </div>
+
+    <div style="text-align:center" class="floating-box">
+        <img src="..\Icones Site\eng.png " alt=" saaeb barretos" height="100"> <p></p>
+        <a style="font-weight: bolder;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="../relatorios/index.html">Relatório Index</a>
+    </div>
+</div>
+
+
+    <!-- <div class="container container-fluid">
+    </div> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
