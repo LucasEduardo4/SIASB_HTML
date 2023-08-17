@@ -68,7 +68,7 @@
       margin-top: 10px; 
       border-radius: 8px; 
       margin-bottom: 20px; 
-      padding-bottom: 30px;
+      padding-bottom: 100px;
       padding-left: 30px;
       padding-right: 10px;
       position: relative;
@@ -83,6 +83,7 @@
         padding-bottom: 50px;
         position: absolute;
         width: 100%;
+        
        
       }
 
@@ -127,6 +128,13 @@
       background-color: #e74c3c;
       
     }
+
+    /* .col-md-4 {
+
+
+    } */
+
+
   </style>
 
   <title>Detalhando Chamado</title>
@@ -140,8 +148,10 @@
 
 
   <div class="superior">
-    <div >
-      <h4 class="floating-box" style="z-index: 10; font-size: 20px; ">Detalhes do Chamado</h4>
+    <div class="floating-box">
+      <h4 id="numChamado" id="dataAbertura" style="z-index: 10; font-size: 20px; ">CHAMADO:   </h4>
+      <!-- <p style="color: rgb(100, 100, 100); font-weight: 600;" id="dataAbertura" > DATA DE ABERTURA: </p> -->
+
     </div>
   </div>
 
@@ -169,19 +179,20 @@
 
   
   <div class="chamados">
-    <div class="row">
+    <div style="padding-top: 50px;" class="row">
       <div class="col-md-8">
         <div  class="card m-3">
           <div  class="card-body container_card">
             
-            <h5 class="card-text" id="numChamado">Chamado nº </h5>
+            
+            
+            <h5 class="card-text" id="assunto">ASSUNTO DO CHAMADO<br><br> </h5>
             <hr>
-            <h5 class="card-text" id="assunto">Assunto: </h5>
+            <p style="color: rgb(75, 75, 75); font-weight: bold;">DESCRIÇÃO: </p>
+            <p class="card-text" id="descricao"></p>
             <hr>
-            <p class="card-text" id="descricao">Descrição: </p>
-            <hr>
-            <p class="card-text">Logs:</p>
-            <div class="resultados_log" id="resultados_log">
+            <p class="card-text" style="font-weight: bold;">ANDAMENTO DO CHAMADO:</p>
+            <div class="resultados_log" id="resultados_log" style="background-color: red;">
               <div class="container mt-4" id="logsContainer">
                 <!-- Div pré-existente que exibirá os logs -->
               </div>
@@ -192,20 +203,27 @@
 
 
       <div style="z-index: 2;" class="col-md-4">
-        <div class="card" style="padding-bottom:8%; margin-top: 15px;">
+        <div class="card" style="padding-bottom:8%; margin-top: 15px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5)">
           <div class="card-body" >
-            <h5 >Informações Adicionais</h5>
-            <p class="card-text" id="autor">Autor: </p>
-            <p class="card-text" id="responsavel">Analista Responsável: </p>
-            <p class="card-text" id="dataAbertura">Data de Abertura: </p>
-            <span style="display: flex; align-items: center;" class="card-text" id="status">
-              <p style="margin-right: 10px;">Status:</p>
-            </span>
-            <p class="card-text" id="equipamento">Equipamento: </p>
+            <h5 >Informações Adicionais <hr></h5>
+            <p class="card-text"  style="font-weight: bold;">AUTOR: </p>
+            <p id="autor"> </p>
+
+            <p class="card-text"  style="font-weight: bold;">ANALISTA RESPONSÁVEL: </p>
+            <p id="responsavel" > </p>
+
+            <p class="card-text"  style="font-weight: bold;">DATA DE ABERTURA: </p>
+            <p id="dataAbertura" > </p>
+
+            <!-- <span style="display: flex; align-items: center;" class="card-text" id="status"> -->
+              <p class="card-text" style="font-weight: bold;">STATUS:</p>
+              <p id="status" > </p>
+            <!-- </span> -->
+            <p class="card-text" id="equipamento" style="font-weight: bold;">EQUIPAMENTO: </p>
           </div>
         </div>
         <div class="container my-3 p-0">
-          <button type="button" class="btn btn-success responsavel_tecnologia" id="responsavel_tecnologia"
+          <button type="button" id="responsavel_tecnologia" class="btn btn-success"
             onclick="alterarChamado()">
             Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
           </button>
@@ -213,11 +231,13 @@
 
       </div>
     </div>
+    
+  <div >
     <div class="anexo">
-      <div class="row">
+      <div style="width: 1480px; ">
         <div class="card m-3">
           <div class="card-body">
-            <h5>Anexos:</h5>
+            <h5>ANEXOS:</h5>
             <div class="container mt-4" id="anexosContainer">
               <!-- Div pré-existente que exibirá os anexos -->
             </div>
@@ -225,6 +245,7 @@
         </div>
       </div>
     </div>
+  </div>
 
     <script src="sidebars/bootstrap.bundle.min.js"></script>
     <script>
