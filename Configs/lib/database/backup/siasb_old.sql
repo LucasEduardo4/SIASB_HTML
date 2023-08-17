@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 17/08/2023 às 16:09
+-- Tempo de geração: 17/08/2023 às 10:45
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.0.28
 
@@ -228,9 +228,6 @@ CREATE TABLE `tbligacaochamados_log` (
 --
 
 INSERT INTO `tbligacaochamados_log` (`IDChamado`, `CodChamado`) VALUES
-(1, 1),
-(1, 1),
-(6, 6),
 (1, 1),
 (1, 1),
 (6, 6);
