@@ -62,10 +62,12 @@ if ($result->num_rows > 0) {
           header('Location: sidebars/index.php');
           exit;
         }
+      }else{
+
+        
+        // Nome de usuário ou senha incorretos
+        header('Location: Login.html?error=error');
       }
-    
-      // Nome de usuário ou senha incorretos
-      header('Location: Login.html?error=error');
     
     }else {
         // header('Location: Login.html?error=true');
