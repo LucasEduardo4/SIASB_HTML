@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
+  header("Location: ../login.html");
   exit();
 }
 ?>
@@ -333,6 +333,9 @@ if ($imageData) {
       border-radius: 50%;
       border: solid 1px black;
       display: none;
+    }
+    #icone{
+      clip-path: circle(farthest-side);
     }
   </style>
 

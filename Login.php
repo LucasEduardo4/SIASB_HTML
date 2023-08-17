@@ -65,7 +65,7 @@ if ($result->num_rows > 0) {
       }
     
       // Nome de usuário ou senha incorretos
-      header('Location: Login.html?error=true');
+      header('Location: Login.html?error=error');
     
     }else {
         // header('Location: Login.html?error=true');

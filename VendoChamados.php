@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql .= " AND IDChamado = '$codigoSolicitacao'";
         }
 
-        if ($dataOption == 1 || $dataOption == 3) {
+        if ($dataOption == 1) {
             if ($dataDe == '' || $dataAte == '') {
                 $dataDeFormatted = '2023-01-01';
                 $dataAteFormatted = '2023-01-01';

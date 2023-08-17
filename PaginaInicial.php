@@ -63,18 +63,35 @@ $conn = new mysqli('localhost', 'root', '', 'siasb');
 $_SESSION["nome"] = "Gabriel Fernandes";
 //criar um select com o banco de dados, para verificar se o IDPessoa é igual ao IDUsuario
 
-$sql = 'SET @ID = (SELECT IDPessoa FROM tbusuario WHERE nome = "' . $_SESSION["username"] . '")
-        SELECT nomeCompleto from tbpessoa where IDPessoa = @ID';
+// $sql = 'SET @ID = (SELECT IDUsuario FROM tbusuario WHERE nome = "' . $_SESSION["username"] . '");
+//         SELECT nomeCompleto from tbpessoa where IDPessoa = @ID';
+$sql = "SELECT nomeCompleto 
+        FROM TBUSUARIO u
+        JOIN TBPessoa p ON p.IDPessoa = u.IDUsuario
+        WHERE nome = ?";
 
-$result = $conn->query($sql);
-$row = mysqli_fetch_assoc($result);
-while ($row = $result->fetch_assoc()) {
-    $nome = $row["nomeCompleto"];
+// Preparar o statement
+$stmt = $conn->prepare($sql);
+
+// Vincular o parâmetro com o valor
+$username = $_SESSION["username"];
+$stmt->bind_param("s", $username);
+
+// Executar a consulta
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result && $result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $nomeUser = $row["nomeCompleto"];
+    $_SESSION['nomeUsuario'] = $nomeUser;
+} else {
+    echo "Nenhum resultado encontrado.";
 }
+
+// Fechar o statement
+$stmt->close();
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html>
@@ -85,9 +102,6 @@ while ($row = $result->fetch_assoc()) {
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-
 
     <style>
         /* Definir uma fonte mais elegante */
@@ -458,7 +472,7 @@ while ($row = $result->fetch_assoc()) {
 
         <header>
             <h1>Bem-vindo,
-                <?php echo $_SESSION['username']; ?>!
+                <?php echo $_SESSION['nomeUsuario']; ?>!
             </h1>
             <p>Aqui está o conteúdo restrito do painel de controle.</p>
 
@@ -470,7 +484,7 @@ while ($row = $result->fetch_assoc()) {
 
         <div class="welcome-message">
             <h2>Olá,
-                <?php echo $_SESSION['username']; ?> !
+                <?php echo $_SESSION['nomeUsuario']; ?> !
             </h2>
             <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
         </div>

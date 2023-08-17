@@ -132,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario
                 LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario    
                 LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID
+                LEFT JOIN TBPessoa p on c.autor = p.idpessoa
                 WHERE 1=1";
 
         if (!empty($filtroDataAbertura)) {
@@ -168,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if (!empty($filtroTipoEquipamento)) {
-            $sql .= " AND equipamento = '$filtroTipoEquipamento'";
+            $sql .= " AND tipo = '$filtroTipoEquipamento'";
         }
 
         if (!empty($filtroSetor)) {
@@ -190,7 +191,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql .= ' limit 10';
         }
         // echo $sql;
+        // echo '<br>';
         // $resultado = $conn->query($sql);
+        /*
+        SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, c.categoria FROM TBChamados c 
+        LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus 
+        LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario 
+        LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario 
+        LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID WHERE 1=1 AND setor = '2' limit 10
+        */
 
         $dados = array();
         $stmt = $conn->prepare($sql);
