@@ -25,6 +25,8 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
+            padding-top: 100px;
+
         }
 
         /* Header Styles */
@@ -36,6 +38,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            
         }
 
         .back-button {
@@ -47,24 +50,26 @@
         }
 
         .title {
-            margin: 0;
-            padding-right: 28%;
-            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+            /* margin: auto; */
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             padding-top: 30px; 
-            font-size: 45px;
+            padding-bottom: 30px;
+            padding-right: 950px;
+            font-size: 26px;
             color: #000000;
+            
         }
 
         /* Main Content Styles */
         .main-content {
             max-width: 1000px;
-            margin: 40px auto;
+            margin: auto;
             padding: 50px;
             padding-left: 100px;
             padding-right: 100px;
-            /* background-color: #f0f0f0; */
+            background-color: #b6b5b51a; 
             border-radius: 15px;
-            box-shadow:  10px 11px rgba(0, 0, 0, 0.1);
+            box-shadow:  10px 11px rgba(185, 185, 185, 0.815);
 
             text-align: center; /* Center text in the main content */
         }
@@ -183,7 +188,7 @@
         <h1 class="title">CONFIGURAÇÕES DE STATUS</h1>
     </header>
     
-<main style="margin-left:450px" class="main-content">
+<main class="main-content">
         <form class="add-status-form">
             <label style="font-size: 13px;font-weight: bold;" for="novoStatus">ADICIONAR STATUS:</label>
             <input type="text" name="novoStatus" id="novoStatus" required>

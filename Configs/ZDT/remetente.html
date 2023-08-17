@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+        .sidebar_icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .circle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+        }
+</style>
+
+<body>
+    <div class="sidebar_icon" onclick="abrirNotificacao(event)" ;>
+        <img src="../../Icones Site\NOTIFICACAO.png" id="notificationSign" alt="saaeb barretos" width="40">
+        <div class="circle"></div>
+    </div>
+    <button onclick="connection('funcaoTeste', 'destino.php')">ENVIAR</button>
+    <form action="">
+        <input type="text" required>
+        <input type="text" required>
+        <input type="button" value="enviar dados" name="" id="">
+    </form>
+</body>
+<script>
+    function connection(data, file) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", file, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                window.parent.foo(); //AQUI DEU CERTO.........
+
+            }
+        }
+        xhr.send(data);
+    }
+</script>
+
+</html>

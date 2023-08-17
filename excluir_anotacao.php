@@ -39,4 +39,7 @@ if (isset($_POST["id"])) {
 
 // Fechar a conexão com o banco de dados
 $conn->close();
+
+
 ?>
+

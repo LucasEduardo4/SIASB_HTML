@@ -1,5 +1,69 @@
+
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    
+    exit();
+}
+?>
+
+
+<?php
+// Conectar ao banco de dados
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar a conexão
+if ($conn->connect_error) {
+    die("Conexão falhou: " . $conn->connect_error);
+}
+
+
+	$usuario_ = $_SESSION['username'];
+        
+        $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $usuario_);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Encontrou resultados
+            $row = $result->fetch_assoc();
+            $Meu_ID = $row["IDUsuario"];
+        }
+
+        // $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbusuario  WHERE IDUsuario = $Meu_ID";
+
+$sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $Meu_ID";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $imageData = $row['icone']; // Use 'icone' em vez de 'imagem_coluna'
+} else {
+    echo "Imagem não encontrada.";
+    exit;
+}
+
+$conn->close();
+
+// header("Content-Type: text/plain");
+// echo base64_encode($imageData);
+
+
+?>
+
+
+
+
+
+<?php
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['ChamadoID'])){
@@ -29,6 +93,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $descricao = $row["descricao"];
                     $dataAbertura = $row["dataAbertura"];
                     $status_chamado = $row["status_chamado"];
+                    $status_chamado = "<p class='statusColors $status_chamado'>$status_chamado</p>";
                     $responsavel = $row["responsavel"];
                     $autor = $row["autor"];
                     $equipamento = $row["equipamento"];
@@ -55,24 +120,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $resultArray['responsavel'] = $responsavel;
                     $resultArray['autor'] = $autor;
                     $resultArray['equipamento'] = $equipamento;
-                    // $resultArray['imagem'] = $imagem;
                     $resultArray['imagem'] = base64_encode($imagem);
                     $resultArray['categoria'] = $categoria;
-                    // $resultArray['ligacaoChamadoID'] = $ligacaoChamadoID;
 
-                    // if (!empty($imagem) && file_exists($imagem)) {
-                    //     // Lê o conteúdo do arquivo de imagem
-                    //     $imagemConteudo = file_get_contents($imagem);
-                    
-                    //     // Converte o conteúdo da imagem em base64
-                    //     $imagemBase64 = base64_encode($imagemConteudo);
-                    
-                    //     // Adiciona a imagem ao array de dados
-                    //     $dados['imagem'] = $imagemBase64;
-                    // } else {
-                    //     // Caso não haja imagem, atribui um valor vazio à chave 'imagem'
-                    //     $resultArray['imagem'] = '<br>Nenhuma imagem a ser exibida<br>';
-                    // }
                 }
             }
         }
@@ -114,12 +164,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
         
-        $resultArray['logs'] = $resultLogs;
-            
+        $resultArray['logs'] = $resultLogs;     
             echo json_encode($resultArray);
-            
-    
-        
     }
 }
 

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Cadastro</title>
   <link rel="stylesheet" href="../../Inicial.css">
-  <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192"/>
+  <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192" />
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup Sweet alert-->
   <script src='./../../flowSite/verificaSessao.js'></script>
@@ -14,10 +15,11 @@
 
 
 </head>
+
 <body onload="init()">
   <div class="container">
     <h1>Cadastro Equipamento</h1>
-    
+
     <form>
       <div class="form-group">
         <label for="stiID">Sti_ID:</label>
@@ -35,7 +37,8 @@
         <label for="tipo">Tipo:</label>
         <select id="selectTipos" name="tipo">
           <option value="" disabled selected hidden>Escolha uma das opções</option>
-          <option value="">Aqui preciso de um select no banco de dados, para todos os tipos de equipamentos possiveis</option>
+          <option value="">Aqui preciso de um select no banco de dados, para todos os tipos de equipamentos possiveis
+          </option>
         </select>
       </div>
       <div class="form-group">
@@ -54,93 +57,176 @@
     <div class="form-group">
       <button onclick="submitForm()">Cadastrar</button>
     </div>
-</div>
-<script>
-  var selectPessoas = document.getElementById("selectPessoas");
+  </div>
+  <script>
+    var selectPessoas = document.getElementById("selectPessoas");
+    //URL = Equipamento.html?equip={"sti_id":100,"descricao":"eqpm.%20teste","ip":null,"tipo":"Sem%20Cadastro","nomeCompleto":"user","secao":1}
 
-  function init(){
-    SelectsTipo_Secao();
-  }
-
-  function SelectsTipo_Secao(){
-    var data = 'Select_Tipo_Secao=' + 1;
-    connection("POST", data, "selects")
-  }
-  
-  function selectPerson(){
-    var selectSecoes = document.getElementById("selectSecoes");
-    var secao = selectSecoes.options[selectSecoes.selectedIndex].value;
-    var data = 'Select_Person_on_secao=' + secao;
-    connection("POST", data, selectPessoas)
-    // console.log("Entrou aqui");
-
-  }
-  
-  function submitForm(){
-  var stiID = document.getElementById("stiID").value;
-  var descricao = document.getElementById("descricao").value;
-  var ip = document.getElementById("ip").value;
-  var tipo = document.getElementById("selectTipos").value;
-  var secao = document.getElementById("selectSecoes").value;
-  var usuario = document.getElementById("selectPessoas").value;
-  var data = 'submitForm=1'+ '&stiID=' + encodeURIComponent(stiID) + '&descricao=' + encodeURIComponent(descricao) + '&ip=' + encodeURIComponent(ip) + '&tipo=' + encodeURIComponent(tipo) + '&secao=' + encodeURIComponent(secao) + '&usuario=' + encodeURIComponent(usuario);
-  connection("POST", data, "cadastro")
-}
-
-  function connection(method, data, output){
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, "Equipamento.php", true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        if(output == "selects"){
-          unParse(xhr.responseText);
-          // console.log(xhr.responseText);
-        }else
-        if(output == selectPessoas){
-          // console.log("Entrou aqui");
-          output.innerHTML = xhr.responseText;
-        }else
-        if(output == "cadastro"){
-          Swal.fire({
-                icon: 'success',
-                title: 'Equipamento inserido com sucesso',
-                showConfirmButton: false,
-                timer: 3000
-              }).then(() => {
-                window.location.reload();
-              });
+    function handleURL() {
+      var url = window.location.href;
+      console.log(url);
+      var queryString = url.split("?")[1];
+      var equip = queryString.split("=")[1];
+      var equipamento = JSON.parse(decodeURIComponent(equip));
+      console.log(equipamento);
+      document.getElementById("stiID").value = equipamento.sti_id;
+      document.getElementById("descricao").value = equipamento.descricao;
+      document.getElementById("ip").value = equipamento.ip;
+      var secao = document.getElementById("selectSecoes");
+      secao.selectedIndex = 1;
+      console.log(equipamento.IDPessoa);
+      setTimeout(function () {
+        document.getElementById("selectPessoas").value = equipamento.IDPessoa;
+        
+        var selectTipos = document.getElementById("selectTipos");
+        for(let i in selectTipos){
+          if(selectTipos[i].value == 1){
+            selectTipos[i].disabled=true;
+            selectTipos[i].hidden = true;
+            break;
+          }
         }
-      } 
+      }, 100);
+      selectPerson();
+      
+
     }
-    xhr.send(data);
-  }
-  
-  function unParse(data){
+    function init() {
+      SelectsTipo_Secao();
+      setTimeout(function () {
+        handleURL();
+      }, 200);
+
+    }
+
+    function SelectsTipo_Secao() {
+      var data = 'Select_Tipo_Secao=' + 1;
+      connection("POST", data, "selects")
+    }
+
+    function selectPerson() {
+      var selectSecoes = document.getElementById("selectSecoes");
+      var secao = selectSecoes.options[selectSecoes.selectedIndex].value;
+      var data = 'Select_Person_on_secao=' + secao;
+      connection("POST", data, selectPessoas)
+      // console.log("Entrou aqui");
+    }
+
+    function submitForm() {
+      var stiID = document.getElementById("stiID").value;
+      var descricao = document.getElementById("descricao").value;
+      var ip = document.getElementById("ip").value;
+      var tipo = document.getElementById("selectTipos").value;
+      var secao = document.getElementById("selectSecoes").value;
+      var usuario = document.getElementById("selectPessoas").value;
+
+      let verificacao = verificarCampos(stiID, descricao, ip, tipo, secao, usuario);
+      if (verificacao == true) {
+        var data = 'submitForm=1' + '&stiID=' + encodeURIComponent(stiID) + '&descricao=' + encodeURIComponent(descricao) + '&ip=' + encodeURIComponent(ip) + '&tipo=' + encodeURIComponent(tipo) + '&secao=' + encodeURIComponent(secao) + '&usuario=' + encodeURIComponent(usuario);
+        connection("POST", data, "cadastro")
+        window.location.href = "../Consultas/Equipamentos.html";
+      }
+
+      function verificarCampos(stiID, descricao, ip, tipo, secao, usuario) {
+       var camposFaltantes = [];
+
+        if (stiID == "") {
+          camposFaltantes.push(document.getElementById("stiID"));
+        }
+        if (descricao == "") {
+          camposFaltantes.push(document.getElementById("descricao"));
+        }
+        if (tipo == "") {
+          camposFaltantes.push(document.getElementById("selectTipos"));
+        }
+        if (secao == "") {
+          camposFaltantes.push(document.getElementById("selectSecoes"));
+        }
+        if (usuario == "") {
+          camposFaltantes.push(document.getElementById("selectPessoas"));
+        }
+
+        if (camposFaltantes.length > 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Preencha todos os campos',
+            text: `Os campos faltantes estão destacados em vermelho`,
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          camposFaltantes.forEach(function (campo) {
+            campo.style.borderColor = 'red';
+            campo.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+            campo.style.transition = 'background-color 3s';
+            setTimeout(function () {
+              campo.style.backgroundColor = 'white'; // Ou qualquer cor de fundo que você deseja
+            }, 3000);
+          });
+
+          return false; // Impede o envio do formulário
+        }
+
+        return true; // Todos os campos estão preenchidos
+      }
+
+    }
+
+    function connection(method, data, output) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, "Equipamento.php", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if (output == "selects") {
+            unParse(xhr.responseText);
+            // console.log(xhr.responseText);
+          } else
+            if (output == selectPessoas) {
+              // console.log("Entrou aqui");
+              output.innerHTML = xhr.responseText;
+            } else
+              if (output == "cadastro") {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Equipamento inserido com sucesso',
+                  showConfirmButton: false,
+                  timer: 3000
+                }).then(() => {
+                  window.location.reload();
+                });
+              }
+        }
+      }
+      xhr.send(data);
+    }
+
+    function unParse(data) {
       var dadosObjeto = JSON.parse(data)
       var tipos = dadosObjeto.tipos;
       var secoes = dadosObjeto.secoes;
       let selectTipos = document.getElementById("selectTipos");
       let selectSecoes = document.getElementById("selectSecoes");
-      var i=0;
+      var i = 0;
 
       selectTipos.innerHTML = '<option value="" disabled selected hidden>-------------------------</option>'
       selectSecoes.innerHTML = '<option value="" disabled selected hidden>-------------------------</option>'
 
-      console.log(tipos);
-      console.log(secoes);
+      // console.log(tipos);
+      // console.log(secoes);
       //colocar a condição dos innerhtml
 
       for (let key in tipos) {
-      let value = tipos[key];
-      selectTipos.innerHTML += `<option value="${key}">${value}</option>`;
+        let value = tipos[key];
+        selectTipos.innerHTML += `<option value="${key}">${value}</option>`;
       }
       for (let key in secoes) {
-      let value = secoes[key];
-      selectSecoes.innerHTML += `<option value="${key}">${value}</option>`;
+        let value = secoes[key];
+        selectSecoes.innerHTML += `<option value="${key}">${value}</option>`;
       }
     }
 
-</script>
+  </script>
 </body>
+
 </html>

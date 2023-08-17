@@ -7,8 +7,6 @@ if (!isset($_SESSION['username'])) {
 }
 ?>
 
-
-
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagem'])) {
     $imagem = $_FILES['imagem'];
@@ -21,73 +19,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagem'])) {
         exit;
     }
 
-    // Salvar a imagem em algum diretório no servidor
-    $uploadDir = 'uploads/';
-    $uploadFile = $uploadDir . basename($imagem['name']);
-    if (move_uploaded_file($imagem['tmp_name'], $uploadFile)) {
-        // Conexão com o banco de dados (substitua pelas suas informações)
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "siasb";
+    // Read image data as binary
+    $imageData = file_get_contents($imagem['tmp_name']);
 
-        $conn = new mysqli($servername, $username, $password, $dbname);
+    // Conexão com o banco de dados (substitua pelas suas informações)
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "siasb";
 
-        // Verificar conexão
-        if ($conn->connect_error) {
-            die("Conexão com o banco de dados falhou: " . $conn->connect_error);
-        }
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-
-
-
-        // =================================================== REALIZANDO TESTES =================================================
-        $usuario_ = $_SESSION['username'];
-        // Substitua pelo ID do usuário que deseja atualizar
-        // $userID = $usuario_; 
-
-        $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $usuario_);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            // Encontrou resultados
-            $row = $result->fetch_assoc();
-            $Meu_ID = $row["IDUsuario"];
-        }
-        // =================================================== REALIZANDO TESTES =================================================
-
-
-
-
-
-        // Verificar se o registro do usuário já existe na tabela
-        // Supondo que você tenha uma variável com o ID do usuário
-        $userID = $Meu_ID; // Substitua pelo ID do usuário que deseja atualizar
-
-        $sqlCheckUser = "SELECT IDUsuario FROM tbusuario WHERE IDUsuario = $userID";
-        $resultCheckUser = $conn->query($sqlCheckUser);
-
-        if ($resultCheckUser->num_rows > 0) {
-            // Registro do usuário já existe, então vamos atualizar o caminho da imagem (coluna "icone")
-            $imageUrl = $uploadFile;
-            $sqlUpdate = "UPDATE tbusuario SET icone = '$imageUrl' WHERE IDUsuario = $userID";
-
-            if ($conn->query($sqlUpdate) === TRUE) {
-                echo json_encode(['success' => true, 'imageUrl' => $imageUrl]);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Erro ao atualizar o banco de dados: ' . $conn->error]);
-            }
-        } else {
-            echo json_encode(['success' => false, 'message' => 'ID do usuário não encontrado na tabela tbusuario.']);
-        }
-
-        $conn->close();
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Erro ao fazer o upload da imagem.']);
+    // Verificar conexão
+    if ($conn->connect_error) {
+        die("Conexão com o banco de dados falhou: " . $conn->connect_error);
     }
+
+    // =================================================== REALIZANDO TESTES =================================================
+    $usuario_ = $_SESSION['username'];
+    $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $usuario_);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // Encontrou resultados
+        $row = $result->fetch_assoc();
+        $Meu_ID = $row["IDUsuario"];
+    }
+    // =================================================== REALIZANDO TESTES =================================================
+
+    // Verificar se o registro do usuário já existe na tabela
+    $userID = $Meu_ID;
+    
+    $sqlCheckUser = "SELECT IDUsuario FROM tbusuario WHERE IDUsuario = ?";
+    $stmtCheckUser = $conn->prepare($sqlCheckUser);
+    $stmtCheckUser->bind_param("i", $userID);
+    $stmtCheckUser->execute();
+    $resultCheckUser = $stmtCheckUser->get_result();
+
+    if ($resultCheckUser->num_rows > 0) {
+        // Registro do usuário já existe, então vamos atualizar a imagem (coluna "icone")
+        $sqlUpdate = "UPDATE tbusuario SET icone = ? WHERE IDUsuario = ?";
+        $stmtUpdate = $conn->prepare($sqlUpdate);
+        $stmtUpdate->bind_param("si", $imageData, $userID);
+        
+        if ($stmtUpdate->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Imagem atualizada com sucesso.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Erro ao atualizar o banco de dados: ' . $conn->error]);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'ID do usuário não encontrado na tabela tbusuario.']);
+    }
+
+    $conn->close();
 } else {
     echo json_encode(['success' => false, 'message' => 'Requisição inválida.']);
 }

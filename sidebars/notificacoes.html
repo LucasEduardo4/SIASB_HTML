@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <title>Notificações</title>
+    <style>
+        html {
+            background-color: rgba(0, 0, 0, 0.01);
+
+        }
+
+        body {
+            display: flex;
+            justify-content: space-between;
+            margin: auto;
+            margin-right: 30px;
+            margin-top: 0px;
+            width: 400px;
+            border: solid 1px black;
+            border-radius: 20px;
+            height: 400px;
+        }
+
+        .navBar {
+            border: solid 1px black;
+            border-radius: 10px;
+            box-shadow: 2px 3px 1px black;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        .navBar.selected {
+            background-color: #e6e6e6;
+        }
+
+        #data {
+            font-size: 12px;
+            color: #808080;
+            margin-bottom: 0px;
+            border-bottom: none;
+            width: fit-content;
+            border-radius: 5px;
+        }
+
+        .mensagem {
+            border-bottom: solid 1px black;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+
+        }
+
+        .opt {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body id="body" onload="init()">
+    <div class="container" id="toplevel">
+        <div class="row text-center">
+            <div class="col-12">
+                <h2>Notificações</h2>
+
+            </div>
+            <hr>
+        </div>
+        <div class="row text-center">
+            <div class="col-6">
+                <p id="novas" class="navBar selected" onclick="verificaClique(1)">Novas</p>
+            </div>
+            <div class="col-6">
+                <p id="historico" class="navBar" onclick="verificaClique(2)">Histórico</p>
+            </div>
+            <hr>
+        </div>
+        <div class="container" id="novasMensagens"></div>
+        <!-- Dados inseridos dinamicamente  -->
+        <div class="container" id="historicoMensagens">
+            <!-- Dados inseridos dinamicamente  -->
+        </div>
+    </div>
+    <script>
+        function init() {
+            connection('verifyUser=', 1, 'notificacoes.php');
+
+        }
+
+        function clicouNotificacao(idNotificacao) {
+            connection(idNotificacao, 3, 'index.php')
+            connection('clicouNotificacao=' + idNotificacao, 2, 'notificacoes.php');//atualiza o status da notificação
+        }
+
+        function unParse(data, output) {
+            var dadosObjeto = JSON.parse(data);
+            var novasMensagens = document.getElementById("novasMensagens");
+            var historicoMensagens = document.getElementById("historicoMensagens");
+            for (var i = 0; i < dadosObjeto.length; i++) {
+                if(dadosObjeto[i].excluido == 1){
+                    console.log('Não exibido:' + dadosObjeto[i].IDNotificacao)
+                }else
+                if (dadosObjeto[i].visualizado == 1) {
+                    historicoMensagens.innerHTML = historicoMensagens.innerHTML + `
+                    <div class="row">
+                        <p id='data' style='display:block;'>
+                            ${getDate(dadosObjeto[i].data, 'novaMSG/dia')} - ${getDate(dadosObjeto[i].data, 'novaMSG/hora')}
+                        </p>
+                        <div class="mensagem-container" style="display: flex; align-items: center;">
+                            <p id='${dadosObjeto[i].IDNotificacao}' onclick="clicouNotificacao(${dadosObjeto[i].IDNotificacao})" class='mensagem opt' style='width: 340px; margin-right: 10px;'>
+                                ${mensagemGenerica(dadosObjeto[i].status, dadosObjeto[i].chamadoReferencia)} 
+                            </p>
+                            <i onclick='excluiNotificacao(${dadosObjeto[i].IDNotificacao})' title='Excluir' class='bi bi-trash opt'></i>
+                        </div>
+                    </div>`
+                } else
+                    novasMensagens.innerHTML = novasMensagens.innerHTML + `
+                    <div class="row opt" onclick="clicouNotificacao(${dadosObjeto[i].IDNotificacao})">
+                        <p id='data'>
+                            ${getDate(dadosObjeto[i].data, 'novaMSG/dia')}
+                        </p>
+                        <p id='${dadosObjeto[i].IDNotificacao}' class='mensagem'>
+                            ${getDate(dadosObjeto[i].data, 'novaMSG/hora')} ${mensagemGenerica(dadosObjeto[i].status, dadosObjeto[i].chamadoReferencia)}
+                        </p>
+                    </div>`
+            }
+        }
+
+        function excluiNotificacao(id) {
+            var data = 'excluiNotificacao=' + id;
+            connection(data, 2, 'notificacoes.php');
+            verificaClique(2)
+        }
+
+        function getDate(date, saida) {
+            var data = new Date(date);
+            var hoje = new Date();
+
+            var dia = data.getDate();
+            var mes = data.getMonth();
+            var ano = data.getFullYear();
+            var hora = data.getHours();
+            var minuto = data.getMinutes();
+            var segundo = data.getSeconds();
+            var dataFormatada = dia + '/' + (mes++) + '/' + ano + ' ' + hora + ':' + minuto + ':' + segundo;
+            if (saida == 'novaMSG/dia') {
+                if (mesmoDia(data, hoje)) {
+                    return 'Hoje';
+                } else if (mesmoDia(data, new Date(hoje.getTime() - 24 * 60 * 60 * 1000))) {
+                    return 'Ontem';
+                } else {
+                    return dia + '/' + (mes++) + '/' + ano;
+                }
+            } else
+                if (saida == 'novaMSG/hora') {
+                    return formatTime(hora, minuto);
+                } else
+                    if (saida == 'historicoMSG/dia') {
+                        return dia + '/' + (mes++) + '/' + ano;
+                    } else
+                        if (saida == 'historicoMSG/hora') {
+                            return formatTime(hora, minuto);
+                        }
+            function mesmoDia(date1, date2) {
+                return date1.getFullYear() === date2.getFullYear() &&
+                    date1.getMonth() === date2.getMonth() &&
+                    date1.getDate() === date2.getDate();
+            }
+            function formatTime(hours, minutes) {
+                return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+            }
+        }
+
+        function mensagemGenerica(status, chamado) {
+            if (status == 1 || status == 2 || status == 3) {
+                return `Houve Alteração no Chamado ${chamado}`;
+            } else if (status == 4) {
+                return `O chamado nº${chamado} foi finalizado`;
+            }
+        }
+
+        function connection(data, output, file) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", file, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (output == 1) {
+                        unParse(xhr.responseText);
+                        window.parent.verificaNovaNotificacao(verificaNova())
+                    } else
+                        if (output == 2) {
+                            window.location.reload();
+                        } else
+                            if (output == 3) {
+                                window.parent.foo(data, verificaNova());
+                            }
+                }
+            }
+            xhr.send(data);
+        }
+
+        function verificaNova() {
+            var novasMensagens = document.getElementById("novasMensagens");
+            if (novasMensagens.textContent != '') {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        }
+        verificaClique(1);
+        function verificaClique(item) {
+            var novas = document.getElementById("novas");
+            var historico = document.getElementById("historico");
+            var novasMensagens = document.getElementById("novasMensagens");
+            var historicoMensagens = document.getElementById("historicoMensagens");
+
+            if (item == 1) {
+                novas.classList.add("selected")
+                historico.classList.remove("selected")
+                historicoMensagens.style.display = "none";
+                novasMensagens.style.display = "block";
+
+            } else {
+                novas.classList.remove("selected")
+                historico.classList.add("selected")
+                historicoMensagens.style.display = "block";
+                novasMensagens.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>

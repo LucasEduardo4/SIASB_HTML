@@ -128,14 +128,31 @@
             background-color: #004235b6;
             border-radius: 3px;
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+        }
+
+        .FaixaFormResults {
+            background-color: white;
+            color: black;
+            border-radius: 3px;
+            display: flex;
+            margin-bottom: 5px;
+            height: 40px;
+            border-bottom: solid 1px grey;
+            /* margin-top: 20px; */
         }
 
         /* VOU UTILIZAR PARA A PARTE DE CIMA E PARA PARTE DE BAIXO */
         .CamposResultados {
             width: 100%;
             display: inline-block;
-            color: #ffffff;
+            color: white;
+        }
+
+        .cells {
+            display: inline-block;
+            color: black;
+            width: 100%;
         }
 
         #temp {
@@ -165,14 +182,46 @@
         a {
             text-decoration: none;
         }
+
+        .cells p {
+            padding-top: 2px;
+            margin-top: 6px;
+        }
+
+        /* Css para as cores, baseando no status */
+        .statusColors {
+            width: 80px;
+            padding: 4px;
+            color: white;
+            border-radius: 3px;
+            text-align: center;
+            text-shadow: 0px 0px 2px black;
+        }
+
+        .Aberto {
+            background-color: #2ecc71;
+        }
+
+        .Andamento {
+            background-color: #7241dcf6;
+        }
+
+        .Pendente {
+            background-color: #e67e22;
+        }
+
+        .Fechado {
+            background-color: #e74c3c;
+        }
     </style>
 </head>
 
 <body onload="init()">
     <div class="container">
         <div style="border-radius: 5px;" class="div-superior">
-            <div style="border-radius: 10px;" class="logo"> 
-                <img src="..\SIASB_HTML\Icones Site\TELEFONE.png"> </div>
+            <div style="border-radius: 10px;" class="logo">
+                <img src="..\SIASB_HTML\Icones Site\TELEFONE.png">
+            </div>
             <h2 style="color: #004235b6; font-size: 21px;">ABRIR CHAMADO</h2>
             <button onclick="window.location.href = 'AbrindoChamado.html'">
                 Novo Chamado
@@ -203,25 +252,24 @@
 
             <div class="MeusCampos">
                 <label for="codigoSolicitacao">Código:</label>
-                <input type="text" id="codigoSolicitacao">
+                <input type="text" id="codigoSolicitacao" onchange="alteraData()">
             </div>
-            <div class="MeusCampos">
+            <div class=" MeusCampos">
                 <label for="data">Data</label>
-                <select class="form-select" name="data" id="data" onchange="ateHoje()">
+                <select class="form-select" name="data" id="data" onchange="alteraData()">
                     <option value="" selected hidden>Selecione a opção</option>
                     <option value="1">Abertura</option>
                     <option value="2">Fechamento</option>
-                    <option value="3">Teste</option>
                 </select>
 
             </div>
             <div class="MeusCampos datas">
                 <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="text" id="dataDe" class="datas" placeholder="De:" readonly>
+                <input type="text" id="dataDe" class="datas" placeholder="De:" readonly required>
             </div>
             <div class="MeusCampos datas">
                 <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="text" id="dataAte" class="datas" placeholder="Até:" readonly>
+                <input type="text" id="dataAte" class="datas" placeholder="Até:" readonly required>
 
             </div>
             <div class="MeusCampos">
@@ -242,7 +290,7 @@
     </form>
 
     <div class="resultados" id="resultadosContainer" style="display: none;">
-        <div class="FaixaForm">
+        <div class="FaixaForm" style="color: white;">
             <div class="CamposResultados">
                 <p style="padding-left: 10px;"> ID da Solicitação </p>
             </div>
@@ -276,28 +324,35 @@
                     selectInicial();
                 }
 
-                function ateHoje() {
+                function alteraData() {
                     var selectData = document.getElementById("data");
                     var dataOption = selectData.options[selectData.selectedIndex].value;
-                    if (dataOption == 3) {
+                    var currentDate = new Date();
+                    var day = currentDate.getDate();
+                    var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
+                    var year = currentDate.getFullYear();
+                    var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+                    
+
+                    // Formatar para "dd/mm/yyyy"
+                    if (dataOption == 2) {
                         dataDe.value = '01/01/2023';
-                        var currentDate = new Date();
-                        var day = currentDate.getDate();
-                        var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
-                        var year = currentDate.getFullYear();
-
-                        // Formatar para "dd/mm/yyyy"
-                        var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
-
-                        dataAte.value = dataAtual;
-                    }else
-                    if(dataOption == 2){
                         document.getElementById("status").value = 4;
+                        dataAte.value = dataAtual
                     }
                     else
-                    if(dataOption == 1){
+                    if (dataOption == 1) {
+                        dataDe.value = '01/01/2023';
                         document.getElementById("status").value = 5;
+                        dataAte.value = dataAtual
+                    }else{
+                        dataDe.value = '01/01/2023';
+                        dataAte.value = dataAtual
+                        document.getElementById("status").value = 5;
+                        data.value=1;
                     }
+
+
                 }
 
                 filtroForm.addEventListener('submit', function (event) {
