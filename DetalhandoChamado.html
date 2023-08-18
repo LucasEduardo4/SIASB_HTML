@@ -1,4 +1,3 @@
-
 <!-- Voltar no DetalhandoChamado.php (falta fazer os joins pra substituir os ID's pelos nomes) -->
 <!DOCTYPE html>
 <html lang="en">
@@ -12,13 +11,13 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <style>
-      body {
-    margin: 0;
-    display: flex;
-    background-color: #f0f0f0;
-  }
+    body {
+      margin: 0;
+      display: flex;
+      background-color: #f0f0f0;
+    }
 
-/* 
+    /* 
   .overlay {
     position: absolute;
     top: 0;
@@ -30,19 +29,19 @@
     justify-content: center;
   } */
 
-  .floating-box {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-    max-width: 86%; 
-    margin-left: 90px;
-     
+    .floating-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      max-width: 86%;
+      margin-left: 90px;
 
-  }
 
-    .responsavel_tecnologia {
+    }
+
+    #responsavel_tecnologia {
       display: none;
     }
 
@@ -59,51 +58,50 @@
       max-width: 100%;
     }
 
-    .container_card
-    {
+    .container_card {
       background-color: brown;
-      border: 3px; border-color: black; 
-      background-color: rgb(255, 255, 255); 
-      padding-top: 40px; 
-      margin-top: 10px; 
-      border-radius: 8px; 
-      margin-bottom: 20px; 
+      border: 3px;
+      border-color: black;
+      background-color: rgb(255, 255, 255);
+      padding-top: 40px;
+      margin-top: 10px;
+      border-radius: 8px;
+      margin-bottom: 20px;
       padding-bottom: 100px;
       padding-left: 30px;
       padding-right: 10px;
       position: relative;
-     
-      
+
+
     }
 
     .superior {
-        
-        background-color: rgba(64, 163, 132, 0.144);
-        padding-top:40px; 
-        padding-bottom: 50px;
-        position: absolute;
-        width: 100%;
-        
-       
-      }
 
-      .chamados {
-
-        width: 98%;
-        margin-top:7%;
-
-      }
-
-      .anexo
-      {
-        width: 64%;
-        padding-left: 0.6%;
-      }
-
-      
+      background-color: rgba(64, 163, 132, 0.144);
+      padding-top: 40px;
+      padding-bottom: 50px;
+      position: absolute;
+      width: 100%;
 
 
-      .statusColors {
+    }
+
+    .chamados {
+
+      width: 98%;
+      margin-top: 7%;
+
+    }
+
+    .anexo {
+      width: 64%;
+      padding-left: 0.6%;
+    }
+
+
+
+
+    .statusColors {
       width: 100px;
       padding: 4px;
       color: white;
@@ -126,15 +124,16 @@
 
     .Fechado {
       background-color: #e74c3c;
-      
+
+    }
+    #iconeAutor{
+      clip-path: circle(farthest-side);
     }
 
     /* .col-md-4 {
 
 
     } */
-
-
   </style>
 
   <title>Detalhando Chamado</title>
@@ -143,14 +142,14 @@
 <body style="background-color: aliceblue;">
   <!-- <a href="javascript:history.back();" class="returnButton"> -->
   <a href="/SIASB_HTML/VendoChamados.html" style="z-index: 10" class="returnButton">
-    <h1><i  class="bi-arrow-left-circle bi-lg"></i></h1>
+    <h1><i class="bi-arrow-left-circle bi-lg"></i></h1>
   </a>
 
 
   <div class="superior">
     <div class="floating-box">
-      <h4 id="numChamado" id="dataAbertura" style="z-index: 10; font-size: 20px; ">CHAMADO:   </h4>
-      <!-- <p style="color: rgb(100, 100, 100); font-weight: 600;" id="dataAbertura" > DATA DE ABERTURA: </p> -->
+      <h4 id="numChamado" id="dataAbertura" style="z-index: 10; font-size: 20px; ">CHAMADO: </h4>
+      <!-- <p style="color: rgb(100, 100, 100); font-weight: 600;" id="dataAbertura1" > DATA DE ABERTURA: </p> -->
 
     </div>
   </div>
@@ -177,15 +176,15 @@
   xhr.send();
   </script> -->
 
-  
+
   <div class="chamados">
     <div style="padding-top: 50px;" class="row">
       <div class="col-md-8">
-        <div  class="card m-3">
-          <div  class="card-body container_card">
-            
-            
-            
+        <div class="card m-3">
+          <div class="card-body container_card">
+
+
+
             <h5 class="card-text" id="assunto">ASSUNTO DO CHAMADO<br><br> </h5>
             <hr>
             <p style="color: rgb(75, 75, 75); font-weight: bold;">DESCRIÇÃO: </p>
@@ -204,48 +203,49 @@
 
       <div style="z-index: 2;" class="col-md-4">
         <div class="card" style="padding-bottom:8%; margin-top: 15px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5)">
-          <div class="card-body" >
-            <h5 >Informações Adicionais <hr></h5>
-            <p class="card-text"  style="font-weight: bold;">AUTOR: </p>
+          <div class="card-body">
+            <h5>Informações Adicionais
+              <hr>
+            </h5>
+            <p class="card-text" id="AutorLabel" style="font-weight: bold;">AUTOR: </p>
             <p id="autor"> </p>
 
-            <p class="card-text"  style="font-weight: bold;">ANALISTA RESPONSÁVEL: </p>
-            <p id="responsavel" > </p>
+            <p class="card-text" style="font-weight: bold;">ANALISTA RESPONSÁVEL: </p>
+            <p id="responsavel"> </p>
 
-            <p class="card-text"  style="font-weight: bold;">DATA DE ABERTURA: </p>
-            <p id="dataAbertura" > </p>
+            <p class="card-text" style="font-weight: bold;">DATA DE ABERTURA: </p>
+            <p id="dataAbertura"> </p>
 
             <!-- <span style="display: flex; align-items: center;" class="card-text" id="status"> -->
-              <p class="card-text" style="font-weight: bold;">STATUS:</p>
-              <p id="status" > </p>
+            <p class="card-text" style="font-weight: bold;">STATUS:</p>
+            <p id="status"> </p>
             <!-- </span> -->
             <p class="card-text" id="equipamento" style="font-weight: bold;">EQUIPAMENTO: </p>
           </div>
         </div>
         <div class="container my-3 p-0">
-          <button type="button" id="responsavel_tecnologia" class="btn btn-success"
-            onclick="alterarChamado()">
+          <button type="button" id="responsavel_tecnologia" class="btn btn-success" onclick="alterarChamado()" >
             Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
           </button>
         </div>
 
       </div>
     </div>
-    
-  <div >
-    <div class="anexo">
-      <div style="width: 1480px; ">
-        <div class="card m-3">
-          <div class="card-body">
-            <h5>ANEXOS:</h5>
-            <div class="container mt-4" id="anexosContainer">
-              <!-- Div pré-existente que exibirá os anexos -->
+
+    <div>
+      <div class="anexo">
+        <div style="width: 1480px; ">
+          <div class="card m-3">
+            <div class="card-body">
+              <h5>ANEXOS:</h5>
+              <div class="container mt-4" id="anexosContainer">
+                <!-- Div pré-existente que exibirá os anexos -->
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
     <script src="sidebars/bootstrap.bundle.min.js"></script>
     <script>
@@ -254,7 +254,7 @@
 
       connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
-      verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
+      // verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
 
       function connection(data, operation) {
         var xhr = new XMLHttpRequest();
@@ -279,7 +279,7 @@
         };
         xhr.send(data);
       }
-      
+
 
       function unParse(data) {
         console.log(data)
@@ -296,7 +296,9 @@
         var imagem = dadosObjeto.imagem;
         var categoria = dadosObjeto.categoria;
         var logs = dadosObjeto.logs;
+        var icone = dadosObjeto.icone;
         console.log(dadosObjeto);
+
         // console.log(logs);
         // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
 
@@ -307,12 +309,13 @@
         document.getElementById("assunto").innerHTML += assunto;
         document.getElementById("descricao").innerHTML += '<br>' + descricao;
         document.getElementById("dataAbertura").innerHTML += dataAbertura;
+        // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
         document.getElementById("status").innerHTML += status_chamado;
         document.getElementById("responsavel").innerHTML += responsavel;
         document.getElementById("autor").innerHTML += autor;
-        if(equipamento != null){
+        if (equipamento != null) {
           document.getElementById("equipamento").innerHTML += equipamento;
-        }else{
+        } else {
           // document.getElementById("equipamento").innerHTML += '---';
           document.getElementById("equipamento").style.display = 'none';
 
@@ -330,6 +333,15 @@
         } else {
           document.getElementById("anexosContainer").innerHTML +=
             '<p>Nenhuma imagem anexada para este chamado.</p>';
+        }
+
+        if(icone){
+          document.getElementById("AutorLabel").innerHTML +=
+            '<img id="iconeAutor" src="data:image/jpeg;base64,' + icone + '" width="100px" alt="Ícone do autor" /></p>';
+        } else {
+          document.getElementById("AutorLabel").innerHTML +=
+            '';
+
         }
 
       }

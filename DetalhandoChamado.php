@@ -1,57 +1,56 @@
-
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
-    
+
     exit();
 }
 ?>
 
 
 <?php
-// Conectar ao banco de dados
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "siasb";
+// // Conectar ao banco de dados
+// $servername = "localhost";
+// $username = "root";
+// $password = "";
+// $dbname = "siasb";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+// $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar a conexão
-if ($conn->connect_error) {
-    die("Conexão falhou: " . $conn->connect_error);
-}
+// // Verificar a conexão
+// if ($conn->connect_error) {
+//     die("Conexão falhou: " . $conn->connect_error);
+// }
 
 
-	$usuario_ = $_SESSION['username'];
-        
-        $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $usuario_);
-        $stmt->execute();
-        $result = $stmt->get_result();
+// 	$usuario_ = $_SESSION['username'];
 
-        if ($result->num_rows > 0) {
-            // Encontrou resultados
-            $row = $result->fetch_assoc();
-            $Meu_ID = $row["IDUsuario"];
-        }
+//         $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
+//         $stmt = $conn->prepare($sql);
+//         $stmt->bind_param("s", $usuario_);
+//         $stmt->execute();
+//         $result = $stmt->get_result();
 
-        // $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbusuario  WHERE IDUsuario = $Meu_ID";
+//         if ($result->num_rows > 0) {
+//             // Encontrou resultados
+//             $row = $result->fetch_assoc();
+//             $Meu_ID = $row["IDUsuario"];
+//         }
 
-$sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $Meu_ID";
-$result = $conn->query($sql);
+//         // $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbusuario  WHERE IDUsuario = $Meu_ID";
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $imageData = $row['icone']; // Use 'icone' em vez de 'imagem_coluna'
-} else {
-    echo "Imagem não encontrada.";
-    exit;
-}
+// $sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $Meu_ID";
+// $result = $conn->query($sql);
 
-$conn->close();
+// if ($result->num_rows > 0) {
+//     $row = $result->fetch_assoc();
+//     $imageData = $row['icone']; // Use 'icone' em vez de 'imagem_coluna'
+// } else {
+//     echo "Imagem não encontrada.";
+//     exit;
+// }
+
+// $conn->close();
 
 // header("Content-Type: text/plain");
 // echo base64_encode($imageData);
@@ -65,26 +64,25 @@ $conn->close();
 
 <?php
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['ChamadoID'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['ChamadoID'])) {
         $conn = mysqli_connect("localhost", "root", "", "siasb");
 
         $IDChamado = $_POST['ChamadoID'];
 
-        // $sql = "SELECT * FROM tbchamados WHERE IDChamado = $IDChamado"; // fazer os joins, pra retornar os nomes ao inves dos ID's.
-        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, c.categoria
+        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, c.categoria, u.icone
                 FROM TBChamados c
                 LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus
                 LEFT JOIN TBUsuario a on c.responsavel = a.IDUsuario
                 LEFT JOIN TBUsuario u on c.autor = u.IDUsuario    
                 LEFT JOIN TBEquipamentos e on c.equipamento = e.sti_ID
                 WHERE IDChamado = $IDChamado";
-                // LEFT JOIN tbligacaochamados_log lcl on c.IDChamado = lcl.IDChamado
+        // LEFT JOIN tbligacaochamados_log lcl on c.IDChamado = lcl.IDChamado
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
-        if($result){
-            if($result->num_rows > 0){
+        if ($result) {
+            if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $resultArray = array();
                     // $resultArray['index'] = $variavel;
@@ -99,19 +97,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $equipamento = $row["equipamento"];
                     $imagem = $row["imagem"];
                     $categoria = $row["categoria"];
-                    // $ligacaoChamadoID = $row["ligacaoChamadoID"];
+                    $icone = $row["icone"];
 
-                    // echo '<p>Chamado ID: ' . $IDChamado . '</p>';
-                    // echo '<p>Assunto: ' . $assunto . '</p>';
-                    // echo '<p>Descrição: ' . $descricao . '</p>';
-                    // echo '<p>Data de Abertura: ' . $dataAbertura . '</p>';
-                    // echo '<p>Status do Chamado: ' . $status_chamado . '</p>';
-                    // echo '<p>Responsável: ' . $responsavel . '</p>';
-                    // echo '<p>Autor: ' . $autor . '</p>';
-                    // echo '<p>Equipamento: ' . $equipamento . '</p>';
-                    // echo '<p>Categoria: ' . $categoria . '</p>';
-                    // echo '<img src="data:image/jpeg;base64,' . base64_encode($imagem) . '" width="800" alt="Imagem do chamado" />';
-                
                     $resultArray['IDChamado'] = $IDChamado;
                     $resultArray['assunto'] = $assunto;
                     $resultArray['descricao'] = $descricao;
@@ -121,20 +108,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $resultArray['autor'] = $autor;
                     $resultArray['equipamento'] = $equipamento;
                     $resultArray['imagem'] = base64_encode($imagem);
+                    $resultArray['icone'] = base64_encode($icone);
                     $resultArray['categoria'] = $categoria;
 
                 }
             }
         }
 
-        class LogChamado {
+        class LogChamado
+        {
             public $IDLog;
             public $mensagem;
             public $dataAlteracao;
             public $responsavel;
             public $status;
-        
-            public function __construct($IDLog, $mensagem, $dataAlteracao, $responsavel, $status) {
+
+            public function __construct($IDLog, $mensagem, $dataAlteracao, $responsavel, $status)
+            {
                 $this->IDLog = $IDLog;
                 $this->mensagem = $mensagem;
                 $this->dataAlteracao = $dataAlteracao;
@@ -142,14 +132,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $this->status = $status;
             }
         }
-        
+
         $sql2 = "SELECT IDLog, mensagem, dataAlteracao, u.nome as 'responsavel', sc.descricao as 'status', referencia FROM TBLog_chamado
                 left join tbusuario u on responsavel = u.IDUsuario
                 left join tbstatus_chamado sc on status = sc.IDStatus WHERE referencia = $IDChamado";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute();
         $result2 = $stmt2->get_result();
-        
+
         $resultLogs = array();
         if ($result->num_rows > 0) {
             while ($row2 = $result2->fetch_assoc()) {
@@ -163,22 +153,22 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $resultLogs[] = $logChamado;
             }
         }
-        
-        $resultArray['logs'] = $resultLogs;     
-            echo json_encode($resultArray);
+
+        $resultArray['logs'] = $resultLogs;
+        echo json_encode($resultArray);
     }
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['gerarLog'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['gerarLog'])) {
         $conn = mysqli_connect("localhost", "root", "", "siasb");
-    
+
         $status = $_POST['status'];
         $mensagem = $_POST['mensagem'];
         $referencia = $_POST['referencia'];
         $responsavel = $_SESSION['username'];
 
-        $sql="SET @responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '$responsavel');
+        $sql = "SET @responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '$responsavel');
         INSERT INTO tblog_chamado(IDLog, mensagem, dataAlteracao, responsavel, status, referencia)
         VALUES (NULL, '$mensagem', NOW(), @responsavel, $status, $referencia)";
         echo $sql;
@@ -187,13 +177,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         } else {
             echo "Erro ao adicionar novo status de chamado: " . mysqli_error($conn);
         }
-            // echo $sql;
+        // echo $sql;
         $conn->close();
     }
 }
 
-if($_SERVER['REQUEST_METHOD']=== 'POST'){
-    if(isset($_POST['verificarSetor'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['verificarSetor'])) {
         $conn = mysqli_connect("localhost", "root", "", "siasb");
         $IDUsuario = $_SESSION['username'];
         $sql = "SELECT p.setor FROM TBUsuario u
@@ -203,13 +193,13 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
-        if($result){
-            if($result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
+        if ($result) {
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
                     $setor = $row["setor"];
-                    if($setor == '1'){
+                    if ($setor == '1') {
                         echo "1"; //tecnologia
-                    }else
+                    } else
                         echo "0"; //qqr outro
                 }
             }
