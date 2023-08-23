@@ -78,6 +78,40 @@ if ($imageData) {
   <!-- <script src="../assets/js/color-modes.js"></script> -->
 
   <style>
+
+  /* Estilo para o Tema Claro */
+.light-theme {
+    background-color: #fff;
+    color: #000;
+}
+
+.light-theme .table-heading th,
+.light-theme input[type="text"],
+.light-theme button {
+    background-color: #00cc99;
+    color: #fff;
+    border-color: #00cc99;
+}
+
+/* Estilo para o Tema Escuro */
+.dark-theme {
+    background-color: #121212;
+    color: #fff;
+}
+
+.dark-theme .table-heading th,
+.dark-theme input[type="text"],
+.dark-theme button {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+
+
+
+
+
     .sidebar {
       width: 97%;
       background-color: #00a383;
@@ -158,9 +192,18 @@ if ($imageData) {
       color: #ffffff;
     }
 
+    body.escuro .table-heading th,
+    body.escuro input[type="text"],
+    body.escuro button, body.escuro h1 {
+    background-color: #00cc99;
+    color: black;
+    border-color: #00cc99;
+}
+
     body.escuro {
       background-color: #525252;
       color: #454545;
+      
     }
 
     .menu {
@@ -257,7 +300,7 @@ if ($imageData) {
 
     .b-example-vr {
       flex-shrink: 0;
-      width: 1.5rem;
+      /* width: 1.5rem; */
       height: 100vh;
     }
 
@@ -407,6 +450,11 @@ if ($imageData) {
     </ul>
   </div>
 
+  <!-- <header >
+    <button id="theme-toggle">Alterar Tema</button>
+</header> -->
+
+
 
   <!-- <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="bootstrap" viewBox="0 0 118 94">
@@ -521,6 +569,7 @@ if ($imageData) {
 
         </ul>
       </nav>
+
 
       <hr>
       <div class="dropdown">
@@ -840,6 +889,18 @@ if ($imageData) {
   //     console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
   //   }
   // // ]]>
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeToggle = document.getElementById("theme-toggle");
+    const contentFrame = document.getElementById("content-frame");
+
+    themeToggle.addEventListener("click", function() {
+        const frameDocument = contentFrame.contentDocument || contentFrame.contentWindow.document;
+        frameDocument.body.classList.toggle("dark-theme");
+    });
+});
+
+
   </script>
 </body>
 
