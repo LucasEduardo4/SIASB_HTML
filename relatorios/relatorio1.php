@@ -41,18 +41,14 @@ if ($result->num_rows > 0) {
         );
     }
 
-    function imprimeDados($dados)
-    {
-
+    function imprimeDados($dados){
         echo "<pre>";
-        // print_r($dados);
         foreach ($dados as $registro) {
             foreach ($registro as $campo => $valor) {
                 echo "$campo: $valor<br>";
             }
             echo "<br>";
         }
-
         echo "</pre>";
     }
 }
@@ -60,8 +56,8 @@ if ($result->num_rows > 0) {
 //                             PDF DOCUMENTATION:                          \\
 // ----------------------------------------------------------------------- \\
 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
-
-// ------------------ FUNCTIONS --------------------- \\
+//                                                                         \\
+// ------------------------------ FUNCTIONS ------------------------------ \\
 function convertData($data)
 {
     $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
@@ -71,11 +67,10 @@ function convertData($data)
 
     return $dataHora->format('d/m/y H:i');
 }
-// -------------------- GLOBAL ---------------------- \\
+// ------------------------------ GLOBAL -------------------------------- \\
 $font = 'times';
 $border = 0;
-
-// ---------------------- MAIN ---------------------- \\
+// -------------------------------- MAIN -------------------------------- \\
 
 $pdf = new TCPDF();
 $pdf->SetAutoPageBreak(true, 10);
@@ -86,7 +81,7 @@ $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
 $pdf->SetFont($font, '', 12);
 $pdf->Ln();
 
-// ------------------ CONFIGURAÇÕES ------------------ \\
+// ---------------------------- CONFIGURAÇÕES ---------------------------- \\
 
 $LID = $pdf->GetStringWidth('ID') + 5;
 $Lassunto = $pdf->GetStringWidth('Assunto') + 10;
@@ -99,8 +94,7 @@ $Lautor = $pdf->GetStringWidth('Autor') + 8;
 $Lstatus = $pdf->GetStringWidth('Status') + 8;
 $alturaResults = 5;
 
-// --------------------------------------------------- \\
-
+// ----------------------------------------------------------------------- \\
 
 $pdf->Cell(0, 10, 'Filtros selecionados:', 0, 1, 'L');
 $pdf->Cell(0, 10, 'Período:', 0, 1, 'L');
@@ -112,32 +106,18 @@ $pdf->Ln();
 $pdf->Line(10, 60, 200, 60);
 
 $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
-$pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'C');
+// $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'C');
+$pdf -> MultiCell($Lassunto, $alturaResults, 'Assunto', $border, 'C', 0, 1, '', '', true, 0, false, true, 0, 'T', false);
 // $pdf->Cell($Ldescricao, 10, 'descricao', $border, 0, 'C');
 $pdf->Cell($LdataAbertura, 10, 'Data Abertura', $border, 0, 'C');
 $pdf->Cell($LdataFechamento, 10, 'Data Fechamento', $border, 0, 'C');
-$pdf->Cell($Lresponsavel, 10, 'Responsável', $border, 0, 'C');
-$pdf->Cell($Lequipamento, 10, 'Equipamento', $border, 0, 'C');
-$pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
-$pdf->Cell($Lstatus, 10, 'status', $border, 0, 'C');
-
+// $pdf->Cell($Lresponsavel, 10, 'Responsável', $border, 0, 'C');
+// $pdf->Cell($Lequipamento, 10, 'Equipamento', $border, 0, 'C');
+// $pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
+// $pdf->Cell($Lstatus, 10, 'status', $border, 0, 'C');
 
 $pdf->Ln();
 $pdf->SetFont($font, '', 10);
-
-foreach ($dados as $registro) {
-    $pdf->Cell($LID, $alturaResults, $registro['IDChamado'], $border, 0, 'C');
-    $pdf->Cell($Lassunto, $alturaResults, $registro['assunto'], $border, 0, 'C');
-    // $pdf->Cell($Ldescricao, $alturaResults, $registro['descricao'], $border, 0, 'C');
-    $pdf->Cell($LdataAbertura, $alturaResults, convertData($registro['dataAbertura']), $border, 0, 'C');
-    $pdf->Cell($LdataFechamento, $alturaResults, convertData($registro['dataFechamento']), $border, 0, 'C');
-    // Usar MultiCell para permitir texto em várias linhas na coluna "responsavel"
-    $pdf->Cell($Lresponsavel, $alturaResults, $registro['responsavel'], $border, 0, 'C');
-    $pdf->Cell($Lequipamento, $alturaResults, $registro['equipamento'], $border, 0, 'C');
-    $pdf->Cell($Lautor, $alturaResults, $registro['autor'], $border, 0, 'C');
-    $pdf->Cell($Lstatus, $alturaResults, $registro['status_chamado'], $border, 0, 'C');
-    $pdf->Ln();
-}
 
 $pdf->Output('relatorio.pdf', 'I');
 // imprimeDados($dados);

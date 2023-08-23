@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+    <script src="/siasb_html/sidebars/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
     <link rel="icon" href="../icons/warning.png" sizes="192x192" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -64,6 +65,14 @@
             margin-bottom: -10px;
             margin-top: 10px;
         }
+
+        .desativo {
+            opacity: 0.3;
+        }
+
+        .desativo:hover {
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -76,7 +85,7 @@
             </div>
             <form id="formularioFiltros">
                 <div class="my-3 borda" id="divDataAbertura">
-                    <label for="">Data de Abertura:</label>
+                    <label for="selectDataAbertura">Data de Abertura:</label>
                     <br>
                     <select name="" id="selectDataAbertura" class="center"
                         onchange="exibeIntervalo(document.getElementById('divDataAbertura'), this.value)">
@@ -84,24 +93,23 @@
                         <option value="1">Intervalo</option>
                     </select>
                     <br>
-                    <label for="" class="ocultar">De:</label>
+                    <label for="filtroDEDataAbertura" class="ocultar">De:</label>
                     <input type="date" name="filtroDEDataAbertura" id="filtroDEDataAbertura" class="form-control">
-                    <label for="" class="ocultar">Até:</label>
+                    <label for="filtroATEDataAbertura" class="ocultar">Até:</label>
                     <input type="date" name="filtroATEDataAbertura" id="filtroATEDataAbertura"
                         class="form-control ocultar">
                 </div>
                 <div class="my-3 borda" id="divDataFechamento">
-                    <label for="filtroDataFechamento">Data de Fechamento:</label>
-                    <br>
+                    <label for="selectDataFechamento">Data de Fechamento:</label>
                     <select name="" id="selectDataFechamento" class="center"
                         onchange="exibeIntervalo(document.getElementById('divDataFechamento'), this.value)">
                         <option value="2">Fechado Até</option>
                         <option value="3">Intervalo</option>
                     </select>
                     <br>
-                    <label for="" class="ocultar">De:</label>
+                    <label for="filtroDEDataFechamento" class="ocultar">De:</label>
                     <input type="date" name="filtroDataFechamento" id="filtroDEDataFechamento" class="form-control">
-                    <label for="" class="ocultar">Até:</label>
+                    <label for="filtroATEDataFechamento" class="ocultar">Até:</label>
                     <input type="date" name="filtroDataFechamento" id="filtroATEDataFechamento"
                         class="form-control ocultar">
                 </div>
@@ -152,6 +160,18 @@
             style="margin: auto; max-width: fit-content; margin-top:100px; margin: 10px 10px;">
             <!-- right -->
             <div class="container container-fluid esse my-2">
+                <p>Tipo de Relatório</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="relatorioTipo" id="sintetico" value="sintetico"
+                        checked>
+                    <label class="form-check-label" for="sintetico">Sintético</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="relatorioTipo" id="analitico" value="analitico">
+                    <label class="form-check-label" for="analitico">Analítico</label>
+                </div>
+            </div>
+            <div class="container container-fluid esse my-2">
                 <label for="ordenar">Ordenar por:</label>
                 <select name="ordenar" id="ordenar" class="form-control">
                     <option value="" selected hidden>Escolha abaixo</option>
@@ -173,7 +193,7 @@
             <div class="container container-fluid esse mt-3" style="margin: auto;">
                 <div class="form-check p-0">
 
-                    <label for="" class="form-check-label">Agrupar Por:</label>
+                    <label for="agruparPor" class="form-check-label">Agrupar Por:</label>
                     <select name="" id="agruparPor" class="form-control">
                         <option value="" selected hidden>Escolha abaixo</option>
                         <option value="IDChamado">ID</option>>
@@ -194,10 +214,10 @@
             <div class="container container-fluid esse mt-3">
 
                 <p>Salvar em arquivo:</p>
-                <img class="pointer" onclick="submitFilters('pdf')" src="../icons/PDF_file_icon.svg.png"
+                <img class="pointer" id="PDFIcon" onclick="submitFilters('pdf')" src="../icons/PDF_file_icon.svg.png"
                     alt="Ícone do PDF" width="45px">
-                <img class="pointer" onclick="submitFilters('xlsx')" src="../icons/excel.png" alt="Ícone do Excel"
-                    width="50px;">
+                <img class="pointer" id="ExcelIcon" onclick="submitFilters('xlsx')" src="../icons/excel.png"
+                    alt="Ícone do Excel" width="50px;">
             </div>
         </div>
         <div id="responseDiv" style="margin-top: 20px; width: 800px; height: fit-content;" class="esse">
@@ -236,7 +256,6 @@
             var elementosOcultos = divId.getElementsByClassName('ocultar');
 
             if (valor === '0') {
-                console.log('dataFechamento = 1')
                 for (var i = 0; i < elementosOcultos.length; i++) {
                     elementosOcultos[i].style.display = 'none';
                     var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
@@ -286,7 +305,9 @@
                 { name: 'ordem', value: formularioExistente.ordem.value },
                 { name: 'agruparPor', value: formularioExistente.agruparPor.value },
                 { name: 'filtroATEDataAbertura', value: formularioExistente.filtroATEDataAbertura.value },
-                { name: 'filtroATEDataFechamento', value: formularioExistente.filtroATEDataFechamento.value }
+                { name: 'filtroATEDataFechamento', value: formularioExistente.filtroATEDataFechamento.value },
+                { name: 'tipoRelatorio', value: formularioExistente.relatorioTipo.value }
+
 
             ];
             // Adicione os campos ocultos ao formulário
@@ -351,10 +372,14 @@
         function selectInicial() {
             var data = 'SelectInicial=1';
             var response = connection(data, 'POST', 'SelectInicial');
-            // console.log(response);
         }
 
         function submitFilters(relatorio) {
+            // var PDFIcon = document.getElementById("PDFIcon");
+            // var ExcelIcon = document.getElementById("ExcelIcon");
+            // if(PDFIcon.classList.contains("desativo") || ExcelIcon.classList.contains("desativo")){
+            //     return;
+            // }
             var filtroDataAbertura = document.getElementById("filtroDEDataAbertura");
             var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
             var filtroDataFechamento = document.getElementById("filtroDEDataFechamento");
@@ -364,6 +389,8 @@
             var filtroStatus = document.getElementById("filtroStatus");
             var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
             var filtroSetor = document.getElementById("filtroSetor");
+            var tipoRelatorio = document.getElementsByName("relatorioTipo");
+            tipoRelatorio = tipoRelatorio[0].checked ? tipoRelatorio[0] : tipoRelatorio[1];
             var ordenar = document.getElementById("ordenar");
             var agruparPor = document.getElementById("agruparPor");
             var ordem = document.getElementsByName("ordem");
@@ -386,13 +413,12 @@
                 "&ordem=" + encodeURIComponent(ordem.value) +
                 "&agruparPor=" + encodeURIComponent(agruparPor.value) +
                 "&filtroATEDataAbertura=" + encodeURIComponent(filtroATEDataAbertura.value) +
-                "&filtroATEDataFechamento=" + encodeURIComponent(filtroATEDataFechamento.value);
+                "&filtroATEDataFechamento=" + encodeURIComponent(filtroATEDataFechamento.value) +
+                "&tipoRelatorio=" + encodeURIComponent(tipoRelatorio.id);
 
 
-            // console.log(data);
             if (!relatorio) {
                 connection(data, 'POST', 'exibir');
-                console.log(data);
 
                 verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
             } else
@@ -400,10 +426,13 @@
                     // var data = data + "&gerarRelatorio=1" + "&geraPDF=1";
                     // var data = 'gerarRelatorio=1' + '&geraPDF=1' + '&' + data;
                     var data = data + '&gerarRelatorio=1' + '&geraPDF=1';
-                    console.log(data);
 
-                    connection(data, 'POST', 'relatorio')
+                    connection(data, 'POST', 'relatorioPDF')
                 }
+            if (relatorio == 'xlsx') {
+                var data = data + '&gerarRelatorio=1' + '&geraXLSX=1';
+                connection(data, 'POST', 'relatorioXLSX')
+            }
 
             function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor) {
                 var FiltrosSelecionados = document.getElementById("FiltrosSelecionados");
@@ -443,7 +472,7 @@
         }
 
         function unParse(data) {
-            var dadosObjeto = JSON.parse(data)
+            var dadosObjeto = JSON.parse(data);
             // recebendo os dados do php
             var responsaveis = dadosObjeto.responsaveis;
             var usuarios = dadosObjeto.usuarios;
@@ -495,35 +524,67 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     if (output == 'exibir') {
                         var responseTable = document.getElementById("responseTable");
+                        var PDFIcon = document.getElementById("PDFIcon");
+                        var ExcelIcon = document.getElementById("ExcelIcon");
                         if (xhr.responseText == 1) {
                             document.getElementById("errormsg").style.display = "block";
                             var top10 = document.getElementById("top10").style.display = "block";
                             responseTable.innerHTML = '';
+                            PDFIcon.classList.add("desativo");
+                            ExcelIcon.classList.add("desativo");
+                            PDFIcon.onclick = null;
+                            ExcelIcon.onclick = null;
+                            PDFIcon.classList.remove("pointer");
+                            ExcelIcon.classList.remove("pointer");
                         } else {
                             responseTable.innerHTML = xhr.responseText;
                             document.getElementById("errormsg").style.display = "none";
                             var top10 = document.getElementById("top10").style.display = "block";
+                            PDFIcon.classList.remove("desativo");
+                            ExcelIcon.classList.remove("desativo");
+                            PDFIcon.onclick = function () { submitFilters('pdf') };
+                            ExcelIcon.onclick = function () { submitFilters('xlsx') };
+
+                            PDFIcon.classList.add("pointer");
+                            ExcelIcon.classList.add("pointer");
+
                         }
                     } else
                         if (output == 'SelectInicial') {
-                            // console.log(xhr.response);
                             unParse(xhr.response);
 
                         } else
-                            if (output == 'relatorio') {
-                                // console.log(xhr.responseText);
+                            if (output == 'relatorioPDF') {
                                 redirecionarComPOST();
-                            }
+                            } else
+                                if (output == 'relatorioXLSX') {
+                                    var response = JSON.parse(xhr.response);
+                                    var data = response.data;
+                                    var colunas = response.colunas;
+                                    var nomeArquivo = response.nomeArquivo;
+                                    var wb = XLSX.utils.book_new();
+                                    var ws = XLSX.utils.json_to_sheet(data, { header: colunas });
+                                    XLSX.utils.book_append_sheet(wb, ws, "Relatório");
+                                    //Largura colunas
+                                    var columnWidths = [{ wch: 10 }, { wch: 20 }, {}, {wch:11.5}, {wch:11.5}/* ... */];
+                                    ws['!cols'] = columnWidths;
+                                    //texto centralizado:
+                                    var centerCellStyle = { alignment: { horizontal: 'center' } };
+                                    // Aplique o estilo à coluna desejada
+                                    XLSX.utils.sheet_add_aoa(ws, [], { origin: "A", style: centerCellStyle }); // Coluna A
+
+                                    XLSX.writeFile(wb, nomeArquivo);
+                                }
                 }
             }
             xhr.send(data);
+            console.log(data)
         }
 
     </script>
     <footer>
         <div class="container mx-3 footer footer" style="margin-top: 600px;">
             <h3>A fazer:</h3>
-            <p>Interessante pré visualizar antes de gerar o pdf</p>
             <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao
                 usuário)</p>
             <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
