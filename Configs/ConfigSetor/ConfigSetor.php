@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 echo "<tr>
                 <td>".$IDSetor."</td>
-                <td style='padding-left:90px'>".$descricao."</td>
+                <td>".$descricao."</td>
                 <td>".$gerente."</td>
                 </tr>";
                 

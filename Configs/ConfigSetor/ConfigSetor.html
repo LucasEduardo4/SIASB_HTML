@@ -14,6 +14,7 @@
 
     <title>Config Setor</title>
     <style>
+        
         #cadastro {
             display: none;
         }
@@ -21,8 +22,8 @@
         #novo:hover {
             text-decoration: underline;
             cursor: pointer;
-        }
 
+        }
 
         /* Global Styles */
         body {
@@ -30,7 +31,14 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: rgba(74, 161, 133, 0.336);
+            background-color: white;
+
+            height: 100%;
+  margin: 0;
+  display: flex;
+            justify-content: center;
+  align-items: center;
+            
         }
 
         /* Header Styles */
@@ -42,6 +50,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 35%;
         }
 
         .back-button {
@@ -49,35 +58,33 @@
             text-decoration: none;
             margin-right: 10px;
             float: left;
-            margin-left: 30px;
+            margin-left: 100px;
         }
 
         .title {
-            /* margin: auto; */
-            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-            padding-top: 30px; 
-            padding-bottom: 30px;
-            padding-right: 1070px;
-            margin-top: 200px;
-            font-size: 26px;
+            margin: auto;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            /* padding-top: 30px; */
+            font-size: 38px;
             color: #000000;
-            
+            text-align:start;
+            padding-left: 20px;
+
         }
-        
 
         /* Main Content Styles */
         .main-content {
             max-width: 1200px;
             margin: auto;
             padding: 50px;
-            padding-left: 100px;
-            padding-right: 100px;
-            /* background-color: #f0f0f0; */
+            /* padding-left: 100px;
+            padding-right: 100px; */
             border-radius: 15px;
             box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+            margin-top: 110px;
+            width: 100%;
 
-            text-align: center;
-            /* Center text in the main content */
+           
         }
 
         h2 {
@@ -103,7 +110,7 @@
         }
 
         .add-status-form button {
-            background-color: #065d44eb;
+            background-color: #00a383;
             color: #fff;
             border: none;
             padding: 8px 15px;
@@ -123,10 +130,11 @@
             margin-bottom: 40px;
             border-radius: 10px;
             overflow: hidden;
-            /* background-color:white; */
-
-            /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-
+            background-color:white; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            margin: auto;
+            
+            
         }
 
 
@@ -134,14 +142,14 @@
         .table> :not(caption)>*>* {
 
             background-color: white;
+            border-radius: 10px;
 
         }
 
         .table-dark {
 
-            --bs-table-striped-bg:#004134;
-            --bs-table-hover-bg:#00382d;
-
+            --bs-table-striped-bg: #00a383;
+            --bs-table-hover-bg: #00a383;
 
         }
 
@@ -159,7 +167,7 @@
         table th,
         table td {
             padding: 12px;
-            /* border: 1px solid #00cc99; */
+  border-bottom: 1px solid #e0e0e0;
         }
 
         table tr:nth-child(even) {
@@ -168,13 +176,19 @@
 
         /* Button Styles */
         button {
-            background-color: #003b2d;
+            background-color: #00cc99;
             color: #fff;
             border: none;
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
+            width:100%;
+            padding-left: 40px;
+            padding-right: 40px;
+            font-weight: bold;
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+
         }
 
         button i {
@@ -201,6 +215,29 @@
                 margin-bottom: 10px;
             }
         }
+
+
+
+        .swal-columns {
+            display: flex;
+            flex-direction: column;
+        }
+        .swal-columns input {
+            margin: 20px 0px;
+        }
+        
+        tbody, td, tfoot, th, thead, tr{
+
+            border-color: white;
+            border-width: 10px;
+        }
+        
+        .form-select {
+
+            margin-left: 0px;
+        }
+
+
     </style>
 
 
@@ -249,7 +286,7 @@
         <table class="table table-striped table-hover" id="tableSetor">
             <tr class="table table-dark">
                 <th>ID Setor</th>
-                <th style="padding-left:90px">Nome Setor</th>
+                <th>Nome Setor</th>
                 <th>Responsável</th>
             </tr>
             <tr></tr>

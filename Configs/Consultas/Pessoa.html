@@ -12,6 +12,211 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup -->
 
     <style>
+
+#cadastro {
+            display: none;
+        }
+
+        #novo:hover {
+            text-decoration: underline;
+            cursor: pointer;
+
+        }
+
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+
+            height: 100%;
+  margin: 0;
+  display: flex;
+            justify-content: center;
+  align-items: center;
+            
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #ffffff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-button {
+            color: #000000;
+            text-decoration: none;
+            margin-right: 10px;
+            float: left;
+            margin-left: 100px;
+        }
+
+        .title {
+            margin: auto;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            /* padding-top: 30px; */
+            font-size: 35px;
+            color: #000000;
+            text-align:start;
+            padding-left: 20px;
+
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px;
+            padding-left: 100px;
+            padding-right: 100px;
+            /* background-color: #f0f0f0; */
+            border-radius: 15px;
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+
+            /* text-align: center; */
+            /* Center text in the main content */
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .add-status-form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .add-status-form label {
+            margin-right: 10px;
+        }
+
+        .add-status-form input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-status-form button {
+            background-color: #00a383;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-status-form button i {
+            margin-right: 5px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color:white; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            margin: auto;
+            margin-left: 80px;
+            margin-top: 110px;
+            
+        }
+
+
+        /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
+        .table> :not(caption)>*>* {
+
+            background-color: white;
+            border-radius: 10px;
+
+        }
+
+        .table-dark {
+
+            --bs-table-striped-bg: #00a383;
+            --bs-table-hover-bg: #00a383;
+
+        }
+
+        /* =========================================================================== */
+
+        .table-heading {
+            background: linear-gradient(135deg, #007bff, #00cc99);
+            color: #fff;
+        }
+
+        .table-heading th {
+            padding: 4px;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #00cc99;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width:100%;
+            padding-left: 40px;
+            padding-right: 40px;
+            font-weight: bold;
+            margin-left: 40px;
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+
+        }
+
+        button i {
+            margin-right: 5px;
+        }
+
+        button:hover {
+            background-color: #007bff;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+
+            .add-status-form {
+                flex-direction: column;
+
+            }
+
+            .add-status-form input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+
+
         .swal-columns {
             display: flex;
             flex-direction: column;
@@ -19,30 +224,96 @@
         .swal-columns input {
             margin: 20px 0px;
         }
-    </style>
+        
+        tbody, td, tfoot, th, thead, tr{
+
+            border-color: white;
+            border-width: 10px;
+        }
+        
+
+
+
+        /* .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-transform: uppercase;
+    
+}
+
+
+
+.table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  border-radius:5px;
+}
+
+@media (max-width: 768px) {
+  .table {
+    display: block;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody {
+    display: block;
+  }
+
+  .table tr {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table td {
+    border: none;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-right: 10px;
+  }
+} */
+
+        
+        </style>
 
 
 </head>
-<header>
-    <div>
-        <a href="../index.html">
+<header class="header">
 
-        <h1><i class="bi-arrow-left-circle bi-lg ">Voltar</i></h1></a>
-        
-    </div>
+    <a href="../index.html" class="back-button"><i style="font-size: 40px"
+            class="bi-arrow-left-circle bi-lg"></i></a>
+    <h1 class="title">PESSOAS CADASTRADAS</h1>
+
 </header>
 <body onload="init()">
 
-    <div class="d-flex align-items-start">
+    <!-- <div class="d-flex align-items-start">
         <div id="esq" class="flex-fill">
           <h3>Pessoas:</h3>
           <p>Filtros:</p>
         </div>
+
         <div id="dir" class="flex-fill">
-        <p></p>
           <button class="btn btn-primary" onclick="window.location.href='../../Cadastro.html'">Adicionar pessoa</button>
         </div>
-      </div>
+    </div> -->
+
+    <div>
+        <button onclick="window.location.href='../../Cadastro.html'">ADICIONAR PESSOA</button>
+    </div>
+
       
     
     <div class="box-sqr">
