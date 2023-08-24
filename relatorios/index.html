@@ -91,6 +91,7 @@
                         onchange="exibeIntervalo(document.getElementById('divDataAbertura'), this.value)">
                         <option value="0">A partir de</option>
                         <option value="1">Intervalo</option>
+                        <option value="4">Até Hoje</option>
                     </select>
                     <br>
                     <label for="filtroDEDataAbertura" class="ocultar">De:</label>
@@ -105,6 +106,7 @@
                         onchange="exibeIntervalo(document.getElementById('divDataFechamento'), this.value)">
                         <option value="2">Fechado Até</option>
                         <option value="3">Intervalo</option>
+                        <option value="5">Até Hoje</option>
                     </select>
                     <br>
                     <label for="filtroDEDataFechamento" class="ocultar">De:</label>
@@ -133,7 +135,7 @@
                         <option value="2">Andamento</option>
                         <option value="3">Pendente</option>
                         <option value="4">Fechado</option>
-                        <option value="5" selected>TODOS</option>
+                        <option value="5" selected=>TODOS</option>
                     </select>
                 </div>
                 <div class="my-3">
@@ -254,11 +256,21 @@
             var selectDataAbertura = document.getElementById('selectDataAbertura');
             var selectDataFechamento = document.getElementById('selectDataFechamento');
             var elementosOcultos = divId.getElementsByClassName('ocultar');
+            var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
+            var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
+            var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
+            var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
+
+            var currentDate = new Date();
+            var day = currentDate.getDate();
+            var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
+            var year = currentDate.getFullYear();
+            // var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+            var dataAtual = year + '-' + ('0' + month).slice(-2) + '-' + ('0' + day).slice(-2);
 
             if (valor === '0') {
                 for (var i = 0; i < elementosOcultos.length; i++) {
                     elementosOcultos[i].style.display = 'none';
-                    var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
                     filtroATEDataAbertura.value = "";
                 }
             } else
@@ -271,7 +283,6 @@
             if (valor === '2') {
                 for (var i = 0; i < elementosOcultos.length; i++) {
                     elementosOcultos[i].style.display = 'none';
-                    var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
                     filtroATEDataFechamento.value = "";
                 }
             } else
@@ -279,7 +290,21 @@
                     for (var i = 0; i < elementosOcultos.length; i++) {
                         elementosOcultos[i].style.display = 'inline';
                     }
-                }
+                } else
+                    if (valor === '4') {
+                        for (var i = 0; i < elementosOcultos.length; i++) {
+                            elementosOcultos[i].style.display = 'inline';
+                            filtroDEDataAbertura.value = "2023-01-01";
+                            filtroATEDataAbertura.value = dataAtual;
+                        }
+                    } else
+                        if (valor === '5') {
+                            for (var i = 0; i < elementosOcultos.length; i++) {
+                                elementosOcultos[i].style.display = 'inline';
+                                filtroDEDataFechamento.value = "2023-01-01";
+                                filtroATEDataFechamento.value = dataAtual;
+                            }
+                        }
         }
 
         function redirecionarComPOST() {
@@ -566,7 +591,7 @@
                                     var ws = XLSX.utils.json_to_sheet(data, { header: colunas });
                                     XLSX.utils.book_append_sheet(wb, ws, "Relatório");
                                     //Largura colunas
-                                    var columnWidths = [{ wch: 10 }, { wch: 20 }, {}, {wch:11.5}, {wch:11.5}/* ... */];
+                                    var columnWidths = [{ wch: 10 }, { wch: 20 }, {}, { wch: 11.5 }, { wch: 11.5 }/* ... */];
                                     ws['!cols'] = columnWidths;
                                     //texto centralizado:
                                     var centerCellStyle = { alignment: { horizontal: 'center' } };
@@ -595,7 +620,6 @@
                 cai no else, e continua.</p>
             <p>Acrescentar funcionalidade: Sintético x Analítico</p>
             <p>Adicionar alerta para quando selecionado Intervalo, tornar obrigatorio o preenchimento dos 2 campos</p>
-            <p>nos filtros de data, adicionar "Até Hoje"</p>
         </div>
     </footer>
 </body>

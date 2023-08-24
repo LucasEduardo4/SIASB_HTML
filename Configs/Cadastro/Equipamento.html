@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-
-
-  
-</style>
-
-
 <head>
   <title>Cadastro</title>
   <link rel="stylesheet" href="../../Inicial.css">
@@ -15,11 +8,7 @@
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup Sweet alert-->
   <script src='./../../flowSite/verificaSessao.js'></script>
-
-
-
   <meta charset="UTF-8">
-
 
 </head>
 
@@ -84,18 +73,18 @@
       console.log(equipamento.IDPessoa);
       setTimeout(function () {
         document.getElementById("selectPessoas").value = equipamento.IDPessoa;
-        
+
         var selectTipos = document.getElementById("selectTipos");
-        for(let i in selectTipos){
-          if(selectTipos[i].value == 1){
-            selectTipos[i].disabled=true;
+        for (let i in selectTipos) {
+          if (selectTipos[i].value == 1) {
+            selectTipos[i].disabled = true;
             selectTipos[i].hidden = true;
             break;
           }
         }
       }, 100);
       selectPerson();
-      
+
 
     }
     function init() {
@@ -135,7 +124,7 @@
       }
 
       function verificarCampos(stiID, descricao, ip, tipo, secao, usuario) {
-       var camposFaltantes = [];
+        var camposFaltantes = [];
 
         if (stiID == "") {
           camposFaltantes.push(document.getElementById("stiID"));
