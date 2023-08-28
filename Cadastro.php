@@ -7,7 +7,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
     
-        $sql = "SELECT * FROM TBSetor";
+        $sql = "SELECT * FROM tbsetor_secao";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -15,8 +15,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-                $setor = $row["descricao_setor"];
-                $id = $row["IDSetor"];
+                $id = $row["ID"];
+                $setor = $row["descricao"];
 
                 echo "<option value='".$id."'>".$setor."</option>";
             }
@@ -48,27 +48,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nome = $_POST['nome'];
         $cpf = $_POST['cpf'];
         $matricula = $_POST['matricula'];
-        $setor = $_POST['setor'];
+        $setor_secao = $_POST['setor'];
         $email = $_POST['email'];
         $insertUser = $_POST['insertUser'];
-        $username = $_POST['username'];
-
-        if (isset($nome) && isset($cpf) && isset($matricula) && isset($setor) && isset($email)) {
-            $sql = "INSERT INTO TBPessoa (IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email, gestor) VALUES (
-                NULL,
+        
+        if (isset($nome) && isset($cpf) && isset($matricula) && isset($setor_secao) && isset($email)) {
+            $sql = "INSERT INTO TBPessoa (nomeCompleto, cpf, matricula, setor_secao, email, gestor) VALUES (
                 '$nome',
                 '$cpf',
                 '$matricula',
-                '$setor',
-                1,
+                '$setor_secao',
                 '$email',
                 ''
+                
             )";
+            echo $sql;
 
             if (mysqli_query($conn, $sql)) {
                 // echo "Nova pessoa adicionada com sucesso!";
                 if ($insertUser == 1) {
                     
+                    $username = $_POST['username'];
                     inserirUsuario($conn, $username, $cpf);
                 }
             } else {
@@ -79,5 +79,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
     ?>

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta Pessoas</title>
     <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
-    <link rel="icon" href="../../icons/warning.png" sizes="192x192"/>
+    <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../lib/stylesheet.css">
     <script src='./../../flowSite/verificaSessao.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup -->
 
     <style>
-
-#cadastro {
+        #cadastro {
             display: none;
         }
 
@@ -32,11 +32,11 @@
             background-color: white;
 
             height: 100%;
-  margin: 0;
-  display: flex;
+            margin: 0;
+            display: flex;
             justify-content: center;
-  align-items: center;
-            
+            align-items: center;
+
         }
 
         /* Header Styles */
@@ -64,7 +64,7 @@
             /* padding-top: 30px; */
             font-size: 35px;
             color: #000000;
-            text-align:start;
+            text-align: start;
             padding-left: 20px;
 
         }
@@ -127,12 +127,12 @@
             margin-bottom: 40px;
             border-radius: 10px;
             overflow: hidden;
-            background-color:white; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
             margin-left: 80px;
             margin-top: 110px;
-            
+
         }
 
 
@@ -165,7 +165,7 @@
         table th,
         table td {
             padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         table tr:nth-child(even) {
@@ -181,7 +181,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
-            width:100%;
+            width: 100%;
             padding-left: 40px;
             padding-right: 40px;
             font-weight: bold;
@@ -221,16 +221,26 @@
             display: flex;
             flex-direction: column;
         }
+
         .swal-columns input {
             margin: 20px 0px;
         }
-        
-        tbody, td, tfoot, th, thead, tr{
+
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
 
             border-color: white;
             border-width: 10px;
         }
-        
+
+        .custom-confirm-button-class {
+            background-color: #00cc99;
+        }
+
 
 
 
@@ -284,19 +294,17 @@
     margin-right: 10px;
   }
 } */
-
-        
-        </style>
+    </style>
 
 
 </head>
 <header class="header">
 
-    <a href="../index.html" class="back-button"><i style="font-size: 40px"
-            class="bi-arrow-left-circle bi-lg"></i></a>
+    <a href="../index.html" class="back-button"><i style="font-size: 40px" class="bi-arrow-left-circle bi-lg"></i></a>
     <h1 class="title">PESSOAS CADASTRADAS</h1>
 
 </header>
+
 <body onload="init()">
 
     <!-- <div class="d-flex align-items-start">
@@ -314,8 +322,8 @@
         <button onclick="window.location.href='../../Cadastro.html'">ADICIONAR PESSOA</button>
     </div>
 
-      
-    
+
+
     <div class="box-sqr">
         <table id="tablePerson" class="table table-striped table-hover">
             <tr class="table table-dark ">
@@ -323,8 +331,7 @@
                 <th>Nome</th>
                 <th>CPF</th>
                 <th>Matrícula</th>
-                <th>Setor</th>
-                <th>Secao</th>
+                <th>Setor / Seção</th>
                 <th>E-mail</th>
                 <th>Gestor</th>
                 <th>Usuário</th>
@@ -332,96 +339,96 @@
         </table>
     </div>
     <div id="tempElement" style="display: none;"></div>
-<script>
-    function init() {
-        displayPersons();
-    }
+    <script>
+        function init() {
+            displayPersons();
+        }
 
-    function displayPersons(){
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "php/consultas.php", true)
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function(){
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    tablePerson.innerHTML += xhr.responseText;
-                } else {
-                    tablePerson.innerHTML += "Falha ao carregar as pessoas";
+        function displayPersons() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "php/consultas.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        tablePerson.innerHTML += xhr.responseText;
+                    } else {
+                        tablePerson.innerHTML += "Falha ao carregar as pessoas";
+                    }
                 }
-            }
-        };
-        xhr.send("select_ready_person=" + encodeURIComponent(1));
+            };
+            xhr.send("select_ready_person=" + encodeURIComponent(1));
 
-    }
+        }
 
-    function setupEditButtons() {
+        function setupEditButtons() {
             var sqrchk = document.getElementsByClassName("bi bi-check-square");
             var sqr = document.getElementsByClassName("bi bi-square");
 
             for (var i = 0; i < editButtons.length; i++) {
-                (function(id) {
+                (function (id) {
 
                     var removeButton = removeButtons[i];
-                    removeButton.addEventListener("click", function() {
+                    removeButton.addEventListener("click", function () {
                         var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
                         var ref = element.cells[0].innerText;
                         removeValue(ref);
                     });
                 })(i);
             }
-    }
-
-    function onoffGerente(ID){
-        console.log("entrou")
-        var verifica = document.getElementById(`sqr-${ID}`)
-        if(verifica.dataset.value == 0){
-            verifica = 'desmarcado';
-        }else if(verifica.dataset.value == 1){
-            verifica = 'marcado';
         }
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "php/consultas.php", true)
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function(){
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    window.location.reload();
-                } else {
-                    console.error("Falha ao carregar as pessoas");
-                }
+        function onoffGerente(ID) {
+            console.log("entrou")
+            var verifica = document.getElementById(`sqr-${ID}`)
+            if (verifica.dataset.value == 0) {
+                verifica = 'desmarcado';
+            } else if (verifica.dataset.value == 1) {
+                verifica = 'marcado';
             }
-        };
-        xhr.send("verifica=" + encodeURIComponent(verifica)+ "&id=" + ID);
-    }
- 
-    function verificaUsuario(usuario){
-        var usuarioID = usuario.id
-        var pai = usuario.parentElement;
-        console.log("\n pai :")
-        console.log(pai.id);
 
-        pai_do_pai = pai.parentElement;
-        console.log("\n pai_do_pai :");
-        console.log(pai_do_pai);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "php/consultas.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.reload();
+                    } else {
+                        console.error("Falha ao carregar as pessoas");
+                    }
+                }
+            };
+            xhr.send("verifica=" + encodeURIComponent(verifica) + "&id=" + ID);
+        }
+
+        function verificaUsuario(usuario) {
+            var usuarioID = usuario.id
+            var pai = usuario.parentElement;
+            console.log("\n pai :")
+            console.log(pai.id);
+
+            pai_do_pai = pai.parentElement;
+            console.log("\n pai_do_pai :");
+            console.log(pai_do_pai);
 
 
-        abrirPopup(usuarioID, pai);
+            abrirPopup(usuarioID, pai);
 
-        var pai_do_pai = pai.parentElement;
-        var nome = pai_do_pai.querySelector("#nomeCompleto");
-        var CPF = pai_do_pai.querySelector("#CPF");
-        var data={
-            nome: nome.textContent,
-            CPF: CPF.textContent
-        };
-        abrirPopup(usuarioID, pai, data);
-    }
+            var pai_do_pai = pai.parentElement;
+            var nome = pai_do_pai.querySelector("#nomeCompleto");
+            var CPF = pai_do_pai.querySelector("#CPF");
+            var data = {
+                nome: nome.textContent,
+                CPF: CPF.textContent
+            };
+            abrirPopup(usuarioID, pai, data);
+        }
 
-    function abrirPopup(usuarioID, pai, data) {
-        Swal.fire({
-            title: 'Escolha uma opção, para alterar o tipo de usuário',
-            html: `
+        function abrirPopup(usuarioID, pai, data) {
+            Swal.fire({
+                title: 'Escolha uma opção, para alterar o tipo de usuário',
+                html: `
             <div class="swal-columns">
                 <label>
                 <input type="radio" name="opcao" id="opcao1" value="opcao1">
@@ -437,196 +444,198 @@
                 </label>
             </div>
             `,
-            inputValidator: (result) => {
-            if (!result) {
-                return 'Você precisa selecionar uma opção!';
-            }
-            },
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            confirmButtonText: 'Confirmar',
+                inputValidator: (result) => {
+                    if (!result) {
+                        return 'Você precisa selecionar uma opção!';
+                    }
+                },
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Confirmar',
+                confirmButtonColor: '#00cc99',
             preConfirm: () => {
-                const selectedOption = document.querySelector('input[name="opcao"]:checked').value;
-                if (selectedOption === 'opcao1') { // Ação para Usuario comum
-                    if(usuarioID == 'usuarioNaoCadastrado')
-                        CadastroUsuario('', pai.id, data);
-                    else if(usuarioID == 'usuarioAdministrador'){
-                        console.log('retirar privilegio')
-                        alterarPrivilegioUsuario('retirar', pai.id);
-                    }else if(usuarioID == 'usuarioDesabilitado'){
-                        // console.log('habilitar usuario')
-                        alterarStatusUsuario('habilitar', pai.id);
-                        alterarPrivilegioUsuario('retirar', pai.id);
-                    }else
-                    if(usuarioID == 'usuarioComum')
-                        mesmoTipoUsuario();
-                } else 
-                if (selectedOption === 'opcao2') {// Ação para Administrador
-                    if(usuarioID == 'usuarioNaoCadastrado'){
-                        CadastroUsuario(1, pai.id, data);
-                    }else 
-                    if(usuarioID == 'usuarioComum'){
-                        alterarPrivilegioUsuario('adicionar', pai.id);
-                    }else
-                    if(usuarioID == "usuarioDesabilitado"){
-                        // console.log('habilitar usuario')
-                        alterarStatusUsuario('habilitar', pai.id);
-                        alterarPrivilegioUsuario('adicionar', pai.id);
-                    }else
+                    const selectedOption = document.querySelector('input[name="opcao"]:checked').value;
+                    if (selectedOption === 'opcao1') { // Ação para Usuario comum
+                        if (usuarioID == 'usuarioNaoCadastrado')
+                            CadastroUsuario('', pai.id, data);
+                        else if (usuarioID == 'usuarioAdministrador') {
+                            console.log('retirar privilegio')
+                            alterarPrivilegioUsuario('retirar', pai.id);
+                        } else if (usuarioID == 'usuarioDesabilitado') {
+                            // console.log('habilitar usuario')
+                            alterarStatusUsuario('habilitar', pai.id);
+                            alterarPrivilegioUsuario('retirar', pai.id);
+                        } else
+                            if (usuarioID == 'usuarioComum')
+                                mesmoTipoUsuario();
+                    } else
+                        if (selectedOption === 'opcao2') {// Ação para Administrador
+                            if (usuarioID == 'usuarioNaoCadastrado') {
+                                CadastroUsuario(1, pai.id, data);
+                            } else
+                                if (usuarioID == 'usuarioComum') {
+                                    alterarPrivilegioUsuario('adicionar', pai.id);
+                                } else
+                                    if (usuarioID == "usuarioDesabilitado") {
+                                        // console.log('habilitar usuario')
+                                        alterarStatusUsuario('habilitar', pai.id);
+                                        alterarPrivilegioUsuario('adicionar', pai.id);
+                                    } else
 
-                    if(usuarioID == 'usuarioAdministrador')
-                        mesmoTipoUsuario();
-                } else
-                if(selectedOption === 'opcao4'){ //Ação para desabilitar usuario
-                    console.log('selecionou desabilitar usuario');
-                    alterarStatusUsuario('desabilitar', pai.id);
+                                        if (usuarioID == 'usuarioAdministrador')
+                                            mesmoTipoUsuario();
+                        } else
+                            if (selectedOption === 'opcao4') { //Ação para desabilitar usuario
+                                console.log('selecionou desabilitar usuario');
+                                alterarStatusUsuario('desabilitar', pai.id);
+                            }
                 }
+            });
+            var opcao1 = document.getElementById('opcao1');
+            var opcao2 = document.getElementById('opcao2');
+            var opcao3 = document.getElementById('opcao3');
+            var label = document.getElementById('naocadastrado')
+
+            if (usuarioID == 'usuarioComum') {
+                opcao1.checked = true;
+                opcao1.disabled = true;
+                label.innerHTML = '<input type="radio" name="opcao" id="opcao4" value="opcao4"> Desabilitar Usuário';
+            } else if (usuarioID == 'usuarioAdministrador') {
+                opcao2.checked = true;
+                opcao2.disabled = true;
+                label.innerHTML = '<input type="radio" name="opcao" id="opcao4" value="opcao4"> Desabilitar Usuário';
+            } else if (usuarioID == 'usuarioNaoCadastrado') {
+                opcao3.checked = true;
+                opcao3.disabled = true;
+                label.innerHTML = '';
+            } else if (usuarioID == 'usuarioDesabilitado') {
+                label.innerHTML = '';
+
             }
-        });
-        var opcao1 = document.getElementById('opcao1');
-        var opcao2 = document.getElementById('opcao2');
-        var opcao3 = document.getElementById('opcao3');
-        var label = document.getElementById('naocadastrado')
-
-        if (usuarioID == 'usuarioComum') {
-            opcao1.checked = true;
-            opcao1.disabled = true;
-            label.innerHTML= '<input type="radio" name="opcao" id="opcao4" value="opcao4"> Desabilitar Usuário';
-        } else if (usuarioID == 'usuarioAdministrador') {
-            opcao2.checked = true;
-            opcao2.disabled = true;
-            label.innerHTML= '<input type="radio" name="opcao" id="opcao4" value="opcao4"> Desabilitar Usuário';
-        } else if (usuarioID == 'usuarioNaoCadastrado') {
-            opcao3.checked = true;
-            opcao3.disabled = true;
-            label.innerHTML= '';
-        }else if(usuarioID == 'usuarioDesabilitado'){
-            label.innerHTML= '';
-          
-        }
         }
 
-    function alterarPrivilegioUsuario(privilegio, ID_User){
-        if(privilegio === 'adicionar'){
-            var data = "adicionarPrivilegio=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
-            // console.log(data);
-            connection(data, "update", "POST")
+        function alterarPrivilegioUsuario(privilegio, ID_User) {
+            if (privilegio === 'adicionar') {
+                var data = "adicionarPrivilegio=" + 1 + "&ID_User=" + encodeURIComponent(ID_User);
+                // console.log(data);
+                connection(data, "update", "POST")
+            }
+            else if (privilegio === 'retirar') {
+                var data = "retirarPrivilegio=" + 1 + "&ID_User=" + encodeURIComponent(ID_User);
+                // console.log(data);
+                connection(data, "update", "POST")
+            }
         }
-        else if(privilegio === 'retirar'){
-            var data = "retirarPrivilegio=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
-            // console.log(data);
-            connection(data, "update", "POST")
-        }
-    }
 
-    function alterarStatusUsuario(status, ID_User){
-        if(status === 'desabilitar'){
-            var data = "desabilitarUsuario=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
-            // console.log(data);
-            connection(data, "update", "POST")
+        function alterarStatusUsuario(status, ID_User) {
+            if (status === 'desabilitar') {
+                var data = "desabilitarUsuario=" + 1 + "&ID_User=" + encodeURIComponent(ID_User);
+                // console.log(data);
+                connection(data, "update", "POST")
+            }
+            else if (status === 'habilitar') {
+                var data = "habilitarUsuario=" + 1 + "&ID_User=" + encodeURIComponent(ID_User);
+                connection(data, "update", "POST")
+            }
         }
-        else if(status === 'habilitar'){
-            var data = "habilitarUsuario=" +1 + "&ID_User=" + encodeURIComponent(ID_User);
-            connection(data, "update", "POST")
-        }
-    }
 
-    function CadastroUsuario(adm, ID_User, data){ 
-        console.log(data.nome);
-        console.log(data.CPF);
-                    
-        var nomeUsuario = criaNomeUsuario(data.nome);
+        function CadastroUsuario(adm, ID_User, data) {
+            console.log(data.nome);
+            console.log(data.CPF);
 
-        data = "registerUser=" + encodeURIComponent(1) + "&nome=" + encodeURIComponent(nomeUsuario) + "&senha=" + encodeURIComponent(data.CPF)+ "&idUsuario=" + encodeURIComponent(ID_User) + "&adm=" + encodeURIComponent(adm);
+            var nomeUsuario = criaNomeUsuario(data.nome);
+
+            data = "registerUser=" + encodeURIComponent(1) + "&nome=" + encodeURIComponent(nomeUsuario) + "&senha=" + encodeURIComponent(data.CPF) + "&idUsuario=" + encodeURIComponent(ID_User) + "&adm=" + encodeURIComponent(adm);
             connection(data, "update", "POST");
             Swal.close();
             showAlert();
 
 
-        function criaNomeUsuario(username) {
-            username = username.toLowerCase();
+            function criaNomeUsuario(username) {
+                username = username.toLowerCase();
 
-            // Separar o primeiro e o último nome
-            var nomes = username.split(' ');
-            var primeiroNome = nomes[0];
-            var ultimoNome = nomes[nomes.length - 1];
+                // Separar o primeiro e o último nome
+                var nomes = username.split(' ');
+                var primeiroNome = nomes[0];
+                var ultimoNome = nomes[nomes.length - 1];
 
-            // Unir o primeiro e o último nome com '_'
-            var nomeCompleto = primeiroNome + '' + ultimoNome;
+                // Unir o primeiro e o último nome com '_'
+                var nomeCompleto = primeiroNome + '' + ultimoNome;
 
-            return nomeCompleto;
-        } 
-    }
-    
-    function verificaNomeUsuario(){
-        var foo = document.getElementById("nome");
-        var data = "selectNameUser=" + 1+ "&nome=" + encodeURIComponent(foo.value);
-        connection(data, userAllowed, 'POST');
-    }
-
-    function connection(data, output, method) {
-        console.log(data);
-        var xhr = new XMLHttpRequest();
-        var url = "php/consultas.php";
-
-        if (method === "GET") {
-            url += "?" + data;
-        }
-
-        xhr.open(method, url, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    if(output == "update"){
-                        window.location.reload();
-                    }else
-                    output.innerHTML = xhr.responseText;
-                    // return xhr.responseText;
-                    // console.log(xhr.responseText);
-                } else {
-                    output.innerHTML = "Falha ao conectar ao banco de dados";
-                }
+                return nomeCompleto;
             }
-        };
-
-        if (method === "POST") {
-            xhr.send(data);
-        } else {
-            xhr.send();
         }
-    }
 
-    function mesmoTipoUsuario(){
-        Swal.fire({
-            title: 'Usuário já está cadastrado com essa opção',
-            icon: 'warning',
-            showConfirmButton: false,
-            timer: 2000
-        });
-    }
+        function verificaNomeUsuario() {
+            var foo = document.getElementById("nome");
+            var data = "selectNameUser=" + 1 + "&nome=" + encodeURIComponent(foo.value);
+            connection(data, userAllowed, 'POST');
+        }
 
-    function showAlert() {
-        var userAllowed = document.getElementById("userAllowed");
-        
-        // Salvar o estilo original
-        var originalStyle = userAllowed.style.cssText;
-        
-        // Modificar o estilo para exibir a mensagem de erro
-        userAllowed.style.backgroundColor = "red";
-        userAllowed.style.color = "white";
-        userAllowed.style.display= "block";
-        
-        // Aguardar 3 segundos
-        setTimeout(function() {
-            // Restaurar o estilo original
-            userAllowed.style.cssText = originalStyle;
-            
-            // Limpar a mensagem de erro
-            userAllowed.textContent = "";
-        }, 3000);
-    }
+        function connection(data, output, method) {
+            console.log(data);
+            var xhr = new XMLHttpRequest();
+            var url = "php/consultas.php";
 
-</script>
+            if (method === "GET") {
+                url += "?" + data;
+            }
+
+            xhr.open(method, url, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        if (output == "update") {
+                            window.location.reload();
+                        } else
+                            output.innerHTML = xhr.responseText;
+                        // return xhr.responseText;
+                        // console.log(xhr.responseText);
+                    } else {
+                        output.innerHTML = "Falha ao conectar ao banco de dados";
+                    }
+                }
+            };
+
+            if (method === "POST") {
+                xhr.send(data);
+            } else {
+                xhr.send();
+            }
+        }
+
+        function mesmoTipoUsuario() {
+            Swal.fire({
+                title: 'Usuário já está cadastrado com essa opção',
+                icon: 'warning',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }
+
+        function showAlert() {
+            var userAllowed = document.getElementById("userAllowed");
+
+            // Salvar o estilo original
+            var originalStyle = userAllowed.style.cssText;
+
+            // Modificar o estilo para exibir a mensagem de erro
+            userAllowed.style.backgroundColor = "red";
+            userAllowed.style.color = "white";
+            userAllowed.style.display = "block";
+
+            // Aguardar 3 segundos
+            setTimeout(function () {
+                // Restaurar o estilo original
+                userAllowed.style.cssText = originalStyle;
+
+                // Limpar a mensagem de erro
+                userAllowed.textContent = "";
+            }, 3000);
+        }
+
+    </script>
 </body>
+
 </html>

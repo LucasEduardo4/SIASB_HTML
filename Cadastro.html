@@ -82,7 +82,8 @@
     let email = document.getElementById("email").value;
     let usuario = document.getElementById("usuario").checked;
     var nomeSeparado = '';
-    if(usuario){
+    
+    if(usuario){ //somente alimenta a variavel nomeSeparado, se o checkbox estiver marcado
       nomeSeparado = separarNomes(nome);
       console.log(nomeSeparado);
 
@@ -117,6 +118,7 @@
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             if (output == "reload") {
+              console.log(xhr.responseText);
               Swal.fire({
                 icon: 'success',
                 title: 'Usuário inserido com sucesso',

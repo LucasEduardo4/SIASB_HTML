@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "SELECT * FROM tbusuario u join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
 
 
-        $setor = 0;
+        $setor_secao = 0;
 
         $result = $conn->query($sql);
         if ($result) {
@@ -15,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 while ($row = $result->fetch_assoc()) {
                     $IDUsuario = $row["IDUsuario"];
                     $nome = $row["nome"];
-                    $setor = $row["setor"];
+                    $setor_secao = $row["setor_secao"];
                     // Adicionar os valores na tabela HTML com ícones de ação
                 }
             } else {
-                $setor = 0;
+                $setor_secao = 0;
             }
         } else {
             echo "Erro na consulta SQL: " . $conn->error;
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sql .= " join tbstatus_chamado sc on status_chamado = sc.IDStatus";
 
-        if ($setor == 1) { //setor 1 == tecnologia
+        if ($setor_secao == 1) { //setor_secao 1 == tecnologia
             $sql .= " WHERE 1=1"; // Consulta básica ADM:
         } else {
             $sql .= " WHERE autor = '$IDUsuario'"; //Consulta básica Usuário comum

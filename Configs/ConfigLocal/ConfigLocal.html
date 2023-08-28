@@ -2,16 +2,15 @@
 <html lang="en">
 
 <head>
-    <script src='./../../flowSite/verificaSessao.js'></script>
-    <script src="/flowSite/verificaSessao.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurar tipo de equipamento</title>
-
     <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
     <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
     <link rel="stylesheet" href="../lib/stylesheet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src='./../../flowSite/verificaSessao.js'></script>
+
+    <title>Document</title>
     <style>
         #cadastro {
             display: none;
@@ -48,7 +47,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 10%;
+            width: 35%;
         }
 
         .back-button {
@@ -63,7 +62,7 @@
             margin: auto;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             /* padding-top: 30px; */
-            font-size: 33px;
+            font-size: 38px;
             color: #000000;
             text-align: start;
             padding-left: 20px;
@@ -79,7 +78,7 @@
             padding-right: 100px; */
             border-radius: 15px;
             box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+            margin-top: 110px;
             width: 100%;
 
 
@@ -131,8 +130,6 @@
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
-
-
         }
 
 
@@ -240,96 +237,182 @@
 
             margin-left: 0px;
         }
-    </style>
 
+        #theEnd {
+            position: absolute;
+            padding: 200px;
+            background-color: white;
+            left: 100px;
+
+        }
+
+        span {
+            cursor: pointer;
+            padding: 5px;
+            font-size: 25px;
+            margin-left: 5px;
+        }
+    </style>
 </head>
 
-<body onload="select()">
+<body onload="connection('selectLocal=1', 'select')">
     <header class="header">
-
         <a href="../index.html" class="back-button"><i style="font-size: 40px"
                 class="bi-arrow-left-circle bi-lg"></i></a>
-        <h1 class="title">CONFIGURAÇÕES TIPO EQUIPAMENTO</h1>
-
+        <h1 class="title">CONFIGURAÇÕES LOCAIS</h1>
+        </a>
     </header>
 
-    <main style="margin-left:320px" class="main-content">
-
+    <main class="main-content">
         <hr>
-        <h3 style="font-size: 18px" id="novo" onclick="exibirCadastro()">CADASTRAR NOVO TIPO : <i
+        <h3 style="font-size: 18px" id="novo" onclick="divCadastro()">CADASTRAR NOVO LOCAL : <i
                 class="bi bi-plus-circle"></i></h3>
 
         <div id="cadastro" class="container-fluid p-5 border">
             <form>
+
                 <div class="mb-3">
-                    <label for="" class="form-label">NOME TIPO DO EQUIPAMENTO</label>
-                    <input type="text" class="form-control" id="novoTipo">
+                    <label for="" class="form-label">DESCRIÇÃO</label>
+                    <input type="text" class="form-control" id="novoLocal">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">ENDEREÇO</label>
+                    <!-- <select name="" id="selectGerentes" class="form-select"> -->
+                    <input type="text" class="form-control" id="endereco">
+
                 </div>
             </form>
             <div class="text-center">
-                <button class="btn btn-success" onclick="adicionarTipo()">ADICIONAR NOVO TIPO</button>
+                <button class="btn btn-success" onclick="adicionarLocal()">ADICIONAR SETOR</button>
             </div>
         </div>
         <div class="container-fluid" style="margin-top: 40px;">
-            <table id="tableTipo" class="table table-striped table-hover">
+            <table id="tableLocal" class="table table-striped table-hover">
                 <tr class="table-dark">
-                    <th>IDTipo</th>
+                    <th>ID Local</th>
                     <th>Descrição</th>
-                    <th>Deletar</th>
+                    <th>Endereço</th>
+                    <th>Ativo</th>
+                    <th>Ações</th>
                 </tr>
-                <tr></tr>
+                <tbody>
+                </tbody>
             </table>
+            <span class='bi bi-pencil' onclick="action('edit-1')" id='edit-'></span>
+            <span class='bi bi-trash' onclick="action(this.id)" id='trash-'></span>
+            <span class='bi bi-check-square' id='save-'></span></td>
+            </tr>";
         </div>
 
     </main>
-
     <script>
-        var controle = 1;
-        function exibirCadastro() {
+        var controle = 1; //para nao duplicar os dados.
+        function divCadastro() {
             if (controle == 1) {
                 document.getElementById("cadastro").style.display = "grid"
                 var novo = document.getElementById("novo");
-                novo.innerHTML = "Cadastrar novo tipo : <i class='bi bi-dash-circle'></i>"
+                novo.innerHTML = "CADASTRAR NOVO LOCAL : <i class='bi bi-dash-circle'></i>"
                 controle++;
             } else
                 if (controle != 1) {
                     document.getElementById("cadastro").style.display = "none"
                     var novo = document.getElementById("novo");
-                    novo.innerHTML = "Cadastrar novo tipo : <i class='bi bi-plus-circle'></i>"
+                    novo.innerHTML = "CADASTRAR NOVO LOCAL : <i class='bi bi-plus-circle'></i>"
                     controle = 1;
                 }
         }
-        function select() {
-            var tableTipo = document.getElementById("tableTipo");
+
+        function adicionarLocal() {
+            var nomeLocal = document.getElementById("novoLocal").value;
+            var endereco = document.getElementById("endereco").value;
+
+            var data = "insertLocal=1&nomeLocal=" + encodeURIComponent(nomeLocal) + "&endereco=" + encodeURIComponent(endereco);
+            connection(data, 'refresh');
+        }
+
+        function connection(data, output) {
             var xhr = new XMLHttpRequest();
-            var data = "select=1";
-            connection("POST", data, tableTipo);
-        }
-        function adicionarTipo() {
-            var digitado = document.getElementById("novoTipo").value;
-            var data = "insert=1" + "&digitado=" + encodeURIComponent(digitado);
-            connection("POST", data, "reset")
-        }
-        function deletarTipo(IDTipo) {
-            var data = "delete=1" + "&IDTipo=" + encodeURIComponent(IDTipo);
-            connection("POST", data, "reset")
-        }
-        function connection(method, data, output) {
-            xhr.open(method, "ConfigTipoEquipamento.php", true);
+            xhr.open("POST", "ConfigLocal.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    if (output == tableTipo) {
-                        output.innerHTML += xhr.responseText;
-                    } else
-                        if (output == "reset") {
-                            window.location.reload();
-                            // console.log(xhr.responseText);
-                        }
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (output == 'refresh')
+                        window.location.reload();
+                    if (output == 'select')
+                        unParse(xhr.responseText)
                 }
-            }
+            };
             xhr.send(data);
-        }  
+        }
+
+        function unParse(data) {
+            var dados = JSON.parse(data);
+            var table = document.getElementById("tableLocal");
+
+
+            for (let key in dados) {
+                let value = dados[key];
+                table.innerHTML += `<tr>
+                    <td>${value.ID}</td>
+                    <td id='desc-${value.ID}'>${value.descricao}</td>
+                    <td id='end-${value.ID}'>${value.endereco}</td>
+                    <td id='atv-${value.ID}'>${value.ativo}</td>
+                    <td>
+                        <span class='bi bi-pencil' onclick="action('edit-${value.ID}')" id='edit-${value.ID}'></span>
+                        <span class='bi bi-trash' onclick="action('trash-${value.ID}')" id='trash-${value.ID}'></span>
+                        </td>
+                        </tr>`;
+                // table.innerHTML += "<td>" + value.ID + "</td><td>" + value.descricao + "</td><td>"+value.endereco+"</td><td>"+value.ativo+"</td><td><span class='bi bi-pencil' onclick='action('edit-"+value.ID+"')' id='edit-"+value.ID+"'></span><span class='bi bi-trash'  onclick='action(trash-"+value.ID+")' id='trash-"+value.ID+"'></span></td>";
+            }
+
+        }
+
+        function action(recebido) {
+            var acao = recebido.split("-");
+            comando = acao[0];
+            id = acao[1];
+
+            if (comando == 'edit') {
+                var icon = document.getElementById("edit-" + id);
+                if (icon.classList.contains("bi-pencil")) {
+                    icon.classList.remove("bi-pencil");
+                    icon.classList.add("bi-check-square");
+                    editCell(id, "desc");
+                    editCell(id, "end");
+                    editCell(id, "atv");
+
+                } else {
+                    icon.classList.remove("bi-check-square");
+                    icon.classList.add("bi-pencil");
+
+                    updateCell(id, "desc");
+                    updateCell(id, "end"); //<-- voltar aqui... ao inves de apenas voltar os icones, acrescentar também uma chamada para a função
+                    updateCell(id, "atv"); // connection, e enviar para o configLocal.php um comando para dar update no banco.
+                }
+            } else
+                if (comando == 'trash') {
+                    console.log("trash")
+                }
+
+            function editCell(id, field) {
+                var cell = document.getElementById(field + "-" + id);
+                var value = cell.innerHTML;
+
+                var inputElement = document.createElement("input");
+                inputElement.value = value;
+                inputElement.id = "input-" + field + "-" + id;
+
+                cell.innerHTML = "";
+                cell.appendChild(inputElement);
+            }
+            function updateCell(id, field) {
+                var inputElement = document.getElementById("input-" + field + "-" + id);
+                var value = inputElement.value;
+
+                var cell = document.getElementById(field + "-" + id);
+                cell.innerHTML = value;
+            }
+        }
     </script>
 </body>
 

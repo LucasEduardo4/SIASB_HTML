@@ -33,12 +33,12 @@
         <label for="tipo">Tipo:</label>
         <select id="selectTipos" name="tipo">
           <option value="" disabled selected hidden>Escolha uma das opções</option>
-          <option value="">Aqui preciso de um select no banco de dados, para todos os tipos de equipamentos possiveis
+          <!-- <option value="">Aqui preciso de um select no banco de dados, para todos os tipos de equipamentos possiveis -->
           </option>
         </select>
       </div>
       <div class="form-group">
-        <label for="secao">Seção:</label>
+        <label for="secao">Setor/Seção:</label>
         <select id="selectSecoes" name="secao" onchange="selectPerson()">
           <option value="" disabled selected hidden>Escolha uma das opções</option>
         </select>
@@ -198,6 +198,7 @@
     }
 
     function unParse(data) {
+      console.log(data)
       var dadosObjeto = JSON.parse(data)
       var tipos = dadosObjeto.tipos;
       var secoes = dadosObjeto.secoes;
