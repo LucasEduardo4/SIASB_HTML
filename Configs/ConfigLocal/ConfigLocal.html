@@ -7,10 +7,11 @@
     <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
     <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
     <link rel="stylesheet" href="../lib/stylesheet.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src='./../../flowSite/verificaSessao.js'></script>
 
-    <title>Document</title>
+    <title>Config Local</title>
     <style>
         #cadastro {
             display: none;
@@ -95,6 +96,7 @@
             margin-bottom: 20px;
         }
 
+        /* MARK */
         .add-status-form label {
             margin-right: 10px;
         }
@@ -183,8 +185,9 @@
             padding-right: 40px;
             font-weight: bold;
             box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
-
         }
+
+        /* MARK */
 
         button i {
             margin-right: 5px;
@@ -211,17 +214,6 @@
             }
         }
 
-
-
-        .swal-columns {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .swal-columns input {
-            margin: 20px 0px;
-        }
-
         tbody,
         td,
         tfoot,
@@ -238,19 +230,37 @@
             margin-left: 0px;
         }
 
-        #theEnd {
-            position: absolute;
-            padding: 200px;
-            background-color: white;
-            left: 100px;
-
+        .bi {
+            padding: 5px;
+            font-size: 20px;
+            margin-left: 5px;
+            cursor: pointer;
         }
 
-        span {
-            cursor: pointer;
-            padding: 5px;
-            font-size: 25px;
-            margin-left: 5px;
+        #popupEdit #head {
+            width: 100px;
+            height: auto;
+            text-align: center;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        #popupEdit p {
+            display: inline-block;
+            vertical-align: middle;
+            margin: auto;
+        }
+
+        .swal2-input {
+            margin: 5px 0px;
+        }
+
+        #head .checkbox {
+            width: 250px;
+        }
+
+        #ativo {
+            left: 0px;
         }
     </style>
 </head>
@@ -298,15 +308,19 @@
                 <tbody>
                 </tbody>
             </table>
-            <span class='bi bi-pencil' onclick="action('edit-1')" id='edit-'></span>
-            <span class='bi bi-trash' onclick="action(this.id)" id='trash-'></span>
-            <span class='bi bi-check-square' id='save-'></span></td>
-            </tr>";
+            </tr>
         </div>
 
     </main>
+    <div style="display: none;">
+        <p id="divinv"></p> <!-- NÃO APAGAR...-->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        var controle = 1; //para nao duplicar os dados.
+        const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+        var globalDelete = '';
+
+        var controle = 1;
         function divCadastro() {
             if (controle == 1) {
                 document.getElementById("cadastro").style.display = "grid"
@@ -340,6 +354,10 @@
                         window.location.reload();
                     if (output == 'select')
                         unParse(xhr.responseText)
+                    if (output == 'refresh2') {
+                        var divinv = document.getElementById("divinv");
+                        divinv.innerHTML = xhr.responseText
+                    }
                 }
             };
             xhr.send(data);
@@ -349,15 +367,17 @@
             var dados = JSON.parse(data);
             var table = document.getElementById("tableLocal");
 
+            var sqrchk = document.getElementsByClassName("bi bi-check-square");
+            var sqr = document.getElementsByClassName("bi bi-square");
 
             for (let key in dados) {
                 let value = dados[key];
                 table.innerHTML += `<tr>
-                    <td>${value.ID}</td>
+                    <td id='id-${value.ID}'>${value.ID}</td>
                     <td id='desc-${value.ID}'>${value.descricao}</td>
                     <td id='end-${value.ID}'>${value.endereco}</td>
-                    <td id='atv-${value.ID}'>${value.ativo}</td>
-                    <td>
+                    <td id='atv-${value.ID}'><span id="bitIcon-${value.ID}" onclick="toggleBit(${value.ID})" class="${value.ativo == 1 ? 'bi bi-check-square' : 'bi bi-square'}"></span></td>
+                    <td style="padding:auto;">
                         <span class='bi bi-pencil' onclick="action('edit-${value.ID}')" id='edit-${value.ID}'></span>
                         <span class='bi bi-trash' onclick="action('trash-${value.ID}')" id='trash-${value.ID}'></span>
                         </td>
@@ -367,51 +387,137 @@
 
         }
 
+        function toggleBit(ID) {
+            var bit = document.getElementById("bitIcon-" + ID);
+
+            if (bit.classList.contains("bi-square")) {
+                var data = "updateLocal=1&ID=" + ID + "&ativo=1";
+                connection(data, 'refresh2');
+            } else if (bit.classList.contains("bi-check-square")) {
+                var data = "updateLocal=1&ID=" + ID + "&ativo=0";
+                connection(data, 'refresh2');
+            }
+            window.location.reload();
+        }
+
         function action(recebido) {
             var acao = recebido.split("-");
             comando = acao[0];
             id = acao[1];
+            var lixeira = document.getElementById("trash-" + id);
+            //dados recebidos:
+            var ID = document.getElementById("id-" + id).innerHTML;
+            var descricao = document.getElementById("desc-" + id).innerHTML;
+            var endereco = document.getElementById("end-" + id).innerHTML;
+            var ativo = document.getElementById("bitIcon-" + id);
 
-            if (comando == 'edit') {
-                var icon = document.getElementById("edit-" + id);
-                if (icon.classList.contains("bi-pencil")) {
-                    icon.classList.remove("bi-pencil");
-                    icon.classList.add("bi-check-square");
-                    editCell(id, "desc");
-                    editCell(id, "end");
-                    editCell(id, "atv");
 
-                } else {
-                    icon.classList.remove("bi-check-square");
-                    icon.classList.add("bi-pencil");
+            if (comando == 'edit') {//botao editar
+                openEditPopup(ID, descricao, endereco, ativo)
 
-                    updateCell(id, "desc");
-                    updateCell(id, "end"); //<-- voltar aqui... ao inves de apenas voltar os icones, acrescentar também uma chamada para a função
-                    updateCell(id, "atv"); // connection, e enviar para o configLocal.php um comando para dar update no banco.
-                }
             } else
                 if (comando == 'trash') {
-                    console.log("trash")
+                    Swal.fire({
+                        title: 'Tem certeza?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#00cc99',
+                        confirmButtonText: 'Sim, delete!',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var data = "deleteLocal=1&ID=" + ID;
+                            connection(data, 'refresh2');
+                            
+                            var asnc = async () => {
+                                await sleep(250)
+                                var result = document.getElementById('divinv').innerHTML;
+                                if (result == true || result == 'true') {
+                                    Swal.fire({
+                                        title: 'Deletado!',
+                                        text: 'O local foi deletado com sucesso.',
+                                        icon: 'success',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });;
+                                } else {
+                                    Swal.fire({
+                                        title: 'Não foi possível deletar ',
+                                        text: 'Existem outros dados vinculados à esse Local',
+                                        icon: 'error',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                            asnc();
+                        }
+                    })
                 }
 
-            function editCell(id, field) {
-                var cell = document.getElementById(field + "-" + id);
-                var value = cell.innerHTML;
+            function openEditPopup(id, descricao, endereco, ativo) {
+                Swal.fire({
+                    title: 'Editar Dados',
+                    html: `
+                        <div id="popupEdit" class="container">
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="descricao">Descrição:</p>
+                                </div><div class="col">
+                                <input id="descricao" type="text" class="swal2-input" value="${descricao}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="end">Endereço:</p>
+                                </div><div class="col">
+                                <input id="end" type="text" class="swal2-input" value="${endereco}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="ativo">Ativo:</p>
+                                </div><div class="col checkbox">
+                                <input id="ativo" type="checkbox" class="form-check-input" ${ativo.classList.contains("bi-check-square") ? 'checked' : ''}>
 
-                var inputElement = document.createElement("input");
-                inputElement.value = value;
-                inputElement.id = "input-" + field + "-" + id;
-
-                cell.innerHTML = "";
-                cell.appendChild(inputElement);
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Salvar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#00cc99', // Altera a cor do botão Confirmar
+                    // padding: '2rem', // Aumenta a margem geral do popup
+                    customClass: {
+                        confirmButton: 'swal2-small', // Reduz o tamanho do botão Confirmar
+                        cancelButton: 'swal2-small' // Reduz o tamanho do botão Cancelar
+                    },
+                    preConfirm: () => {
+                        const descricao = document.getElementById('descricao').value;
+                        const endereco = document.getElementById('end').value;
+                        const ativo = document.getElementById('ativo').checked ? '1' : '0';
+                        var data = "updateLocal=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&endereco=" + encodeURIComponent(endereco) + "&ativo=" + ativo;
+                        connection(data, 'refresh2');
+                        return descricao, endereco, ativo;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Dados Atualizados',
+                            text: 'Os dados foram atualizados com sucesso!',
+                            icon: 'success',
+                            timer: 3000
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    }
+                });
             }
-            function updateCell(id, field) {
-                var inputElement = document.getElementById("input-" + field + "-" + id);
-                var value = inputElement.value;
 
-                var cell = document.getElementById(field + "-" + id);
-                cell.innerHTML = value;
-            }
+
         }
     </script>
 </body>
