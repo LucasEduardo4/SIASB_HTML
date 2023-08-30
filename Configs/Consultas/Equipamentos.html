@@ -33,8 +33,9 @@
             height: 100%;
   margin: 0;
   display: flex;
-            justify-content: center;
+            /* justify-content: center; */
   align-items: center;
+  margin-top:110px;
             
         }
 
@@ -47,7 +48,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 10%;
+            width: 25%;
         }
 
         .back-button {
@@ -130,6 +131,8 @@
             background-color:white; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
             margin: auto;
+            margin-left: 30px;
+            
             
             
         }
@@ -140,6 +143,7 @@
 
             background-color: white;
             border-radius: 10px;
+            
 
         }
 
@@ -147,6 +151,7 @@
 
             --bs-table-striped-bg: #00a383;
             --bs-table-hover-bg: #00a383;
+            
 
         }
 
@@ -180,11 +185,12 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
-            width:100%;
+            /* width:100%; */
             padding-left: 40px;
             padding-right: 40px;
             font-weight: bold;
             box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+            margin: 2px;
 
         }
 
@@ -193,7 +199,7 @@
         }
 
         button:hover {
-            background-color: #007bff;
+            background-color: #00cc99;
         }
 
         /* Responsive Design */
@@ -257,7 +263,7 @@
 
   <div class="box-sqr" style="margin-top: 0px;" id="cadastrados">
     
-    <div style="display: flex; height: 45px;">
+    <div style="display: flex; height: 45px; margin-left: 60px;">
 
     <button class="tab selected" onclick="handleTab(1)">Equipamentos Cadastrados</button>
 
@@ -278,7 +284,7 @@
   </div>
   <div class="box-sqr" id="naocadastrados" style="display: none;">
 
-    <div style="display: flex; height: 45px;">
+    <div style="display: flex; height: 45px; margin-left: 60px">
 
       <button class="tab selected" onclick="handleTab(1)">Equipamentos Cadastrados</button>
   
@@ -331,7 +337,7 @@
         if (dadosObjeto[i].tipo != 'Sem Cadastro') {
           tableEquipment.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td>" + dadosObjeto[i].secao + "</td></tr>";
         } else {
-          tableEquipmentNaoCadastrado.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td><span id='cadastrar' class='text-bg-success' onclick='cadastrarEquip(" +JSON.stringify(dadosObjeto[i]) + ")' style='padding: 5px;border-radius:6px;'>Cadastrar</span></td></tr>";
+          tableEquipmentNaoCadastrado.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td><button id='cadastrar' class='text-bg-success' onclick='cadastrarEquip(" +JSON.stringify(dadosObjeto[i]) + ")' style='padding: 5px;border-radius:6px;'>Cadastrar</button></td></tr>";
         }
       }
     }

@@ -113,7 +113,6 @@ if ($imageData) {
             background-color: #f2f2f2;
             margin: 0;
             padding: 0;
-            z-index: 10;
         }
 
         h2 {
@@ -198,7 +197,7 @@ if ($result->num_rows > 0) {
 
 
 // Consulta para recuperar as informações do usuário
-$sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor_secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
+$sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -249,16 +248,18 @@ $conn->close();
 
 
         // Consulta para recuperar as informações do usuário
-        $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor_secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
+        $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             echo "<h2>Informações do Usuário</h2>";
+            echo "<p><strong>ID:</strong> " . $row['IDPessoa'] . "</p>";
             echo "<p><strong>Nome Completo:</strong> " . $row['nomeCompleto'] . "</p>";
             echo "<p><strong>CPF:</strong> " . $row['cpf'] . "</p>";
             echo "<p><strong>Matrícula:</strong> " . $row['matricula'] . "</p>";
-            echo "<p><strong>Setor / Seção:</strong> " . $row['setor_secao'] . "</p>";
+            echo "<p><strong>Setor:</strong> " . $row['setor'] . "</p>";
+            echo "<p><strong>Seção:</strong> " . $row['secao'] . "</p>";
             echo "<p><strong>Email:</strong> " . $row['email'] . "</p>";
         } else {
             echo "Nenhum usuário encontrado.";
@@ -270,7 +271,7 @@ $conn->close();
 
     <!------------------------------------------- SUBINDO IMAGEM PARA FOTO DE PERFIL --------------------------------------->
 
-    <!-- <div id="profile-actions-div" style="display: none;">
+    <div id="profile-actions-div" style="display: none;">
        
     <div class="container">
         <div class="div1">
@@ -318,10 +319,11 @@ $conn->close();
         });
     </script>
         </div>
- -->
 
 
- 
+
+
+    
     <!-- REALIZANDO A ALTERAÇÃO DA SENHA -->
 
     <div class="div2">
@@ -391,9 +393,31 @@ $conn->close();
 ?>
     </div>
     </div>
+
+
     </div>
+
+    <button style="" id="toggle-button">CONFIGURAÇÕES</button>
+
+    <script>
+        const userInfoDiv = document.getElementById("user-info-div");
+        const profileActionsDiv = document.getElementById("profile-actions-div");
+        const toggleButton = document.getElementById("toggle-button");
+
+        toggleButton.addEventListener("click", function () {
+            userInfoDiv.style.display = userInfoDiv.style.display === "none" ? "block" : "none";
+            profileActionsDiv.style.display = profileActionsDiv.style.display === "none" ? "block" : "none";
+        });
+    </script>
+
 </div>
+
+
 </div>
+    
+
+    
+ 
 </body>
 </html>
 

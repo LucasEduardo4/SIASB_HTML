@@ -183,6 +183,7 @@ if ($imageData) {
 
     body {
       background-color: #f6f6f6;
+      z-index: 10;
 
     }
 
@@ -247,8 +248,19 @@ if ($imageData) {
       margin-right: 180px;
       color: #333;
       border-radius: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 40px;
       font-weight: bold;
+      display: inline-flex;
+      padding-left: 10px;
+    }
+
+    p {
+      padding-left: 10px;
+    }
+
+    p:hover {
+      color: white;
+
     }
 
     .menu-item.active {
@@ -381,6 +393,91 @@ if ($imageData) {
     #icone {
       clip-path: circle(farthest-side);
     }
+
+
+
+
+
+
+    .menu-image {
+    /* width: 30px;  */
+    height: 30px; 
+    vertical-align: middle; /* Alinhar verticalmente com o texto */
+  }
+
+    body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.menu-container {
+  /* position: fixed; */
+  top: 0;
+  right: 0;
+  width: 3.5%;
+  height: 100%;
+  background-color: #333;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.menu-expanded {
+  width: 15%;
+}
+
+.menu-hidden {
+  display: none;
+  padding: 20px;
+}
+
+.menu-container:hover {
+  width: 15%;
+}
+
+.menu-container:hover .menu-hidden {
+  display: block;
+}
+
+a {
+  color: white;
+}
+
+/* REMOVENDO AS LOGOS QUANDO EXPANDIR A DIV */
+.teste {
+  color: white;
+}
+
+.menu-container:hover .teste {
+  display: none;
+}
+
+
+.perfil_img {
+  position:absolute;
+  margin: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 0;
+    min-height: 100%;
+    margin-left: 95%;
+}
+
+.troca_cor {
+  position:absolute;
+  margin-left: 5px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 11;
+    /* min-height: 99vh; */
+    margin-top: 46%;
+  }
+
+
   </style>
 
   <!-- Custom styles for this template -->
@@ -415,7 +512,7 @@ if ($imageData) {
 
   <!-- RELIZANDO A TROCA DE TEMAS DO SITE, DE CLARO PARA ESCURO -->
 
-  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+  <div class="troca_cor">
     <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
       aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
       <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
@@ -450,6 +547,51 @@ if ($imageData) {
       </li>
     </ul>
   </div>
+
+  <div class="perfil_img">
+  <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+          data-bs-toggle="dropdown" aria-expanded="false">
+
+
+
+          <div style="">
+            <div id="anexosContainer"></div>
+          </div>
+
+          <script>
+
+            var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
+            if (imagem) {
+              document.getElementById("anexosContainer").innerHTML +=
+                '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="60" height="60" alt="" /></p>';
+            } else {
+              document.getElementById("anexosContainer").innerHTML +=
+                '<p>Nenhuma imagem anexada para este chamado.</p>';
+            }
+          </script>
+
+
+          <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+
+
+
+
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+
+          <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
+          <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
+        </ul>
+      </div>
+    </div>
+</div>
 
   <!-- <header >
     <button id="theme-toggle">Alterar Tema</button>
@@ -517,44 +659,89 @@ if ($imageData) {
 
     <!-- <div style="background-color: green; padding-left:300px; padding-bottom:20px;" > -->
 
+    
+
+  <div class="menu-container" id="menu">
+    <div class="menu-hidden" id="menuHidden">
+
+    <p style="color:white; font-size:30px; padding-bottom:20px"> SIASB</p>
+
+      <div onclick="abrirHome()">
+        <li onclick="alterarCor(this)" class="menu-item">
+          <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image"> <p style="color: white;"> HOME </p>
+        </li>
+      </div>
+
+      <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
+      <div onclick="abrirIframe('Ver Chamados')">
+        <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
+          <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22"> <p style="color: white;"> CHAMADOS </p>
+        </li>
+      </div>
+
+      <div onclick="abrirSite()">
+        <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
+          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22"> <p style="color: white;"> SITE </p>
+        </li>
+      </div>
+
+      <div onclick="abrirConfiguracoes()">
+        <li onclick="alterarCor(this)" class="menu-item">
+          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22"> <p style="color: white;"> CONFIGURAÇÕES </p>
+        </li>
+      </div>
     </div>
-    <div style=" width: 60px; background-color: #00a383; padding-bottom:10px;">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
 
-        <!-- <img class="bi pe-none me-2" width="40" height="32"><use xlink:href="  "></use></img> -->
+    <div class="teste">
 
-        <!-- LOGO DO SAAE PARA A SIDEBAR -->
+    <!-- <img src="..\Icones Site\logo.png" alt="saaeb barretos" width="60" height="80"> -->
 
-        <!-- <img style="padding-left:12px; padding-top: 10px;" src="uploads\Icone-Saae.png" alt="saaeb barretos" width="55" height="48"> -->
+            <li style="padding-left:17px; padding-top: 40px;"class="menu-item">
+              <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
+            </li>
 
-        <!-- <span class="fs-4">SIASB</span> -->
+ 
+            <li style="padding-left:7px;" class="menu-item">
+              <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
+            </li>
+
+            <li style="padding-left:9px;" class="menu-item">
+              <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
+            </li>
+
+            <li style="padding-left:17px;" class="menu-item">
+              <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
+            </li>
+    </div>
+
+    
 
 
-        <!-- ALTERNATIVA DA LOGO, COLOCANDO O NOME DO SISTEMA -->
-        <!-- <p style="padding-left: 30px; font-size: 30px; padding-top: 10px;"> SIASB</p> -->
+  </div>
 
+
+
+
+
+  <!-- </div>
+    <div style=" width: 60px; background-color: #00a383; padding-bottom:10px;" >
+      <a >
+        <img style="margin-right:30px; padding-top: 0px;" src="..\Icones Site\logo.png" alt="saaeb barretos" width="80" height="110">
       </a>
 
-      <!-- ALTERAÇÃO REFEITA DA HOME COM LISTA DE PARAGRAFOS -->
-      <nav class="menu">
-        <ul>
-
+      <nav class="menu"  >
+        <ul >
           <div onclick="abrirHome()">
             <li onclick="alterarCor(this)" class="menu-item">
               <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
             </li>
           </div>
 
-
-
-          <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
           <div onclick="abrirIframe('Ver Chamados')">
             <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
               <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
             </li>
-
           </div>
-
 
           <div onclick="abrirSite()">
             <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
@@ -567,61 +754,39 @@ if ($imageData) {
               <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
             </li>
           </div>
-
         </ul>
-      </nav>
+
+      </nav> -->
 
 
-      <hr>
-      <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-          data-bs-toggle="dropdown" aria-expanded="false">
+      <!-- REALIZANDO O OVERLAY DO MENU -->
+
+    <!-- <script> 
+    function openMenu() {
+    const closedMenu = document.querySelector('.closed-menu');
+    }
+
+    function closeMenu() {
+    const closedMenu = document.querySelector('.closed-menu');
+    }
+    </script> -->
+
+<!-- 
+      <script>
+    var menuToggle = document.getElementById('menu-toggle');
+    var overlay = document.getElementById('overlay');
+
+    menuToggle.addEventListener('mouseover', function() {
+    overlay.style.left = '0';
+    });
+
+    overlay.addEventListener('mouseleave', function() {
+    overlay.style.left = '-300px';
+    });
+      </script> -->
 
 
-          <!-- AQUI ESTOU REALIZANDO A INSERÇÃO DA IMAGEM DE PERFIL -->
-          <!-- <div id="imagemContainer">
-             <img src="<?php echo $imageUrl; ?>" alt="" width="50" height="50" class="rounded-circle me-2"> 
-          </div> -->
-
-
-
-          <div style="">
-            <div id="anexosContainer"></div>
-          </div>
-
-          <script>
-
-            var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
-
-            if (imagem) {
-              document.getElementById("anexosContainer").innerHTML +=
-                '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="50" height="50" alt="" /></p>';
-            } else {
-              document.getElementById("anexosContainer").innerHTML +=
-                '<p>Nenhuma imagem anexada para este chamado.</p>';
-            }
-          </script>
-
-
-          <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
-
-
-
-
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-
-          <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
-          <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- <div class="b-example-divider b-example-vr"></div> -->
+      
 
     <!-- TIRANDO A PARTE QUE DIVIDE O MENU DA TELA PRINCIPAL DE CONTEUDO -->
     <div class="b-example-vr"></div>
