@@ -198,7 +198,7 @@ if ($result->num_rows > 0) {
 
 
 // Consulta para recuperar as informações do usuário
-$sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
+$sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor_secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -249,7 +249,7 @@ $conn->close();
 
 
         // Consulta para recuperar as informações do usuário
-        $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
+        $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor_secao, email FROM tbpessoa WHERE IDPessoa = $Meu_ID";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -258,8 +258,7 @@ $conn->close();
             echo "<p><strong>Nome Completo:</strong> " . $row['nomeCompleto'] . "</p>";
             echo "<p><strong>CPF:</strong> " . $row['cpf'] . "</p>";
             echo "<p><strong>Matrícula:</strong> " . $row['matricula'] . "</p>";
-            echo "<p><strong>Setor:</strong> " . $row['setor'] . "</p>";
-            echo "<p><strong>Seção:</strong> " . $row['secao'] . "</p>";
+            echo "<p><strong>Setor / Seção:</strong> " . $row['setor_secao'] . "</p>";
             echo "<p><strong>Email:</strong> " . $row['email'] . "</p>";
         } else {
             echo "Nenhum usuário encontrado.";
