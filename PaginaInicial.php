@@ -110,6 +110,7 @@ $stmt->close();
             background-color: #f2f2f2;
             margin: 0;
             padding: 0;
+            z-index: 10;
         }
 
         .container {
