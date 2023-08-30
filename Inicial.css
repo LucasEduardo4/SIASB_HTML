@@ -16,7 +16,7 @@ body {
 
 h1 {
   text-align: center;
-  color: #007bff;
+  color: #00cc99;
 }
 
 .form-group {
@@ -55,7 +55,7 @@ h1 {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: #00cc99;
   border: none;
   color: #fff;
   border-radius: 4px;
@@ -73,6 +73,6 @@ h1 {
   .footer a {
     margin-right: 50px;
     
-    color: #007bff;
+    color: #00cc99;
     text-decoration: none;
   }
