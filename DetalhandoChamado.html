@@ -115,7 +115,7 @@
     }
 
     .Aberto {
-      background-color: #2ecc71;
+      background-color: #e74c3c;
     }
 
     .Andamento {
@@ -127,10 +127,12 @@
     }
 
     .Fechado {
-      background-color: #e74c3c;
+      background-color: #2ecc71;
+
 
     }
-    #iconeAutor{
+
+    #iconeAutor {
       clip-path: circle(farthest-side);
     }
 
@@ -224,11 +226,12 @@
             <p class="card-text" style="font-weight: bold;">STATUS:</p>
             <p id="status"> </p>
             <!-- </span> -->
-            <p class="card-text" id="equipamento" style="font-weight: bold;">EQUIPAMENTO: </p>
+            <p class="card-text" style="font-weight: bold;">EQUIPAMENTO: </p>
+            <p id="equipamento" ></p>
           </div>
         </div>
         <div class="container my-3 p-0">
-          <button type="button" id="responsavel_tecnologia" class="btn btn-success" onclick="alterarChamado()" >
+          <button type="button" id="responsavel_tecnologia" class="btn btn-success" onclick="alterarChamado()">
             Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
           </button>
         </div>
@@ -243,7 +246,6 @@
             <div class="card-body">
               <h5>ANEXOS:</h5>
               <div class="container mt-4" id="anexosContainer">
-                <!-- Div pré-existente que exibirá os anexos -->
               </div>
             </div>
           </div>
@@ -258,8 +260,6 @@
 
       connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
-      // verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
-
       function connection(data, operation) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "DetalhandoChamado.php", true);
@@ -268,13 +268,10 @@
           if (xhr.readyState === 4 && xhr.status === 200) {
             if (operation == 1) {
               unParse(xhr.responseText);
-              // console.log(xhr.responseText);
             } else
               if (operation == 2) {
-                // console.log(xhr.responseText);
               } else
                 if (operation == 'verificarSetor') {
-                  // console.log(xhr.responseText);
                   if (xhr.responseText == '1') {
                     controlarResponsavel_Tecnologia();
                   }
@@ -286,9 +283,7 @@
 
 
       function unParse(data) {
-        console.log(data)
         var dadosObjeto = JSON.parse(data)
-        console.log(dadosObjeto);
         var IDChamado = dadosObjeto.IDChamado;
         var assunto = dadosObjeto.assunto;
         var descricao = dadosObjeto.descricao;
@@ -301,9 +296,7 @@
         var categoria = dadosObjeto.categoria;
         var logs = dadosObjeto.logs;
         var icone = dadosObjeto.icone;
-        console.log(dadosObjeto);
 
-        // console.log(logs);
         // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
 
         exibeLogs(logs);
@@ -318,7 +311,7 @@
         document.getElementById("responsavel").innerHTML += responsavel;
         document.getElementById("autor").innerHTML += autor;
         if (equipamento != null) {
-          document.getElementById("equipamento").innerHTML += equipamento;
+          document.getElementById("equipamento").innerHTML += `${equipamento}`;
         } else {
           // document.getElementById("equipamento").innerHTML += '---';
           document.getElementById("equipamento").style.display = 'none';
@@ -339,7 +332,7 @@
             '<p>Nenhuma imagem anexada para este chamado.</p>';
         }
 
-        if(icone){
+        if (icone) {
           document.getElementById("AutorLabel").innerHTML +=
             '<img id="iconeAutor" src="data:image/jpeg;base64,' + icone + '" width="100px" alt="Ícone do autor" /></p>';
         } else {
@@ -403,6 +396,8 @@
         return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
       }
 
+      verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
+
       function verificaSetor() {
         var data = "verificarSetor=" + encodeURIComponent('1');
         connection(data, 'verificarSetor');
@@ -464,7 +459,6 @@
 
 
             var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado);
-            // console.log(data);
 
             connection(data, 2);
             // window.location.reload();

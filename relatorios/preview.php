@@ -3,10 +3,25 @@ function convertData($data)
 {
     $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
     if ($dataHora === false) {
-        return "--";
+        $dataHora = DateTime::createFromFormat(('Y-m-d'), $data);
+        if ($dataHora === false) {
+            return "--";
+        }
     }
 
     return $dataHora->format('d/m/y');
+}
+
+function convertDataXLSX($data){
+    $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
+    if ($dataHora === false) {
+        $dataHora = DateTime::createFromFormat(('Y-m-d'), $data);
+        if ($dataHora === false) {
+            return "--";
+        }
+    }
+
+    return $dataHora->format('d/m/Y');
 }
 
 // Verifica se a requisição é do tipo POST
@@ -123,16 +138,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $agruparPor = $_POST['agruparPor'] ?? null;
         $filtroATEDataAbertura = $_POST['filtroATEDataAbertura'] ?? null;
         $filtroATEDataFechamento = $_POST['filtroATEDataFechamento'] ?? null;
+        $tipoRelatorio = $_POST['tipoRelatorio'] ?? null;
 
         $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, 
                 sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', 
-                e.descricao as 'equipamento', c.imagem, c.categoria 
+                e.descricao as 'equipamento', c.imagem, c.categoria, te.descricao as 'TipoEquipamento', st.descricao_setor as 'setor'
                 FROM TBChamados c
                 LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus
                 LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario
                 LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario    
                 LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID
                 LEFT JOIN TBPessoa p on c.autor = p.idpessoa
+                LEFT JOIN TBTipo_equipamentos as te on e.tipo = te.IDTipo
+                LEFT JOIN TBSetor st on p.setor = st.IDSetor
                 WHERE 1=1";
 
         if (!empty($filtroDataAbertura)) {
@@ -190,16 +208,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //criterio acima é para aplicar o limit 10, apenas se nao vier o parametro gerarRelatorio
             $sql .= ' limit 10';
         }
-        // echo $sql;
-        // echo '<br>';
-        // $resultado = $conn->query($sql);
-        /*
-        SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, c.categoria FROM TBChamados c 
-        LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus 
-        LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario 
-        LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario 
-        LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID WHERE 1=1 AND setor = '2' limit 10
-        */
 
         $dados = array();
         $stmt = $conn->prepare($sql);
@@ -218,19 +226,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $equipamento = $row['equipamento'];
                     $autor = $row['autor'];
                     $status_chamado = $row['status_chamado'];
+                    $tipo_equipamento = $row['TipoEquipamento'];
+                    $setor = $row['setor'];
+
 
                     if (isset($_POST['gerarRelatorio'])) {
-                        $dados[] = array(
-                            'IDChamado' => $IDChamado,
-                            'assunto' => $assunto,
-                            'descricao' => $descricao,
-                            'dataAbertura' => convertData($row['dataAbertura']),
-                            'dataFechamento' => convertData($row['dataFechamento']),
-                            'status_chamado' => $status_chamado,
-                            'responsavel' => $responsavel,
-                            'equipamento' => $equipamento,
-                            'autor' => $autor
-                        );
+                        $teste = 0;
+                        while ($teste <= 0) {
+                            if (isset($_POST['geraXLSX'])) {
+                                $dataAbertura = convertDataXLSX($row['dataAbertura']);
+                                $dataFechamento = convertDataXLSX($row['dataFechamento']);
+                            }else{
+                                $dataAbertura = convertData($row['dataAbertura']);
+                                $dataFechamento = convertData($row['dataFechamento']);
+                            }
+
+                            $dados[] = array(
+                                'IDChamado' => $IDChamado,
+                                'assunto' => $assunto,
+                                'descricao' => $descricao,
+                                'dataAbertura' => $dataAbertura,
+                                'dataFechamento' => $dataFechamento,
+                                'status_chamado' => $status_chamado,
+                                'responsavel' => $responsavel,
+                                'equipamento' => $equipamento,
+                                'autor' => $autor
+                            );
+                            $teste++;
+                        }
                     } else {
                         echo "<tr>
                             <td>$IDChamado</td>
@@ -251,9 +274,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Ocorreu um erro na preparação da consulta do SQL.";
             return;
         }
-        if (isset($_POST['gerarRelatorio']) && isset($_POST['geraPDF'])) {
+        if (isset($_POST['geraPDF'])) {
             require('tcpdf/tcpdf.php');
-// ----------------------------------------------------------------------- \\
+
+            // ----------------------------------------------------------------------- \\
 //                             PDF DOCUMENTATION:                          \\
 // ----------------------------------------------------------------------- \\
 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
@@ -278,11 +302,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $font = 'times';
             $border = 0;
 
+            function limitaCaracteres($dado)
+            {
+                if (strlen($dado) > 19) {
+                    return substr($dado, 0, 19) . '...';
+                } else {
+                    return $dado;
+                }
+            }
+            function underline($pdf)
+            {
+                $pdf->Ln();
+                $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY(), array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 1, 'color' => array(0, 0, 0)));
+            }
+
             // ---------------------- MAIN ---------------------- \\
 
             $pdf = new TCPDF();
             $pdf->SetAutoPageBreak(true, 10);
             $pdf->AddPage();
+            $pdf->SetFont('times', 'r', 12);
+
+            $pdf->Cell(0, 10, date('d/m/Y'), 0, 1, 'R');
             // $pdf->setPageOrientation('L'); //modo paisagem
             $pdf->SetFont($font, 'B', 16);
             $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
@@ -302,31 +343,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $Lstatus = $pdf->GetStringWidth('Status') + 8;
             $alturaResults = 5;
 
+            $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
+            $pdf->setFooterMargin(20);
+            $pdf->setFooterFont(array($font, '', 10));
+
             // --------------------------------------------------- \\
 
-            $pdf->Ln();
-            //voltar a partir daqui.... precisa decidir como vai ser os tamanhos das células nessa parte aqui ----------------------------------------------------------------------
-            $pdf->Cell(0, 10, 'Filtros selecionados:', 0, 1, 'L');
-            if (!empty($_POST['filtroDataAbertura']))
-                $pdf->Cell($pdf->GetStringWidth('Data de Abertura: DD/MM/YYYY'), 10, 'Data de Abertura: ' . $dataAbertura, 0, 0, 'C');
-            if (!empty($_POST['filtroDataFechamento']))
-                $pdf->Cell($pdf->GetStringWidth('Data de Fechamento: DD/MM/YYYY'), 10, 'Data de Fechamento: ' . $dataFechamento, 0, 0, 'C');
-            if (!empty($_POST['filtroStatus']))
-                $pdf->Cell($pdf->GetStringWidth('Status: XXXXXXXX') + 5, 10, 'Status: ' . $status_chamado, 0, 0, 'C');
-            if (!empty($_POST['filtroResponsavel']))
-                $pdf->Cell($pdf->GetStringWidth('Responsável: X') + 20, 10, 'Responsável: ' . $responsavel, 0, 0, 'C');
-            if (!empty($_POST['filtroEquipamento']))
-                $pdf->Cell($pdf->GetStringWidth('Equipamento: X') + 20, 10, 'Equipamento: ' . $equipamento, 0, 0, 'C');
-            if (!empty($_POST['filtroAutor']))
-                $pdf->Cell($pdf->GetStringWidth('Autor: X') + 20, 10, 'Autor: ' . $autor, 0, 0, 'C');
-            $pdf->Ln();
+            // $pdf->Ln();
+            $pdf->SetFont($font, 'I', 12);
 
+            $pdf->Cell(0, 10, 'Filtros selecionados:', 0, 1, 'C');
+
+            if (!empty($_POST['filtroATEDataAbertura'])) {
+                $pdf->Cell($pdf->GetStringWidth('Data de Abertura: DD/MM/YY'), 10, 'Data de Abertura de: ' . convertData($filtroDataAbertura), 0, 0, 'C');
+                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/'), 10, 'até: ' . convertData($filtroATEDataAbertura), 0, 1, 'C');
+            } elseif (!empty($_POST['filtroDataAbertura'])) {
+                $pdf->Cell($pdf->GetStringWidth('Data de Abertura: DD/MM/YYYY à part'), 10, 'Data de Abertura à partir de: ' . convertData($filtroDataAbertura), 0, 1, 'C');
+            }
+
+            if (!empty($_POST['filtroATEDataFechamento'])) {
+                $pdf->Cell($pdf->GetStringWidth('Data de Fechamento: DD/MM/YY'), 10, 'Data de Fechamento de: ' . convertData($filtroDataFechamento), 0, 0, 'C');
+                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/'), 10, 'até: ' . convertData($filtroATEDataFechamento), 0, 1, 'C');
+            } elseif (!empty($_POST['filtroDataFechamento'])) {
+                $pdf->Cell($pdf->GetStringWidth('Data de Fechamento: ate: DD/MM'), 10, 'Data de Fechamento até: ' . convertData($filtroDataFechamento), 0, 1, 'C');
+            }
+            if ($filtroStatus == 5) {
+                $status_chamado = "Todos";
+            }
+            if (!empty($_POST['filtroStatus'])) {
+                $pdf->Cell($pdf->GetStringWidth('Status:XXX') + 5, 10, 'Status: ' . $status_chamado, 0, 0, 'C');
+            }
+
+            if (!empty($_POST['filtroResponsavel'])) {
+                $pdf->Cell($pdf->GetStringWidth('Responsável: X') + 20, 10, 'Responsável: ' . $responsavel, 0, 0, 'C');
+            }
+
+            if (!empty($_POST['filtroTipoEquipamento'])) {
+                $pdf->Cell($pdf->GetStringWidth('Equipamento: X') + 20, 10, 'Tipo: ' . $tipo_equipamento, 0, 0, 'C');
+            }
+
+            if (!empty($_POST['filtroAutor'])) {
+                $pdf->Cell($pdf->GetStringWidth('Autor: X') + 23, 10, 'Autor: ' . $autor, 0, 0, 'C');
+            }
+            if (!empty($_POST['filtroSetor'])) {
+                $pdf->Cell($pdf->GetStringWidth('Setor: X') + 23, 10, 'Setor: ' . $setor, 0, 0, 'C');
+            }
+            $pdf->SetFont($font, '', 12);
             $pdf->Ln();
-            $pdf->Line(10, 60, 200, 60);
+            underline($pdf);
 
             $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
             $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'C');
-            // $pdf->Cell($Ldescricao, 10, 'descricao', $border, 0, 'C');
+            // $pdf->MultiCell($Lassunto, 10, 'Assunto', $border, 'C');
             $pdf->Cell($LdataAbertura, 10, 'Data Abertura', $border, 0, 'C');
             $pdf->Cell($LdataFechamento, 10, 'Data Fechamento', $border, 0, 'C');
             $pdf->Cell($Lresponsavel, 10, 'Responsável', $border, 0, 'C');
@@ -334,40 +402,105 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
             $pdf->Cell($Lstatus, 10, 'status', $border, 0, 'C');
 
-
             $pdf->Ln();
             $pdf->SetFont($font, '', 10);
+            if ($tipoRelatorio == 'sintetico') {
 
-            //line test:
-            // $pdf->Ln();
-            // $pdf->MultiCell(300, 10, $sql, 0, 'L');
-            // var_dump($_POST);
-            //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
+                $i = 0;
+                $tamanhoMax = 37;
+                foreach ($dados as $indice => $registro) {
+                    $registro['assunto'] = limitaCaracteres(($registro['assunto']));
+                    $pdf->Cell($LID, $alturaResults, $registro['IDChamado'], $border, 0, 'C');
+                    $pdf->Cell($Lassunto, $alturaResults, $registro['assunto'], $border, 0);
+                    $pdf->Cell($LdataAbertura, $alturaResults, $registro['dataAbertura'], $border, 0, 'C');
+                    $pdf->Cell($LdataFechamento, $alturaResults, $registro['dataFechamento'], $border, 0, 'C');
+                    $pdf->Cell($Lresponsavel, $alturaResults, $registro['responsavel'] ? $registro['responsavel'] : '--', $border, 0, 'C');
+                    $pdf->Cell($Lequipamento, $alturaResults, $registro['equipamento'] ? $registro['equipamento'] : '--', $border, 0, 'C');
+                    $pdf->Cell($Lautor, $alturaResults, $registro['autor'], $border, 0, 'C');
+                    $pdf->Cell($Lstatus, $alturaResults, $registro['status_chamado'], $border, 0, 'C');
+                    $pdf->Ln();
+                    $i++;
 
+                    if ($i >= $tamanhoMax) {
+                        // Adicionar rodapé e nova página
+                        // $pdf->Ln();
+                        // $pdf->Line(10, 270, 200, 270);
+                        // $pdf->Cell(0, 0, 'Página ' . $pdf->getAliasNumPage() . '/' . $pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+                        $pdf->AddPage();
+                        $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY(), array('width' => 0.3, 'dash' => 1));
 
-            foreach ($dados as $registro) {
-                $pdf->Cell($LID, $alturaResults, $registro['IDChamado'], $border, 0, 'C');
-                $pdf->Cell($Lassunto, $alturaResults, $registro['assunto'], $border, 0, 'C');
-                // $pdf->Cell($Ldescricao, $alturaResults, $registro['descricao'], $border, 0, 'C');
-                $pdf->Cell($LdataAbertura, $alturaResults, $registro['dataAbertura'], $border, 0, 'C');
-                $pdf->Cell($LdataFechamento, $alturaResults, $registro['dataFechamento'], $border, 0, 'C');
-                // Usar MultiCell para permitir texto em várias linhas na coluna "responsavel"
-                $pdf->Cell($Lresponsavel, $alturaResults, $registro['responsavel'], $border, 0, 'C');
-                $pdf->Cell($Lequipamento, $alturaResults, $registro['equipamento'], $border, 0, 'C');
-                $pdf->Cell($Lautor, $alturaResults, $registro['autor'], $border, 0, 'C');
-                $pdf->Cell($Lstatus, $alturaResults, $registro['status_chamado'], $border, 0, 'C');
-                $pdf->Ln();
+                        $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
+                        $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'C');
+                        // $pdf->MultiCell($Lassunto, 10, 'Assunto', $border, 'C');
+                        // $pdf->Cell($Ldescricao, 10, 'descricao', $border, 0, 'C');
+                        $pdf->Cell($LdataAbertura, 10, 'Data Abertura', $border, 0, 'C');
+                        $pdf->Cell($LdataFechamento, 10, 'Data Fechamento', $border, 0, 'C');
+                        $pdf->Cell($Lresponsavel, 10, 'Responsável', $border, 0, 'C');
+                        $pdf->Cell($Lequipamento, 10, 'Equipamento', $border, 0, 'C');
+                        $pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
+                        $pdf->Cell($Lstatus, 10, 'status', $border, 0, 'C');
+
+                        $pdf->Ln();
+                        $pdf->SetFont($font, '', 10);
+
+                        $i = 0;
+                        $tamanhoMax = 49;
+                    }
+                }
+            } else if ($tipoRelatorio == 'analitico') {
+                $pdf->Cell(0, 10, 'Nothing Yet...', $border, 0, 'C');
             }
 
+            //resultados:
+
+            underline($pdf);
+            $pdf->Cell(0, 10, 'Resultados:', 0, 1, 'C');
+            $pdf->Cell(30, 10, 'Total de registros: ' . count($dados), $border, 0, 'C');
+            $pdf->Cell(30, 10, 'Abertos: ' . count(array_filter($dados, function ($registro) {
+                return $registro['status_chamado'] == 'Aberto';
+            })), $border, 0, 'C');
+            $pdf->Cell(30, 10, 'Fechados: ' . count(array_filter($dados, function ($registro) {
+                return $registro['status_chamado'] == 'Fechado';
+            })), $border, 0, 'C');
+            $pdf->Cell(30, 10, 'Em andamento: ' . count(array_filter($dados, function ($registro) {
+                return $registro['status_chamado'] == 'Andamento';
+            })), $border, 0, 'C');
+            $pdf->Cell(30, 10, 'Pendente: ' . count(array_filter($dados, function ($registro) {
+                return $registro['status_chamado'] == 'Pendente';
+            })), $border, 0, 'C');
+
+            $pdf->Ln();
+
+            $pdf->Ln();
+
+            //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
+
             $pdf->Output('relatorio.pdf', 'I');
-            // imprimeDados($dados);
-        }
+        } else
+            if (isset($_POST['geraXLSX'])) {
+
+                // $colunas = array('IDChamado','Assunto','Data Abertura','Data Fechado','Status','Responsável','Equipamento','Autor');
+                $colunas = array();
+                $nomeArquivo = 'relatorio.xlsx';
+                $data = $dados;
+
+                $response = array(
+                    'data' => $data,
+                    'colunas' => $colunas,
+                    'nomeArquivo' => $nomeArquivo
+                );
+
+                echo json_encode($response);
+            }
+
+        // imprimeDados($dados);
 
         $stmt->close();
         $conn->close();
-
-
-
     }
+
+
+
 }
+
 ?>

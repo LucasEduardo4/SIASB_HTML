@@ -60,11 +60,6 @@ if ($result_id_usuario) {
 
 $conn = new mysqli('localhost', 'root', '', 'siasb');
 
-$_SESSION["nome"] = "Gabriel Fernandes";
-//criar um select com o banco de dados, para verificar se o IDPessoa é igual ao IDUsuario
-
-// $sql = 'SET @ID = (SELECT IDUsuario FROM tbusuario WHERE nome = "' . $_SESSION["username"] . '");
-//         SELECT nomeCompleto from tbpessoa where IDPessoa = @ID';
 $sql = "SELECT nomeCompleto 
         FROM TBUSUARIO u
         JOIN TBPessoa p ON p.IDPessoa = u.IDUsuario

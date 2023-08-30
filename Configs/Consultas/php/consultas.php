@@ -7,10 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
 
-        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, st.descricao_setor, sc.descricao_secao, p.email, p.gestor, u.IDUsuario, u.administrador, u.habilitado
+        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, sc.descricao, p.email, p.gestor, u.IDUsuario, u.administrador, u.habilitado
                 FROM TBPessoa p
-                JOIN TBSetor st ON p.setor = st.IDSetor
-                JOIN TBSecao sc ON p.secao = sc.IDSecao
+                JOIN tbsetor_secao sc ON p.setor_secao = sc.ID
                 LEFT JOIN TBUsuario	u on p.IDPessoa = u.IDUsuario
                 ORDER BY p.IDPessoa ASC";
 
@@ -24,8 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $nomeCompleto = $row["nomeCompleto"];
                 $cpf = $row["cpf"];
                 $matricula = $row["matricula"];
-                $setor = $row["descricao_setor"];
-                $secao = $row["descricao_secao"];
+                $setor_secao = $row["descricao"];
                 $email = $row['email'];
                 $gerente = $row['gestor'];
                 $IDUsuario = $row['IDUsuario'];
@@ -57,8 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td id='nomeCompleto'>" . $nomeCompleto . "</td>
                 <td id='CPF'>" . $cpf . "</td>
                 <td>" . $matricula . "</td>
-                <td>" . $setor . "</td>
-                <td>" . $secao . "</td>
+                <td>" . $setor_secao . "</td>
                 <td>" . $email . "</td>
                 <td id=" . $IDPessoa . ">" . $icone . "</td>
                 <td id=" . $IDPessoa . ">" . $userType . "</td>
@@ -102,14 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['select_ready_equipment'])) {
 
-        // $sql = "
-        // SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, sc.descricao_secao FROM TBEquipamentos e
-        // join TBTipo_Equipamentos te on te.IDTipo = e.tipo
-        // join TBPessoa p on p.IDPessoa = e.usuario
-        // join TBSecao sc on e.secao = sc.IDSecao
-        // ";
         $sql = "
-        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, p.IDPessoa, e.secao FROM TBEquipamentos e
+        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, p.IDPessoa, e.setor_secao FROM TBEquipamentos e
         join TBTipo_Equipamentos te on te.IDTipo = e.tipo
         join TBPessoa p on p.IDPessoa = e.usuario
         ";
@@ -128,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tipo = $row["tipo"];
             $nomeCompleto = $row["nomeCompleto"];
             $IDPessoa = $row["IDPessoa"];
-            $secao = $row["secao"];
+            $setor_secao = $row["setor_secao"];
 
             // Construa um array associativo para esta linha de dados
             $equipamentos = array(
@@ -138,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "tipo" => $tipo,
                 "nomeCompleto" => $nomeCompleto,
                 "IDPessoa" => $IDPessoa,
-                "secao" => $secao
+                "secao" => $setor_secao
             );
 
             // Adicione o array associativo da linha de dados ao array de dados

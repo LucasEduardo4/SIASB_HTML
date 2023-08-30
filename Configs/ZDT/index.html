@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./../../flowSite/verificaSessao.js"></script>
+    <title>Index</title>
+</head>
+<body>
+    <table id="popupTable">
+        <tr>
+            <th><label for="local">Local:</label></th>
+            <td><input id="local" type="text" class="swal2-input" value="${local}"></td>
+        </tr>
+        <tr>
+            <th><label for="descricao">Descrição:</label></th>
+            <td><input id="descricao" type="text" class="swal2-input" value="${descricao}"></td>
+        </tr>
+        <tr>
+            <th><label for="endereco">Endereço:</label></th>
+            <td><input id="endereco" type="text" class="swal2-input" value="${endereco}"></td>
+        </tr>
+        <tr>
+            <th><label for="ativo">Ativo:</label></th>
+            <td><input id="ativo" type="checkbox" class="form-check-input" ${ativo == '1' ? 'checked' : ''}></td>
+        </tr>
+    </table>
+    
+    
+
+</body>
+</html>

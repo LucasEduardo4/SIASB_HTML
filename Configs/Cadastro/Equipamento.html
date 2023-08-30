@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-
-
-  
-</style>
-
-
 <head>
   <title>Cadastro</title>
   <link rel="stylesheet" href="../../Inicial.css">
@@ -15,11 +8,7 @@
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup Sweet alert-->
   <script src='./../../flowSite/verificaSessao.js'></script>
-
-
-
   <meta charset="UTF-8">
-
 
 </head>
 
@@ -44,12 +33,12 @@
         <label for="tipo">Tipo:</label>
         <select id="selectTipos" name="tipo">
           <option value="" disabled selected hidden>Escolha uma das opções</option>
-          <option value="">Aqui preciso de um select no banco de dados, para todos os tipos de equipamentos possiveis
+          <!-- <option value="">Aqui preciso de um select no banco de dados, para todos os tipos de equipamentos possiveis -->
           </option>
         </select>
       </div>
       <div class="form-group">
-        <label for="secao">Seção:</label>
+        <label for="secao">Setor/Seção:</label>
         <select id="selectSecoes" name="secao" onchange="selectPerson()">
           <option value="" disabled selected hidden>Escolha uma das opções</option>
         </select>
@@ -84,18 +73,18 @@
       console.log(equipamento.IDPessoa);
       setTimeout(function () {
         document.getElementById("selectPessoas").value = equipamento.IDPessoa;
-        
+
         var selectTipos = document.getElementById("selectTipos");
-        for(let i in selectTipos){
-          if(selectTipos[i].value == 1){
-            selectTipos[i].disabled=true;
+        for (let i in selectTipos) {
+          if (selectTipos[i].value == 1) {
+            selectTipos[i].disabled = true;
             selectTipos[i].hidden = true;
             break;
           }
         }
       }, 100);
       selectPerson();
-      
+
 
     }
     function init() {
@@ -135,7 +124,7 @@
       }
 
       function verificarCampos(stiID, descricao, ip, tipo, secao, usuario) {
-       var camposFaltantes = [];
+        var camposFaltantes = [];
 
         if (stiID == "") {
           camposFaltantes.push(document.getElementById("stiID"));
@@ -209,6 +198,7 @@
     }
 
     function unParse(data) {
+      console.log(data)
       var dadosObjeto = JSON.parse(data)
       var tipos = dadosObjeto.tipos;
       var secoes = dadosObjeto.secoes;
