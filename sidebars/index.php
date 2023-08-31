@@ -416,7 +416,7 @@ if ($imageData) {
   /* position: fixed; */
   top: 0;
   right: 0;
-  width: 3.5%;
+  width: 4em;
   height: 100%;
   background-color: #333;
   transition: width 0.3s ease;
@@ -425,7 +425,7 @@ if ($imageData) {
 }
 
 .menu-expanded {
-  width: 15%;
+  width: 21em;
 }
 
 .menu-hidden {
@@ -434,7 +434,7 @@ if ($imageData) {
 }
 
 .menu-container:hover {
-  width: 15%;
+  width: 21em;
 }
 
 .menu-container:hover .menu-hidden {
