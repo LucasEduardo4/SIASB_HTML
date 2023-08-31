@@ -380,8 +380,8 @@
                     <td style="padding:auto;">
                         <span class='bi bi-pencil' onclick="action('edit-${value.ID}')" id='edit-${value.ID}'></span>
                         <span class='bi bi-trash' onclick="action('trash-${value.ID}')" id='trash-${value.ID}'></span>
-                        </td>
-                        </tr>`;
+                    </td>
+                    </tr>`;
                 // table.innerHTML += "<td>" + value.ID + "</td><td>" + value.descricao + "</td><td>"+value.endereco+"</td><td>"+value.ativo+"</td><td><span class='bi bi-pencil' onclick='action('edit-"+value.ID+"')' id='edit-"+value.ID+"'></span><span class='bi bi-trash'  onclick='action(trash-"+value.ID+")' id='trash-"+value.ID+"'></span></td>";
             }
 
@@ -428,7 +428,7 @@
                         if (result.isConfirmed) {
                             var data = "deleteLocal=1&ID=" + ID;
                             connection(data, 'refresh2');
-                            
+
                             var asnc = async () => {
                                 await sleep(250)
                                 var result = document.getElementById('divinv').innerHTML;

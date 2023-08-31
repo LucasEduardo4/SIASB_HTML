@@ -8,10 +8,9 @@
   <link rel="stylesheet" href="sidebars/bootstrap.min.css">
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
-
     body {
       margin: 0;
       display: flex;
@@ -136,6 +135,26 @@
       clip-path: circle(farthest-side);
     }
 
+    .d-flex {
+      display: flex;
+    }
+
+    #imagemAnexada {
+      cursor: pointer;
+    }
+    .setas{
+      background-color: gainsboro;
+      border-radius: 6px;
+
+    }
+    .setas:hover{
+      cursor: pointer;
+      background-color: darkgray;
+      transition: 0.4s;
+      border-radius: 8px;
+    }
+  
+
     /* .col-md-4 {
 
 
@@ -197,7 +216,8 @@
             <p class="card-text" id="descricao"></p>
             <hr>
             <p class="card-text" style="font-weight: bold;">ANDAMENTO DO CHAMADO:</p>
-            <div class="resultados_log" id="resultados_log" style="background-color: #40a38436; border-radius: 5px; padding: 6px;">
+            <div class="resultados_log" id="resultados_log"
+              style="background-color: #40a38436; border-radius: 5px; padding: 6px;">
               <div class="container mt-4" id="logsContainer">
                 <!-- Div pré-existente que exibirá os logs -->
               </div>
@@ -227,7 +247,7 @@
             <p id="status"> </p>
             <!-- </span> -->
             <p class="card-text" style="font-weight: bold;">EQUIPAMENTO: </p>
-            <p id="equipamento" ></p>
+            <p id="equipamento"></p>
           </div>
         </div>
         <div class="container my-3 p-0">
@@ -263,22 +283,27 @@
       function connection(data, operation) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "DetalhandoChamado.php", true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
             if (operation == 1) {
               unParse(xhr.responseText);
-            } else
-              if (operation == 2) {
-              } else
-                if (operation == 'verificarSetor') {
-                  if (xhr.responseText == '1') {
-                    controlarResponsavel_Tecnologia();
-                  }
-                }
+            } else if (operation == 2) {
+              // console.log(xhr.responseText);
+            } else if (operation == 'verificarSetor') {
+              if (xhr.responseText == '1') {
+                controlarResponsavel_Tecnologia();
+              }
+            }
           }
         };
-        xhr.send(data);
+
+        if (data instanceof FormData) {
+          xhr.send(data);
+        } else {
+          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhr.send(data);
+        }
       }
 
 
@@ -293,7 +318,6 @@
         var autor = dadosObjeto.autor;
         var equipamento = dadosObjeto.equipamento;
         var imagem = dadosObjeto.imagem;
-        var categoria = dadosObjeto.categoria;
         var logs = dadosObjeto.logs;
         var icone = dadosObjeto.icone;
 
@@ -318,7 +342,6 @@
 
         }
         document.getElementById("numChamado").innerHTML += IDChamado;
-        // document.getElementById("categoria").innerHTML += categoria; ainda nao exibimos
         // document.getElementById("imagem").innerHTML += imagem;
         // if(ligacaoChamadoID == null){
         //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
@@ -354,14 +377,32 @@
           col.classList.add("col", "px-0");
 
           const dFlex = document.createElement("div");
-          dFlex.classList.add("d-flex");
+          // dFlex.classList.add("d-flex");
 
           const div1 = document.createElement("div");
+          div1.classList.add("d-flex");
 
           const responsavelStatus = document.createElement("p");
           responsavelStatus.classList.add("mb-0");
+          responsavelStatus.style.marginRight = "10px";
           responsavelStatus.textContent = log.responsavel + " alterou status para: " + log.status;
+          responsavelStatus.src = "Icones%20Site/anexo.png";
+
           div1.appendChild(responsavelStatus);
+          if (log.imagem) {
+            const imagem = document.createElement("img");
+            imagem.classList.add("ml-3");
+            imagem.src = "Icones%20Site/anexo.png";
+            imagem.width = 30;
+            imagem.title = "Clique para visualizar a imagem anexada à resposta";
+            imagem.id = "imagemAnexada";
+            imagem.onclick = function () {
+              exibeImagensAnexadas(log.imagem);
+            }
+
+            div1.appendChild(imagem);
+          }
+
 
           const div2 = document.createElement("div");
           div2.classList.add("border-start", "border-primary", "px-3");
@@ -383,6 +424,32 @@
 
           logsContainer.appendChild(div);
         });
+      }
+
+      function exibeImagensAnexadas(imagens) {
+        if(window.screen.width < 1025){
+          var responsiveSize = window.screen.width * 0.65
+        }else{
+          var responsiveSize = window.screen.width * 0.8;
+        }
+
+        const html = `
+        <div id="esquerda" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-left"></span></div>
+        <div id="central" style="width:70%; display:inline;">
+          <img id="imagenLOG" src="data:image/jpeg;base64, ${imagens}" width="${responsiveSize}px;"  alt="Imagem do log">
+        </div>
+        <div id="direita" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-right"></span></div>
+        `;
+        Swal.fire({
+          title: "Imagem anexada",
+          // imageUrl: `data:image/jpeg;base64, ${imagens}`,
+          html: html,
+          width: window.screen.width ,
+          margin: 0,
+          showCancelButton: false,
+          confirmButtonText: 'Fechar',
+          confirmButtonColor: '#00cc99',
+        })
       }
 
       function formatarDataHora(dataOriginal) {
@@ -411,63 +478,65 @@
       function alterarChamado() {
         // Criando um formulário HTML
         const formHTML = `
-      <form id="alterarChamadoForm" class="text-start">
-        <div class="mb-3">
-          <div class="d-flex">
-          <label for="status" class="form-label" style="margin:auto; padding-right:5px;">Status:</label>
-            <select id="statusPopup" class="form-select form-select-sm">
-              <option value="1">Aberto</option>
-              <option value="2" selected>Andamento</option>
-              <option value="3">Pendente</option>
-              <option value="4">Fechado</option>
-            </select>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="mensagem" class="form-label">Mensagem:</label>
-          <textarea id="mensagem" class="form-control" rows="4"></textarea>
-        </div>
-      </form>
-    `;
+          <form id="alterarChamadoForm" class="text-start" enctype="multipart/form-data">
+            <div class="mb-3 mt-3">
+              <div class="d-flex">
+                <label for="status" class="form-label" style="margin:auto; padding-right:15px; width:80px">Status:</label>
+                <select id="statusPopup" class="form-select form-select-sm">
+                  <option value="2" selected>Andamento</option>
+                  <option value="3">Pendente</option>
+                  <option value="4">Fechado</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="mensagem" class="form-label">Mensagem:</label>
+              <textarea id="mensagem" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="mb-3">
+              <label>Anexar Imagem:</label>
+              <input type="file" name="imagem" id="imagem" class="form-control">
+              </div>
+          </form>
+        `;
 
         // Exibindo o popup com o formulário
-        swal({
+        Swal.fire({
           title: "Atualizar o Status do Chamado",
-          content: {
-            element: "div",
-            attributes: {
-              innerHTML: formHTML,
-            },
-          },
-          buttons: {
-            confirm: {
-              text: "Alterar",
-              className: "btn btn-primary",
-            },
-            cancel: {
-              text: "Cancelar",
-              className: "btn btn-secondary",
-              visible: true,
-            },
-          },
-          closeOnClickOutside: false,
+          html: formHTML,
+          showCancelButton: true,
+          confirmButtonColor: '#00cc99',
+          confirmButtonText: 'Atualizar Status',
+          cancelButtonText: 'Cancelar',
+          closeOnClickOutside: true,
         }).then((result) => {
           if (result) {
-            // Aqui você pode implementar o código para enviar o formulário
-            const status = document.getElementById("statusPopup").value;
-            const mensagem = document.getElementById("mensagem").value;
+            if (result.isConfirmed) {
+              // Aqui você pode implementar o código para enviar o formulário
+              var status = document.getElementById("statusPopup").value;
+              var mensagem = document.getElementById("mensagem").value;
+              var imagemInput = document.getElementById("imagem");
 
+              // var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado) + "&imagem=" + encodeURIComponent(imagemInput.files[0]) ;
+              var data = new FormData();
+              data.append("gerarLog", "1");
+              data.append("status", status);
+              data.append("mensagem", mensagem);
+              data.append("referencia", IDChamado);
+              data.append("imagem", imagemInput.files[0]); //criei o banco TBImagens, quando voltar, fazer as alterações necessarias para inserir a imagem diretamente nele.
 
-            var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado);
-
-            connection(data, 2);
-            // window.location.reload();
-            // Exemplo de envio do formulário
-            swal("Chamado alterado com sucesso!", "", "success");
-            setTimeout(() => {
-              swal.close();
-              window.location.reload();
-            }, 2000);
+              connection(data, 2);
+              // window.location.reload();
+              // Exemplo de envio do formulário
+              Swal.fire({
+                title: 'Alterado!',
+                text: 'Chamado alterado com sucesso',
+                icon: 'success',
+                timer: 3000
+              }).then(() => {
+                window.location.reload();
+              });
+            }
           }
         });
       }

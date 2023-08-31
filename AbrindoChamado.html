@@ -14,8 +14,6 @@
 
 
   <style>
-
-
     .container {
       display: flex;
       justify-content: center;
@@ -112,7 +110,7 @@
 
     /* ================================================================ */
 
-    .setor-div,
+    .hardware-div,
     .assunto-div {
       flex-basis: 48%;
     }
@@ -161,28 +159,6 @@
       min-width: 500px;
     }
 
-    .hardware-div {
-      max-width: 98%;
-      min-width: 300px;
-      /* display: flex; */
-      text-align: center;
-      margin: 35px 0px;
-      display: none;
-
-    }
-
-    .hardware-div label {
-      padding: 10px;
-    }
-
-    .custom-fade-in {
-      animation-duration: 0.5s !important;
-    }
-
-    .custom-slide-in {
-      animation-duration: 1.5s !important;
-    }
-
     .my-custom-icon {
       font-size: 200px;
       /* Defina o tamanho desejado */
@@ -220,7 +196,6 @@
   <div class="container">
     <div style="border-radius: 5px; " class="div-inferior">
       <div style="border: 2px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
-      <h2> </h2>
       <!-- Conteúdo adicional da div inferior -->
       <form class="blue-theme-form" enctype="multipart/form-data">
 
@@ -229,29 +204,16 @@
             <label for="assunto">Assunto:</label>
             <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto">
           </div>
-
-
-          <div class="setor-div">
-            <label for="categoria">Categoria:</label>
-            <select id="categoria" name="categoria" onchange="verifySelect()">
-              <option value="" selected hidden required>Escolha uma das opções</option>
-              <option value="hardware">Hardware</option>
-              <option value="software">Software</option>
-              <!-- Adicione mais opções conforme necessário -->
-            </select>
+          <div class="hardware-div">
+            <br>
+            <label for="stiID">STI_ID:</label>
+            <input style="width: 13%;" type="number" id="stiID" name="stiID" maxlength="4" size="4"
+              onkeyup="verificaTamanho(this, 4, 'descricao')" onblur="verificaEquipamento()" max="9999">
+            <label for="nomeEquipamento"> Equipamento:</label>
+            <input type="text" id="nomeEquipamento" disabled value="" style="width: 40%;">
+            <h2 style="margin-left: 10px; display: none;" id="plusCircle" title="Cadastrar equipamento"><i
+                id="cadastroIcone" onclick='handleCadastro(this, 0)' class="bi bi-plus-circle-fill"></i></h2>
           </div>
-        </div>
-
-        <div class="hardware-div animate__animated animate__fadeInDown custom-fade-in">
-          <label for="stiID">STI_ID:</label>
-          <input style="width: 150px;" type="number" id="stiID" name="stiID" onblur="verificaEquipamento()">
-          <label for="nomeEquipamento"> Equipamento:</label>
-          <input type="text" id="equipamentoNome" class="animate__animated animate__slideInRight" disabled value="">
-          <h2 style="margin-left: 10px; display: none;" class="animate__animated animate__slideInRight custom-slide-in"
-            id="plusCircle" title="Cadastrar equipamento"><i id="cadastroIcone" onclick='handleCadastro(this, 0)'
-              class="bi bi-plus-circle-fill"></i></h2>
-          <input type="checkbox" name="ExisteEquipamento" id="ExisteEquipamento" disabled hidden>
-          <!-- Se nao for encontrado, exibir um icone para fazer um mini cadastro -->
         </div>
 
         <div style="margin-top: 0px;" class="descricao-div">
@@ -270,140 +232,114 @@
       </form>
       <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
         class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
-
-      <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
-      <script src="sidebars/bootstrap.bundle.min.js"></script>
-      <script>
-
-        function handleCadastro(icone, response) {
-          var equipamento = document.getElementById("equipamentoNome");
-          var existe = document.getElementById("ExisteEquipamento");
-
-          if (response === 'Equipamento nao encontrado') {
-            equipamento.placeholder = 'Equipamento nao encontrado, digite uma breve descrição sobre o equipamento:';
-            equipamento.value = '';
-            equipamento.disabled = false;
-            existe.checked = true;
-          } else if (response !== 'Equipamento nao encontrado') {
-            equipamento.style.width = '100%';
-            equipamento.placeholder = '';
-            equipamento.disabled = true;
-            existe.checked = false;
-          }
-        }
-
-        function enviarFormulario() {
-          var assunto = document.getElementById("assunto").value;
-          var descricao = document.getElementById("descricao").value;
-          var imagemInput = document.getElementById("imagem");
-          var selectCategoria = document.getElementById("categoria");
-          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
-          var equipamento = "NULL";
-          var existeEquipamento = document.getElementById("ExisteEquipamento");
-          var equipamentoNome = '';
-
-          if (assunto === '' || descricao === '' || categoria === '') {
-            document.getElementById("erromsg").style.display = 'flex';
-          } else {
-            if (categoria === "hardware") {
-              equipamento = document.getElementById("stiID").value;
-              equipamentoNome = document.getElementById("equipamentoNome").value;
-              if (equipamento === '' || equipamentoNome === '') {
-                document.getElementById("erromsg").style.display = 'flex';
-                return; // Aborta o envio do formulário caso falte algum campo
-              }
-            }
-
-            var formData = new FormData();
-            formData.append("existeEquipamento", existeEquipamento.checked);
-            formData.append("assunto", assunto);
-            formData.append("descricao", descricao);
-            formData.append("equipamento", equipamento);
-            formData.append("equipamentoNome", equipamentoNome);
-            formData.append("categoria", categoria);
-            formData.append("imagem", imagemInput.files[0]);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "AbrindoChamado.php", true);
-
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4 && xhr.status === 200) {
-                // console.log(xhr.responseText);
-              }
-            };
-
-            xhr.send(formData);
-            exibirPopup();
-          }
-        }
-
-
-
-        function exibirPopup() {
-          Swal.fire({
-            icon: 'success',
-            title: 'Confirmação',
-            text: 'O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.',
-            showConfirmButton: true,
-            confirmButtonText: 'Entendi',
-            timer: 10000,
-            timerProgressBar: true, // Mostrar barra de progresso do timer
-          }).then((result) => {
-            // Após o tempo do timer, redireciona para a página desejada
-            window.location.href = 'VendoChamados.html';
-            // Verificar se o botão foi clicado
-            if (result.isConfirmed) {
-              // Redirecionar para a página desejada
-              window.location.href = 'VendoChamados.html';
-            }
-          });
-        }
-
-        function verifySelect() {
-          if (document.getElementById("categoria")[1].selected == true) {
-            document.querySelector(".hardware-div").style.display = "flex";
-          } else
-            if (document.getElementById("categoria")[2].selected == true) {
-              document.querySelector(".hardware-div").style.display = "none";
-            }
-        }
-
-        function verificaEquipamento() {
-          var selectCategoria = document.getElementById("categoria");
-          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
-
-          if (categoria == "hardware") {
-            var stiID = document.getElementById("stiID").value;
-            var equipamento = document.getElementById("equipamentoNome");
-
-            connection('stiID=' + stiID, 1, 'AbrindoChamado.php');
-          }
-        }
-
-        function connection(data, output, file) {
-          var equipamento = document.getElementById("equipamentoNome");
-
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", file, true);
-          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              if (output == 1) {
-                var response = xhr.responseText;
-                // console.log(response);
-                equipamento.value = response;
-                // foo(response);
-                handleCadastro(document.getElementById("cadastroIcone") || document.getElementById("cadastroReady"), response);
-              }
-            }
-          }
-          xhr.send(data);
-        }
-      </script>
-
     </div>
   </div>
-  </div>
+
+  <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
+  <script src="sidebars/bootstrap.bundle.min.js"></script>
+  <script>
+
+    function verificaTamanho(inputElement, tamanho, proximoCampo) {
+      if (inputElement.value.length > tamanho) {
+        inputElement.value = inputElement.value.slice(0, tamanho);
+      }
+      if (inputElement.value.length === tamanho) {
+        document.getElementById(proximoCampo).focus();
+      }
+    }
+
+    function enviarFormulario() {
+      var assunto = document.getElementById("assunto").value;
+      var descricao = document.getElementById("descricao").value;
+      var imagemInput = document.getElementById("imagem");
+      var stiID = document.getElementById("stiID").value;
+
+      if (assunto === '' || descricao === '' || stiID === '') {
+        document.getElementById("erromsg").style.display = 'flex';
+      }
+
+      var formData = new FormData();
+      formData.append("assunto", assunto);
+      formData.append("descricao", descricao);
+      formData.append("stiID", stiID);
+      formData.append("imagem", imagemInput.files[0]);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "AbrindoChamado.php", true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log(xhr.responseText);
+        }
+      };
+
+      xhr.send(formData);
+      exibirPopup();
+    }
+
+
+
+
+    function exibirPopup() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Confirmação',
+        text: 'O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.',
+        showConfirmButton: true,
+        confirmButtonText: 'Entendi',
+        timer: 10000,
+        timerProgressBar: true, // Mostrar barra de progresso do timer
+      }).then((result) => {
+        // Após o tempo do timer, redireciona para a página desejada
+        window.location.href = 'VendoChamados.html';
+        // Verificar se o botão foi clicado
+        if (result.isConfirmed) {
+          // Redirecionar para a página desejada
+          window.location.href = 'VendoChamados.html';
+        }
+      });
+    }
+
+    function handleCadastro(icone, response) {
+      var nomeEquipamento = document.getElementById("nomeEquipamento");
+
+      if (response === 'Equipamento nao encontrado') {
+        nomeEquipamento.placeholder = 'Código inválido';
+        nomeEquipamento.value = '';
+      } else if (response !== 'Equipamento nao encontrado') {
+        nomeEquipamento.placeholder = '';
+      }
+    }
+
+    function verificaEquipamento() {
+      var stiID = document.getElementById("stiID").value;
+      // var equipamento = document.getElementById("nomeEquipamento");
+
+      connection('stiID=' + stiID, 1, 'AbrindoChamado.php');
+    }
+
+    function connection(data, output, file) {
+      var nomeEquipamento = document.getElementById("nomeEquipamento");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", file, true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if (output == 1) {
+            var response = xhr.responseText;
+            // console.log(response);
+            nomeEquipamento.value = response;
+            // foo(response);
+            handleCadastro(document.getElementById("cadastroIcone") || document.getElementById("cadastroReady"), response);
+          }
+        }
+      }
+      xhr.send(data);
+    }
+  </script>
+
+
 
 </body>
 
