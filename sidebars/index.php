@@ -400,84 +400,83 @@ if ($imageData) {
 
 
     .menu-image {
-    /* width: 30px;  */
-    height: 30px; 
-    vertical-align: middle; /* Alinhar verticalmente com o texto */
-  }
+      /* width: 30px;  */
+      height: 30px;
+      vertical-align: middle;
+      /* Alinhar verticalmente com o texto */
+    }
 
-    body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  /* overflow: hidden; */
-}
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      /* overflow: hidden; */
+    }
 
-.menu-container {
-  /* position: fixed; */
-  top: 0;
-  right: 0;
-  width: 4em;
-  height: 100%;
-  background-color: #333;
-  transition: width 0.3s ease;
-  overflow: hidden;
-  z-index: 10;
-}
+    .menu-container {
+      /* position: fixed; */
+      top: 0;
+      right: 0;
+      width: 4em;
+      height: 100%;
+      background-color: #333;
+      transition: width 0.3s ease;
+      overflow: hidden;
+      z-index: 10;
+    }
 
-.menu-expanded {
-  width: 21em;
-}
+    .menu-expanded {
+      width: 21em;
+    }
 
-.menu-hidden {
-  display: none;
-  padding: 20px;
-}
+    .menu-hidden {
+      display: none;
+      padding: 20px;
+    }
 
-.menu-container:hover {
-  width: 21em;
-}
+    .menu-container:hover {
+      width: 21em;
+    }
 
-.menu-container:hover .menu-hidden {
-  display: block;
-}
+    .menu-container:hover .menu-hidden {
+      display: block;
+    }
 
-a {
-  color: white;
-}
+    a {
+      color: white;
+    }
 
-/* REMOVENDO AS LOGOS QUANDO EXPANDIR A DIV */
-.teste {
-  color: white;
-}
+    /* REMOVENDO AS LOGOS QUANDO EXPANDIR A DIV */
+    .teste {
+      color: white;
+    }
 
-.menu-container:hover .teste {
-  display: none;
-}
-
-
-.perfil_img {
-  position:absolute;
-  margin: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    z-index: 0;
-    min-height: 100%;
-    margin-left: 95%;
-}
-
-.troca_cor {
-  position:absolute;
-  margin-left: 5px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    z-index: 11;
-    /* min-height: 99vh; */
-    margin-top: 46%;
-  }
+    .menu-container:hover .teste {
+      display: none;
+    }
 
 
+    .perfil_img {
+      position: absolute;
+      margin: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      z-index: 0;
+      min-height: 100%;
+      margin-left: 95%;
+    }
+
+    .troca_cor {
+      position: absolute;
+      margin-left: 5px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      z-index: 11;
+      margin-top: 46%;
+    }
   </style>
 
   <!-- Custom styles for this template -->
@@ -549,49 +548,49 @@ a {
   </div>
 
   <div class="perfil_img">
-  <hr>
-      <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-          data-bs-toggle="dropdown" aria-expanded="false">
+    <hr>
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+        data-bs-toggle="dropdown" aria-expanded="false">
 
 
 
-          <div style="">
-            <div id="anexosContainer"></div>
-          </div>
+        <div style="">
+          <div id="anexosContainer"></div>
+        </div>
 
-          <script>
+        <script>
 
-            var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
 
-            if (imagem) {
-              document.getElementById("anexosContainer").innerHTML +=
-                '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="60" height="60" alt="" /></p>';
-            } else {
-              document.getElementById("anexosContainer").innerHTML +=
-                '<p>Nenhuma imagem anexada para este chamado.</p>';
-            }
-          </script>
-
-
-          <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+          if (imagem) {
+            document.getElementById("anexosContainer").innerHTML +=
+              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="60" height="60" alt="" /></p>';
+          } else {
+            document.getElementById("anexosContainer").innerHTML +=
+              '<p>Nenhuma imagem anexada para este chamado.</p>';
+          }
+        </script>
 
 
+        <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
 
 
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
 
-          <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
-          <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
-        </ul>
-      </div>
+
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+
+        <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
+        <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
+      </ul>
     </div>
-</div>
+  </div>
+  </div>
 
   <!-- <header >
     <button id="theme-toggle">Alterar Tema</button>
@@ -659,71 +658,75 @@ a {
 
     <!-- <div style="background-color: green; padding-left:300px; padding-bottom:20px;" > -->
 
-    
 
-  <div class="menu-container" id="menu">
-    <div class="menu-hidden" id="menuHidden">
 
-    <p style="color:white; font-size:30px; padding-bottom:20px"> SIASB</p>
+    <div class="menu-container" id="menu">
+      <div class="menu-hidden" id="menuHidden">
 
-      <div onclick="abrirHome()">
-        <li onclick="alterarCor(this)" class="menu-item">
-          <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image"> <p style="color: white;"> HOME </p>
+        <p style="color:white; font-size:30px; padding-bottom:20px"> SIASB</p>
+
+        <div onclick="abrirHome()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image">
+            <p style="color: white;"> HOME </p>
+          </li>
+        </div>
+
+        <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
+        <div onclick="abrirIframe('Ver Chamados')">
+          <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
+            <p style="color: white;"> CHAMADOS </p>
+          </li>
+        </div>
+
+        <div onclick="abrirSite()">
+          <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
+            <p style="color: white;"> SITE </p>
+          </li>
+        </div>
+
+        <div onclick="abrirConfiguracoes()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
+            <p style="color: white;"> CONFIGURAÇÕES </p>
+          </li>
+        </div>
+      </div>
+
+      <div class="teste">
+
+        <!-- <img src="..\Icones Site\logo.png" alt="saaeb barretos" width="60" height="80"> -->
+
+        <li style="padding-left:17px; padding-top: 40px;" class="menu-item">
+          <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
+        </li>
+
+
+        <li style="padding-left:7px;" class="menu-item">
+          <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
+        </li>
+
+        <li style="padding-left:9px;" class="menu-item">
+          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
+        </li>
+
+        <li style="padding-left:17px;" class="menu-item">
+          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
         </li>
       </div>
 
-      <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
-      <div onclick="abrirIframe('Ver Chamados')">
-        <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-          <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22"> <p style="color: white;"> CHAMADOS </p>
-        </li>
-      </div>
 
-      <div onclick="abrirSite()">
-        <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22"> <p style="color: white;"> SITE </p>
-        </li>
-      </div>
 
-      <div onclick="abrirConfiguracoes()">
-        <li onclick="alterarCor(this)" class="menu-item">
-          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22"> <p style="color: white;"> CONFIGURAÇÕES </p>
-        </li>
-      </div>
+
     </div>
 
-    <div class="teste">
-
-    <!-- <img src="..\Icones Site\logo.png" alt="saaeb barretos" width="60" height="80"> -->
-
-            <li style="padding-left:17px; padding-top: 40px;"class="menu-item">
-              <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
-            </li>
-
- 
-            <li style="padding-left:7px;" class="menu-item">
-              <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
-            </li>
-
-            <li style="padding-left:9px;" class="menu-item">
-              <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
-            </li>
-
-            <li style="padding-left:17px;" class="menu-item">
-              <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
-            </li>
-    </div>
-
-    
-
-
-  </div>
 
 
 
 
-
-  <!-- </div>
+    <!-- </div>
     <div style=" width: 60px; background-color: #00a383; padding-bottom:10px;" >
       <a >
         <img style="margin-right:30px; padding-top: 0px;" src="..\Icones Site\logo.png" alt="saaeb barretos" width="80" height="110">
@@ -759,7 +762,7 @@ a {
       </nav> -->
 
 
-      <!-- REALIZANDO O OVERLAY DO MENU -->
+    <!-- REALIZANDO O OVERLAY DO MENU -->
 
     <!-- <script> 
     function openMenu() {
@@ -771,7 +774,7 @@ a {
     }
     </script> -->
 
-<!-- 
+    <!-- 
       <script>
     var menuToggle = document.getElementById('menu-toggle');
     var overlay = document.getElementById('overlay');
@@ -786,7 +789,7 @@ a {
       </script> -->
 
 
-      
+
 
     <!-- TIRANDO A PARTE QUE DIVIDE O MENU DA TELA PRINCIPAL DE CONTEUDO -->
     <div class="b-example-vr"></div>
@@ -820,6 +823,10 @@ a {
       }
 
       function foo(idNotificacao, nova) {
+        console.log(idNotificacao);
+        var split = idNotificacao.split(';');
+        idNotificacao = split[1]; // Obtemos a primeira parte da string
+        console.log(idNotificacao);
         var iframe = document.getElementById("myNotifications");
         iframe.hidden = true;
         var iframeContainer = document.getElementById('myIframe');
@@ -827,6 +834,11 @@ a {
         var mapa = document.getElementById("map");
         mapa.style.display = 'none'
         verificaNovaNotificacao(nova);
+      }
+
+      function bar(){
+        var iframe = document.getElementById("myNotifications");
+        iframe.src = iframe.src;
       }
 
 
@@ -837,13 +849,14 @@ a {
       iframe.style.top = "80px";
       iframe.style.right = "10px";
       // iframe.style.width = "100%";
-      iframe.style.width = "405px";
-      iframe.style.height = "400px";
+      iframe.style.width = "420px";
+      iframe.style.height = "500px";
       iframe.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
       iframe.style.zIndex = "9999";
       iframe.style.position = "absolute";
       iframe.id = "myNotifications"
       iframe.hidden = true;
+
 
       document.body.appendChild(iframe);
 
@@ -1056,15 +1069,15 @@ a {
     //   }
     // // ]]>
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const themeToggle = document.getElementById("theme-toggle"); //theme-toggle está comentado.
-      const contentFrame = document.getElementById("content-frame"); //nao existe esse contentFrame.
+    // document.addEventListener("DOMContentLoaded", function () {
+    //   const themeToggle = document.getElementById("theme-toggle"); //theme-toggle está comentado.
+    //   const contentFrame = document.getElementById("content-frame"); //nao existe esse contentFrame.
 
-      themeToggle.addEventListener("click", function () {
-        const frameDocument = contentFrame.contentDocument || contentFrame.contentWindow.document;
-        frameDocument.body.classList.toggle("dark-theme");
-      });
-    });
+    //   themeToggle.addEventListener("click", function () {
+    //     const frameDocument = contentFrame.contentDocument || contentFrame.contentWindow.document;
+    //     frameDocument.body.classList.toggle("dark-theme");
+    //   });
+    // });
 
 
   </script>
