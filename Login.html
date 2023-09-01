@@ -60,7 +60,6 @@
 <script>
   var url = new URL(window.location.href);
   var error = url.searchParams.get("error");
-  console.log(error);
 
   if (error === "true") {
     document.getElementById("error").style.display = "block"
