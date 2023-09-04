@@ -142,18 +142,20 @@
     #imagemAnexada {
       cursor: pointer;
     }
-    .setas{
+
+    .setas {
       background-color: gainsboro;
       border-radius: 6px;
 
     }
-    .setas:hover{
+
+    .setas:hover {
       cursor: pointer;
       background-color: darkgray;
       transition: 0.4s;
       border-radius: 8px;
     }
-  
+
 
     /* .col-md-4 {
 
@@ -207,9 +209,6 @@
       <div class="col-md-8">
         <div class="card m-3">
           <div class="card-body container_card">
-
-
-
             <h5 class="card-text" id="assunto">ASSUNTO DO CHAMADO<br><br> </h5>
             <hr>
             <p style="color: rgb(75, 75, 75); font-weight: bold;">DESCRIÇÃO: </p>
@@ -258,19 +257,13 @@
 
       </div>
     </div>
-
-    <div>
-      <div class="anexo">
-        <div style="width: 1480px; ">
-          <div class="card m-3">
-            <div class="card-body">
-              <h5>ANEXOS:</h5>
-              <div class="container mt-4" id="anexosContainer">
-              </div>
+    <div0 class="row">
+        <div class="card m-3">
+          <div class="card-body">
+            <h5>ANEXOS:</h5>
+            <div class="container mt-4" id="anexosContainer">
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
     <script src="sidebars/bootstrap.bundle.min.js"></script>
@@ -427,9 +420,9 @@
       }
 
       function exibeImagensAnexadas(imagens) {
-        if(window.screen.width < 1025){
+        if (window.screen.width < 1025) {
           var responsiveSize = window.screen.width * 0.65
-        }else{
+        } else {
           var responsiveSize = window.screen.width * 0.8;
         }
 
@@ -444,7 +437,7 @@
           title: "Imagem anexada",
           // imageUrl: `data:image/jpeg;base64, ${imagens}`,
           html: html,
-          width: window.screen.width ,
+          width: window.screen.width,
           margin: 0,
           showCancelButton: false,
           confirmButtonText: 'Fechar',

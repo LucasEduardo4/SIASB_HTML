@@ -1,4 +1,7 @@
 <?php
+session_start();
+$username = $_SESSION['username'];
+
 function convertData($data)
 {
     $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
@@ -12,7 +15,8 @@ function convertData($data)
     return $dataHora->format('d/m/y');
 }
 
-function convertDataXLSX($data){
+function convertDataXLSX($data)
+{
     $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
     if ($dataHora === false) {
         $dataHora = DateTime::createFromFormat(('Y-m-d'), $data);
@@ -31,22 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $resultArray = array();
 
-        //responsavel
-        $sql1 = "SELECT u.IDUsuario, p.nomeCompleto FROM TBUsuario u
-        left join tbpessoa p on u.IDUsuario = p.IDPessoa
-        WHERE p.setor = 1;";
-        $stmt1 = $conn->prepare($sql1);
-        $stmt1->execute();
-        $result1 = $stmt1->get_result();
-
-        $responsavel = array();
-        while ($row1 = $result1->fetch_assoc()) {
-            $IDUsuario = $row1["IDUsuario"];
-            $nomeCompleto = $row1["nomeCompleto"];
-            $responsaveis[$IDUsuario] = $nomeCompleto;
-        }
-        $resultArray['responsaveis'] = $responsaveis;
-
         // Consulta 2: SELECT * FROM TBSetor
         $sql2 = "SELECT DISTINCT u.IDUsuario, u.nome FROM tbchamados c
         left join tbusuario u on c.autor = u.IDUsuario";
@@ -62,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $resultArray['usuarios'] = $usuarios;
 
-        $stmt1->close();
+        // $stmt1->close();
         $stmt2->close();
 
 
@@ -99,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resultArray['tipo_equipamento'] = $tipo_equipamento;
         $stmt4->close();
 
-        $sql5 = "SELECT DISTINCT * FROM tbsetor";
+        $sql5 = "SELECT DISTINCT * FROM tbsetor_secao";
         $stmt5 = $conn->prepare($sql5);
         $stmt5->execute();
         $result5 = $stmt5->get_result();
@@ -107,8 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $setor = array();
 
         while ($row5 = $result5->fetch_assoc()) {
-            $IDSetor = $row5["IDSetor"];
-            $descricao_setor = $row5["descricao_setor"];
+            $IDSetor = $row5["ID"];
+            $descricao_setor = $row5["descricao"];
             $setor[$IDSetor] = $descricao_setor;
         }
 
@@ -140,17 +128,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filtroATEDataFechamento = $_POST['filtroATEDataFechamento'] ?? null;
         $tipoRelatorio = $_POST['tipoRelatorio'] ?? null;
 
-        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, 
-                sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', 
-                e.descricao as 'equipamento', c.imagem, c.categoria, te.descricao as 'TipoEquipamento', st.descricao_setor as 'setor'
-                FROM TBChamados c
-                LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus
-                LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario
-                LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario    
-                LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID
-                LEFT JOIN TBPessoa p on c.autor = p.idpessoa
-                LEFT JOIN TBTipo_equipamentos as te on e.tipo = te.IDTipo
-                LEFT JOIN TBSetor st on p.setor = st.IDSetor
+        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, te.descricao as 'TipoEquipamento', st.descricao as 'setor', st.ID
+                FROM TBChamados c 
+                LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus 
+                LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario 
+                LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario 
+                LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID 
+                LEFT JOIN TBPessoa p on c.autor = p.idpessoa 
+                LEFT JOIN TBTipo_equipamentos as te on e.tipo = te.IDTipo 
+                LEFT JOIN tbsetor_secao st on p.setor_secao = st.ID
                 WHERE 1=1";
 
         if (!empty($filtroDataAbertura)) {
@@ -191,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!empty($filtroSetor)) {
-            $sql .= " AND setor = '$filtroSetor'";
+            $sql .= " AND ID = '$filtroSetor'";
         }
 
         if (!empty($agruparPor)) {
@@ -236,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             if (isset($_POST['geraXLSX'])) {
                                 $dataAbertura = convertDataXLSX($row['dataAbertura']);
                                 $dataFechamento = convertDataXLSX($row['dataFechamento']);
-                            }else{
+                            } else {
                                 $dataAbertura = convertData($row['dataAbertura']);
                                 $dataFechamento = convertData($row['dataFechamento']);
                             }
@@ -260,7 +246,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>$assunto</td>
                             <td>$dataAbertura</td>
                             <td>$dataFechamento</td>
-                            <td>$responsavel</td>
                             <td>$equipamento</td>
                             <td>$autor</td>
                             <td>$status_chamado</td>
@@ -271,13 +256,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo 1; // Não há resultados
             }
         } else {
-            echo "Ocorreu um erro na preparação da consulta do SQL.";
+            echo "Ocorreu um erro na preparação da consulta.";
+            echo '<br>';
+            echo $sql;
             return;
         }
         if (isset($_POST['geraPDF'])) {
             require('tcpdf/tcpdf.php');
 
-            // ----------------------------------------------------------------------- \\
+// ----------------------------------------------------------------------- \\
 //                             PDF DOCUMENTATION:                          \\
 // ----------------------------------------------------------------------- \\
 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
@@ -323,9 +310,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdf->AddPage();
             $pdf->SetFont('times', 'r', 12);
 
-            $pdf->Cell(0, 10, date('d/m/Y'), 0, 1, 'R');
             // $pdf->setPageOrientation('L'); //modo paisagem
-            $pdf->SetFont($font, 'B', 16);
+            $pdf->SetFont($font, 'B', 14);
+            $tamanhoImagemPrincipal = 50;
+            $tamanhoImagem = 12;
+            $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
+            $pdf->Image('../Icones Site/simbolo-saaeb.png', 185, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+            $pdf->Ln();
+            $pdf->Cell(0, 10, '', 0, 1, 'C');
+            $pdf->Cell(0, 10, '', 0, 1, 'C');
             $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
             $pdf->SetFont($font, '', 12);
             $pdf->Ln();
@@ -333,14 +326,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // ------------------ CONFIGURAÇÕES ------------------ \\
             // L-> largura da célula
             $LID = $pdf->GetStringWidth('ID') + 5;
-            $Lassunto = $pdf->GetStringWidth('Assunto') + 10;
+            $Lassunto = $pdf->GetStringWidth('Assunto') + 15;
             // $Ldescricao = $pdf->GetStringWidth('Descrição do chamado') + 9;
-            $LdataAbertura = $pdf->GetStringWidth('Data Abertura') + 10;
-            $LdataFechamento = $pdf->GetStringWidth('Data Fechamento') + 2;
+            $LdataAbertura = $pdf->GetStringWidth('Data Abertura') + 2;
+            $LdataFechamento = $pdf->GetStringWidth('Data Fecha') + 2;
             $Lresponsavel = $pdf->GetStringWidth('responsavel') + 7;
             $Lequipamento = $pdf->GetStringWidth('Equipamento') + 10;
-            $Lautor = $pdf->GetStringWidth('Autor') + 8;
-            $Lstatus = $pdf->GetStringWidth('Status') + 8;
+            $Lautor = $pdf->GetStringWidth('Autor') + 12;
+            $Lstatus = $pdf->GetStringWidth('Status') + 13;
             $alturaResults = 5;
 
             $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
@@ -348,22 +341,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdf->setFooterFont(array($font, '', 10));
 
             // --------------------------------------------------- \\
-
+            //para agora: usuario que gerou e data gerada.
             // $pdf->Ln();
             $pdf->SetFont($font, 'I', 12);
 
-            $pdf->Cell(0, 10, 'Filtros selecionados:', 0, 1, 'C');
+            $pdf->Cell(0, 10, 'Filtros selecionados para geração do relatório:', 0, 1, 'C');
 
             if (!empty($_POST['filtroATEDataAbertura'])) {
                 $pdf->Cell($pdf->GetStringWidth('Data de Abertura: DD/MM/YY'), 10, 'Data de Abertura de: ' . convertData($filtroDataAbertura), 0, 0, 'C');
-                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/'), 10, 'até: ' . convertData($filtroATEDataAbertura), 0, 1, 'C');
+                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/Y'), 10, 'até: ' . convertData($filtroATEDataAbertura), 0, 1, 'C');
             } elseif (!empty($_POST['filtroDataAbertura'])) {
                 $pdf->Cell($pdf->GetStringWidth('Data de Abertura: DD/MM/YYYY à part'), 10, 'Data de Abertura à partir de: ' . convertData($filtroDataAbertura), 0, 1, 'C');
             }
 
             if (!empty($_POST['filtroATEDataFechamento'])) {
                 $pdf->Cell($pdf->GetStringWidth('Data de Fechamento: DD/MM/YY'), 10, 'Data de Fechamento de: ' . convertData($filtroDataFechamento), 0, 0, 'C');
-                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/'), 10, 'até: ' . convertData($filtroATEDataFechamento), 0, 1, 'C');
+                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/Y'), 10, 'até: ' . convertData($filtroATEDataFechamento), 0, 1, 'C');
             } elseif (!empty($_POST['filtroDataFechamento'])) {
                 $pdf->Cell($pdf->GetStringWidth('Data de Fechamento: ate: DD/MM'), 10, 'Data de Fechamento até: ' . convertData($filtroDataFechamento), 0, 1, 'C');
             }
@@ -390,13 +383,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $pdf->SetFont($font, '', 12);
             $pdf->Ln();
+            $pdf->Cell(0, 10, 'Gerado em: '.date('d/m/Y'), 0, 0, 'R');
+
             underline($pdf);
 
             $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
-            $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'C');
+            $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'L');
             // $pdf->MultiCell($Lassunto, 10, 'Assunto', $border, 'C');
-            $pdf->Cell($LdataAbertura, 10, 'Data Abertura', $border, 0, 'C');
-            $pdf->Cell($LdataFechamento, 10, 'Data Fechamento', $border, 0, 'C');
+            $pdf->Cell($LdataAbertura, 10, 'Abertura', $border, 0, 'C');
+            $pdf->Cell($LdataFechamento, 10, 'Fechamento', $border, 0, 'C');
             $pdf->Cell($Lresponsavel, 10, 'Responsável', $border, 0, 'C');
             $pdf->Cell($Lequipamento, 10, 'Equipamento', $border, 0, 'C');
             $pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
@@ -407,7 +402,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($tipoRelatorio == 'sintetico') {
 
                 $i = 0;
-                $tamanhoMax = 37;
+                $tamanhoMax = 33;
                 foreach ($dados as $indice => $registro) {
                     $registro['assunto'] = limitaCaracteres(($registro['assunto']));
                     $pdf->Cell($LID, $alturaResults, $registro['IDChamado'], $border, 0, 'C');
@@ -444,7 +439,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $pdf->SetFont($font, '', 10);
 
                         $i = 0;
-                        $tamanhoMax = 49;
+                        $tamanhoMax = 51;
                     }
                 }
             } else if ($tipoRelatorio == 'analitico') {
@@ -470,6 +465,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             })), $border, 0, 'C');
 
             $pdf->Ln();
+            $pdf->Cell(0, 10, 'Relatório gerado por: ' . $username . ' em ' . date('d/m/Y'), 0, 0, 'C');
+            // $pdf->Cell(0, 10, 'Em: ' . date('d/m/Y'), 0, 0, 'C');
 
             $pdf->Ln();
 

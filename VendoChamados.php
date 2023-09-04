@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = $_SESSION['username'];
         $sql = "SELECT * FROM tbusuario u join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
 
-
         $setor_secao = 0;
 
         $result = $conn->query($sql);
