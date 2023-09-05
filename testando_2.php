@@ -1,92 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vertical Menu Overlay</title>
+<form method="post" enctype="multipart/form-data">
+  <input type="file" name="images[]" multiple accept="image/*">
+  <input type="submit" value="Enviar Imagens">
+</form>
 
-  <style>
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
+
+<?php
+// Conexão com o banco de dados (substitua pelas suas credenciais)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "siasb";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Erro na conexão com o banco de dados: " . $conn->connect_error);
 }
 
-.menu-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 10%;
-  height: 100%;
-  background-color: #333;
-  transition: width 0.3s ease;
-  overflow: hidden;
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["images"])) {
+    $idchamado = 22; // ID do chamado desejado
+
+    foreach ($_FILES["images"]["tmp_name"] as $key => $tmp_name) {
+        $image_name = $_FILES["images"]["name"][$key];
+        $image_tmp = $_FILES["images"]["tmp_name"][$key];
+
+        // Verifique se o arquivo é uma imagem
+        $image_info = getimagesize($image_tmp);
+        if ($image_info === false) {
+            echo "O arquivo '$image_name' não é uma imagem válida. Ignorando...";
+            continue;
+        }
+
+        // Leitura dos dados binários da imagem
+        $image_data = file_get_contents($image_tmp);
+
+        // Preparar a consulta SQL para inserir os dados da imagem
+        $stmt = $conn->prepare("INSERT INTO tbchamados (IDChamado, imagem) VALUES (?, ?)");
+        $stmt->bind_param("ib", $idchamado, $image_data);
+        if ($stmt->execute()) {
+            echo "Imagem '$image_name' enviada com sucesso!";
+        } else {
+            echo "Erro ao enviar a imagem '$image_name': " . $stmt->error;
+        }
+        $stmt->close();
+    }
+
+    // Feche a conexão com o banco de dados
+    $conn->close();
+} else {
+    echo "Requisição inválida.";
 }
-
-.menu-expanded {
-  width: 20%;
-}
-
-.menu-hidden {
-  display: none;
-  padding: 20px;
-}
-
-.menu-container:hover {
-  width: 20%;
-}
-
-.menu-container:hover .menu-hidden {
-  display: block;
-}
-
-a {
-  color: white;
-}
-
-/* REMOVENDO AS LOGOS QUANDO EXPANDIR A DIV */
-.teste {
-  color: white;
-}
-
-.menu-container:hover .teste {
-  display: none;
-}
-
-/* =============================================== */
-</style>
+?>
 
 
-
-</head>
-<body>
-<div class="menu-container" id="menu">
-    <div class="menu-hidden" id="menuHidden">
-      <a href="#">Home</a>
-      <a href="#">Configurações</a>
-      <a href="#">Painel</a>
-    </div>
-
-    <div class="teste">
-      <a href="#">teste</a>
-      <a href="#">teste</a>
-      <a href="#">teste</a>
-    </div>
-
-  </div>
-  <!-- <script>
-    const menuOverlay = document.querySelector('.menu-overlay');
-
-menuOverlay.addEventListener('mouseenter', () => {
-  menuOverlay.classList.add('active');
-});
-
-menuOverlay.addEventListener('mouseleave', () => {
-  menuOverlay.classList.remove('active');
-});
-
-  </script> -->
-</body>
-</html>
