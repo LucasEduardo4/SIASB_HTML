@@ -1,11 +1,22 @@
 <?php
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    function convertData($data)
+    {
+        $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
+        if ($dataHora === false) {
+            $dataHora = DateTime::createFromFormat(('Y-m-d'), $data);
+            if ($dataHora === false) {
+                return "--";
+            }
+        }
+
+        return $dataHora->format('d/m/y');
+    }
     if (isset($_POST['Select'])) {
         $conn = mysqli_connect("localhost", "root", "", "siasb");
         $username = $_SESSION['username'];
         $sql = "SELECT * FROM tbusuario u join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
-
 
         $setor_secao = 0;
 
@@ -95,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href='detalhandoChamado.html?IDChamado=" . $IDChamado . "'>
                 <div class='FaixaFormResults'>
                 <div class='cells' id='IDChamado'> <p style='padding-left: 10px;'>" . $IDChamado . "</p> </div>
-                <div class='cells'><p>" . $dataAbertura . "</p></div>
+                <div class='cells'><p>" . convertData($dataAbertura) . "</p></div>
                 <div class='cells'><p>" . $assunto . "</p></div>
                 <div class='cells'><p class='statusColors $status_chamado'>" . $status_chamado . "</p></div>
                 </div>
@@ -106,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "Nenhum resultado encontrado para este usuário.";
         }
+     
     }
 }
 

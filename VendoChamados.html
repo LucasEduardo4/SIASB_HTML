@@ -333,7 +333,6 @@
                     var year = currentDate.getFullYear();
                     var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
                     
-
                     // Formatar para "dd/mm/yyyy"
                     if (dataOption == 2) {
                         dataDe.value = '01/01/2023';
@@ -351,8 +350,6 @@
                         document.getElementById("status").value = 5;
                         data.value=1;
                     }
-
-
                 }
 
                 filtroForm.addEventListener('submit', function (event) {
@@ -407,8 +404,6 @@
 
                     xhrRequest(data, resultados);
                 }
-
-
 
                 function xhrRequest(data, output) {
                     var xhr = new XMLHttpRequest();

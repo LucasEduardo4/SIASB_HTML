@@ -116,15 +116,11 @@
                         class="form-control ocultar">
                 </div>
                 <div class="my-3">
-                    <label for="filtroResponsavel">Responsável:</label>
-                    <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
-                    </select>
-                </div>
-                <div class="my-3">
                     <label for="filtroAutor">Autor:</label>
                     <select name="filtroAutor" id="filtroAutor" title="Só aparecem usuários que ja abriram chamado"
                         class="form-control">
                         <option value="" selected hidden>Selecione um usuário</option>
+                        <option value="" >Nenhum selecionado</option>
 
                     </select>
                 </div>
@@ -202,7 +198,6 @@
                         <option value="Assunto">Assunto</option>>
                         <option value="dataAbertura">Data Abertura</option>>
                         <option value="dataFechamento">Data Fechamento</option>>
-                        <option value="responsavel">Responsável</option>>
                         <option value="equipamento">Equipamento</option>>
                         <option value="autor">Autor</option>>
                         <option value="status_chamado">Status</option>>
@@ -235,7 +230,6 @@
                         <td>Assunto</td>
                         <td>Data Abertura</td>
                         <td>Data Fechamento</td>
-                        <td>Responsavel</td>
                         <td>Equipamento</td>
                         <td>Autor</td>
                         <td>Status</td>
@@ -321,7 +315,6 @@
                 { name: 'geraPDF', value: '1' },
                 { name: 'filtroDataAbertura', value: formularioExistente.filtroDEDataAbertura.value }, //<------ o problema está nesse form oculto... adicionar os campos novos
                 { name: 'filtroDataFechamento', value: formularioExistente.filtroDEDataFechamento.value },
-                { name: 'filtroResponsavel', value: formularioExistente.filtroResponsavel.value },
                 { name: 'filtroAutor', value: formularioExistente.filtroAutor.value },
                 { name: 'filtroStatus', value: formularioExistente.filtroStatus.value },
                 { name: 'filtroTipoEquipamento', value: formularioExistente.filtroTipoEquipamento.value },
@@ -365,7 +358,6 @@
         function LimpaFiltros() {
             var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
             var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
-            var filtroResponsavel = document.getElementById("filtroResponsavel");
             var filtroAutor = document.getElementById("filtroAutor");
             var filtroStatus = document.getElementById("filtroStatus");
             var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
@@ -380,7 +372,6 @@
             filtroDEDataFechamento.value = "";
             filtroATEDataAbertura.value = "";
             filtroATEDataFechamento.value = "";
-            filtroResponsavel.value = "";
             filtroAutor.value = "";
             filtroStatus.value = "";
             filtroTipoEquipamento.value = "";
@@ -400,16 +391,10 @@
         }
 
         function submitFilters(relatorio) {
-            // var PDFIcon = document.getElementById("PDFIcon");
-            // var ExcelIcon = document.getElementById("ExcelIcon");
-            // if(PDFIcon.classList.contains("desativo") || ExcelIcon.classList.contains("desativo")){
-            //     return;
-            // }
             var filtroDataAbertura = document.getElementById("filtroDEDataAbertura");
             var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
             var filtroDataFechamento = document.getElementById("filtroDEDataFechamento");
             var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
-            var filtroResponsavel = document.getElementById("filtroResponsavel");
             var filtroAutor = document.getElementById("filtroAutor");
             var filtroStatus = document.getElementById("filtroStatus");
             var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
@@ -429,7 +414,6 @@
 
             var data = "filtroDataAbertura=" + encodeURIComponent(filtroDataAbertura.value) +
                 "&filtroDataFechamento=" + encodeURIComponent(filtroDataFechamento.value) +
-                "&filtroResponsavel=" + encodeURIComponent(filtroResponsavel.value) +
                 "&filtroAutor=" + encodeURIComponent(filtroAutor.value) +
                 "&filtroStatus=" + encodeURIComponent(filtroStatus.value) +
                 "&filtroTipoEquipamento=" + encodeURIComponent(filtroTipoEquipamento.value) +
@@ -445,7 +429,7 @@
             if (!relatorio) {
                 connection(data, 'POST', 'exibir');
 
-                verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
+                verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
             } else
                 if (relatorio == 'pdf') {
                     // var data = data + "&gerarRelatorio=1" + "&geraPDF=1";
@@ -459,7 +443,7 @@
                 connection(data, 'POST', 'relatorioXLSX')
             }
 
-            function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor) {
+            function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor) {
                 var FiltrosSelecionados = document.getElementById("FiltrosSelecionados");
                 FiltrosSelecionados.innerHTML = '';
                 if (filtroDataAbertura.value != "") {
@@ -467,9 +451,6 @@
                 }
                 if (filtroDataFechamento.value != "") {
                     FiltrosSelecionados.innerHTML += "<p> Data de Fechamento: " + filtroDataFechamento.value + "</p>";
-                }
-                if (filtroResponsavel.value != "") {
-                    FiltrosSelecionados.innerHTML += "<p> Responsável: " + filtroResponsavel.value + "</p>";
                 }
                 if (filtroAutor.value != "") {
                     FiltrosSelecionados.innerHTML += "<p> Autor: " + filtroAutor.value + "</p>";
@@ -505,21 +486,18 @@
             var tipo_equipamento = dadosObjeto.tipo_equipamento;
             var setor = dadosObjeto.setor;
             // declarando as variaveis que recebem os campos dos seects
-            let selectResponsavel = document.getElementById("filtroResponsavel");
             let selectAutor = document.getElementById("filtroAutor");
             let selectStatus = document.getElementById("filtroStatus");
             let selectTipoEquipamento = document.getElementById("filtroTipoEquipamento");
             let selectSetor = document.getElementById("filtroSetor");
             //configurando uma mensagem padrão para cada select
-            selectResponsavel.innerHTML = '<option value="" selected hidden>Selecione um usuário</option>';
-            selectAutor.innerHTML = '<option value="" selected hidden>Selecione um usuário</option>';
-            selectStatus.innerHTML = '<option value="" selected hidden>Selecione um status</option>';
-            selectTipoEquipamento.innerHTML = '<option value="" selected hidden>Selecione um tipo</option>';
-            selectSetor.innerHTML = '<option value="" selected hidden>Selecione um setor</option>';
+            selectAutor.innerHTML = '<option value="" selected hidden>Selecione um usuário</option><option value="" >Nenhum selecionado</option>';
+            selectStatus.innerHTML = '<option value="" selected hidden>Selecione um status</option><option value="" >Nenhum selecionado</option>';
+            selectTipoEquipamento.innerHTML = '<option value="" selected hidden>Selecione um tipo</option><option value="" >Nenhum selecionado</option>';
+            selectSetor.innerHTML = '<option value="" selected hidden>Selecione um setor</option><option value="" >Nenhum selecionado</option>';
             // adicionando os dados nos selects
             for (let key in responsaveis) {
                 let value = responsaveis[key];
-                selectResponsavel.innerHTML += `<option value="${key}">${value}</option>`;
             }
             for (let key in usuarios) {
                 let value = usuarios[key];
@@ -548,6 +526,7 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     if (output == 'exibir') {
+                        console.log(xhr.responseText)
                         var responseTable = document.getElementById("responseTable");
                         var PDFIcon = document.getElementById("PDFIcon");
                         var ExcelIcon = document.getElementById("ExcelIcon");
@@ -597,13 +576,13 @@
                                     var centerCellStyle = { alignment: { horizontal: 'center' } };
                                     // Aplique o estilo à coluna desejada
                                     XLSX.utils.sheet_add_aoa(ws, [], { origin: "A", style: centerCellStyle }); // Coluna A
-
+                                    
                                     XLSX.writeFile(wb, nomeArquivo);
                                 }
                 }
             }
             xhr.send(data);
-            console.log(data)
+            // console.log(data)
         }
 
     </script>
@@ -620,6 +599,7 @@
                 cai no else, e continua.</p>
             <p>Acrescentar funcionalidade: Sintético x Analítico</p>
             <p>Adicionar alerta para quando selecionado Intervalo, tornar obrigatorio o preenchimento dos 2 campos</p>
+            <p>Abrir o relatório em outra aba, e deixar um popup para informar que foi aberto.</p>
         </div>
     </footer>
 </body>
