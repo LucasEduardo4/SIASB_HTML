@@ -57,10 +57,7 @@
     </div>
 </div>
 </div>
-<div>
-  <p>Implementar depois:</p>
-  <p>Verificação dos valores digitados (email, cpf, etc.)</p>
-</div>
+
 </body>
 
 
@@ -92,6 +89,20 @@
     let email = document.getElementById("email").value;
     let usuario = document.getElementById("usuario").checked;
     var nomeSeparado = '';
+
+
+      // Validar o email
+  if (!validarEmail(email)) {
+    alert("Por favor, insira um endereço de email válido.");
+    return;
+  }
+
+  // Validar o CPF
+  if (!validarCPF(cpf)) {
+    alert("Por favor, insira um CPF válido no formato 999.999.999-99.");
+    return;
+  }
+
     
     if(usuario){ //somente alimenta a variavel nomeSeparado, se o checkbox estiver marcado
       nomeSeparado = separarNomes(nome);
@@ -148,6 +159,18 @@
       xhr.send(data);
 
     }
+
+    function validarEmail(email) {
+  // Expressão regular para validar o formato do email
+  var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+function validarCPF(cpf) {
+  // Expressão regular para validar o CPF
+  var regex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+  return regex.test(cpf);
+}
   
 </script>
 
