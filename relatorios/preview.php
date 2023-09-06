@@ -261,10 +261,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo $sql;
             return;
         }
+        $stmt->close();
+        $conn->close();
+        //encontrar onde está quebrando o codigo.
         if (isset($_POST['geraPDF'])) {
             require('tcpdf/tcpdf.php');
 
-// ----------------------------------------------------------------------- \\
+            // ----------------------------------------------------------------------- \\
 //                             PDF DOCUMENTATION:                          \\
 // ----------------------------------------------------------------------- \\
 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
@@ -297,54 +300,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     return $dado;
                 }
             }
-            function underline($pdf)
+            function underline($pdf, $tipoRelatorio)
             {
-                $pdf->Ln();
-                $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY(), array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 1, 'color' => array(0, 0, 0)));
+                if ($tipoRelatorio == 'sintetico') {
+
+                    $pdf->Ln();
+                    $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY(), array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 1, 'color' => array(0, 0, 0)));
+                } else
+                    if ($tipoRelatorio == 'analitico') {
+                        $pdf->Ln();
+                        $pdf->Line(10, $pdf->GetY(), 280, $pdf->GetY(), array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 1, 'color' => array(0, 0, 0)));
+                    }
             }
 
             // ---------------------- MAIN ---------------------- \\
 
             $pdf = new TCPDF();
             $pdf->SetAutoPageBreak(true, 10);
+            $pdf->setPrintHeader(FALSE);
             $pdf->AddPage();
             $pdf->SetFont('times', 'r', 12);
 
-            // $pdf->setPageOrientation('L'); //modo paisagem
-            $pdf->SetFont($font, 'B', 14);
-            $tamanhoImagemPrincipal = 50;
-            $tamanhoImagem = 12;
-            $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
-            $pdf->Image('../Icones Site/simbolo-saaeb.png', 185, 15, $tamanhoImagem, $tamanhoImagem, 'png');
-            $pdf->Ln();
-            $pdf->Cell(0, 10, '', 0, 1, 'C');
-            $pdf->Cell(0, 10, '', 0, 1, 'C');
-            $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
-            $pdf->SetFont($font, '', 12);
-            $pdf->Ln();
+            if ($tipoRelatorio == 'sintetico') {
 
-            // ------------------ CONFIGURAÇÕES ------------------ \\
-            // L-> largura da célula
-            $LID = $pdf->GetStringWidth('ID') + 5;
-            $Lassunto = $pdf->GetStringWidth('Assunto') + 15;
-            // $Ldescricao = $pdf->GetStringWidth('Descrição do chamado') + 9;
-            $LdataAbertura = $pdf->GetStringWidth('Data Abertura') + 2;
-            $LdataFechamento = $pdf->GetStringWidth('Data Fecha') + 2;
-            $Lresponsavel = $pdf->GetStringWidth('responsavel') + 7;
-            $Lequipamento = $pdf->GetStringWidth('Equipamento') + 10;
-            $Lautor = $pdf->GetStringWidth('Autor') + 12;
-            $Lstatus = $pdf->GetStringWidth('Status') + 13;
-            $alturaResults = 5;
+                $pdf->SetFont($font, 'B', 14);
+                $tamanhoImagemPrincipal = 50;
+                $tamanhoImagem = 12;
+                $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
+                $pdf->Image('../Icones Site/simbolo-saaeb.png', 185, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                $pdf->Ln();
+                $pdf->Cell(0, 10, '', 0, 1, 'C');
+                $pdf->Cell(0, 10, '', 0, 1, 'C');
+                $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
+                $pdf->SetFont($font, '', 12);
+                $pdf->Ln();
 
-            $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
-            $pdf->setFooterMargin(20);
-            $pdf->setFooterFont(array($font, '', 10));
+                // -------------- CONFIGURAÇÕES SINTETICO -------------- \\
+                // L-> largura da célula
+                $LID = $pdf->GetStringWidth('ID') + 5;
+                $Lassunto = $pdf->GetStringWidth('Assunto') + 15;
+                // $Ldescricao = $pdf->GetStringWidth('Descrição do chamado') + 9;
+                $LdataAbertura = $pdf->GetStringWidth('Data Abertura') + 2;
+                $LdataFechamento = $pdf->GetStringWidth('Data Fecha') + 2;
+                $Lresponsavel = $pdf->GetStringWidth('responsavel') + 7;
+                $Lequipamento = $pdf->GetStringWidth('Equipamento') + 10;
+                $Lautor = $pdf->GetStringWidth('Autor') + 12;
+                $Lstatus = $pdf->GetStringWidth('Status') + 13;
+                $alturaResults = 5;
 
-            // --------------------------------------------------- \\
-            //para agora: usuario que gerou e data gerada.
-            // $pdf->Ln();
+                $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
+                $pdf->setFooterMargin(20);
+                $pdf->setFooterFont(array($font, '', 10));
+
+                // --------------------------------------------------- \\
+                //para agora: usuario que gerou e data gerada.
+                // $pdf->Ln();
+            } else if ($tipoRelatorio == 'analitico') {
+
+                $pdf->setPageOrientation('L'); //modo paisagem
+                $pdf->SetFont($font, 'B', 14);
+                $tamanhoImagemPrincipal = 50;
+                $tamanhoImagem = 12;
+                $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
+                $pdf->Image('../Icones Site/simbolo-saaeb.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                $pdf->Ln();
+                $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
+                $pdf->SetFont($font, '', 12);
+                $pdf->Ln();
+
+                // -------------- CONFIGURAÇÕES ANALITICO -------------- \\
+                // L-> largura da célula
+                $LID = $pdf->GetStringWidth('ID') + 5;
+                $Lassunto = $pdf->GetStringWidth('Assunto') + 15;
+                $Ldescricao = $pdf->GetStringWidth('Descrição do chamado') + 9;
+                $LdataAbertura = $pdf->GetStringWidth('Data Abertura') + 2;
+                $LdataFechamento = $pdf->GetStringWidth('Data Fecha') + 2;
+                $Lresponsavel = $pdf->GetStringWidth('responsavel') + 7;
+                $Lequipamento = $pdf->GetStringWidth('Equipamento') + 10;
+                $Lautor = $pdf->GetStringWidth('Autor') + 12;
+                $Lstatus = $pdf->GetStringWidth('Status') + 13;
+                $alturaResults = 5;
+
+                $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
+                $pdf->setFooterMargin(20);
+                $pdf->setFooterFont(array($font, '', 10));
+
+                // --------------------------------------------------- \\
+            }
             $pdf->SetFont($font, 'I', 12);
-
+            //-----------------------------------------VERIFICAÇÃO DOS FILTROS-----------------------------------------\\
             $pdf->Cell(0, 10, 'Filtros selecionados para geração do relatório:', 0, 1, 'C');
 
             if (!empty($_POST['filtroATEDataAbertura'])) {
@@ -381,25 +425,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_POST['filtroSetor'])) {
                 $pdf->Cell($pdf->GetStringWidth('Setor: X') + 23, 10, 'Setor: ' . $setor, 0, 0, 'C');
             }
+            //------------------------------------------------------------------------------------------------------------------\\
+
             $pdf->SetFont($font, '', 12);
             $pdf->Ln();
-            $pdf->Cell(0, 10, 'Gerado em: '.date('d/m/Y'), 0, 0, 'R');
+            $pdf->Cell(0, 10, 'Gerado em: ' . date('d/m/Y'), 0, 0, 'R');
 
-            underline($pdf);
+            underline($pdf, $tipoRelatorio);
 
-            $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
-            $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'L');
-            // $pdf->MultiCell($Lassunto, 10, 'Assunto', $border, 'C');
-            $pdf->Cell($LdataAbertura, 10, 'Abertura', $border, 0, 'C');
-            $pdf->Cell($LdataFechamento, 10, 'Fechamento', $border, 0, 'C');
-            $pdf->Cell($Lresponsavel, 10, 'Responsável', $border, 0, 'C');
-            $pdf->Cell($Lequipamento, 10, 'Equipamento', $border, 0, 'C');
-            $pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
-            $pdf->Cell($Lstatus, 10, 'status', $border, 0, 'C');
-
-            $pdf->Ln();
-            $pdf->SetFont($font, '', 10);
             if ($tipoRelatorio == 'sintetico') {
+
+                $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
+                $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'L');
+                // $pdf->MultiCell($Lassunto, 10, 'Assunto', $border, 'C');
+                $pdf->Cell($LdataAbertura, 10, 'Abertura', $border, 0, 'C');
+                $pdf->Cell($LdataFechamento, 10, 'Fechamento', $border, 0, 'C');
+                $pdf->Cell($Lresponsavel, 10, 'Responsável', $border, 0, 'C');
+                $pdf->Cell($Lequipamento, 10, 'Equipamento', $border, 0, 'C');
+                $pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
+                $pdf->Cell($Lstatus, 10, 'status', $border, 0, 'C');
+
+                $pdf->Ln();
+                $pdf->SetFont($font, '', 10);
 
                 $i = 0;
                 $tamanhoMax = 33;
@@ -417,10 +464,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $i++;
 
                     if ($i >= $tamanhoMax) {
-                        // Adicionar rodapé e nova página
-                        // $pdf->Ln();
-                        // $pdf->Line(10, 270, 200, 270);
-                        // $pdf->Cell(0, 0, 'Página ' . $pdf->getAliasNumPage() . '/' . $pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
                         $pdf->AddPage();
                         $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY(), array('width' => 0.3, 'dash' => 1));
 
@@ -442,15 +485,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $tamanhoMax = 51;
                     }
                 }
+                underline($pdf, $tipoRelatorio);
+
             } else if ($tipoRelatorio == 'analitico') {
-                $pdf->Cell(0, 10, 'Nothing Yet...', $border, 0, 'C');
+                $minBottomMargin = 20;
+
+                foreach ($dados as $indice => $registro) {
+                    $descricaoCampo = $registro['descricao'];
+                    $currentY = $pdf->GetY();
+                    if(strlen($descricaoCampo) <= 200)
+                    $blockHeight = 40; //estimativa altura bloco atual
+                    else
+                    $blockHeight = 60;
+
+                    if ($currentY + $blockHeight + $minBottomMargin > $pdf->getPageHeight()) {
+                        // Não há espaço suficiente, então adicione uma quebra de página
+                        $pdf->AddPage();
+                        $pdf->SetFont($font, 'B', 14);
+                        $tamanhoImagemPrincipal = 50;
+                        $tamanhoImagem = 12;
+                        $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
+                        $pdf->Image('../Icones Site/simbolo-saaeb.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                        $pdf->Ln();
+                        $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
+                        $pdf->SetFont($font, '', 12);
+                        underline($pdf, $tipoRelatorio);
+                    }
+
+                    $border = 0;
+                    $pdf->Ln(2);
+                    $pdf->MultiCell(8, 10, 'ID:', $border, 'L', false, 0);
+                    $pdf->MultiCell(25, 10, $registro['IDChamado'], $border, 'L', false, 0);
+                    $pdf->MultiCell(18, 10, 'Assunto:', $border, 'R', false, 0);
+                    $pdf->MultiCell(94, 10, $registro['assunto'], $border, 'L', false, 0); //$ASSUNTO
+                    $pdf->MultiCell(30, 10, 'Autor:', $border, 'R', false, 0);
+                    $pdf->MultiCell(40, 10, $registro['autor'], $border, 'L', false, 0); //$DATAABERTURA
+                    $pdf->MultiCell(24, 10, 'Status:', $border, 'R', false, 0);
+                    $pdf->MultiCell(23, 10, $registro['status_chamado'], $border, 'L', false, 1);
+                    $pdf->Ln(1);
+                    $pdf->MultiCell(25, 10, 'Descrição: ', $border, 'L', false, 0);
+                    $pdf->MultiCell(120, 10, $descricaoCampo, $border, 'L', false, 0);
+                    $pdf->MultiCell(30, 10, 'Equipamento:', $border, 'R', false, 0);
+                    $pdf->MultiCell(40, 10, $registro['equipamento'] ? $registro['equipamento'] : '-----', $border, 'L', false, 1); //$DATAABERTURA
+                    if (strlen($descricaoCampo) > 65) {
+                        //Fórmula para calcular a altura da linha do campo descrição.
+                        $tamanho = strlen($descricaoCampo);
+                        $result = $tamanho / 65;
+                        $w = ($result * 4);
+                        $pdf->Ln($w);
+                    }
+                    $pdf->MultiCell(33, 10, 'Data de Abertura:', $border, 'R', false, 0);
+                    $pdf->MultiCell(40, 10, $registro['dataAbertura'], $border, 'L', false, 0);
+
+                    $pdf->MultiCell(39.05, 10, 'Data de Fechamento:', $border, 'R', false, 0);
+                    $pdf->MultiCell(40, 10, $registro['dataFechamento'] ? $registro['dataFechamento'] : '----', $border, 'L', false, 0);
+
+                    $pdf->MultiCell(50, 10, 'Última alteração no status:', $border, 'L', false, 0);
+                    $pdf->MultiCell(50, 10, $registro['responsavel'] ? $registro['responsavel'] : '----', $border, 'L', false, 0);
+
+                    $pdf->Ln(3);
+                    // $pdf->SetFont($font, '', 10);
+                    underline($pdf, $tipoRelatorio);
+                }
             }
+
+
+
 
             //resultados:
 
-            underline($pdf);
+
             $pdf->Cell(0, 10, 'Resultados:', 0, 1, 'C');
-            $pdf->Cell(30, 10, 'Total de registros: ' . count($dados), $border, 0, 'C');
+            $pdf->Cell(52, 10, 'Total de registros: ' . count($dados), $border, 0, 'R');
             $pdf->Cell(30, 10, 'Abertos: ' . count(array_filter($dados, function ($registro) {
                 return $registro['status_chamado'] == 'Aberto';
             })), $border, 0, 'C');
@@ -466,7 +572,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $pdf->Ln();
             $pdf->Cell(0, 10, 'Relatório gerado por: ' . $username . ' em ' . date('d/m/Y'), 0, 0, 'C');
-            // $pdf->Cell(0, 10, 'Em: ' . date('d/m/Y'), 0, 0, 'C');
 
             $pdf->Ln();
 
@@ -491,13 +596,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
         // imprimeDados($dados);
-
-        $stmt->close();
-        $conn->close();
     }
-
-
-
 }
+
+
+
+
 
 ?>

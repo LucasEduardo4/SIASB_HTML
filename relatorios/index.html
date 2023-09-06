@@ -57,6 +57,7 @@
 
         .ocultar {
             display: none;
+            transition: 1s;
         }
 
         .center {
@@ -87,46 +88,52 @@
                 <div class="my-3 borda" id="divDataAbertura">
                     <label for="selectDataAbertura">Data de Abertura:</label>
                     <br>
-                    <select name="" id="selectDataAbertura" class="center"
-                        onchange="exibeIntervalo(document.getElementById('divDataAbertura'), this.value)">
+                    <select name="" id="selectDataAbertura" class="center form-select"
+                        onchange="exibeIntervalo(this.value)">
+                        <option value="9" selected hidden>Selecione</option>
                         <option value="0">A partir de</option>
                         <option value="1">Intervalo</option>
                         <option value="4">Até Hoje</option>
                     </select>
                     <br>
-                    <label for="filtroDEDataAbertura" class="ocultar">De:</label>
-                    <input type="date" name="filtroDEDataAbertura" id="filtroDEDataAbertura" class="form-control">
-                    <label for="filtroATEDataAbertura" class="ocultar">Até:</label>
+                    <label for="filtroDEDataAbertura" id="labelDEAbertura" class="ocultar">De:</label>
+                    <input type="date" name="filtroDEDataAbertura" id="filtroDEDataAbertura"
+                        class="form-control ocultar">
+                                            <!-- <br> -->
+                    <label for="filtroATEDataAbertura" id="labelATEAbertura" class="ocultar">Até:</label>
                     <input type="date" name="filtroATEDataAbertura" id="filtroATEDataAbertura"
                         class="form-control ocultar">
                 </div>
                 <div class="my-3 borda" id="divDataFechamento">
                     <label for="selectDataFechamento">Data de Fechamento:</label>
-                    <select name="" id="selectDataFechamento" class="center"
-                        onchange="exibeIntervalo(document.getElementById('divDataFechamento'), this.value)">
+                    <select name="" id="selectDataFechamento" class="center form-select"
+                        onchange="exibeIntervalo(this.value)">
+                        <option value="9" selected hidden>Selecione</option>
                         <option value="2">Fechado Até</option>
                         <option value="3">Intervalo</option>
                         <option value="5">Até Hoje</option>
                     </select>
                     <br>
-                    <label for="filtroDEDataFechamento" class="ocultar">De:</label>
-                    <input type="date" name="filtroDataFechamento" id="filtroDEDataFechamento" class="form-control">
-                    <label for="filtroATEDataFechamento" class="ocultar">Até:</label>
+                    <label for="filtroDEDataFechamento" id="labelDEFechamento" class="ocultar">De:</label>
+                    <input type="date" name="filtroDataFechamento" id="filtroDEDataFechamento"
+                        class="form-control ocultar">
+                                                <!-- <br> -->
+                    <label for="filtroATEDataFechamento" id="labelATEFechamento" class="ocultar">Até:</label>
                     <input type="date" name="filtroDataFechamento" id="filtroATEDataFechamento"
                         class="form-control ocultar">
                 </div>
                 <div class="my-3">
                     <label for="filtroAutor">Autor:</label>
                     <select name="filtroAutor" id="filtroAutor" title="Só aparecem usuários que ja abriram chamado"
-                        class="form-control">
+                        class="form-control form-select">
                         <option value="" selected hidden>Selecione um usuário</option>
-                        <option value="" >Nenhum selecionado</option>
+                        <option value="">Nenhum selecionado</option>
 
                     </select>
                 </div>
                 <div class="my-3">
                     <label for="filtroStatus">Status do chamado:</label>
-                    <select name="filtroStatus" id="filtroStatus" class="form-control">
+                    <select name="filtroStatus" id="filtroStatus" class="form-control form-select">
                         <option value="1">Aberto</option>
                         <option value="2">Andamento</option>
                         <option value="3">Pendente</option>
@@ -136,14 +143,14 @@
                 </div>
                 <div class="my-3">
                     <label for="filtroTipoEquipamento">Tipo Equipamento:</label>
-                    <select name="filtroTipoEquipamento" id="filtroTipoEquipamento" class="form-control">
+                    <select name="filtroTipoEquipamento" id="filtroTipoEquipamento" class="form-control form-select">
                         <option value="" selected hidden>Selecione um tipo</option>
 
                     </select>
                 </div>
                 <div class="my-3">
                     <label for="filtroSetor">Setor:</label>
-                    <select name="filtroSetor" id="filtroSetor" class="form-control">
+                    <select name="filtroSetor" id="filtroSetor" class="form-control form-select">
                         <option value="" selected hidden>Selecione um setor</option>
                     </select>
                 </div>
@@ -246,59 +253,82 @@
     </div>
     <script>
 
-        function exibeIntervalo(divId, valor) {
+        function exibeIntervalo(valor) {
+            console.log(valor);
             var selectDataAbertura = document.getElementById('selectDataAbertura');
             var selectDataFechamento = document.getElementById('selectDataFechamento');
-            var elementosOcultos = divId.getElementsByClassName('ocultar');
             var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
             var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
             var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
             var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
+            var labelDEAbertura = document.getElementById("labelDEAbertura");
+            var labelATEAbertura = document.getElementById("labelATEAbertura");
+            var labelDEFechamento = document.getElementById("labelDEFechamento");
+            var labelATEFechamento = document.getElementById("labelATEFechamento");
 
             var currentDate = new Date();
             var day = currentDate.getDate();
-            var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
+            var month = currentDate.getMonth() + 1; // Nesse método, os meses começam em zero, por isso o +1
             var year = currentDate.getFullYear();
             // var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
             var dataAtual = year + '-' + ('0' + month).slice(-2) + '-' + ('0' + day).slice(-2);
 
             if (valor === '0') {
-                for (var i = 0; i < elementosOcultos.length; i++) {
-                    elementosOcultos[i].style.display = 'none';
-                    filtroATEDataAbertura.value = "";
-                }
+                exibe(filtroDEDataAbertura);
+                oculta(filtroATEDataAbertura);
+                oculta(labelDEAbertura);
+                oculta(labelATEAbertura);
+                filtroDEDataAbertura.value = "";
+                filtroATEDataAbertura.value = "";
             } else
                 if (valor === '1') {
-                    for (var i = 0; i < elementosOcultos.length; i++) {
-                        elementosOcultos[i].style.display = 'inline';
-                    }
-                }
-
-            if (valor === '2') {
-                for (var i = 0; i < elementosOcultos.length; i++) {
-                    elementosOcultos[i].style.display = 'none';
-                    filtroATEDataFechamento.value = "";
-                }
-            } else
-                if (valor === '3') {
-                    for (var i = 0; i < elementosOcultos.length; i++) {
-                        elementosOcultos[i].style.display = 'inline';
-                    }
+                    exibe(filtroDEDataAbertura);
+                    exibe(filtroATEDataAbertura);
+                    exibe(labelDEAbertura);
+                    exibe(labelATEAbertura);
+                    filtroDEDataAbertura.value = "";
+                    filtroATEDataAbertura.value = "";
                 } else
-                    if (valor === '4') {
-                        for (var i = 0; i < elementosOcultos.length; i++) {
-                            elementosOcultos[i].style.display = 'inline';
-                            filtroDEDataAbertura.value = "2023-01-01";
-                            filtroATEDataAbertura.value = dataAtual;
-                        }
+                    if (valor === '2') {
+                        exibe(filtroDEDataFechamento);
+                        oculta(filtroATEDataFechamento);
+                        oculta(labelDEFechamento);
+                        oculta(labelATEFechamento);
+                        filtroATEDataFechamento.value = "";
+                        filtroDEDataFechamento.value = "";
                     } else
-                        if (valor === '5') {
-                            for (var i = 0; i < elementosOcultos.length; i++) {
-                                elementosOcultos[i].style.display = 'inline';
-                                filtroDEDataFechamento.value = "2023-01-01";
-                                filtroATEDataFechamento.value = dataAtual;
-                            }
-                        }
+                        if (valor === '3') {
+                            exibe(filtroDEDataFechamento);
+                            exibe(filtroATEDataFechamento);
+                            exibe(labelDEFechamento);
+                            exibe(labelATEFechamento);
+                            filtroATEDataFechamento.value = "";
+                            filtroDEDataFechamento.value = "";
+                        } else
+                            if (valor === '4') {
+                                exibe(filtroDEDataAbertura);
+                                exibe(filtroATEDataAbertura);
+                                exibe(labelDEAbertura);
+                                exibe(labelATEAbertura);
+                                filtroDEDataAbertura.value = "2023-01-01";
+                                filtroATEDataAbertura.value = dataAtual;
+                            } else
+                                if (valor === '5') {
+                                    exibe(filtroDEDataFechamento);
+                                    exibe(filtroATEDataFechamento);
+                                    exibe(labelDEFechamento);
+                                    exibe(labelATEFechamento);
+                                    filtroDEDataFechamento.value = "2023-01-01";
+                                    filtroATEDataFechamento.value = dataAtual;
+                                }
+            function exibe(objeto) {
+                console.log(objeto);
+                objeto.style.display = "block";
+            }
+
+            function oculta(objeto) {
+                objeto.style.display = "none";
+            }
         }
 
         function redirecionarComPOST() {
@@ -313,7 +343,7 @@
             var camposOcultos = [
                 { name: 'gerarRelatorio', value: '1' },
                 { name: 'geraPDF', value: '1' },
-                { name: 'filtroDataAbertura', value: formularioExistente.filtroDEDataAbertura.value }, //<------ o problema está nesse form oculto... adicionar os campos novos
+                { name: 'filtroDataAbertura', value: formularioExistente.filtroDEDataAbertura.value },
                 { name: 'filtroDataFechamento', value: formularioExistente.filtroDEDataFechamento.value },
                 { name: 'filtroAutor', value: formularioExistente.filtroAutor.value },
                 { name: 'filtroStatus', value: formularioExistente.filtroStatus.value },
@@ -410,6 +440,32 @@
                 ordem = ordem[0];
             }
             // var ordemSelecionada = document.querySelector('input[name="ordem"]:checked').value;
+            if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 1) {
+                if (filtroATEDataAbertura.value == "" || filtroDEDataAbertura.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Abertura");
+                    return;
+                }
+            } else if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 0) {
+                if (filtroDEDataAbertura.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Abertura");
+                    return;
+                }
+            }
+
+            if (selectDataFechamento.options[selectDataFechamento.selectedIndex].value == 3) {
+                if (filtroATEDataFechamento.value == "" || filtroDEDataFechamento.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Fechamento");
+                    return;
+                }
+            } else if (selectDataFechamento.options[selectDataFechamento.selectedIndex].value == 2) {
+                if (filtroDEDataFechamento.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Fechamento");
+                    return;
+                }
+            }
+            else if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 9) {
+                return;
+            }
 
 
             var data = "filtroDataAbertura=" + encodeURIComponent(filtroDataAbertura.value) +
@@ -475,9 +531,11 @@
                 }
 
             }
+
         }
 
         function unParse(data) {
+            // console.log(data);
             var dadosObjeto = JSON.parse(data);
             // recebendo os dados do php
             var responsaveis = dadosObjeto.responsaveis;
@@ -520,13 +578,14 @@
         }
 
         function connection(data, method, output) {
+            // console.log(data);
             var xhr = new XMLHttpRequest();
             xhr.open(method, "preview.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     if (output == 'exibir') {
-                        console.log(xhr.responseText)
+                        // console.log(xhr.responseText)
                         var responseTable = document.getElementById("responseTable");
                         var PDFIcon = document.getElementById("PDFIcon");
                         var ExcelIcon = document.getElementById("ExcelIcon");
@@ -576,19 +635,19 @@
                                     var centerCellStyle = { alignment: { horizontal: 'center' } };
                                     // Aplique o estilo à coluna desejada
                                     XLSX.utils.sheet_add_aoa(ws, [], { origin: "A", style: centerCellStyle }); // Coluna A
-                                    
+
                                     XLSX.writeFile(wb, nomeArquivo);
                                 }
                 }
             }
             xhr.send(data);
-            // console.log(data)
         }
 
     </script>
     <footer>
         <div class="container mx-3 footer footer" style="margin-top: 600px;">
             <h3>A fazer:</h3>
+            <p style="color: red;">RESOLVER OS FILTROS........... Bugou geral por conta das ultimas alterações na data</p>
             <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao
                 usuário)</p>
             <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
@@ -598,7 +657,6 @@
                 a dos sql do php, tipo, caso tal opção esteja marcada, tal coluna deve aparecer na consulta, caso não,
                 cai no else, e continua.</p>
             <p>Acrescentar funcionalidade: Sintético x Analítico</p>
-            <p>Adicionar alerta para quando selecionado Intervalo, tornar obrigatorio o preenchimento dos 2 campos</p>
             <p>Abrir o relatório em outra aba, e deixar um popup para informar que foi aberto.</p>
         </div>
     </footer>
