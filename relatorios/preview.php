@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //criterio acima é para aplicar o limit 10, apenas se nao vier o parametro gerarRelatorio
             $sql .= ' limit 10';
         }
-
+        // echo $sql;
         $dados = array();
         $stmt = $conn->prepare($sql);
         if ($stmt) {
@@ -370,16 +370,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // -------------- CONFIGURAÇÕES ANALITICO -------------- \\
                 // L-> largura da célula
-                $LID = $pdf->GetStringWidth('ID') + 5;
-                $Lassunto = $pdf->GetStringWidth('Assunto') + 15;
-                $Ldescricao = $pdf->GetStringWidth('Descrição do chamado') + 9;
-                $LdataAbertura = $pdf->GetStringWidth('Data Abertura') + 2;
-                $LdataFechamento = $pdf->GetStringWidth('Data Fecha') + 2;
-                $Lresponsavel = $pdf->GetStringWidth('responsavel') + 7;
-                $Lequipamento = $pdf->GetStringWidth('Equipamento') + 10;
-                $Lautor = $pdf->GetStringWidth('Autor') + 12;
-                $Lstatus = $pdf->GetStringWidth('Status') + 13;
-                $alturaResults = 5;
+                $LID = $pdf->GetStringWidth('ID') + 5.0;
+                $Lassunto = $pdf->GetStringWidth('Assunto') + 15.0;
+                $Ldescricao = $pdf->GetStringWidth('Descrição do chamado') + 9.0;
+                $LdataAbertura = $pdf->GetStringWidth('Data Abertura') + 2.0;
+                $LdataFechamento = $pdf->GetStringWidth('Data Fecha') + 2.0;
+                $Lresponsavel = $pdf->GetStringWidth('responsavel') + 7.0;
+                $Lequipamento = $pdf->GetStringWidth('Equipamento') + 10.0;
+                $Lautor = $pdf->GetStringWidth('Autor') + 12.0;
+                $Lstatus = $pdf->GetStringWidth('Status') + 13.0;
+                $alturaResults = 5.0;
 
                 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
                 $pdf->setFooterMargin(20);
@@ -493,10 +493,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 foreach ($dados as $indice => $registro) {
                     $descricaoCampo = $registro['descricao'];
                     $currentY = $pdf->GetY();
-                    if(strlen($descricaoCampo) <= 200)
-                    $blockHeight = 40; //estimativa altura bloco atual
+                    if (strlen($descricaoCampo) <= 200)
+                        $blockHeight = 40; //estimativa altura bloco atual
                     else
-                    $blockHeight = 60;
+                        $blockHeight = 60;
 
                     if ($currentY + $blockHeight + $minBottomMargin > $pdf->getPageHeight()) {
                         // Não há espaço suficiente, então adicione uma quebra de página
@@ -553,7 +553,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
             //resultados:
-
+            if ($pdf->GetY() + 60 + 20 > $pdf->getPageHeight()) {
+                $pdf->AddPage();
+            }
 
             $pdf->Cell(0, 10, 'Resultados:', 0, 1, 'C');
             $pdf->Cell(52, 10, 'Total de registros: ' . count($dados), $border, 0, 'R');
@@ -577,7 +579,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
 
-            $pdf->Output('relatorio.pdf', 'I');
+            // $pdf->Output('relatorio.pdf', 'I');
+            $pdf->SetTitle('Relatório Gerado!');
+
+            // $pdf->setHeaderIcon('../icons/pdfReport.png');
+            // $pdf->Image('../icons/pdfReport.png', 10, 10, 20, 20, 'png', '', 'T', false, 300, '', false, false, 0, false, false, false);
+            $pdf->Output('/Relatorio Chamados '. date('d-m-Y') .'.pdf', 'I'); // Gera o PDF
+
+            // JavaScript para abrir o PDF em uma nova aba
+            exit();
         } else
             if (isset($_POST['geraXLSX'])) {
 
@@ -598,9 +608,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // imprimeDados($dados);
     }
 }
-
-
-
-
-
 ?>

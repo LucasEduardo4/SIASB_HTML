@@ -52,7 +52,7 @@
 
         .borda {
             border-bottom: solid 1px grey;
-            padding-bottom: 30px;
+            padding-bottom: 20px;
         }
 
         .ocultar {
@@ -74,6 +74,35 @@
         .desativo:hover {
             cursor: not-allowed;
         }
+
+        .form-check-input:checked {
+            background-color: #00cc99;
+            border-color: #00cc99;
+        }
+
+        .form-check-input:hover {
+            background-color: #00a383;
+            border-color: #00a383;
+            transition: 0.4s;
+        }
+
+        .btn {
+            color: white;
+            background-color: #00cc99;
+            border-color: #00cc99;
+            display: block;
+        }
+
+        .btn:hover {
+            color: white;
+            background-color: #00a383;
+            border-color: #00a383;
+            transition: 0.4s;
+        }
+        .btn:active{
+            background-color: whitesmoke;
+            
+        }
     </style>
 </head>
 
@@ -81,7 +110,7 @@
     <div id="global">
         <div class="container container-fluid my-3 esse"
             style="margin: auto; max-width: fit-content; margin: 10px 10px;"> <!-- left -->
-            <div class="mb-5">
+            <div class="mb-3">
                 <h3>Filtrar por:</h3>
             </div>
             <form id="formularioFiltros">
@@ -99,7 +128,7 @@
                     <label for="filtroDEDataAbertura" id="labelDEAbertura" class="ocultar">De:</label>
                     <input type="date" name="filtroDEDataAbertura" id="filtroDEDataAbertura"
                         class="form-control ocultar">
-                                            <!-- <br> -->
+                    <!-- <br> -->
                     <label for="filtroATEDataAbertura" id="labelATEAbertura" class="ocultar">Até:</label>
                     <input type="date" name="filtroATEDataAbertura" id="filtroATEDataAbertura"
                         class="form-control ocultar">
@@ -117,7 +146,7 @@
                     <label for="filtroDEDataFechamento" id="labelDEFechamento" class="ocultar">De:</label>
                     <input type="date" name="filtroDataFechamento" id="filtroDEDataFechamento"
                         class="form-control ocultar">
-                                                <!-- <br> -->
+                    <!-- <br> -->
                     <label for="filtroATEDataFechamento" id="labelATEFechamento" class="ocultar">Até:</label>
                     <input type="date" name="filtroDataFechamento" id="filtroATEDataFechamento"
                         class="form-control ocultar">
@@ -156,7 +185,7 @@
                 </div>
                 <div class="container ">
                     <a onclick="LimpaFiltros()" id="limpaFiltros" class="pointer">
-                        <h5>Limpar Filtros<i class="bi bi-eraser"></i></h5>
+                        <h5 class="btn">Zerar Filtros <i class="bi bi-eraser"></i></h5>
                     </a>
                 </div>
         </div>
@@ -251,6 +280,8 @@
         </div>
         <hr>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
         function exibeIntervalo(valor) {
@@ -338,6 +369,8 @@
 
             form.setAttribute('method', 'post');
             form.setAttribute('action', 'preview.php');
+            form.setAttribute('target', '_blank'); 
+
 
             // Campos ocultos
             var camposOcultos = [
@@ -355,9 +388,8 @@
                 { name: 'filtroATEDataAbertura', value: formularioExistente.filtroATEDataAbertura.value },
                 { name: 'filtroATEDataFechamento', value: formularioExistente.filtroATEDataFechamento.value },
                 { name: 'tipoRelatorio', value: formularioExistente.relatorioTipo.value }
-
-
             ];
+
             // Adicione os campos ocultos ao formulário
             camposOcultos.forEach(function (campo) {
                 var input = document.createElement('input');
@@ -463,9 +495,9 @@
                     return;
                 }
             }
-            else if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 9) {
-                return;
-            }
+            // else if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 9) {
+            //     return;
+            // }
 
 
             var data = "filtroDataAbertura=" + encodeURIComponent(filtroDataAbertura.value) +
@@ -483,16 +515,23 @@
 
 
             if (!relatorio) {
+                console.log(data);
                 connection(data, 'POST', 'exibir');
 
                 verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
             } else
                 if (relatorio == 'pdf') {
-                    // var data = data + "&gerarRelatorio=1" + "&geraPDF=1";
-                    // var data = 'gerarRelatorio=1' + '&geraPDF=1' + '&' + data;
                     var data = data + '&gerarRelatorio=1' + '&geraPDF=1';
 
                     connection(data, 'POST', 'relatorioPDF')
+
+                    Swal.fire({
+                        title: 'Relatório exibido na nova página',
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonText: 'Fechar Pop-up',
+                        confirmButtonColor: '#00cc99'
+                    })
                 }
             if (relatorio == 'xlsx') {
                 var data = data + '&gerarRelatorio=1' + '&geraXLSX=1';
@@ -647,7 +686,8 @@
     <footer>
         <div class="container mx-3 footer footer" style="margin-top: 600px;">
             <h3>A fazer:</h3>
-            <p style="color: red;">RESOLVER OS FILTROS........... Bugou geral por conta das ultimas alterações na data</p>
+            <p style="color: red;">RESOLVER OS FILTROS........... Bugou geral por conta das ultimas alterações na data
+            </p>
             <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao
                 usuário)</p>
             <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
