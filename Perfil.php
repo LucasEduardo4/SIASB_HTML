@@ -131,6 +131,9 @@ if ($imageData) {
         #user-info p {
             margin: 10px 0;
             color: #666;
+            padding: 20px;
+           background-color: #eeeeee;
+           border-radius: 8px;
         }
     </style>
 
@@ -143,14 +146,16 @@ if ($imageData) {
 
     <!-- ======================================================= -->
     
+    <div style="font-size:30px; width:100%; margin:auto">INFORMAÇÕES DO USUÁRIO</div>
 
 <div class="container">
 
 <div class="div1" style="width:50%" >
         
-<div style="padding-left: 300px;">
+        <div style="padding-left: 300px;">
             <div id="anexosContainer"></div>
-          </div>
+        </div>
+
 
           <script>
 
@@ -254,7 +259,7 @@ $conn->close();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            echo "<h2>Informações do Usuário</h2>";
+            // echo "<h2>Informações do Usuário</h2>";
             echo "<p><strong>Nome Completo:</strong> " . $row['nomeCompleto'] . "</p>";
             echo "<p><strong>CPF:</strong> " . $row['cpf'] . "</p>";
             echo "<p><strong>Matrícula:</strong> " . $row['matricula'] . "</p>";
