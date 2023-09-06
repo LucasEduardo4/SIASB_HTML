@@ -20,27 +20,50 @@
             margin: auto;
             margin-right: 30px;
             margin-top: 0px;
-            width: 400px;
+            width: 350px;
             border: solid 1px black;
-            border-radius: 20px;
+            border-radius: 19px 19px 5px 5px;
+            /* border-radius: 20px; */
             /* height: 400px; */
             height: auto;
             scrollbar-width: thin;
             scrollbar-color: #00cc99 #00a383;
+            background-color: #ffffff;
 
         }
 
+        /* EDITANDO O BOTÃO DAS NOTIFICAÇÕES AQUI */
+
         .navBar {
-            border: solid 1px black;
-            border-radius: 10px;
-            box-shadow: 2px 3px 1px black;
-            padding: 2px;
+            /* border: solid 1px black; */
+            border-radius: 10px 10px 0px 0px;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
             cursor: pointer;
+            color: white;
+            font-weight: 600;
         }
 
         .navBar.selected {
-            background-color: #e6e6e6;
+            background-color: white;
+            color: #333;
+            font-weight: 300;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            box-shadow: 1px 2px 1px #00a383;
         }
+
+         h2 {
+            letter-spacing:0.05cm; 
+            text-shadow: 2px 2px 4px #00a383;
+            } 
+
+        /* .row > * {
+            padding-right:1.5%;
+            padding-left: 1.5%;
+        } */
+
+        /* ========================================= */
 
         #data {
             font-size: 12px;
@@ -77,28 +100,39 @@
 
         .limparNotificacoes {
             text-align: center;
-            color: #808080;
+            color: #000000;
+            /* color: #808080; */
             font-size: 12px;
             cursor: pointer;
             margin-bottom: 12px;
+            padding-top: 10px;
         }
         .limparNotificacoesNAO{
             text-align: center;
-            color: #808080;
+            /* color: #808080; */
+            color: #000000;
             font-size: 12px;
             margin-bottom: 12px;
+            padding-top: 10px;
+            font-weight: 500;
+
         }
 
         .limparNotificacoes:hover {
             color: black;
             text-decoration: underline;
+            padding-top: 10px;
+
         }
 
         .limparNotificacoesConfirm {
             text-align: center;
-            color: #808080;
+            color: #000000;
+            /* color: #808080; */
             font-size: 14px;
             margin-bottom: 12px;
+            padding-top: 10px;
+
         }
 
         #iconeCerto,
@@ -123,21 +157,23 @@
 <body id="body" onload="init()">
     <div class="container" id="toplevel">
         <div class="row text-center">
-            <div class="col-12" style="background-color:#00a383 ; border-radius: 19px 19px 0px 0px; width: 100%;">
-                <h2>Notificações</h2>
-
-            </div>
-            <hr>
+            <div class="col-12" style="background-color:#333 ;border-radius: 19px 19px 0px 0px; width: 100%; height: 115px;">
+                <h2 style="color: white;width:50%; font-size: 19px; margin-top: 10px; padding-right: 20px;">Notificações</h2>
+                <hr style="color: #ffffff; ">
+                <div class="row text-center">
+                <div class="col-6" style="padding-right:0%;padding-left: 2%">
+                    <p id="novas" class="navBar selected" onclick="verificaClique(1)">Novas</p>
+                </div>
+                <div class="col-6" style="padding-right:2%; padding-left: 0%;">
+                    <p id="historico" class="navBar" onclick="verificaClique(2)">Histórico</p>
+                </div>
+                </div>
+                <!-- <hr> -->
         </div>
-        <div class="row text-center">
-            <div class="col-6">
-                <p id="novas" class="navBar selected" onclick="verificaClique(1)">Novas</p>
-            </div>
-            <div class="col-6">
-                <p id="historico" class="navBar" onclick="verificaClique(2)">Histórico</p>
-            </div>
-            <hr>
+        
+            
         </div>
+        
         <div class="container" id="novasMensagens"></div>
         <!-- Dados inseridos dinamicamente  -->
         <div class="container" id="historicoMensagens"></div>
@@ -184,7 +220,7 @@
                         </p>
                     </div>`
                 }
-                historicoMensagens.innerHTML = historicoMensagens.innerHTML + `<div onclick="limpaNotificacoes()" class="limparNotificacoes">Limpar todas notificações</div>`;
+                historicoMensagens.innerHTML = historicoMensagens.innerHTML + `<div onclick="limpaNotificacoes()" class="limparNotificacoes" >Limpar todas notificações</div>`;
             }
 
             function limpaNotificacoes() {
