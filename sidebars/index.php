@@ -463,19 +463,19 @@ if ($imageData) {
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
-      z-index: 0;
+      z-index: 1;
       min-height: 100%;
       margin-left: 95%;
     }
 
     .troca_cor {
       position: absolute;
-      margin-left: 5px;
+      margin-left: 2px;
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 11;
-      margin-top: 46%;
+      margin-top: 40%;
     }
   </style>
 
