@@ -309,7 +309,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else
                     if ($tipoRelatorio == 'analitico') {
                         $pdf->Ln();
-                        $pdf->Line(10, $pdf->GetY(), 280, $pdf->GetY(), array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 1, 'color' => array(0, 0, 0)));
+                        $pdf->Line(10, $pdf->GetY(), 280, $pdf->GetY(), array('width' => 0.2, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0)));
                     }
             }
 
@@ -389,51 +389,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $pdf->SetFont($font, 'I', 12);
             //-----------------------------------------VERIFICAÇÃO DOS FILTROS-----------------------------------------\\
-            $pdf->Cell(0, 10, 'Filtros selecionados para geração do relatório:', 0, 1, 'C');
+            $dadosFiltros = array();
 
             if (!empty($_POST['filtroATEDataAbertura'])) {
-                $pdf->Cell($pdf->GetStringWidth('Data de Abertura: DD/MM/YY'), 10, 'Data de Abertura de: ' . convertData($filtroDataAbertura), 0, 0, 'C');
-                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/Y'), 10, 'até: ' . convertData($filtroATEDataAbertura), 0, 1, 'C');
+                $dadosFiltros['Data de Abertura'] = 'de: ' . convertData($filtroDataAbertura) . ' até: ' . convertData($filtroATEDataAbertura);
             } elseif (!empty($_POST['filtroDataAbertura'])) {
-                $pdf->Cell($pdf->GetStringWidth('Data de Abertura: DD/MM/YYYY à part'), 10, 'Data de Abertura à partir de: ' . convertData($filtroDataAbertura), 0, 1, 'C');
+                $dadosFiltros['Data de Abertura'] = 'a partir de: ' . convertData($filtroDataAbertura);
             }
 
             if (!empty($_POST['filtroATEDataFechamento'])) {
-                $pdf->Cell($pdf->GetStringWidth('Data de Fechamento: DD/MM/YY'), 10, 'Data de Fechamento de: ' . convertData($filtroDataFechamento), 0, 0, 'C');
-                $pdf->Cell($pdf->GetStringWidth('até: DD/MM/Y'), 10, 'até: ' . convertData($filtroATEDataFechamento), 0, 1, 'C');
+                $dadosFiltros['Data de Fechamento'] = 'de: ' . convertData($filtroDataFechamento) . ' até: ' . convertData($filtroATEDataFechamento);
             } elseif (!empty($_POST['filtroDataFechamento'])) {
-                $pdf->Cell($pdf->GetStringWidth('Data de Fechamento: ate: DD/MM'), 10, 'Data de Fechamento até: ' . convertData($filtroDataFechamento), 0, 1, 'C');
+                $dadosFiltros['Data de Fechamento'] = 'até: ' . convertData($filtroDataFechamento);
             }
+
             if ($filtroStatus == 5) {
                 $status_chamado = "Todos";
             }
             if (!empty($_POST['filtroStatus'])) {
-                $pdf->Cell($pdf->GetStringWidth('Status:XXX') + 5, 10, 'Status: ' . $status_chamado, 0, 0, 'C');
+                $dadosFiltros['Status'] = $status_chamado;
             }
 
             if (!empty($_POST['filtroResponsavel'])) {
-                $pdf->Cell($pdf->GetStringWidth('Responsável: X') + 20, 10, 'Responsável: ' . $responsavel, 0, 0, 'C');
+                $dadosFiltros['Responsável'] = $responsavel;
             }
 
             if (!empty($_POST['filtroTipoEquipamento'])) {
-                $pdf->Cell($pdf->GetStringWidth('Equipamento: X') + 20, 10, 'Tipo: ' . $tipo_equipamento, 0, 0, 'C');
+                $dadosFiltros['Tipo'] = $tipo_equipamento;
             }
 
             if (!empty($_POST['filtroAutor'])) {
-                $pdf->Cell($pdf->GetStringWidth('Autor: X') + 23, 10, 'Autor: ' . $autor, 0, 0, 'C');
+                $dadosFiltros['Autor'] = $autor;
             }
+
             if (!empty($_POST['filtroSetor'])) {
-                $pdf->Cell($pdf->GetStringWidth('Setor: X') + 23, 10, 'Setor: ' . $setor, 0, 0, 'C');
+                $dadosFiltros['Setor'] = $setor;
             }
+
+            if (!empty($_POST['agruparPor'])) {
+                $dadosFiltros['Agrupar por'] = $_POST['agruparPor'];
+            }
+
+            if (!empty($_POST['ordenar'])) {
+                $dadosFiltros['Ordenar por'] = $_POST['ordenar'];
+            }
+
+            // Bloco abaixo é para adicionar dinamicamente as informações no relatório
+            $pdf->Cell(0, 10, 'Filtros selecionados para geração do relatório:', 0, 1, 'C');
+            $soma = 0;
+            foreach ($dadosFiltros as $filtro => $valor) {
+                $tamanho = intval($pdf->GetStringWidth($filtro . ': ' . $valor));
+                $soma += $tamanho;
+                if ($tipoRelatorio == 'sintetico')
+                    $width = 160;
+                else if ($tipoRelatorio == 'analitico')
+                    $width = 230;
+
+                if ($soma > $width) {
+                    $pdf->Ln(); // Adiciona uma nova linha antes da próxima célula
+                    $soma = $tamanho; // Redefine a soma para o tamanho da célula atual
+                }
+
+                $pdf->Cell($tamanho + 10, 10, $filtro . ': ' . $valor, 0, 0, 'L');
+            }
+
             //------------------------------------------------------------------------------------------------------------------\\
 
             $pdf->SetFont($font, '', 12);
             $pdf->Ln();
             $pdf->Cell(0, 10, 'Gerado em: ' . date('d/m/Y'), 0, 0, 'R');
 
-            underline($pdf, $tipoRelatorio);
 
             if ($tipoRelatorio == 'sintetico') {
+                underline($pdf, $tipoRelatorio);
 
                 $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
                 $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'L');
@@ -485,7 +513,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $tamanhoMax = 51;
                     }
                 }
-                underline($pdf, $tipoRelatorio);
 
             } else if ($tipoRelatorio == 'analitico') {
                 $minBottomMargin = 20;
@@ -499,7 +526,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $blockHeight = 60;
 
                     if ($currentY + $blockHeight + $minBottomMargin > $pdf->getPageHeight()) {
-                        // Não há espaço suficiente, então adicione uma quebra de página
+                        // Caso não haja espaço:
                         $pdf->AddPage();
                         $pdf->SetFont($font, 'B', 14);
                         $tamanhoImagemPrincipal = 50;
@@ -509,17 +536,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $pdf->Ln();
                         $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
                         $pdf->SetFont($font, '', 12);
-                        underline($pdf, $tipoRelatorio);
                     }
+                    underline($pdf, $tipoRelatorio);
 
                     $border = 0;
                     $pdf->Ln(2);
                     $pdf->MultiCell(8, 10, 'ID:', $border, 'L', false, 0);
                     $pdf->MultiCell(25, 10, $registro['IDChamado'], $border, 'L', false, 0);
                     $pdf->MultiCell(18, 10, 'Assunto:', $border, 'R', false, 0);
-                    $pdf->MultiCell(94, 10, $registro['assunto'], $border, 'L', false, 0); //$ASSUNTO
+                    $pdf->MultiCell(94, 10, $registro['assunto'], $border, 'L', false, 0);
                     $pdf->MultiCell(30, 10, 'Autor:', $border, 'R', false, 0);
-                    $pdf->MultiCell(40, 10, $registro['autor'], $border, 'L', false, 0); //$DATAABERTURA
+                    $pdf->MultiCell(40, 10, $registro['autor'], $border, 'L', false, 0);
                     $pdf->MultiCell(24, 10, 'Status:', $border, 'R', false, 0);
                     $pdf->MultiCell(23, 10, $registro['status_chamado'], $border, 'L', false, 1);
                     $pdf->Ln(1);
@@ -528,7 +555,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $pdf->MultiCell(30, 10, 'Equipamento:', $border, 'R', false, 0);
                     $pdf->MultiCell(40, 10, $registro['equipamento'] ? $registro['equipamento'] : '-----', $border, 'L', false, 1); //$DATAABERTURA
                     if (strlen($descricaoCampo) > 65) {
-                        //Fórmula para calcular a altura da linha do campo descrição.
                         $tamanho = strlen($descricaoCampo);
                         $result = $tamanho / 65;
                         $w = ($result * 4);
@@ -544,8 +570,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $pdf->MultiCell(50, 10, $registro['responsavel'] ? $registro['responsavel'] : '----', $border, 'L', false, 0);
 
                     $pdf->Ln(3);
-                    // $pdf->SetFont($font, '', 10);
-                    underline($pdf, $tipoRelatorio);
                 }
             }
 
@@ -555,7 +579,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //resultados:
             if ($pdf->GetY() + 60 + 20 > $pdf->getPageHeight()) {
                 $pdf->AddPage();
-            }
+                $pdf->SetFont($font, 'B', 14);
+                $tamanhoImagemPrincipal = 50;
+                $tamanhoImagem = 12;
+                $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
+                $pdf->Image('../Icones Site/simbolo-saaeb.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                $pdf->Ln();
+                $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
+                $pdf->SetFont($font, '', 12);
+
+                underline($pdf, $tipoRelatorio);
+            } else
+                underline($pdf, $tipoRelatorio);
 
             $pdf->Cell(0, 10, 'Resultados:', 0, 1, 'C');
             $pdf->Cell(52, 10, 'Total de registros: ' . count($dados), $border, 0, 'R');
@@ -579,14 +614,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
 
-            // $pdf->Output('relatorio.pdf', 'I');
             $pdf->SetTitle('Relatório Gerado!');
 
-            // $pdf->setHeaderIcon('../icons/pdfReport.png');
-            // $pdf->Image('../icons/pdfReport.png', 10, 10, 20, 20, 'png', '', 'T', false, 300, '', false, false, 0, false, false, false);
-            $pdf->Output('/Relatorio Chamados '. date('d-m-Y') .'.pdf', 'I'); // Gera o PDF
+            $pdf->Output('/Relatorio Chamados ' . date('d-m-Y') . '.pdf', 'I'); // Gera o PDF
 
-            // JavaScript para abrir o PDF em uma nova aba
             exit();
         } else
             if (isset($_POST['geraXLSX'])) {

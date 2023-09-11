@@ -465,7 +465,7 @@ if ($imageData) {
       align-items: flex-end;
       z-index: 0;
       min-height: 100%;
-      margin-left: 95%;
+      right: 0px;
     }
 
     .troca_cor {
@@ -475,7 +475,7 @@ if ($imageData) {
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 11;
-      margin-top: 46%;
+      margin-top: 45%;
     }
   </style>
 
@@ -807,7 +807,7 @@ if ($imageData) {
       });
 
       function init() {
-        console.log("init")
+        // console.log("init")
         var Frame = document.getElementById("myIframe");
         Frame.contentDocument.location.reload(true);
       }
@@ -836,7 +836,7 @@ if ($imageData) {
         verificaNovaNotificacao(nova);
       }
 
-      function bar(){
+      function bar() {
         var iframe = document.getElementById("myNotifications");
         iframe.src = iframe.src;
       }
