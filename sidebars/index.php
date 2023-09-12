@@ -475,7 +475,7 @@ if ($imageData) {
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 11;
-      margin-top: 40%;
+      margin-top: 5px;
     }
   </style>
 
