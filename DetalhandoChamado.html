@@ -258,220 +258,252 @@
       </div>
     </div>
     <div0 class="row">
-        <div class="card m-3">
-          <div class="card-body">
-            <h5>ANEXOS:</h5>
-            <div class="container mt-4" id="anexosContainer">
-            </div>
+      <div class="card m-3">
+        <div class="card-body">
+          <h5>ANEXOS:</h5>
+          <div class="container mt-4" id="anexosContainer">
+          </div>
         </div>
-    </div>
+      </div>
 
-    <script src="sidebars/bootstrap.bundle.min.js"></script>
-    <script>
-      var url = new URL(window.location.href);
-      var IDChamado = url.searchParams.get("IDChamado"); //22
+      <script src="sidebars/bootstrap.bundle.min.js"></script>
+      <script>
+        var url = new URL(window.location.href);
+        var IDChamado = url.searchParams.get("IDChamado"); //22
 
-      connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
+        connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
-      function connection(data, operation) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "DetalhandoChamado.php", true);
+        function connection(data, operation) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "DetalhandoChamado.php", true);
 
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            if (operation == 1) {
-              unParse(xhr.responseText);
-            } else if (operation == 2) {
-              // console.log(xhr.responseText);
-            } else if (operation == 'verificarSetor') {
-              if (xhr.responseText == '1') {
-                controlarResponsavel_Tecnologia();
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              if (operation == 1) {
+                unParse(xhr.responseText);
+              } else if (operation == 2) {
+                // console.log(xhr.responseText);
+              } else if (operation == 'verificarSetor') {
+                if (xhr.responseText == '1') {
+                  controlarResponsavel_Tecnologia();
+                }
               }
             }
+          };
+
+          if (data instanceof FormData) {
+            xhr.send(data);
+          } else {
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(data);
           }
-        };
-
-        if (data instanceof FormData) {
-          xhr.send(data);
-        } else {
-          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhr.send(data);
-        }
-      }
-
-
-      function unParse(data) {
-        console.log(data);
-        var dadosObjeto = JSON.parse(data)
-        var IDChamado = dadosObjeto.IDChamado;
-        var assunto = dadosObjeto.assunto;
-        var descricao = dadosObjeto.descricao;
-        var dataAbertura = dadosObjeto.dataAbertura;
-        var status_chamado = dadosObjeto.status_chamado;
-        var responsavel = dadosObjeto.responsavel;
-        var autor = dadosObjeto.autor;
-        var equipamento = dadosObjeto.equipamento;
-        var imagem = dadosObjeto.imagem;
-        var logs = dadosObjeto.logs;
-        var icone = dadosObjeto.icone;
-
-        // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
-
-        exibeLogs(logs);
-
-        dataAbertura = formatarDataHora(dataAbertura);
-
-        document.getElementById("assunto").innerHTML += assunto;
-        document.getElementById("descricao").innerHTML += '<br>' + descricao;
-        document.getElementById("dataAbertura").innerHTML += dataAbertura;
-        // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
-        document.getElementById("status").innerHTML += status_chamado;
-        document.getElementById("responsavel").innerHTML += responsavel;
-        document.getElementById("autor").innerHTML += autor;
-        if (equipamento != null) {
-          document.getElementById("equipamento").innerHTML += `${equipamento}`;
-        } else {
-          // document.getElementById("equipamento").innerHTML += '---';
-          document.getElementById("equipamento").style.display = 'none';
-
-        }
-        document.getElementById("numChamado").innerHTML += IDChamado;
-        // document.getElementById("imagem").innerHTML += imagem;
-        // if(ligacaoChamadoID == null){
-        //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
-        // }
-
-        if (imagem) {
-          document.getElementById("anexosContainer").innerHTML +=
-            '<p>Imagem do chamado:<br> <img id="imagemChamado" src="data:image/jpeg;base64,' + imagem + '" width="auto" height="auto" alt="Imagem do chamado" /></p>';
-        } else {
-          document.getElementById("anexosContainer").innerHTML +=
-            '<p>Nenhuma imagem anexada para este chamado.</p>';
         }
 
-        if (icone) {
-          document.getElementById("AutorLabel").innerHTML +=
-            '<img id="iconeAutor" src="data:image/jpeg;base64,' + icone + '" width="100px" alt="Ícone do autor" /></p>';
-        } else {
-          document.getElementById("AutorLabel").innerHTML +=
-            '';
+
+        function unParse(data) {
+          var dadosObjeto = JSON.parse(data)
+          var IDChamado = dadosObjeto.IDChamado;
+          var assunto = dadosObjeto.assunto;
+          var descricao = dadosObjeto.descricao;
+          var dataAbertura = dadosObjeto.dataAbertura;
+          var status_chamado = dadosObjeto.status_chamado;
+          var responsavel = dadosObjeto.responsavel;
+          var autor = dadosObjeto.autor;
+          var equipamento = dadosObjeto.equipamento;
+          var imagens = dadosObjeto.imagens;
+          var logs = dadosObjeto.logs;
+          var icone = dadosObjeto.icone;
+
+          // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
+
+          exibeLogs(logs);
+          exibeImagens(imagens)
+
+          dataAbertura = formatarDataHora(dataAbertura);
+
+          document.getElementById("assunto").innerHTML += assunto;
+          document.getElementById("descricao").innerHTML += '<br>' + descricao;
+          document.getElementById("dataAbertura").innerHTML += dataAbertura;
+          // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
+          document.getElementById("status").innerHTML += status_chamado;
+          document.getElementById("responsavel").innerHTML += responsavel;
+          document.getElementById("autor").innerHTML += autor;
+          if (equipamento != null) {
+            document.getElementById("equipamento").innerHTML += `${equipamento}`;
+          } else {
+            // document.getElementById("equipamento").innerHTML += '---';
+            document.getElementById("equipamento").style.display = 'none';
+
+          }
+          document.getElementById("numChamado").innerHTML += IDChamado;
+          // document.getElementById("imagem").innerHTML += imagem;
+          // if(ligacaoChamadoID == null){
+          //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
+          // }
+
+
+
+          if (icone) {
+            document.getElementById("AutorLabel").innerHTML +=
+              '<img id="iconeAutor" src="data:image/jpeg;base64,' + icone + '" width="100px" alt="Ícone do autor" /></p>';
+          } else {
+            document.getElementById("AutorLabel").innerHTML +=
+              '';
+
+          }
+
+        }
+      </script>
+      <style>
+        .imagensAnexo {
+          cursor: pointer;
+          width: 220px;
+          margin-right: 10px;
 
         }
 
-      }
+        .imagensAnexo:hover {
+          transform: scale(1.1);
+          transition: 0.4s;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+          border-radius: 6px;
 
-      function exibeLogs(logs) {
-        const logsContainer = document.getElementById("logsContainer");
+        }
 
-        logs.forEach((log) => {
-          const div = document.createElement("div");
-          div.classList.add("row", "mb-3");
+        #anexosContainer {
+          display: flex;
+          flex-direction: row;
+        }
+      </style>
+      <script>
 
-          const col = document.createElement("div");
-          col.classList.add("col", "px-0");
+        function exibeImagens(imagens) {
+          console.log(imagens);
+          containerAnexos = document.getElementById("anexosContainer");
 
-          const dFlex = document.createElement("div");
-          // dFlex.classList.add("d-flex");
+          imagens.forEach((imagens) => {
+            containerAnexos.innerHTML += `
+          <div class="row">
+            <div class="col-md-4">
+              <img class="imagensAnexo" src="data:image/jpeg;base64, ${imagens}" alt="Imagem do chamado">
+            </div>
+          </div>
+          `;
+          })
+        }
 
-          const div1 = document.createElement("div");
-          div1.classList.add("d-flex");
+        function exibeLogs(logs) {
+          const logsContainer = document.getElementById("logsContainer");
 
-          const responsavelStatus = document.createElement("p");
-          responsavelStatus.classList.add("mb-0");
-          responsavelStatus.style.marginRight = "10px";
-          responsavelStatus.textContent = log.responsavel + " alterou status para: " + log.status;
-          responsavelStatus.src = "Icones%20Site/anexo.png";
+          logs.forEach((log) => {
+            const div = document.createElement("div");
+            div.classList.add("row", "mb-3");
 
-          div1.appendChild(responsavelStatus);
-          if (log.imagem) {
-            const imagem = document.createElement("img");
-            imagem.classList.add("ml-3");
-            imagem.src = "Icones%20Site/anexo.png";
-            imagem.width = 30;
-            imagem.title = "Clique para visualizar a imagem anexada à resposta";
-            imagem.id = "imagemAnexada";
-            imagem.onclick = function () {
-              exibeImagensAnexadas(log.imagem);
+            const col = document.createElement("div");
+            col.classList.add("col", "px-0");
+
+            const dFlex = document.createElement("div");
+            // dFlex.classList.add("d-flex");
+
+            const div1 = document.createElement("div");
+            div1.classList.add("d-flex");
+
+            const responsavelStatus = document.createElement("p");
+            responsavelStatus.classList.add("mb-0");
+            responsavelStatus.style.marginRight = "10px";
+            responsavelStatus.textContent = log.responsavel + " alterou status para: " + log.status;
+            responsavelStatus.src = "Icones%20Site/anexo.png";
+
+            div1.appendChild(responsavelStatus);
+            if (log.imagem) {
+              const imagem = document.createElement("img");
+              imagem.classList.add("ml-3");
+              imagem.src = "Icones%20Site/anexo.png";
+              imagem.width = 30;
+              imagem.title = "Clique para visualizar a imagem anexada à resposta";
+              imagem.id = "imagemAnexada";
+              imagem.onclick = function () {
+                exibeImagensAnexadas(log.imagem);
+              }
+
+              div1.appendChild(imagem);
             }
 
-            div1.appendChild(imagem);
-          }
 
+            const div2 = document.createElement("div");
+            div2.classList.add("border-start", "border-primary", "px-3");
 
-          const div2 = document.createElement("div");
-          div2.classList.add("border-start", "border-primary", "px-3");
+            const mensagem = document.createElement("p");
+            mensagem.classList.add("mb-0");
+            mensagem.textContent = "motivo:  " + log.mensagem;
+            div2.appendChild(mensagem);
 
-          const mensagem = document.createElement("p");
-          mensagem.classList.add("mb-0");
-          mensagem.textContent = "motivo:  " + log.mensagem;
-          div2.appendChild(mensagem);
+            const dataParagrafo = document.createElement("p");
+            dataParagrafo.classList.add("mb-0");
+            dataParagrafo.textContent = formatarDataHora(log.dataAlteracao);
+            div2.appendChild(dataParagrafo);
 
-          const dataParagrafo = document.createElement("p");
-          dataParagrafo.classList.add("mb-0");
-          dataParagrafo.textContent = formatarDataHora(log.dataAlteracao);
-          div2.appendChild(dataParagrafo);
+            div.appendChild(col);
+            col.appendChild(dFlex);
+            dFlex.appendChild(div1);
+            div.appendChild(div2);
 
-          div.appendChild(col);
-          col.appendChild(dFlex);
-          dFlex.appendChild(div1);
-          div.appendChild(div2);
-
-          logsContainer.appendChild(div);
-        });
-      }
-
-      function exibeImagensAnexadas(imagens) {
-        if (window.screen.width < 1025) {
-          var responsiveSize = window.screen.width * 0.65
-        } else {
-          var responsiveSize = window.screen.width * 0.8;
+            logsContainer.appendChild(div);
+          });
         }
 
-        const html = `
+        function exibeImagensAnexadas(imagens) {
+          if (window.screen.width < 1025) {
+            var responsiveSize = window.screen.width * 0.65
+          } else {
+            var responsiveSize = window.screen.width * 0.8;
+          }
+
+          const html = `
         <div id="esquerda" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-left"></span></div>
         <div id="central" style="width:70%; display:inline;">
           <img id="imagenLOG" src="data:image/jpeg;base64, ${imagens}" width="${responsiveSize}px;"  alt="Imagem do log">
         </div>
         <div id="direita" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-right"></span></div>
         `;
-        Swal.fire({
-          title: "Imagem anexada",
-          // imageUrl: `data:image/jpeg;base64, ${imagens}`,
-          html: html,
-          width: window.screen.width,
-          margin: 0,
-          showCancelButton: false,
-          confirmButtonText: 'Fechar',
-          confirmButtonColor: '#00cc99',
-        })
-      }
+          Swal.fire({
+            title: "Imagem anexada",
+            // imageUrl: `data:image/jpeg;base64, ${imagens}`,
+            html: html,
+            width: window.screen.width,
+            margin: 0,
+            showCancelButton: false,
+            confirmButtonText: 'Fechar',
+            confirmButtonColor: '#00cc99',
+          })
+        }
 
-      function formatarDataHora(dataOriginal) {
-        const date = new Date(dataOriginal);
-        const dia = ('0' + date.getDate()).slice(-2);
-        const mes = ('0' + (date.getMonth() + 1)).slice(-2);
-        const ano = date.getFullYear().toString().slice(-2);
-        const horas = ('0' + date.getHours()).slice(-2);
-        const minutos = ('0' + date.getMinutes()).slice(-2);
+        function formatarDataHora(dataOriginal) {
+          const date = new Date(dataOriginal);
+          const dia = ('0' + date.getDate()).slice(-2);
+          const mes = ('0' + (date.getMonth() + 1)).slice(-2);
+          const ano = date.getFullYear().toString().slice(-2);
+          const horas = ('0' + date.getHours()).slice(-2);
+          const minutos = ('0' + date.getMinutes()).slice(-2);
 
-        return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
-      }
+          return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+        }
 
-      verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
+        verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
 
-      function verificaSetor() {
-        var data = "verificarSetor=" + encodeURIComponent('1');
-        connection(data, 'verificarSetor');
-      }
+        function verificaSetor() {
+          var data = "verificarSetor=" + encodeURIComponent('1');
+          connection(data, 'verificarSetor');
+        }
 
-      function controlarResponsavel_Tecnologia() {
-        var responsavel_tecnologia = document.getElementById("responsavel_tecnologia");
-        responsavel_tecnologia.style.display = "inline";
-      }
+        function controlarResponsavel_Tecnologia() {
+          var responsavel_tecnologia = document.getElementById("responsavel_tecnologia");
+          responsavel_tecnologia.style.display = "inline";
+        }
 
-      function alterarChamado() {
-        // Criando um formulário HTML
-        const formHTML = `
+        function alterarChamado() {
+          // Criando um formulário HTML
+          const formHTML = `
           <form id="alterarChamadoForm" class="text-start" enctype="multipart/form-data">
             <div class="mb-3 mt-3">
               <div class="d-flex">
@@ -494,48 +526,48 @@
           </form>
         `;
 
-        // Exibindo o popup com o formulário
-        Swal.fire({
-          title: "Atualizar o Status do Chamado",
-          html: formHTML,
-          showCancelButton: true,
-          confirmButtonColor: '#00cc99',
-          confirmButtonText: 'Atualizar Status',
-          cancelButtonText: 'Cancelar',
-          closeOnClickOutside: true,
-        }).then((result) => {
-          if (result) {
-            if (result.isConfirmed) {
-              // Aqui você pode implementar o código para enviar o formulário
-              var status = document.getElementById("statusPopup").value;
-              var mensagem = document.getElementById("mensagem").value;
-              var imagemInput = document.getElementById("imagem");
+          // Exibindo o popup com o formulário
+          Swal.fire({
+            title: "Atualizar o Status do Chamado",
+            html: formHTML,
+            showCancelButton: true,
+            confirmButtonColor: '#00cc99',
+            confirmButtonText: 'Atualizar Status',
+            cancelButtonText: 'Cancelar',
+            closeOnClickOutside: true,
+          }).then((result) => {
+            if (result) {
+              if (result.isConfirmed) {
+                // Aqui você pode implementar o código para enviar o formulário
+                var status = document.getElementById("statusPopup").value;
+                var mensagem = document.getElementById("mensagem").value;
+                var imagemInput = document.getElementById("imagem");
 
-              // var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado) + "&imagem=" + encodeURIComponent(imagemInput.files[0]) ;
-              var data = new FormData();
-              data.append("gerarLog", "1");
-              data.append("status", status);
-              data.append("mensagem", mensagem);
-              data.append("referencia", IDChamado);
-              data.append("imagem", imagemInput.files[0]); //criei o banco TBImagens, quando voltar, fazer as alterações necessarias para inserir a imagem diretamente nele.
+                // var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado) + "&imagem=" + encodeURIComponent(imagemInput.files[0]) ;
+                var data = new FormData();
+                data.append("gerarLog", "1");
+                data.append("status", status);
+                data.append("mensagem", mensagem);
+                data.append("referencia", IDChamado);
+                data.append("imagem", imagemInput.files[0]); //criei o banco TBImagens, quando voltar, fazer as alterações necessarias para inserir a imagem diretamente nele.
 
-              connection(data, 2);
-              // window.location.reload();
-              // Exemplo de envio do formulário
-              Swal.fire({
-                title: 'Alterado!',
-                text: 'Chamado alterado com sucesso',
-                icon: 'success',
-                timer: 3000
-              }).then(() => {
-                window.location.reload();
-              });
+                connection(data, 2);
+                // window.location.reload();
+                // Exemplo de envio do formulário
+                Swal.fire({
+                  title: 'Alterado!',
+                  text: 'Chamado alterado com sucesso',
+                  icon: 'success',
+                  timer: 3000
+                }).then(() => {
+                  window.location.reload();
+                });
+              }
             }
-          }
-        });
-      }
+          });
+        }
 
-    </script>
+      </script>
 </body>
 
 </html>

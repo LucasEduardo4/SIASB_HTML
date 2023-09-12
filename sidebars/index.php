@@ -463,7 +463,7 @@ if ($imageData) {
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
-      z-index: 0;
+      z-index: 1;
       min-height: 100%;
       margin-left: 95%;
     }
@@ -475,7 +475,7 @@ if ($imageData) {
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 11;
-      /* margin-top: 40%; */
+      margin-top: 40%;
     }
   </style>
 
@@ -810,7 +810,7 @@ if ($imageData) {
       });
 
       function init() {
-        console.log("init")
+        // console.log("init")
         var Frame = document.getElementById("myIframe");
         Frame.contentDocument.location.reload(true);
       }
@@ -839,7 +839,7 @@ if ($imageData) {
         verificaNovaNotificacao(nova);
       }
 
-      function bar(){
+      function bar() {
         var iframe = document.getElementById("myNotifications");
         iframe.src = iframe.src;
       }
