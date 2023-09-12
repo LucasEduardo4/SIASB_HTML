@@ -464,8 +464,9 @@ if ($imageData) {
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 1;
-      min-height: 100%;
-      right: 0px;
+      /* min-height: 100%; */
+      bottom: 0px;
+      right: 5px;
     }
 
     .troca_cor {
@@ -475,11 +476,7 @@ if ($imageData) {
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 11;
-<<<<<<< HEAD
       margin-top: 45%;
-=======
-      margin-top: 40%;
->>>>>>> 3fe49eb74c4c804fe85988734fe079121563728a
     }
   </style>
 

@@ -191,8 +191,7 @@
                 </div>
         </div>
 
-        <div class="container container-fluid"
-            style="margin: auto; max-width: fit-content; margin: 10px 10px;">
+        <div class="container container-fluid" style="margin: auto; max-width: fit-content; margin: 10px 10px;">
             <!-- right -->
             <div class="container container-fluid esse my-2">
                 <p>Tipo de Relatório: </p>
@@ -224,25 +223,103 @@
                     <label for="decrescente" class="form-check-label" value="decrescente">Decrescente</label>
                 </div>
             </div>
+            <style>
+                .divColumnSelection {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-right: 10px;
+                    background-color: white;
+                    padding: 2px;
+                }
+                .divColumnSelection label{
+                    width: 180px;
+                    width: 26vh;
+                }
+                .divColumnSelection:hover{
+                    color: white;
+                    background-color: #1e90ff;
+                }
+
+                #columnSelection {
+                    display: flex; 
+                    flex-direction: column;
+                    border: solid 1px black;
+                    /* display: none; */
+                    position: absolute;
+                    width: 210px;
+                    background-color: white;
+                }
+                #columnSelector{
+                    border: solid 1px #dcdcdc;
+                    border-radius: 6px;
+                    padding: 6px;
+                }
+            </style>
+            <script>
+                function exibeColunas(){
+                    var columnSelection = document.getElementById('columnSelection');
+                    if(columnSelection.style.display == 'none'){
+                        columnSelection.style.display = 'flex';
+                    }else{
+                        columnSelection.style.display = 'none';
+                    }
+                }
+            </script>
 
             <div class="container container-fluid esse mt-3" style="margin: auto;">
                 <div class="form-check p-0">
 
-                    <label for="agruparPor" class="form-check-label">Agrupar Por:</label>
-                    <select name="" id="agruparPor" class="form-control">
-                        <option value="" selected hidden>Escolha abaixo</option>
-                        <option value="IDChamado">ID</option>>
-                        <option value="Assunto">Assunto</option>>
-                        <option value="dataAbertura">Data Abertura</option>>
-                        <option value="dataFechamento">Data Fechamento</option>>
-                        <option value="equipamento">Equipamento</option>>
-                        <option value="autor">Autor</option>>
-                        <option value="status_chamado">Status</option>>
-                    </select>
+                    <label for="selectColunas" class="form-check-label">Selecionar colunas:</label>
+                    <div id="columnSelector" onclick="exibeColunas()">Escolha abaixo:</div>
+                    <div id="columnSelection">
+                        <div class="divColumnSelection">
+                            <label for="IDChamado">IDChamado</label>
+                            <input class="form-check-input" type="checkbox" value="IDChamado" id="IDChamado"
+                                name="IDChamado" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Assunto">Assunto</label>
+                            <input class="form-check-input" type="checkbox" value="assunto" id="Assunto" name="Assunto"
+                                checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Descrição">Descrição</label>
+                            <input class="form-check-input" type="checkbox" value="descricao" id="Descrição"
+                                name="Descrição" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="DatadeAbertura">Data de Abertura</label>
+                            <input class="form-check-input" type="checkbox" value="dataAbertura" id="DatadeAbertura"
+                                name="DatadeAbertura" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="DatadeFechamento">Data de Fechamento</label>
+                            <input class="form-check-input" type="checkbox" value="dataFechamento" id="DatadeFechamento"
+                                name="DatadeFechamento" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Status">Status</label>
+                            <input class="form-check-input" type="checkbox" value="status" id="Status" name="Status"
+                                checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Autor">Autor</label>
+                            <input class="form-check-input" type="checkbox" value="autor" id="Autor" name="Autor"
+                                checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Equipamento">Equipamento</label>
+                            <input class="form-check-input" type="checkbox" value="equipamento" id="Equipamento"
+                                name="Equipamento" checked>
+                        </div>
+                    </div>
+
+
                 </div>
                 </form>
                 <div class="container px-3">
-                    <button class="btn btn-primary mt-3" onclick="submitFilters()">Visualizar Relatório <i class="bi bi-caret-right"></i></button>
+                    <button class="btn btn-primary mt-3" onclick="submitFilters()">Visualizar Relatório <i
+                            class="bi bi-caret-right"></i></button>
                 </div>
             </div>
             <div class="container container-fluid esse mt-3">
@@ -385,7 +462,6 @@
                 { name: 'filtroSetor', value: formularioExistente.filtroSetor.value },
                 { name: 'ordenar', value: formularioExistente.ordenar.value },
                 { name: 'ordem', value: formularioExistente.ordem.value },
-                { name: 'agruparPor', value: formularioExistente.agruparPor.value },
                 { name: 'filtroATEDataAbertura', value: formularioExistente.filtroATEDataAbertura.value },
                 { name: 'filtroATEDataFechamento', value: formularioExistente.filtroATEDataFechamento.value },
                 { name: 'tipoRelatorio', value: formularioExistente.relatorioTipo.value }
@@ -426,7 +502,6 @@
             var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
             var filtroSetor = document.getElementById("filtroSetor");
             var ordenar = document.getElementById("ordenar");
-            var agruparPor = document.getElementById("agruparPor");
             var ordem = document.getElementsByName("ordem");
             var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
             var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
@@ -440,7 +515,6 @@
             filtroTipoEquipamento.value = "";
             filtroSetor.value = "";
             ordenar.value = "";
-            agruparPor.value = "";
             ordem[0].checked = true;
             ordem[1].checked = false;
             exibeIntervalo(document.getElementById('divDataAbertura'), 0);
@@ -465,7 +539,6 @@
             var tipoRelatorio = document.getElementsByName("relatorioTipo");
             tipoRelatorio = tipoRelatorio[0].checked ? tipoRelatorio[0] : tipoRelatorio[1];
             var ordenar = document.getElementById("ordenar");
-            var agruparPor = document.getElementById("agruparPor");
             var ordem = document.getElementsByName("ordem");
             if (ordem[1].checked == true) {
                 ordem = ordem[1];
@@ -509,7 +582,6 @@
                 "&filtroSetor=" + encodeURIComponent(filtroSetor.value) +
                 "&ordenar=" + encodeURIComponent(ordenar.value) +
                 "&ordem=" + encodeURIComponent(ordem.value) +
-                "&agruparPor=" + encodeURIComponent(agruparPor.value) +
                 "&filtroATEDataAbertura=" + encodeURIComponent(filtroATEDataAbertura.value) +
                 "&filtroATEDataFechamento=" + encodeURIComponent(filtroATEDataFechamento.value) +
                 "&tipoRelatorio=" + encodeURIComponent(tipoRelatorio.id);
@@ -519,7 +591,7 @@
                 console.log(data);
                 connection(data, 'POST', 'exibir');
 
-                verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
+                verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem,);
             } else
                 if (relatorio == 'pdf') {
                     var data = data + '&gerarRelatorio=1' + '&geraPDF=1';
@@ -539,7 +611,7 @@
                 connection(data, 'POST', 'relatorioXLSX')
             }
 
-            function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor) {
+            function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem,) {
                 var FiltrosSelecionados = document.getElementById("FiltrosSelecionados");
                 FiltrosSelecionados.innerHTML = '';
                 if (filtroDataAbertura.value != "") {
@@ -566,10 +638,6 @@
                 if (ordem.value != "") {
                     FiltrosSelecionados.innerHTML += "<p> Ordem: " + ordem.value + "</p>";
                 }
-                if (agruparPor.value != "") {
-                    FiltrosSelecionados.innerHTML += "<p> Agrupar por: " + agruparPor.value + "</p>";
-                }
-
             }
 
         }
@@ -687,8 +755,10 @@
     <footer>
         <div class="container mx-3 footer footer" style="margin-top: 300px;">
             <h3>A fazer:</h3>
-            <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao usuário)</p>
-            <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra pessoa.</p>
+            <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao
+                usuário)</p>
+            <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
+                pessoa.</p>
             <p>Não esquecer... de deixar uma opção para selecionar quais colunas devem ser impressas, a configuração
                 deve ser bem parecida com
                 a dos sql do php, tipo, caso tal opção esteja marcada, tal coluna deve aparecer na consulta, caso não,
