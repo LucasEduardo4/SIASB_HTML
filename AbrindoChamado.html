@@ -223,7 +223,7 @@
 
         <div style="margin-top: 30px;" class="upload-div">
           <label for="imagem">Envie uma imagem do problema:</label>
-          <input type="file" id="imagem" name="imagem">
+          <input type="file" id="imagem" multiple name="imagem">
         </div>
         <div id="erromsg" class="container p-3 mt-3 bg-danger" style="border-radius: 16px; width: 70%; display: none;">
           <p>Falta preencher algum campo acima, Verifique novamente</p>
@@ -262,19 +262,29 @@
       formData.append("assunto", assunto);
       formData.append("descricao", descricao);
       formData.append("stiID", stiID);
-      formData.append("imagem", imagemInput.files[0]);
+      if (imagemInput.files.length > 0) {
+        // Adicione todos os arquivos selecionados ao FormData
+        for (var i = 0; i < imagemInput.files.length; i++) {
+          formData.append("imagem[]", imagemInput.files[i]);
+        }
+      }
 
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "AbrindoChamado.php", true);
-
       xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log(xhr.responseText);
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            exibirPopup();
+          } else {
+            // Lida com erros aqui, se necessário
+          }
         }
       };
 
+      // Envie o FormData com os dados do formulário
       xhr.send(formData);
-      exibirPopup();
+
     }
 
 
@@ -291,11 +301,11 @@
         timerProgressBar: true, // Mostrar barra de progresso do timer
       }).then((result) => {
         // Após o tempo do timer, redireciona para a página desejada
-        window.location.href = 'VendoChamados.html';
+        // window.location.href = 'VendoChamados.html';
         // Verificar se o botão foi clicado
         if (result.isConfirmed) {
           // Redirecionar para a página desejada
-          window.location.href = 'VendoChamados.html';
+          // window.location.href = 'VendoChamados.html';
         }
       });
     }

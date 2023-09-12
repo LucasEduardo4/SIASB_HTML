@@ -100,12 +100,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dataAbertura = $row["dataAbertura"];
                 $assunto = $row["assunto"];
                 $status_chamado = $row["status_chamado"];
+                // <div class='cells' id='IDChamado'> <p style='padding-left: 10px;'>" . $IDChamado . "</p> </div>
 
                 // Adicionar os valores na tabela HTML com ícones de ação
                 echo "
                 <a href='detalhandoChamado.html?IDChamado=" . $IDChamado . "'>
                 <div class='FaixaFormResults'>
-                <div class='cells' id='IDChamado'> <p style='padding-left: 10px;'>" . $IDChamado . "</p> </div>
                 <div class='cells'><p>" . convertData($dataAbertura) . "</p></div>
                 <div class='cells'><p>" . $assunto . "</p></div>
                 <div class='cells'><p class='statusColors $status_chamado'>" . $status_chamado . "</p></div>

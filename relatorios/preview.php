@@ -134,7 +134,7 @@ if (!isset($_SESSION['username'])) {
             $filtroATEDataFechamento = $_POST['filtroATEDataFechamento'] ?? null;
             $tipoRelatorio = $_POST['tipoRelatorio'] ?? null;
 
-            $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, te.descricao as 'TipoEquipamento', st.descricao as 'setor', st.ID
+            $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', te.descricao as 'TipoEquipamento', st.descricao as 'setor', st.ID
                 FROM TBChamados c 
                 LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus 
                 LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario 

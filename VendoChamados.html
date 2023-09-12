@@ -255,7 +255,7 @@
                 <input type="text" id="codigoSolicitacao" onchange="alteraData()">
             </div>
             <div class=" MeusCampos">
-                <label for="data">Data</label>
+                <label for="data">Data: </label>
                 <select class="form-select" name="data" id="data" onchange="alteraData()">
                     <option value="" selected hidden>Selecione a opção</option>
                     <option value="1">Abertura</option>
@@ -284,6 +284,10 @@
                     <option value="5">TODOS</option>
                 </select>
             </div>
+            <div class="MeusCampos">
+                <label for="">Autor</label>
+                <select name="SelectAutores" id="SelectAutores"></select>
+            </div>
         </div>
 
         <button type="submit">Filtrar</button>
@@ -291,9 +295,9 @@
 
     <div class="resultados" id="resultadosContainer" style="display: none;">
         <div class="FaixaForm" style="color: white;">
-            <div class="CamposResultados">
+            <!-- <div class="CamposResultados">
                 <p style="padding-left: 10px;"> ID da Solicitação </p>
-            </div>
+            </div> -->
             <div class="CamposResultados">
                 <p> Data de Abertura </p>
             </div>

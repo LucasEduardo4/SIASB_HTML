@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $IDChamado = $_POST['ChamadoID'];
 
-        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', c.imagem, u.icone
+        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', u.icone
                 FROM TBChamados c
                 LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus
                 LEFT JOIN TBUsuario a on c.responsavel = a.IDUsuario
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $responsavel = $row["responsavel"];
                     $autor = $row["autor"];
                     $equipamento = $row["equipamento"];
-                    $imagem = $row["imagem"];
+                    // $imagem = $row["imagem"];
                     $icone = $row["icone"];
 
                     $resultArray['IDChamado'] = $IDChamado;
@@ -46,12 +46,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $resultArray['responsavel'] = $responsavel;
                     $resultArray['autor'] = $autor;
                     $resultArray['equipamento'] = $equipamento;
-                    $resultArray['imagem'] = base64_encode($imagem);
+                    // $resultArray['imagem'] = base64_encode($imagem);
                     $resultArray['icone'] = base64_encode($icone);
+
+                    $sql2 = "SELECT imagem from TBimagens WHERE referencia = $IDChamado";
+                    $stmt2 = $conn->prepare($sql2);
+                    $stmt2->execute();
+                    $result2 = $stmt2->get_result();
+
+                    $resultImagens = array();
+                    if ($result->num_rows > 0) {
+                        while ($row2 = $result2->fetch_assoc()) {
+                            $imagem = $row2["imagem"];
+                            $resultImagens[] = base64_encode($imagem);
+                        }
+                    }
+                    $resultArray['imagens'] = $resultImagens;
 
                 }
             }
         }
+
 
         class LogChamado
         {
