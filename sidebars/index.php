@@ -183,7 +183,7 @@ if ($imageData) {
 
     body {
       background-color: #f6f6f6;
-      z-index: 10;
+      z-index: 0;
 
     }
 
@@ -463,19 +463,19 @@ if ($imageData) {
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
-      z-index: 1;
+      z-index: 0;
       min-height: 100%;
       margin-left: 95%;
     }
 
     .troca_cor {
       position: absolute;
-      margin-left: 2px;
+      margin-left: 5px;
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 11;
-      margin-top: 40%;
+      /* margin-top: 40%; */
     }
   </style>
 
@@ -511,41 +511,7 @@ if ($imageData) {
 
   <!-- RELIZANDO A TROCA DE TEMAS DO SITE, DE CLARO PARA ESCURO -->
 
-  <div class="troca_cor">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-      <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-        <use href="#circle-half"></use>
-      </svg>
-      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-      <li>
-        <button onclick="alterarTema('claro')" id="btnTemaClaro" type="button"
-          class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#sun-fill"></use>
-          </svg>
-          Claro
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button onclick="alterarTema('escuro')" id="btnTemaEscuro" class="dropdown-item d-flex align-items-center"
-          data-bs-theme-value="dark" aria-pressed="false">
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#moon-stars-fill"></use>
-          </svg>
-          Escuro
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-    </ul>
-  </div>
+
 
   <div class="perfil_img">
     <hr>
@@ -693,6 +659,43 @@ if ($imageData) {
             <p style="color: white;"> CONFIGURAÇÕES </p>
           </li>
         </div>
+
+        <div class="troca_cor">
+    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+      <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+        <use href="#circle-half"></use>
+      </svg>
+      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+      <li>
+        <button onclick="alterarTema('claro')" id="btnTemaClaro" type="button"
+          class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <use href="#sun-fill"></use>
+          </svg>
+          Claro
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button onclick="alterarTema('escuro')" id="btnTemaEscuro" class="dropdown-item d-flex align-items-center"
+          data-bs-theme-value="dark" aria-pressed="false">
+          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <use href="#moon-stars-fill"></use>
+          </svg>
+          Escuro
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+    </ul>
+  </div>
+
       </div>
 
       <div class="teste">
