@@ -463,7 +463,7 @@ if ($imageData) {
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
-      z-index: 1;
+      z-index: 0;
       min-height: 100%;
       margin-left: 95%;
     }
