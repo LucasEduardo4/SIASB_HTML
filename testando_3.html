@@ -1,15 +1,105 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>Formato CPF</title>
-	<script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Agenda</title>
+    <style>
+        /* Estilos CSS (mantidos como no seu exemplo) */
+    </style>
 </head>
 <body>
-	<h3>Digite seu CPF:</h3>
-	<form name="cadastro">
-		<input type="text" name="cpf" 
-			pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" 
-			title="Digite um CPF no formato: xxx.xxx.xxx-xx">
-		<input type="submit" value="Verificar">
-	</form>
+    <div class="header">
+        <h1>Minha Agenda</h1>
+    </div>
+    <div class="calendar">
+        <div class="time-slot"></div>
+        <div class="time-slot">Segunda-feira</div>
+        <div class="time-slot">Terça-feira</div>
+        <div class="time-slot">Quarta-feira</div>
+        <div class="time-slot">Quinta-feira</div>
+        <div class="time-slot">Sexta-feira</div>
+        <div class="time-slot">Sábado</div>
+        <div class="time-slot">Domingo</div>
+
+        <!-- Horários -->
+        <!-- Aqui você pode adicionar os horários desejados -->
+
+        <!-- Dias do mês -->
+        <!-- Esta seção será gerada dinamicamente usando JavaScript -->
+    </div>
+
+    <!-- Modal de Evento -->
+    <!-- Mantido como no seu exemplo -->
+
+    <!-- Seletor de Mês e Ano -->
+    <div class="month-selector">
+        <label for="month">Escolha um mês:</label>
+        <select id="month">
+            <option value="0">Janeiro</option>
+            <option value="1">Fevereiro</option>
+            <option value="2">Março</option>
+            <option value="3">Abril</option>
+            <option value="4">Maio</option>
+            <option value="5">Junho</option>
+            <option value="6">Julho</option>
+            <option value="7">Agosto</option>
+            <option value="8">Setembro</option>
+            <option value="9">Outubro</option>
+            <option value="10">Novembro</option>
+            <option value="11">Dezembro</option>
+        </select>
+        <label for="year">Escolha um ano:</label>
+        <input type="number" id="year" min="2023" value="2023">
+        <button id="update-calendar">Atualizar Calendário</button>
+    </div>
+
+    <script>
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const eventModal = document.querySelector('.event-modal');
+        const addEventButton = document.getElementById('add-event');
+        const eventNameInput = document.getElementById('event-name');
+        const eventTimeInput = document.getElementById('event-time');
+        const eventDayInput = document.getElementById('event-day');
+        const monthSelector = document.getElementById('month');
+        const yearInput = document.getElementById('year');
+        const updateCalendarButton = document.getElementById('update-calendar');
+        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        // Função para atualizar o calendário com base no mês e ano selecionados
+        function updateCalendar() {
+            // Obter o mês e ano selecionados
+            const selectedMonth = parseInt(monthSelector.value);
+            const selectedYear = parseInt(yearInput.value);
+
+            // Calcular o número de dias no mês selecionado
+            const days = daysInMonth[selectedMonth];
+
+            // Limpar os dias anteriores no calendário
+            for (let i = 0; i < timeSlots.length; i++) {
+                if (i > 7) {
+                    timeSlots[i].textContent = '';
+                    timeSlots[i].removeAttribute('data-day');
+                }
+            }
+
+            // Preencher os dias do mês no calendário
+            for (let day = 1; day <= days; day++) {
+                const dayOfWeek = new Date(selectedYear, selectedMonth, day).getDay();
+                const slotIndex = dayOfWeek + 8 + day;
+                const slot = timeSlots[slotIndex];
+                slot.textContent = day;
+                slot.setAttribute('data-day', dayOfWeek);
+            }
+        }
+
+        // Chamar a função de atualização quando o botão "Atualizar Calendário" for clicado
+        updateCalendarButton.addEventListener('click', updateCalendar);
+
+        // Restante do código para adicionar eventos (mantido como no seu exemplo)
+
+        // Chamar a função de atualização inicialmente
+        updateCalendar();
+    </script>
 </body>
 </html>

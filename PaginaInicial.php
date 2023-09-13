@@ -389,10 +389,6 @@ $stmt->close();
             display: none;
         }
 
-        .notes-popup {
-            position: relative;
-        }
-
         .close-popup {
             position: absolute;
             top: 10px;
@@ -470,28 +466,27 @@ $stmt->close();
             <h1>Bem-vindo,
                 <?php echo $_SESSION['nomeUsuario']; ?>!
             </h1>
-            <p>Aqui está o conteúdo restrito do painel de controle.</p>
+            <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
 
             <!-- Inclua o conteúdo adicional do painel de controle aqui -->
 
-            <a href="../flowSite/encerrarSessao.php">Sair</a> <!-- Adicione o link de logout para encerrar a sessão -->
+            <!-- <a href="../flowSite/encerrarSessao.php">Sair</a> -->
         </header>
 
 
         <div class="welcome-message">
-            <h2>Olá,
+            <!-- <h2>Olá,
                 <?php echo $_SESSION['nomeUsuario']; ?> !
-            </h2>
-            <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
+            </h2> -->
         </div>
 
-        <div class="info-panel">
+        <!-- <div class="info-panel">
 
             <div>
                 <h3>Horário</h3>
                 <p id="horario-atual">[Horário Atual]</p>
             </div>
-        </div>
+        </div> -->
 
         <div class="calendar-container">
             <h1>Calendário</h1>
