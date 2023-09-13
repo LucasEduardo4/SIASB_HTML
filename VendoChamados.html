@@ -135,24 +135,38 @@
             background-color: white;
             color: black;
             border-radius: 3px;
-            display: flex;
             margin-bottom: 5px;
             height: 40px;
             border-bottom: solid 1px grey;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             /* margin-top: 20px; */
         }
 
         /* VOU UTILIZAR PARA A PARTE DE CIMA E PARA PARTE DE BAIXO */
         .CamposResultados {
             width: 100%;
-            display: inline-block;
+            display: flex;
             color: white;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
         }
 
         .cells {
             display: inline-block;
             color: black;
             width: 100%;
+            display: flex;
+            align-items: center;
+            /* height: 100vh; */
+            text-align: center;
+            justify-content: center;
+
+
+
         }
 
         #temp {
@@ -171,21 +185,18 @@
             width: 100px;
         }
 
-        .bi {
-            /* Icone*/
-            font-size: 1.5em;
-            padding-left: 10px;
-            width: fit-content;
-            margin-left: 10px;
-        }
-
         a {
             text-decoration: none;
         }
 
         .cells p {
             padding-top: 2px;
-            margin-top: 6px;
+            /* margin-top: 2px; */
+            margin: 0px;
+            /* height: 100%; */
+            display: inline-block;
+            vertical-align: middle;
+
         }
 
         /* Css para as cores, baseando no status */
@@ -201,17 +212,25 @@
         .Aberto {
             background-color: #e74c3c;
         }
-        
+
         .Andamento {
             background-color: #7241dcf6;
         }
-        
+
         .Pendente {
             background-color: #e67e22;
         }
-        
+
         .Fechado {
             background-color: #2ecc71;
+        }
+
+        .disabled {
+            background-color: #e9ecef;
+        }
+
+        .CamposResultados p {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -252,11 +271,11 @@
 
             <div class="MeusCampos">
                 <label for="codigoSolicitacao">Código:</label>
-                <input type="text" id="codigoSolicitacao" onchange="alteraData()">
+                <input type="text" id="codigoSolicitacao" style="width: 60px;">
             </div>
             <div class=" MeusCampos">
                 <label for="data">Data: </label>
-                <select class="form-select" name="data" id="data" onchange="alteraData()">
+                <select class="form-select" name="data" id="data" onchange="ativaIntervalo()">
                     <option value="" selected hidden>Selecione a opção</option>
                     <option value="1">Abertura</option>
                     <option value="2">Fechamento</option>
@@ -265,32 +284,43 @@
             </div>
             <div class="MeusCampos datas">
                 <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="text" id="dataDe" class="datas" placeholder="De:" readonly required>
+                <input type="date" id="dataDe" class="datas" placeholder="De:" disabled readonly required>
             </div>
             <div class="MeusCampos datas">
                 <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="text" id="dataAte" class="datas" placeholder="Até:" readonly required>
+                <input type="date" id="dataAte" class="datas" placeholder="Até:" disabled readonly required>
 
             </div>
             <div class="MeusCampos">
                 <label for="status">Status:</label>
                 <select id="status" name="status">
-                    <option value="" selected hidden>Selecione...</option>
-                    <option value="1">Aberto</option>
-                    <!-- seria interessante essas informações partirem de um select nos status-->
-                    <option value="2">Andamento</option>
-                    <option value="3">Pendente</option>
-                    <option value="4">Fechado</option>
-                    <option value="5">TODOS</option>
+                    <option value="5" selected hidden>Selecione...</option>
                 </select>
             </div>
             <div class="MeusCampos">
                 <label for="">Autor</label>
-                <select name="SelectAutores" id="SelectAutores"></select>
+                <select name="selectAutores" id="selectAutores">
+                    <option value="" selected hidden>Escolha Abaixo:</option>
+                    <option value="">Nenhum</option>
+                </select>
+            </div>
+            <div class="MeusCampos">
+                <label for="">Responsavel</label>
+                <select name="selectResponsavel" id="selectResponsavel">
+                    <option value="" selected hidden>Escolha Abaixo:</option>
+                    <option value="">Nenhum</option>
+                </select>
+            </div>
+            <div class="MeusCampos">
+                <label for="">STI_ID</label>
+                <input type="text" id="stiID" onkeyup="verificaTamanho(this,4,'sendButton')"
+                    onblur="verificaEquipamento()" style="width: 30px;" name="sti_ID" id="sti_ID">
+                <input type="text" id="equipamentoNome" disabled style="width: 190px;">
             </div>
         </div>
+        <div><p>Amanhã: deixar isso aqui  ^^^^ responsivo.. fazer os filtros quebrar pra linha de baixo, caso necessário</p><p>e pensar também, se devo puxar o usuario e responsavel pelo tbchamados, ja que assim, só será exibido os usuarios que tiverem aberto chamado, e no caso do usuario comum, só deverá aparecer ele.</p></div>
 
-        <button type="submit">Filtrar</button>
+        <button type="submit" id="sendButton">Filtrar</button>
     </form>
 
     <div class="resultados" id="resultadosContainer" style="display: none;">
@@ -299,13 +329,22 @@
                 <p style="padding-left: 10px;"> ID da Solicitação </p>
             </div> -->
             <div class="CamposResultados">
-                <p> Data de Abertura </p>
+                <p class="sortable" onclick="ordenar('dataAbertura', this)"> Data de Abertura</p>
             </div>
             <div class="CamposResultados">
-                <p> Assunto</p>
+                <p class="sortable" onclick="ordenar('assunto', this)"> Assunto</p>
             </div>
             <div class="CamposResultados">
-                <p> Status</p>
+                <p class="sortable" onclick="ordenar('autor', this)"> Autor</p>
+            </div>
+            <div class="CamposResultados">
+                <p class="sortable" onclick="ordenar('responsavel', this)"> Responsavel</p>
+            </div>
+            <div class="CamposResultados">
+                <p class="sortable" onclick="ordenar('equipamento', this)"> STI-ID</p>
+            </div>
+            <div class="CamposResultados">
+                <p class="sortable" onclick="ordenar('status_chamado', this)"> Status</p>
             </div>
             <!-- <div class="CamposResultados responsavel_tecnologia"> <p>Andamento</p> </div> -->
         </div>
@@ -323,64 +362,140 @@
                 const filtroForm = document.getElementById('filtroForm');
                 const resultadosContainer = document.getElementById('resultadosContainer');
                 const resultados = document.getElementById('resultados');
+                ativaIntervalo(0);
 
                 function init() {
-                    selectInicial();
+                    selectChamados();
+                    selectPessoas();
                 }
 
-                function alteraData() {
-                    var selectData = document.getElementById("data");
-                    var dataOption = selectData.options[selectData.selectedIndex].value;
-                    var currentDate = new Date();
-                    var day = currentDate.getDate();
-                    var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
-                    var year = currentDate.getFullYear();
-                    var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
-                    
-                    // Formatar para "dd/mm/yyyy"
-                    if (dataOption == 2) {
-                        dataDe.value = '01/01/2023';
-                        document.getElementById("status").value = 4;
-                        dataAte.value = dataAtual
+                function ordenar(coluna, elemento) {
+                    var colunasOrdenaveis = document.querySelectorAll('.sortable');
+
+                    // Remover o ícone de ordem de todas as colunas
+                    if (!elemento.innerHTML.includes('▼') && !elemento.innerHTML.includes('▲')) {
+                        colunasOrdenaveis.forEach(function (col) {
+                            col.innerHTML = col.textContent.replace(' ▼', '').replace(' ▲', '');
+                        });
                     }
-                    else
-                    if (dataOption == 1) {
-                        dataDe.value = '01/01/2023';
-                        document.getElementById("status").value = 5;
-                        dataAte.value = dataAtual
-                    }else{
-                        dataDe.value = '01/01/2023';
-                        dataAte.value = dataAtual
-                        document.getElementById("status").value = 5;
-                        data.value=1;
+
+                    if (elemento.innerHTML.includes('▼')) {
+                        elemento.innerHTML = elemento.innerHTML.replace('▼', '▲');
+                        // submitForm('desc');
+                    } else if (elemento.innerHTML.includes('▲')) {
+                        elemento.innerHTML = elemento.innerHTML.replace('▲', '▼');
+                    } else
+                        elemento.innerHTML = elemento.innerHTML + ' ▼';
+
+                    if (elemento.innerHTML.includes('▼')) {
+                        submitForm(coluna, 'desc');
+                    } else if (elemento.innerHTML.includes('▲')) {
+                        submitForm(coluna, 'asc');
+                    }
+                }
+
+                function selectPessoas() {
+                    var data = "Select=" + 2;
+                    xhrRequest(data, 'selectsJSON');
+                }
+
+                function verificaTamanho(inputElement, tamanho, proximoCampo) {
+                    if (inputElement.value.length > tamanho) {
+                        inputElement.value = inputElement.value.slice(0, tamanho);
+                    }
+                    if (inputElement.value.length === tamanho) {
+                        document.getElementById(proximoCampo).focus();
+                    }
+                }
+
+                function verificaEquipamento() {
+                    var stiID = document.getElementById("stiID").value;
+                    data = "Select=" + 3 + "&stiID=" + stiID;
+                    xhrRequest(data, 'Equipamento');
+                }
+
+                function unParse(json) {
+                    var JSONObj = JSON.parse(json);
+                    var selectAutores = document.getElementById("selectAutores");
+                    var selectResponsavel = document.getElementById("selectResponsavel");
+                    var selectStatus = document.getElementById("status");
+
+                    for (var i = 0; i < JSONObj.usuarios.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = JSONObj.usuarios[i].IDUsuario;
+                        option.text = JSONObj.usuarios[i].nome;
+                        selectAutores.appendChild(option);
+                    }
+
+                    for (var i = 0; i < JSONObj.responsaveis.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = JSONObj.responsaveis[i].IDUsuario;
+                        option.text = JSONObj.responsaveis[i].nome;
+                        selectResponsavel.appendChild(option);
+                    }
+
+                    for (var i = 0; i < JSONObj.status.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = JSONObj.status[i].IDStatus;
+                        option.text = JSONObj.status[i].descricao;
+                        selectStatus.appendChild(option);
+                    }
+
+
+                }
+
+                function ativaIntervalo(param) {
+                    var dataDe = document.getElementById("dataDe");
+                    var dataAte = document.getElementById("dataAte");
+                    if (param == 0) {
+                        dataDe.disabled = true;
+                        dataAte.disabled = true;
+                        dataDe.classList.add("disabled");
+                        dataAte.classList.add("disabled");
+                    } else {
+
+                        dataDe.disabled = false;
+                        dataAte.disabled = false;
+                        dataDe.classList.remove("disabled");
+                        dataAte.classList.remove("disabled");
                     }
                 }
 
                 filtroForm.addEventListener('submit', function (event) {
                     event.preventDefault();
+                    submitForm();
+                });
 
-                    // Lógica de filtragem aqui
-
+                function submitForm(coluna, ordenar) {
                     var selectData = document.getElementById("data");
                     var dataOption = selectData.options[selectData.selectedIndex].value;
                     var dataDe = document.getElementById("dataDe").value;
                     var dataAte = document.getElementById("dataAte").value;
-
                     const codigoSolicitacao = document.getElementById('codigoSolicitacao').value;
+                    const selectAutores = document.getElementById("selectAutores").options[document.getElementById("selectAutores").selectedIndex].value;
+                    const selectResponsavel = document.getElementById("selectResponsavel").options[document.getElementById("selectResponsavel").selectedIndex].value;
+                    const stiID = document.getElementById('stiID').value;
                     const status = document.getElementById('status').value;
-
-                    // Exemplo: exibir resultados em um elemento de texto
-                    // resultados.innerHTML = `Filtrando por:<br>Código da Solicitação: ${codigoSolicitacao}<br>Opção data: ${dataOption}<br>Data de:${dataDe}<br>Data até:${dataAte}<br>Status: ${status}<br>`;
-
 
                     var data = "Select=" + 1 +
                         "&dataOption=" + encodeURIComponent(dataOption) +
                         "&dataDe=" + encodeURIComponent(dataDe) +
                         "&dataAte=" + encodeURIComponent(dataAte) +
                         "&codigoSolicitacao=" + encodeURIComponent(codigoSolicitacao) +
-                        "&status=" + encodeURIComponent(status);
+                        "&status=" + encodeURIComponent(status) +
+                        "&autor=" + encodeURIComponent(selectAutores) +
+                        "&responsavel=" + encodeURIComponent(selectResponsavel) +
+                        "&stiID=" + encodeURIComponent(stiID);
+
+                    if (ordenar) {
+                        data += "&ordenar=" + encodeURIComponent(coluna) +
+                            "&ordem=" + encodeURIComponent(ordenar);
+                    }else {
+                        data += "&ordenar=" + encodeURIComponent('dataAbertura') +
+                            "&ordem=" + encodeURIComponent('desc');
+                    }
                     xhrRequest(data, resultados);
-                });
+                }
 
                 function detalharChamado(IDChamado) {
                     pai = IDChamado.parentNode;
@@ -391,7 +506,7 @@
                     window.location.href = 'DetalhandoChamado.html?IDChamado=' + id;
                 }
 
-                function selectInicial() {
+                function selectChamados() {
                     var currentDate = new Date();
                     var day = currentDate.getDate();
                     var month = currentDate.getMonth() + 1; // Os meses começam em zero, então adicionamos 1
@@ -404,7 +519,12 @@
                         "&dataDe=" + encodeURIComponent('01/01/2023') +
                         "&dataAte=" + encodeURIComponent(dataAte) +
                         "&codigoSolicitacao=" + encodeURIComponent('') +
-                        "&status=" + encodeURIComponent('inicial');
+                        "&status=" + encodeURIComponent('inicial') +
+                        "&autor=" + encodeURIComponent('') +
+                        "&responsavel=" + encodeURIComponent('') +
+                        "&stiID=" + encodeURIComponent('')+
+                        "&ordenar=" + encodeURIComponent('dataAbertura') +
+                        "&ordem=" + encodeURIComponent('desc');
 
                     xhrRequest(data, resultados);
                 }
@@ -418,12 +538,13 @@
                             if (output.id == 'resultados') {
                                 output.innerHTML = xhr.responseText;
                             } else
-                                if (output == 'verificarSetor') {
-                                    //se a resposta for 1, é setor tecnologia
-                                    if (xhr.responseText == 1) {
-                                        controlarChamados();
+                                if (output == 'selectsJSON') {
+                                    unParse(xhr.responseText);
+                                } else
+                                    if (output == 'Equipamento') {
+                                        var equipamento = document.getElementById("equipamentoNome");
+                                        equipamento.value = xhr.responseText;
                                     }
-                                }
                         }
                     };
                     xhr.send(data);

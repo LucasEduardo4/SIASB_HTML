@@ -41,7 +41,7 @@
             padding-right: 20px;
             cursor: pointer;
             color: white;
-            font-weight: 600;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
         .navBar.selected {
@@ -258,7 +258,6 @@
                 }, 100);
             }
 
-
             function excluiNotificacao(id) {
                 var data = 'excluiNotificacao=' + id;
                 connection(data, 2, 'notificacoes.php');
@@ -344,6 +343,7 @@
                     return 'false';
                 }
             }
+           
             verificaClique(1);
             function verificaClique(item) {
                 var novas = document.getElementById("novas");
