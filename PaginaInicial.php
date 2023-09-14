@@ -580,7 +580,7 @@ $stmt->close();
             <!-- Adicione este código PHP para exibir as anotações -->
 
             <div class="container">
-                <h3>Minhas Anotações:</h3>
+                <h3>MINHAS ANOTAÇÕES:</h3>
                 <ul class="anotacoes-list">
                     <?php foreach ($anotacoes_usuario as $anotacao) { ?>
                         <li class="anotacao-item">

@@ -174,7 +174,88 @@
       -moz-appearance: textfield;
       /* Remove as setas no Firefox */
     }
+  
+
   </style>
+
+
+
+  <style>
+
+  /* Estilo para o rótulo personalizado */
+  input[type="radio"] {
+      display: none; /* Oculta o input padrão */
+    }
+  
+    /* Estilo para o rótulo personalizado */
+    .custom-radio {
+      position: relative;
+      padding-left: 30px; /* Espaço para o ícone do radio */
+      cursor: pointer;
+      /* margin-left: 50px; */
+
+      
+    }
+  
+    /* Ícone do radio personalizado */
+    .custom-radio:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #40a383;
+      border-radius: 50%;
+    }
+  
+    /* Estilização quando o radio está selecionado */
+    input[type="radio"]:checked + .custom-radio:before {
+      background-color: #40a383;
+    }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        button {
+            background-color: #40a383;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        h2 {
+          font-size: 16px;
+          padding-top: 20px;
+          padding-bottom: 20px;
+          font-family:Verdana, Geneva, Tahoma, sans-serif;
+          font-weight: 900;
+        }
+
+        .dropdown {
+        border: 2px solid #40a383;
+        max-height: 150px;
+        overflow-y: auto;
+        
+        
+        }
+
+        .item {
+        padding: 8px;
+        cursor: pointer;
+        }
+
+        .item:hover {
+        background-color: #f0f0f0;
+        }
+
+</style>
 
 </head>
 
@@ -195,43 +276,85 @@
 
   <div class="container">
     <div style="border-radius: 5px; " class="div-inferior">
-      <div style="border: 2px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
-      <!-- Conteúdo adicional da div inferior -->
+      <div style="border: 2px; padding-bottom: 20px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
+      
       <form class="blue-theme-form" enctype="multipart/form-data">
 
+        <!-- =================== ================================= -->
+        <div class="step active" id="step-1">
+                
+          <h2>VOCÊ DESEJA ABRIR UM CHAMADO PARA VOCÊ OU PARA TERCEIROS ? </h2>
+
+                <input  type="radio" id="resposta-sim" name="resposta" value="sim">
+                <label class="custom-radio" style="font-weight: 500; padding-left: 30px; font-size: 14px;" for="resposta-sim"> PARA O COMPANHEIRO DE TRABALHO</label>
+
+                <input type="radio" id="resposta-nao" name="resposta" value="nao">
+                <label class="custom-radio" style="font-weight: 500; padding-left: 30px; font-size: 14px;" for="resposta-nao">PARA EU MESMO</label>
+
+
+                <button onclick="checkAnswer()" style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="nextStep(1)" >Próxima Etapa</button>
+      
+        </div>
+      
+        <div class="step" id="step-2">
+          <h2>VOCÊ IRÁ ABRIR UM CHAMADO PARA OUTRO FUNCIONÁRIO</h2>
+          
+          <label for="motivo">POR QUAL MOTIVO ESSA PESSOA NÃO PODE ABRIR O CHAMADO?</label>
+          <input type="text" id="motivo" name="motivo" required>
+          
+          <label  for="terceiros">QUAL O NOME DO FUNCIONÁRIO?</label>
+          <input type="text" id="terceiros" name="terceiros" required>
+          <div id="sugestoes"></div>
+          
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="validarCampos()" id="next" disabled>Próxima Etapa</button>
+        </div>
+        
+
+      <div class="step" id="step-3">
+          
         <div style="margin-top: 30px;" class="top-div">
           <div class="assunto-div">
             <label for="assunto">Assunto:</label>
-            <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto">
+            <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto" required>
           </div>
           <div class="hardware-div">
             <br>
-            <label for="stiID">STI_ID:</label>
-            <input style="width: 13%;" type="number" id="stiID" name="stiID" maxlength="4" size="4"
-              onkeyup="verificaTamanho(this, 4, 'descricao')" onblur="verificaEquipamento()" max="9999">
+            <label for="sti_ID">STI_ID:</label>
+            <input style="width: 13%;" type="number" id="sti_ID" name="sti_ID" maxlength="4" size="4"
+              onkeyup="verificaTamanho(this, 4, 'descricao')" onblur="verificaEquipamento()" max="9999" required>
+
             <label for="nomeEquipamento"> Equipamento:</label>
-            <input type="text" id="nomeEquipamento" disabled value="" style="width: 40%;">
+            <input type="text" id="nomeEquipamento" disabled value="" style="width: 40%;" required>
             <h2 style="margin-left: 10px; display: none;" id="plusCircle" title="Cadastrar equipamento"><i
-                id="cadastroIcone" onclick='handleCadastro(this, 0)' class="bi bi-plus-circle-fill"></i></h2>
+            
+              id="cadastroIcone" onclick='handleCadastro(this, 0)' class="bi bi-plus-circle-fill"></i></h2>
           </div>
         </div>
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="validarCampos2()">Próxima Etapa</button>
+     
+      </div>
 
+      <div class="step" id="step-4">
+          
         <div style="margin-top: 0px;" class="descricao-div">
-          <label for="descricao">Descrição:</label>
+          <label style="padding-top: 20px;" for="descricao">Descrição:</label>
           <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
         </div>
 
         <div style="margin-top: 30px;" class="upload-div">
           <label for="imagem">Envie uma imagem do problema:</label>
-          <input type="file" id="imagem" multiple name="imagem">
+          <input type="file" id="imagem" multiple name="imagem" required>
         </div>
         <div id="erromsg" class="container p-3 mt-3 bg-danger" style="border-radius: 16px; width: 70%; display: none;">
           <p>Falta preencher algum campo acima, Verifique novamente</p>
         </div>
+        <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+        class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>     
+      </div>
+
+      <!-- ===================================================================== -->
 
       </form>
-      <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
-        class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
     </div>
   </div>
 
@@ -252,16 +375,20 @@
       var assunto = document.getElementById("assunto").value;
       var descricao = document.getElementById("descricao").value;
       var imagemInput = document.getElementById("imagem");
-      var stiID = document.getElementById("stiID").value;
+      var sti_ID = document.getElementById("sti_ID").value; 
+      var terceiros = document.getElementById("terceiros").value;
+      var motivo = document.getElementById("motivo").value;
 
-      if (assunto === '' || descricao === '' || stiID === '') {
+      if (assunto === '' || descricao === '' || sti_ID === '') {
         document.getElementById("erromsg").style.display = 'flex';
       }
 
       var formData = new FormData();
       formData.append("assunto", assunto);
       formData.append("descricao", descricao);
-      formData.append("stiID", stiID);
+      formData.append("sti_ID", sti_ID);
+      formData.append("terceiros", terceiros);
+      formData.append("motivo", motivo);
       if (imagemInput.files.length > 0) {
         // Adicione todos os arquivos selecionados ao FormData
         for (var i = 0; i < imagemInput.files.length; i++) {
@@ -269,6 +396,8 @@
         }
       }
 
+      
+      
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "AbrindoChamado.php", true);
       xhr.onreadystatechange = function () {
@@ -322,10 +451,10 @@
     }
 
     function verificaEquipamento() {
-      var stiID = document.getElementById("stiID").value;
+      var sti_ID = document.getElementById("sti_ID").value;
       // var equipamento = document.getElementById("nomeEquipamento");
 
-      connection('stiID=' + stiID, 1, 'AbrindoChamado.php');
+      connection('sti_ID=' + sti_ID, 1, 'AbrindoChamado.php');
     }
 
     function connection(data, output, file) {
@@ -351,6 +480,133 @@
 
 
 
+
+
+
+  <!-- <=============================================================================================================================> -->
+
+  <script>
+    let currentStep = 1;
+
+    function nextStep(step) {
+
+        if (currentStep == 1 )
+        {
+            document.getElementById(`step-${1}`).classList.remove('active');
+        }
+
+        document.getElementById(`step-${step}`).classList.remove('active');
+        currentStep = step + 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+    }
+
+
+    // FAZER MEU PRÓXIMO MÉTODO PARA MUDAR DE ABA (REDONDA)
+    // function changeStep(step) {
+    //     document.getElementById(`step-${currentStep}`).classList.remove('active');
+    //     document.getElementById(`tab-${currentStep}`).classList.remove('active');
+    //     currentStep = step;
+    //     document.getElementById(`step-${currentStep}`).classList.add('active');
+    //     document.getElementById(`tab-${currentStep}`).classList.add('active');
+    // }
+
+    function checkAnswer() {
+    const resposta = document.querySelector('input[name="resposta"]:checked').value;
+
+    if (resposta === "sim") {
+        nextStep(1); // Vá para a próxima etapa se a resposta for "sim"
+    } 
+    
+    if (resposta === "nao") {
+        nextStep(2); // Pule para a etapa desejada se a resposta for "não"
+    }
+    
+}
+
+
+function validarCampos() {
+  var motivo = document.getElementById("motivo").value;
+  var terceiros = document.getElementById("terceiros").value;
+  
+  if (motivo === "" || terceiros === "") {
+    alert("Por favor, preencha todos os campos antes de avançar.");
+  } else {
+
+    nextStep(2);
+  }
+}
+
+function validarCampos2() {
+
+  var assunto = document.getElementById("assunto").value;
+
+  if (assunto === "") {
+    alert("Por favor, preencha todos os campos antes de avançar.");
+  } else {
+    nextStep(3);
+  }
+}
+
+    // function checkAge() {
+    //     const idade = parseInt(document.getElementById('idade').value);
+    //     if (idade < 18) {
+    //         nextStep(1); // Se a idade for menor que 18, vá para a Etapa 4
+    //     }
+    //     if (idade > 18) {
+    //         nextStep(2); // Caso contrário, vá para a Etapa 5
+    //     }
+    // }
+
+    document.addEventListener("DOMContentLoaded", function () {
+  const inputterceiros = document.getElementById("terceiros");
+  const sugestoes = document.getElementById("sugestoes");
+  const nextButton = document.getElementById("next"); // Botão de envio
+
+  inputterceiros.addEventListener("input", function () {
+    const termo = inputterceiros.value;
+
+    if (termo.length >= 2) {
+      fetch(`buscar_nomes.php?termo=${termo}`)
+        .then((response) => response.json())
+        .then((data) => {
+          sugestoes.innerHTML = ""; // Limpe as sugestões existentes
+
+          const dropdown = document.createElement("div");
+          dropdown.classList.add("dropdown");
+
+          data.forEach((nome) => {
+            const sugestao = document.createElement("div");
+            sugestao.classList.add("item");
+            sugestao.textContent = nome;
+            sugestao.addEventListener("click", function () {
+              inputterceiros.value = nome;
+              sugestoes.innerHTML = "";
+              nextButton.disabled = false; // Habilita o botão quando uma sugestão é selecionada
+            });
+            dropdown.appendChild(sugestao);
+          });
+
+          sugestoes.appendChild(dropdown);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      sugestoes.innerHTML = "";
+      nextButton.disabled = true; // Desabilita o botão quando o termo é muito curto
+    }
+  });
+});
+
+
+    document.getElementById('step-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert('Formulário enviado com sucesso!');
+    });
+</script>
+
+
+<!-- ===================================================================================================================================== -->
 </body>
 
 </html>
