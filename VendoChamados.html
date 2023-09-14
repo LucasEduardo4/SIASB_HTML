@@ -14,10 +14,17 @@
 
         .top-div {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: space-between;       
+            margin: 30px auto;    
         }
+        .row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;       
 
+        }
         #myIframe {
             width: 100%;
         }
@@ -107,6 +114,7 @@
             border: none;
             border-radius: 3px;
             cursor: pointer;
+            margin: auto;
         }
 
         .resultados {
@@ -196,7 +204,10 @@
             /* height: 100%; */
             display: inline-block;
             vertical-align: middle;
-
+        }
+        #sendButton{
+            width: 70%;
+            margin: auto;
         }
 
         /* Css para as cores, baseando no status */
@@ -232,6 +243,7 @@
         .CamposResultados p {
             cursor: pointer;
         }
+       
     </style>
 </head>
 
@@ -268,59 +280,62 @@
         <h2>FILTRO DE CHAMADOS</h2>
 
         <div class="top-div">
+            <div class="row">
+                <div class="MeusCampos">
+                    <label for="codigoSolicitacao">Código:</label>
+                    <input type="text" id="codigoSolicitacao" style="width: 60px;">
+                </div>
+                
+                <div class="MeusCampos">
+                    <label for="selectAutores">Autor</label>
+                    <select name="selectAutores" id="selectAutores">
+                        <option value="" selected hidden>Escolha Abaixo:</option>
+                        <option value="">Nenhum</option>
+                    </select>
+                </div>
+                <div class="MeusCampos">
+                    <label for="selectResponsavel">Responsavel</label>
+                    <select name="selectResponsavel" id="selectResponsavel">
+                        <option value="" selected hidden>Escolha Abaixo:</option>
+                        <option value="">Nenhum</option>
+                    </select>
+                </div>
+                <div class="MeusCampos">
+                    <label for="stiID">Equipamento</label>
+                    <input type="text" id="stiID" onkeyup="verificaTamanho(this,4,'sendButton')"
+                       placeholder="STI-ID" onblur="verificaEquipamento()" style="width: 40px;" name="sti_ID" id="sti_ID">
+                    <input type="text" id="equipamentoNome" disabled style="width: 190px;">
+                </div>
+            </div>
+            <div class="row">
+                <div class=" MeusCampos">
+                    <label for="data">Data: </label>
+                    <select class="form-select" name="data" id="data" onchange="ativaIntervalo()">
+                        <option value="" selected hidden>Selecione a opção</option>
+                        <option value="1">Abertura</option>
+                        <option value="2">Fechamento</option>
+                    </select>
+                </div>
+                <div class="MeusCampos datas">
+                    <label for="dataDe"> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
+                    <input type="date" id="dataDe" class="datas" placeholder="De:" disabled readonly required>
+                </div>
+                <div class="MeusCampos datas">
+                    <label for="dataAte"> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
+                    <input type="date" id="dataAte" class="datas" placeholder="Até:" disabled readonly required>
 
-            <div class="MeusCampos">
-                <label for="codigoSolicitacao">Código:</label>
-                <input type="text" id="codigoSolicitacao" style="width: 60px;">
-            </div>
-            <div class=" MeusCampos">
-                <label for="data">Data: </label>
-                <select class="form-select" name="data" id="data" onchange="ativaIntervalo()">
-                    <option value="" selected hidden>Selecione a opção</option>
-                    <option value="1">Abertura</option>
-                    <option value="2">Fechamento</option>
-                </select>
+                </div>
+                <div class="MeusCampos">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status">
+                        <option value="5" selected hidden>Selecione...</option>
+                    </select>
+                </div>
 
-            </div>
-            <div class="MeusCampos datas">
-                <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="date" id="dataDe" class="datas" placeholder="De:" disabled readonly required>
-            </div>
-            <div class="MeusCampos datas">
-                <label for=""> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
-                <input type="date" id="dataAte" class="datas" placeholder="Até:" disabled readonly required>
-
-            </div>
-            <div class="MeusCampos">
-                <label for="status">Status:</label>
-                <select id="status" name="status">
-                    <option value="5" selected hidden>Selecione...</option>
-                </select>
-            </div>
-            <div class="MeusCampos">
-                <label for="">Autor</label>
-                <select name="selectAutores" id="selectAutores">
-                    <option value="" selected hidden>Escolha Abaixo:</option>
-                    <option value="">Nenhum</option>
-                </select>
-            </div>
-            <div class="MeusCampos">
-                <label for="">Responsavel</label>
-                <select name="selectResponsavel" id="selectResponsavel">
-                    <option value="" selected hidden>Escolha Abaixo:</option>
-                    <option value="">Nenhum</option>
-                </select>
-            </div>
-            <div class="MeusCampos">
-                <label for="">STI_ID</label>
-                <input type="text" id="stiID" onkeyup="verificaTamanho(this,4,'sendButton')"
-                    onblur="verificaEquipamento()" style="width: 30px;" name="sti_ID" id="sti_ID">
-                <input type="text" id="equipamentoNome" disabled style="width: 190px;">
+                
             </div>
         </div>
-        <div><p>Amanhã: deixar isso aqui  ^^^^ responsivo.. fazer os filtros quebrar pra linha de baixo, caso necessário</p><p>e pensar também, se devo puxar o usuario e responsavel pelo tbchamados, ja que assim, só será exibido os usuarios que tiverem aberto chamado, e no caso do usuario comum, só deverá aparecer ele.</p></div>
-
-        <button type="submit" id="sendButton">Filtrar</button>
+        <button type="submit" id="sendButton">Aplicar Filtros</button>
     </form>
 
     <div class="resultados" id="resultadosContainer" style="display: none;">
@@ -415,6 +430,7 @@
                 }
 
                 function unParse(json) {
+                    console.log(json);
                     var JSONObj = JSON.parse(json);
                     var selectAutores = document.getElementById("selectAutores");
                     var selectResponsavel = document.getElementById("selectResponsavel");
@@ -490,7 +506,7 @@
                     if (ordenar) {
                         data += "&ordenar=" + encodeURIComponent(coluna) +
                             "&ordem=" + encodeURIComponent(ordenar);
-                    }else {
+                    } else {
                         data += "&ordenar=" + encodeURIComponent('dataAbertura') +
                             "&ordem=" + encodeURIComponent('desc');
                     }
@@ -522,7 +538,7 @@
                         "&status=" + encodeURIComponent('inicial') +
                         "&autor=" + encodeURIComponent('') +
                         "&responsavel=" + encodeURIComponent('') +
-                        "&stiID=" + encodeURIComponent('')+
+                        "&stiID=" + encodeURIComponent('') +
                         "&ordenar=" + encodeURIComponent('dataAbertura') +
                         "&ordem=" + encodeURIComponent('desc');
 

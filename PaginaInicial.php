@@ -408,29 +408,29 @@ $stmt->close();
 
 
     <script>
-        function exibirHorarioAtual() {
-            var horasAtual = new Date();
-            var hora = horasAtual.getHours();
-            var minutos = horasAtual.getMinutes();
-            var segundos = horasAtual.getSeconds();
+        // function exibirHorarioAtual() {
+        //     var horasAtual = new Date();
+        //     var hora = horasAtual.getHours();
+        //     var minutos = horasAtual.getMinutes();
+        //     var segundos = horasAtual.getSeconds();
 
-            // Formatação para garantir que sempre tenhamos 2 dígitos
-            if (hora < 10) {
-                hora = "0" + hora;
-            }
-            if (minutos < 10) {
-                minutos = "0" + minutos;
-            }
-            if (segundos < 10) {
-                segundos = "0" + segundos;
-            }
+        //     // Formatação para garantir que sempre tenhamos 2 dígitos
+        //     if (hora < 10) {
+        //         hora = "0" + hora;
+        //     }
+        //     if (minutos < 10) {
+        //         minutos = "0" + minutos;
+        //     }
+        //     if (segundos < 10) {
+        //         segundos = "0" + segundos;
+        //     }
 
-            // Exibir o horário atual na página
-            document.getElementById("horario-atual").innerHTML = hora + ":" + minutos + ":" + segundos;
+        //     // Exibir o horário atual na página
+        //     document.getElementById("horario-atual").innerHTML = hora + ":" + minutos + ":" + segundos;
 
-            // Atualizar o horário a cada segundo
-            setTimeout(exibirHorarioAtual, 1000);
-        }
+        //     // Atualizar o horário a cada segundo
+        //     setTimeout(exibirHorarioAtual, 1000);
+        // }
 
         function exibirDataAtual() {
             var dataAtual = new Date();
@@ -457,7 +457,7 @@ $stmt->close();
 
 </head>
 
-<body onload="exibirHorarioAtual()" onload="exibirDataAtual()" style="background: none;">
+<body onload="exibirDataAtual()" style="background: none;">
     <div class="container">
 
 

@@ -1,5 +1,6 @@
 <?php
 session_start();
+// var_dump($_SESSION);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function convertData($data)
     {
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $IDUsuario = $row["IDUsuario"];
                     $nome = $row["nome"];
                     $setor_secao = $row["setor_secao"];
+                    $_SESSION['setor_secao'] = $setor_secao;
                 }
             } else {
                 $setor_secao = 0;
@@ -90,36 +92,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($status == 5) {
                 $sql .= " AND status_chamado != 0";
                 // $sql .= " ORDER BY IDChamado ASC";
-            } else 
+            } else
                 $sql .= " AND status_chamado =  " . $_POST['status'];
 
         $autor = $_POST['autor'];
-        if($autor != ''){
+        if ($autor != '') {
             $sql .= " AND autor = '$autor'";
         }
 
         $responsavel = $_POST['responsavel'];
-        if($responsavel != ''){
+        if ($responsavel != '') {
             $sql .= " AND responsavel = '$responsavel'";
         }
 
         $equipamento = $_POST['stiID'];
-        if($equipamento != ''){
+        if ($equipamento != '') {
             $sql .= " AND equipamento = '$equipamento'";
         }
-        
-        $coluna = $_POST['ordenar']; 
+
+        $coluna = $_POST['ordenar'];
         $ordem = $_POST['ordem'];
 
-        if($coluna != ''){
+        if ($coluna != '') {
             $sql .= " ORDER BY $coluna $ordem";
         } else {
             $sql .= " ORDER BY IDChamado ASC";
         }
         // echo $sql;
         // var_dump($_POST);
-            // Executa a consulta SQL
-            $result = $conn->query($sql);
+        // Executa a consulta SQL
+        $result = $conn->query($sql);
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $IDChamado = $row["IDChamado"];
@@ -158,8 +160,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } else
         if (isset($_POST['Select']) && $_POST['Select'] == '2') {
-            $sql = "Select * from tbusuario
-                LEFT JOIN tbpessoa on tbusuario.IDUsuario = tbpessoa.IDPessoa";
+            $setor_secao = $_SESSION['setor_secao'];
+            // $sql = "Select * from tbusuario LEFT JOIN tbpessoa on tbusuario.IDUsuario = tbpessoa.IDPessoa";
+            if ($setor_secao == 1)
+                $sql = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.autor = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa";
+            else
+                $sql = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.autor = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
+            // $sql = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.autor = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
+
 
             $usuarios = array();
 
@@ -174,7 +182,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $sql2 = "SELECT * from tbusuario u LEFT JOIN tbpessoa p on u.IDUsuario = p.IDPessoa where p.setor_secao = 1";
+            // $sql2 = "SELECT * from tbusuario u LEFT JOIN tbpessoa p on u.IDUsuario = p.IDPessoa where p.setor_secao = 1";
+            $sql2 = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.responsavel = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where p.setor_secao = 1";
             $responsaveis = array();
             $result2 = $conn->query($sql2);
             if ($result2 && $result2->num_rows > 0) {
