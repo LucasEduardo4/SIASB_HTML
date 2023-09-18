@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+    <title>Resolvendo Chamados</title>
+    <style>
+        .container {
+            margin-top: 20px;
+            border: solid 1px black;
+            border-radius: 12px;
+            box-shadow: 1px 1px 1px 1px black;
+        }
+
+        .table {
+            width: 80%;
+            margin: auto;
+        }
+
+        .table-heading{
+            background-color: #00a383;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container container-fluid">
+        <h1>Resolvendo Chamados</h1>
+        <div class="container container-fluid">
+            <h2>Novos chamados</h2>
+            <table class="table table-hover table-striped" id="novos">
+                <thead class="table-heading table-dark">
+                    <td>ID</td>
+                    <td>Assunto</td>
+                    <td>Data</td>
+                    <td>Prioridade</td>
+                    <td>Dias em aberto</td>
+                    <td>Status</td>
+                </thead>
+                <tbody>
+                    <td>1</td>
+                    <td>Placeholder</td>
+                    <td>18/09/2023</td>
+                    <td>Alta</td>
+                    <td>3</td>
+                    <td>Aberto</td>
+                </tbody>
+            </table>
+        </div>
+        <div class="container container-fluid">
+            <h2>Chamados que seu usuário está resolvendo</h2>
+            <table class="table table-hover table-striped" id="resolvendo">
+                <thead class="table-heading">
+                    <td>ID</td>
+                    <td>Assunto</td>
+                    <td>Data de Abertura</td>
+                    <td>Prioridade</td>
+                    <td>Status</td>
+                </thead>
+                <tbody>
+                    <td>2</td>
+                    <td>Placeholder</td>
+                    <td>18/09/2023</td>
+                    <td>Média</td>
+                    <td>Em andamento</td>
+                </tbody>
+            </table>
+        </div>
+        <div class="container container-fluid">
+            <h2>Todos os chamados</h2>
+            <table class="table table-hover table-striped" id="todos">
+                <thead class="table-heading">
+                    <td>ID</td>
+                    <td>Assunto</td>
+                    <td>Data de Abertura</td>
+                    <td>Prioridade</td>
+                    <td>Status</td>
+                </thead>
+                <tbody>
+                    <td>3</td>
+                    <td>Placeholder</td>
+                    <td>18/09/2023</td>
+                    <td>Baixa</td>
+                    <td>Aberto</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>

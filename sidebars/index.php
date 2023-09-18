@@ -37,7 +37,7 @@ if ($result->num_rows > 0) {
 
 // $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbusuario  WHERE IDUsuario = $Meu_ID";
 
-$sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $Meu_ID";
+$sql = "SELECT icone FROM tbpessoa WHERE IDPessoa = $Meu_ID";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -659,6 +659,12 @@ if ($imageData) {
             <p style="color: white;"> CONFIGURAÇÕES </p>
           </li>
         </div>
+        <div onclick="abrirResolvendo()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
+            <p style="color: white;"> RESOLVER </p>
+          </li>
+        </div>
 
         <div class="troca_cor">
     <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
@@ -702,7 +708,8 @@ if ($imageData) {
 
         <!-- <img src="..\Icones Site\logo.png" alt="saaeb barretos" width="60" height="80"> -->
 
-        <li style="padding-left:17px; padding-top: 40px;" class="menu-item">
+       
+        <li style="padding-left:17px; padding-top: 40px; margin-top:70px;" class="menu-item">
           <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
         </li>
 
@@ -717,6 +724,9 @@ if ($imageData) {
 
         <li style="padding-left:17px;" class="menu-item">
           <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
+        </li>
+        <li style="padding-left:17px;" class="menu-item">
+          <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
         </li>
       </div>
 
@@ -954,6 +964,11 @@ if ($imageData) {
       function abrirPerfil() {
         var iframe = document.getElementById("myIframe");
         iframe.src = "../Perfil.php";
+      }
+
+      function abrirResolvendo() {
+        var iframe = document.getElementById("myIframe");
+        iframe.src = "../ResolvendoChamados.html";
       }
 
       //ABRINDO DROPBOX NA OPÇÃO DOS CHAMADOS
