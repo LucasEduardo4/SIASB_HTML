@@ -426,15 +426,15 @@
         text: 'O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.',
         showConfirmButton: true,
         confirmButtonText: 'Entendi',
-        timer: 10000,
+        timer: 3000,
         timerProgressBar: true, // Mostrar barra de progresso do timer
       }).then((result) => {
         // Após o tempo do timer, redireciona para a página desejada
-        // window.location.href = 'VendoChamados.html';
+        window.location.href = 'VendoChamados.html';
         // Verificar se o botão foi clicado
         if (result.isConfirmed) {
           // Redirecionar para a página desejada
-          // window.location.href = 'VendoChamados.html';
+          window.location.href = 'VendoChamados.html';
         }
       });
     }

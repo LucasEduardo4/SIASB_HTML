@@ -11,12 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $IDChamado = $_POST['ChamadoID'];
 
-        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', u.icone
+        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', p.icone
                 FROM TBChamados c
                 LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus
                 LEFT JOIN TBUsuario a on c.responsavel = a.IDUsuario
                 LEFT JOIN TBUsuario u on c.autor = u.IDUsuario    
                 LEFT JOIN TBEquipamentos e on c.equipamento = e.sti_ID
+                LEFT JOIN TBPessoa p on c.autor = p.IDPessoa
                 WHERE IDChamado = $IDChamado";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -116,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['gerarLog'])) {
-        var_dump($_FILES);
+        // var_dump($_FILES);
         $conn = mysqli_connect("localhost", "root", "", "siasb");
 
         $status = $_POST['status'];

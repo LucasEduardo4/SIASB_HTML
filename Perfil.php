@@ -37,7 +37,7 @@ if ($result->num_rows > 0) {
 
 // $sql = "SELECT IDPessoa, nomeCompleto, cpf, matricula, setor, secao, email FROM tbusuario  WHERE IDUsuario = $Meu_ID";
 
-$sql = "SELECT icone FROM tbusuario WHERE IDUsuario = $Meu_ID";
+$sql = "SELECT icone FROM tbpessoa WHERE IDPessoa = $Meu_ID";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
