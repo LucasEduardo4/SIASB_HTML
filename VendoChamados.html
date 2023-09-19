@@ -14,7 +14,7 @@
 
         .top-div {
             display: flex;
-            flex-direction: column;
+            /* flex-direction: column; */
             align-items: center; 
             justify-content: space-between;       
             margin: 30px auto;    
@@ -61,6 +61,7 @@
             margin-top: 50px;
             margin-bottom: 50px;
             border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5)
 
         }
 
@@ -94,6 +95,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #004235b6;
         }
 
         input[type="text"],
@@ -276,14 +278,14 @@
         </div>
     </div> -->
 
-    <form style="background-color: white; border-radius: 5px;" id="filtroForm">
+    <form style="background-color: rgba(255, 255, 255, 0.322); border-radius: 5px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);margin-bottom:100px" id="filtroForm">
         <h2>FILTRO DE CHAMADOS</h2>
 
         <div class="top-div">
             <div class="row">
                 <div class="MeusCampos">
                     <label for="codigoSolicitacao">Código:</label>
-                    <input type="text" id="codigoSolicitacao" style="width: 60px;">
+                    <input type="text" id="codigoSolicitacao" style="width: 40px;">
                 </div>
                 
                 <div class="MeusCampos">
@@ -304,7 +306,9 @@
                     <label for="stiID">Equipamento</label>
                     <input type="text" id="stiID" onkeyup="verificaTamanho(this,4,'sendButton')"
                        placeholder="STI-ID" onblur="verificaEquipamento()" style="width: 40px;" name="sti_ID" id="sti_ID">
-                    <input type="text" id="equipamentoNome" disabled style="width: 190px;">
+                </div>
+                <div style="margin-top: 25px " class="MeusCampos">
+                    <input type="text" id="equipamentoNome" disabled style="width: 120px;">
                 </div>
             </div>
             <div class="row">

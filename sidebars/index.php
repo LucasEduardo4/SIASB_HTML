@@ -646,12 +646,12 @@ if ($imageData) {
           </li>
         </div>
 
-        <div onclick="abrirSite()">
+        <!-- <div onclick="abrirSite()">
           <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
             <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
             <p style="color: white;"> SITE </p>
           </li>
-        </div>
+        </div> -->
 
         <div onclick="abrirConfiguracoes()">
           <li onclick="alterarCor(this)" class="menu-item">
@@ -711,9 +711,9 @@ if ($imageData) {
           <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
         </li>
 
-        <li style="padding-left:9px;" class="menu-item">
+        <!-- <li style="padding-left:9px;" class="menu-item">
           <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
-        </li>
+        </li> -->
 
         <li style="padding-left:17px;" class="menu-item">
           <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">

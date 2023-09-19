@@ -528,7 +528,7 @@ $stmt->close();
 
             <div id="notes-popup" class="notes-popup">
                 <button id="close-popup" class="close-popup">x</button>
-                <h2>Anotações</h2>
+                <h2>ANOTAÇÕES</h2>
                 <form id="notes-form">
                     <input type="hidden" id="selected-date" name="selected-date">
                     <textarea id="notes-content" class="notes-content" name="notes-content"
