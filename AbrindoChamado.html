@@ -21,6 +21,7 @@
       /* height: 100vh; */
       padding: 50px;
       max-width: 100%;
+      font-weight: 700;
       /* background: none; */
 
       /* background-image: url('https://e7.pngegg.com/pngimages/668/950/png-transparent-water-and-water-droplets-background.png');
@@ -266,7 +267,7 @@
       <!-- <div style="border-radius: 10px;" class="logo">
         <img src="..\SIASB_HTML\Icones Site\TELEFONE.png" alt="saaeb barretos" width="40" height="40">
       </div> -->
-      <h2 style="color: #40a383;">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
+      <h2 style="color: #40a383; font-size: 25px;">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
       <p>
         Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
       </p>
@@ -495,10 +496,31 @@
             document.getElementById(`step-${1}`).classList.remove('active');
         }
 
+
+
         document.getElementById(`step-${step}`).classList.remove('active');
         currentStep = step + 1;
         document.getElementById(`step-${currentStep}`).classList.add('active');
     }
+
+        // Captura o evento de pressionar uma tecla no campo de entrada
+        document.getElementById("assunto").addEventListener("keydown", function(event) {
+            // Verifica se a tecla pressionada é o "Enter"
+            if (event.key === "Enter") {
+                // Impede o envio automático do formulário
+                event.preventDefault();
+                // Nada acontece aqui, pois nenhum código foi adicionado
+            }
+        });
+
+        document.getElementById("sti_ID").addEventListener("keydown", function(event) {
+            // Verifica se a tecla pressionada é o "Enter"
+            if (event.key === "Enter") {
+                // Impede o envio automático do formulário
+                event.preventDefault();
+                // Nada acontece aqui, pois nenhum código foi adicionado
+            }
+        });
 
 
     // FAZER MEU PRÓXIMO MÉTODO PARA MUDAR DE ABA (REDONDA)
