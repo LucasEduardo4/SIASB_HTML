@@ -31,11 +31,9 @@
 
       height: 100%;
       margin: 0;
-      display: flex;
+      /* display: flex; */
       /* justify-content: center; */
-      align-items: center;
-      margin-top: 110px;
-      width: 106em; 
+      /* align-items: center; */
 
     }
 
@@ -56,23 +54,23 @@
       text-decoration: none;
       margin-right: 10px;
       float: left;
-      margin-left: 100px;
+      margin-left: 20px;
     }
 
     .title {
       margin: auto;
       font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-      /* padding-top: 30px; */
-      font-size: 28px;
+      padding-top: 2px;
+      font-size: 33px;
       color: #000000;
       text-align: start;
-      padding-left: 20px;
+      /* padding-left: 20px; */
+      flex:none;
 
     }
 
     /* Main Content Styles */
     .main-content {
-      max-width: 1200px;
       margin: auto;
       padding: 50px;
       /* padding-left: 100px;
@@ -123,7 +121,7 @@
 
     /* Table Styles */
     table {
-      width: 100%;
+      width: 95%;
       border-collapse: collapse;
       margin-bottom: 40px;
       border-radius: 10px;
@@ -131,7 +129,7 @@
       background-color: white;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       margin: auto;
-      margin-left: 30px;
+      margin-top: 20px;
 
 
 
@@ -179,28 +177,47 @@
     /* Button Styles */
     button {
       background-color: #00cc99;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      /* width:100%; */
-      padding-left: 40px;
-      padding-right: 40px;
-      font-weight: bold;
-      box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
-      margin: 2px;
+            color: #fff;
+            border: none;
+            /* padding: 10px 15px; */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 95%;
+            padding-left: 40px;
+            padding-right: 40px;
+            font-weight: bold;
+            /* margin-left: 28vh;  */
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+            font-size: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-left: 5vh;
 
     }
 
+    
     button i {
-      margin-right: 5px;
-    }
+            margin-right: 5px;
+        }
 
-    button:hover {
-      background-color: #00cc99;
-    }
+        button:hover {
+            background-color: #007bff;
+        }
+
+        .custom-confirm-button-class {
+            background-color: #00cc99;
+        }
+
+        .btn-primary {
+          background-color: #00cc99;
+          font-weight: 600;
+          padding: 8px;
+          border-color:#00cc99;
+        }
+
+
 
     /* Responsive Design */
     @media screen and (max-width: 768px) {

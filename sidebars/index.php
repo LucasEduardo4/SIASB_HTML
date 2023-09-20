@@ -629,12 +629,19 @@ if ($imageData) {
     <div class="menu-container" id="menu">
       <div class="menu-hidden" id="menuHidden">
 
-        <p style="color:white; font-size:30px; padding-bottom:20px"> SIASB</p>
+        <p style="color:white; font-size:30px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"> SIASB</p>
 
         <div onclick="abrirHome()">
           <li onclick="alterarCor(this)" class="menu-item">
             <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image">
             <p style="color: white;"> HOME </p>
+          </li>
+        </div>
+
+        <div onclick="abrirChamados()">
+          <li onclick="alterarCor(this)" class="menu-item" style="padding-left: ;">
+            <img src="..\Icones Site\telefone.PNG" alt="saaeb barretos" height="22">
+            <p style="color: white; padding-left:20px; flex:none"> ABRIR CHAMADO </p>
           </li>
         </div>
 
@@ -645,6 +652,7 @@ if ($imageData) {
             <p style="color: white;"> CHAMADOS </p>
           </li>
         </div>
+        
 
         <!-- <div onclick="abrirSite()">
           <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
@@ -665,6 +673,7 @@ if ($imageData) {
             <p style="color: white;"> RESOLVER </p>
           </li>
         </div>
+        
 
         <div class="troca_cor">
     <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
@@ -713,6 +722,10 @@ if ($imageData) {
           <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
         </li>
 
+
+        <li style="padding-left:20px;" class="menu-item">
+          <img src="..\Icones Site\telefone.png" alt=" saaeb barretos" height="22">
+        </li>
 
         <li style="padding-left:7px;" class="menu-item">
           <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
@@ -969,6 +982,11 @@ if ($imageData) {
       function abrirResolvendo() {
         var iframe = document.getElementById("myIframe");
         iframe.src = "../ResolvendoChamados.html";
+      }
+
+      function abrirChamados() {
+        var iframe = document.getElementById("myIframe");
+        iframe.src = "../AbrindoChamado.html";
       }
 
       //ABRINDO DROPBOX NA OPÇÃO DOS CHAMADOS

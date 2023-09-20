@@ -273,59 +273,6 @@ $conn->close();
     </div>
 </div>
 
-    <!------------------------------------------- SUBINDO IMAGEM PARA FOTO DE PERFIL --------------------------------------->
-
-    <!-- <div id="profile-actions-div" style="display: none;">
-       
-    <div class="container">
-        <div class="div1">
-
-        <h1 style="font-size: 15px;">Adicione uma foto de perfil</h1>
-    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="imagem" id="imagemInput">
-        <button type="submit">Alterar Foto</button>
-    </form>
-
-
-
-    <div id="mensagemSucesso" style="display: none; color: green;">
-        <p style="padding-top: 5px;"> Foto De Perfil Atualizada com Sucesso !! </p>
-    </div>
-
-    
-
-    <script>
-        document.getElementById('uploadForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const imageUrl = data.imageUrl;
-                    document.getElementById('mensagemSucesso').style.display = 'block';
-
-                    setTimeout(function() {
-                        parent.location.reload()
-                    }, 2000);
-
-
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => console.error(error));
-        });
-    </script>
-        </div>
- -->
-
-
  
     <!-- REALIZANDO A ALTERAÇÃO DA SENHA -->
 

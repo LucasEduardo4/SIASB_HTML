@@ -31,20 +31,15 @@
             padding: 0;
             background-color: white;
             height: 100%;
-            width: 85em;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-            
+            /* width: 85em; */
             margin: 0;
-            display: flex;
+            /* display: flex; */
             justify-content: center;
-            align-items: center;
+            /* align-items: center; */
+            
 
         }
 
-        /* Header Styles */
         .header {
             background-color: #ffffff;
             color: #fff;
@@ -64,13 +59,15 @@
         }
 
         .title {
-            /* margin: auto; */
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            /* padding-top: 30px; */
-            font-size: 26px;
+            margin-right: 170vh; 
+            padding-top: 13px;
+            font-size: 33px;
             color: #000000;
             text-align: start;
             padding-left: 5px;
+            flex:none;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
 
         }
 
@@ -79,11 +76,12 @@
             max-width: 1200px;
             margin: auto;
             padding: 50px;
-            padding-left: 100px;
-            padding-right: 100px;
+            /* padding-left: 100px;
+            padding-right: 100px; */
             /* background-color: #f0f0f0; */
             border-radius: 15px;
             box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+
 
             /* text-align: center; */
             /* Center text in the main content */
@@ -134,8 +132,8 @@
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
-            margin-left: 20px;
-            margin-top: 110px;
+            margin-top: 20px;
+            width: 95%;
 
         }
 
@@ -187,13 +185,17 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
-            width: 100%;
+            width: 95%;
             padding-left: 40px;
             padding-right: 40px;
             font-weight: bold;
-            /* margin-left: 40px; */
+            /* margin-left: 28vh;  */
             box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
             font-size: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-left: 5vh;
 
         }
 
@@ -203,6 +205,10 @@
 
         button:hover {
             background-color: #007bff;
+        }
+
+        .custom-confirm-button-class {
+            background-color: #00cc99;
         }
 
         /* Responsive Design */
@@ -244,9 +250,7 @@
             border-width: 10px;
         }
 
-        .custom-confirm-button-class {
-            background-color: #00cc99;
-        }
+        
 
 
 
@@ -307,7 +311,7 @@
 </head>
 <header class="header">
 
-    <a href="../index.html" class="back-button"><i style="font-size: 33px; padding-left: 5px;" class="bi-arrow-left-circle bi-lg"></i></a>
+    <a href="../index.html" class="back-button"><i style="font-size: 40px; padding-left: 5px;" class="bi-arrow-left-circle bi-lg"></i></a>
     <h1 class="title">CONSULTA PESSOAS</h1>
 
 </header>
