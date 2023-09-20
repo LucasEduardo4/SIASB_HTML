@@ -11,53 +11,275 @@
   <link rel="stylesheet" href="../lib/stylesheet.css">
   <script src="./../../flowSite/verificaSessao.js"></script>
   <style>
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      background-color: #f2f2f2;
-      color: #666;
-      transition: background-color 0.3s, color 0.3s;
-      margin-bottom: 0px;
-      border-radius: 4px 4px 0px 0px;
+    #cadastro {
+      display: none;
     }
 
-    .selected {
-      background-color: white;
-      color: black;
-      border-bottom: 1px solid white;
-    }
-    #cadastrar{
+    #novo:hover {
+      text-decoration: underline;
       cursor: pointer;
+
+    }
+
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+
+      height: 100%;
+      margin: 0;
+      /* display: flex; */
+      /* justify-content: center; */
+      /* align-items: center; */
+
+    }
+
+    /* Header Styles */
+    .header {
+      background-color: #ffffff;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 25%;
+    }
+
+    .back-button {
+      color: #000000;
+      text-decoration: none;
+      margin-right: 10px;
+      float: left;
+      margin-left: 20px;
+    }
+
+    .title {
+      margin: auto;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      padding-top: 2px;
+      font-size: 33px;
+      color: #000000;
+      text-align: start;
+      /* padding-left: 20px; */
+      flex:none;
+
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      margin: auto;
+      padding: 50px;
+      /* padding-left: 100px;
+            padding-right: 100px; */
+      border-radius: 15px;
+      box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+      margin-top: 110px;
+      width: 100%;
+
+
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .add-status-form {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .add-status-form label {
+      margin-right: 10px;
+    }
+
+    .add-status-form input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .add-status-form button {
+      background-color: #00a383;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      margin-left: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-status-form button i {
+      margin-right: 5px;
+    }
+
+    /* Table Styles */
+    table {
+      width: 95%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: auto;
+      margin-top: 20px;
+
+
+
+    }
+
+
+    /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
+    .table> :not(caption)>*>* {
+
+      background-color: white;
+      border-radius: 10px;
+
+
+    }
+
+    .table-dark {
+
+      --bs-table-striped-bg: #00a383;
+      --bs-table-hover-bg: #00a383;
+
+
+    }
+
+    /* =========================================================================== */
+
+    .table-heading {
+      background: linear-gradient(135deg, #007bff, #00cc99);
+      color: #fff;
+    }
+
+    .table-heading th {
+      padding: 4px;
+    }
+
+    table th,
+    table td {
+      padding: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Button Styles */
+    button {
+      background-color: #00cc99;
+            color: #fff;
+            border: none;
+            /* padding: 10px 15px; */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 95%;
+            padding-left: 40px;
+            padding-right: 40px;
+            font-weight: bold;
+            /* margin-left: 28vh;  */
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+            font-size: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-left: 5vh;
+
+    }
+
+    
+    button i {
+            margin-right: 5px;
+        }
+
+        button:hover {
+            background-color: #007bff;
+        }
+
+        .custom-confirm-button-class {
+            background-color: #00cc99;
+        }
+
+        .btn-primary {
+          background-color: #00cc99;
+          font-weight: 600;
+          padding: 8px;
+          border-color:#00cc99;
+        }
+
+
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+      .main-content {
+        padding: 10px;
+      }
+
+      .add-status-form {
+        flex-direction: column;
+
+      }
+
+      .add-status-form input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+
+
+
+    .swal-columns {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .swal-columns input {
+      margin: 20px 0px;
+    }
+
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+
+      border-color: white;
+      border-width: 10px;
+    }
+
+    .form-select {
+
+      margin-left: 0px;
     }
   </style>
 </head>
-<header>
-  <div>
-    <a href="../index.html">
-      <h1><i class="bi-arrow-left-circle bi-lg">Voltar</i></h1>
-    </a>
-  </div>
+<header class="header">
+
+  <a href="../index.html" class="back-button"><i style="font-size: 40px" class="bi-arrow-left-circle bi-lg"></i></a>
+  <h1 class="title">CONSULTA EQUIPAMENTOS</h1>
+
 </header>
 
 <body onload="init()">
 
-  <div class="d-flex align-items-start">
-    <div id="esq" class="flex-fill">
-      <h3>Equipamentos:</h3>
-      <p>Filtros:</p>
-    </div>
-    <div id="dir" class="flex-fill">
-      <p></p>
-      <button class="btn btn-primary" onclick="window.location.href='../Cadastro/Equipamento.html'">Adicionar
-        Equipamento</button>
-    </div>
+
+  <div>
+    <button class="btn btn-primary" onclick="window.location.href='../Cadastro/Equipamento.html'">ADICIONAR
+      EQUIPAMENTO</button>
   </div>
-  <div style="display: flex; height: 45px;">
-    <p class="tab selected" onclick="handleTab(1)">Equipamentos Cadastrados</p>
-    <p class="tab" onclick="handleTab(2)">Equipamentos Não Cadastrados</p>
-  </div>
+
+
 
   <div class="box-sqr" style="margin-top: 0px;" id="cadastrados">
     <table id="tableEquipment" class="table table-striped table-hover">
@@ -72,6 +294,7 @@
     </table>
   </div>
   <div class="box-sqr" id="naocadastrados" style="display: none;">
+
     <table id="tableEquipmentNaoCadastrado" class="table table-striped table-hover">
       <tr class="table table-dark ">
         <th>sti_ID</th>
@@ -85,19 +308,6 @@
     </table>
   </div>
   <script>
-    function handleTab(opt) {
-      if (opt == 1) {
-        document.getElementById("cadastrados").style.display = "block";
-        document.getElementById("naocadastrados").style.display = "none";
-        document.getElementsByClassName("tab")[0].classList.add("selected");
-        document.getElementsByClassName("tab")[1].classList.remove("selected");
-      } else {
-        document.getElementById("cadastrados").style.display = "none";
-        document.getElementById("naocadastrados").style.display = "block";
-        document.getElementsByClassName("tab")[1].classList.add("selected");
-        document.getElementsByClassName("tab")[0].classList.remove("selected");
-      }
-    }
     function init() {
       displayEquipments();
     }
@@ -117,7 +327,7 @@
         if (dadosObjeto[i].tipo != 'Sem Cadastro') {
           tableEquipment.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td>" + dadosObjeto[i].secao + "</td></tr>";
         } else {
-          tableEquipmentNaoCadastrado.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td><span id='cadastrar' class='text-bg-success' onclick='cadastrarEquip(" +JSON.stringify(dadosObjeto[i]) + ")' style='padding: 5px;border-radius:6px;'>Cadastrar</span></td></tr>";
+          tableEquipmentNaoCadastrado.innerHTML += "<tr><td>" + dadosObjeto[i].sti_id + "</td><td>" + dadosObjeto[i].descricao + "</td><td>" + dadosObjeto[i].ip + "</td><td>" + dadosObjeto[i].tipo + "</td><td>" + dadosObjeto[i].nomeCompleto + "</td><td><button id='cadastrar' class='text-bg-success' onclick='cadastrarEquip(" + JSON.stringify(dadosObjeto[i]) + ")' style='padding: 5px;border-radius:6px;'>Cadastrar</button></td></tr>";
         }
       }
     }
@@ -139,26 +349,7 @@
       };
       xhr.send("select_ready_equipment=" + encodeURIComponent(1));
 
-    }
-
-
-
-    // function setupEditButtons() {
-    //   var sqrchk = document.getElementsByClassName("bi bi-check-square");
-    //   var sqr = document.getElementsByClassName("bi bi-square");
-
-    //   for (var i = 0; i < editButtons.length; i++) {
-    //     (function (id) {
-
-    //       var removeButton = removeButtons[i];
-    //       removeButton.addEventListener("click", function () {
-    //         var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
-    //         var ref = element.cells[0].innerText;
-    //         removeValue(ref);
-    //       });
-    //     })(i);
-    //   }
-    // }
+    } 
   </script>
 </body>
 

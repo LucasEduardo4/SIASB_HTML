@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
+    <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
+    <link rel="stylesheet" href="../lib/stylesheet.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src='./../../flowSite/verificaSessao.js'></script>
+
+    <title>Config Local</title>
+    <style>
+        #cadastro {
+            display: none;
+        }
+
+        #novo:hover {
+            text-decoration: underline;
+            cursor: pointer;
+
+        }
+
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+
+            height: 100%;
+            margin: 0;
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+
+
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #ffffff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 4%;
+        }
+
+        .back-button {
+            color: #000000;
+            text-decoration: none;
+            margin-right: 10px;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .title {
+            margin: auto;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            /* padding-top: 30px; */
+            font-size: 33px;
+            color: #000000;
+            text-align: start;
+            padding-left: 20px;
+            flex:none;
+            padding-top: 3px;
+
+
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px;
+            /* padding-left: 100px;
+            padding-right: 100px; */
+            border-radius: 15px;
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+            margin-top: 4vh;
+            width: 100%;
+
+
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .add-status-form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* MARK */
+        .add-status-form label {
+            margin-right: 10px;
+        }
+
+        .add-status-form input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-status-form button {
+            background-color: #00a383;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-status-form button i {
+            margin-right: 5px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+
+        /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
+        .table> :not(caption)>*>* {
+
+            background-color: white;
+            border-radius: 10px;
+
+        }
+
+        .table-dark {
+
+            --bs-table-striped-bg: #00a383;
+            --bs-table-hover-bg: #00a383;
+
+        }
+
+        /* =========================================================================== */
+
+        .table-heading {
+            background: linear-gradient(135deg, #007bff, #00cc99);
+            color: #fff;
+        }
+
+        .table-heading th {
+            padding: 4px;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #00cc99;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            padding-left: 40px;
+            padding-right: 40px;
+            font-weight: bold;
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+        }
+
+        /* MARK */
+
+        button i {
+            margin-right: 5px;
+        }
+
+        button:hover {
+            background-color: #007bff;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+
+            .add-status-form {
+                flex-direction: column;
+
+            }
+
+            .add-status-form input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
+
+            border-color: white;
+            border-width: 10px;
+        }
+
+        .form-select {
+
+            margin-left: 0px;
+        }
+
+        .bi {
+            padding: 5px;
+            font-size: 20px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        #popupEdit #head {
+            width: 100px;
+            height: auto;
+            text-align: center;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        #popupEdit p {
+            display: inline-block;
+            vertical-align: middle;
+            margin: auto;
+        }
+
+        .swal2-input {
+            margin: 5px 0px;
+        }
+
+        #head .checkbox {
+            width: 250px;
+        }
+
+        #ativo {
+            left: 0px;
+        }
+    </style>
+</head>
+
+<body onload="connection('selectLocal=1', 'select')">
+    <header class="header">
+        <a href="../index.html" class="back-button"><i style="font-size: 40px"
+                class="bi-arrow-left-circle bi-lg"></i></a>
+        <h1 class="title">CONFIGURAÇÕES LOCAIS</h1>
+        </a>
+    </header>
+
+    <main class="main-content">
+        <hr>
+        <h3 style="font-size: 18px" id="novo" onclick="divCadastro()">CADASTRAR NOVO LOCAL : <i
+                class="bi bi-plus-circle"></i></h3>
+
+        <div id="cadastro" class="container-fluid p-5 border">
+            <form>
+
+                <div class="mb-3">
+                    <label for="" class="form-label">DESCRIÇÃO</label>
+                    <input type="text" class="form-control" id="novoLocal">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">ENDEREÇO</label>
+                    <!-- <select name="" id="selectGerentes" class="form-select"> -->
+                    <input type="text" class="form-control" id="endereco">
+
+                </div>
+            </form>
+            <div class="text-center">
+                <button class="btn btn-success" onclick="adicionarLocal()">ADICIONAR SETOR</button>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin-top: 40px;">
+            <table id="tableLocal" class="table table-striped table-hover">
+                <tr class="table-dark">
+                    <th>ID Local</th>
+                    <th>Descrição</th>
+                    <th>Endereço</th>
+                    <th>Ativo</th>
+                    <th>Ações</th>
+                </tr>
+                <tbody>
+                </tbody>
+            </table>
+            </tr>
+        </div>
+
+    </main>
+    <div style="display: none;">
+        <p id="divinv"></p> <!-- NÃO APAGAR...-->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+        var globalDelete = '';
+
+        var controle = 1;
+        function divCadastro() {
+            if (controle == 1) {
+                document.getElementById("cadastro").style.display = "grid"
+                var novo = document.getElementById("novo");
+                novo.innerHTML = "CADASTRAR NOVO LOCAL : <i class='bi bi-dash-circle'></i>"
+                controle++;
+            } else
+                if (controle != 1) {
+                    document.getElementById("cadastro").style.display = "none"
+                    var novo = document.getElementById("novo");
+                    novo.innerHTML = "CADASTRAR NOVO LOCAL : <i class='bi bi-plus-circle'></i>"
+                    controle = 1;
+                }
+        }
+
+        function adicionarLocal() {
+            var nomeLocal = document.getElementById("novoLocal").value;
+            var endereco = document.getElementById("endereco").value;
+
+            var data = "insertLocal=1&nomeLocal=" + encodeURIComponent(nomeLocal) + "&endereco=" + encodeURIComponent(endereco);
+            connection(data, 'refresh');
+        }
+
+        function connection(data, output) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "ConfigLocal.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (output == 'refresh')
+                        window.location.reload();
+                    if (output == 'select')
+                        unParse(xhr.responseText)
+                    if (output == 'refresh2') {
+                        var divinv = document.getElementById("divinv");
+                        divinv.innerHTML = xhr.responseText
+                    }
+                }
+            };
+            xhr.send(data);
+        }
+
+        function unParse(data) {
+            var dados = JSON.parse(data);
+            var table = document.getElementById("tableLocal");
+
+            var sqrchk = document.getElementsByClassName("bi bi-check-square");
+            var sqr = document.getElementsByClassName("bi bi-square");
+
+            for (let key in dados) {
+                let value = dados[key];
+                table.innerHTML += `<tr>
+                    <td id='id-${value.ID}'>${value.ID}</td>
+                    <td id='desc-${value.ID}'>${value.descricao}</td>
+                    <td id='end-${value.ID}'>${value.endereco}</td>
+                    <td id='atv-${value.ID}'><span id="bitIcon-${value.ID}" onclick="toggleBit(${value.ID})" class="${value.ativo == 1 ? 'bi bi-check-square' : 'bi bi-square'}"></span></td>
+                    <td style="padding:auto;">
+                        <span class='bi bi-pencil' onclick="action('edit-${value.ID}')" id='edit-${value.ID}'></span>
+                        <span class='bi bi-trash' onclick="action('trash-${value.ID}')" id='trash-${value.ID}'></span>
+                    </td>
+                    </tr>`;
+                // table.innerHTML += "<td>" + value.ID + "</td><td>" + value.descricao + "</td><td>"+value.endereco+"</td><td>"+value.ativo+"</td><td><span class='bi bi-pencil' onclick='action('edit-"+value.ID+"')' id='edit-"+value.ID+"'></span><span class='bi bi-trash'  onclick='action(trash-"+value.ID+")' id='trash-"+value.ID+"'></span></td>";
+            }
+
+        }
+
+        function toggleBit(ID) {
+            var bit = document.getElementById("bitIcon-" + ID);
+
+            if (bit.classList.contains("bi-square")) {
+                var data = "updateLocal=1&ID=" + ID + "&ativo=1";
+                connection(data, 'refresh2');
+            } else if (bit.classList.contains("bi-check-square")) {
+                var data = "updateLocal=1&ID=" + ID + "&ativo=0";
+                connection(data, 'refresh2');
+            }
+            window.location.reload();
+        }
+
+        function action(recebido) {
+            var acao = recebido.split("-");
+            comando = acao[0];
+            id = acao[1];
+            var lixeira = document.getElementById("trash-" + id);
+            //dados recebidos:
+            var ID = document.getElementById("id-" + id).innerHTML;
+            var descricao = document.getElementById("desc-" + id).innerHTML;
+            var endereco = document.getElementById("end-" + id).innerHTML;
+            var ativo = document.getElementById("bitIcon-" + id);
+
+
+            if (comando == 'edit') {//botao editar
+                openEditPopup(ID, descricao, endereco, ativo)
+
+            } else
+                if (comando == 'trash') {
+                    Swal.fire({
+                        title: 'Tem certeza?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#00cc99',
+                        confirmButtonText: 'Sim, delete!',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var data = "deleteLocal=1&ID=" + ID;
+                            connection(data, 'refresh2');
+
+                            var asnc = async () => {
+                                await sleep(250)
+                                var result = document.getElementById('divinv').innerHTML;
+                                if (result == true || result == 'true') {
+                                    Swal.fire({
+                                        title: 'Deletado!',
+                                        text: 'O local foi deletado com sucesso.',
+                                        icon: 'success',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });;
+                                } else {
+                                    Swal.fire({
+                                        title: 'Não foi possível deletar ',
+                                        text: 'Existem outros dados vinculados à esse Local',
+                                        icon: 'error',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                            asnc();
+                        }
+                    })
+                }
+
+            function openEditPopup(id, descricao, endereco, ativo) {
+                Swal.fire({
+                    title: 'Editar Dados',
+                    html: `
+                        <div id="popupEdit" class="container">
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="descricao">Descrição:</p>
+                                </div><div class="col">
+                                <input id="descricao" type="text" class="swal2-input" value="${descricao}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="end">Endereço:</p>
+                                </div><div class="col">
+                                <input id="end" type="text" class="swal2-input" value="${endereco}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="ativo">Ativo:</p>
+                                </div><div class="col checkbox">
+                                <input id="ativo" type="checkbox" class="form-check-input" ${ativo.classList.contains("bi-check-square") ? 'checked' : ''}>
+
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Salvar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#00cc99', // Altera a cor do botão Confirmar
+                    // padding: '2rem', // Aumenta a margem geral do popup
+                    customClass: {
+                        confirmButton: 'swal2-small', // Reduz o tamanho do botão Confirmar
+                        cancelButton: 'swal2-small' // Reduz o tamanho do botão Cancelar
+                    },
+                    preConfirm: () => {
+                        const descricao = document.getElementById('descricao').value;
+                        const endereco = document.getElementById('end').value;
+                        const ativo = document.getElementById('ativo').checked ? '1' : '0';
+                        var data = "updateLocal=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&endereco=" + encodeURIComponent(endereco) + "&ativo=" + ativo;
+                        connection(data, 'refresh2');
+                        return descricao, endereco, ativo;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Dados Atualizados',
+                            text: 'Os dados foram atualizados com sucesso!',
+                            icon: 'success',
+                            timer: 3000
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    }
+                });
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>

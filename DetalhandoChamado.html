@@ -8,13 +8,14 @@
   <link rel="stylesheet" href="sidebars/bootstrap.min.css">
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     body {
       margin: 0;
       display: flex;
       background-color: #f0f0f0;
+      /* border: #2ecc71; */
     }
 
     /* 
@@ -43,6 +44,7 @@
 
     #responsavel_tecnologia {
       display: none;
+      width: 100%;
     }
 
     .returnButton {
@@ -77,11 +79,13 @@
 
     .superior {
 
-      background-color: rgba(64, 163, 132, 0.144);
+      background-color: #40a38425;
       padding-top: 40px;
       padding-bottom: 50px;
       position: absolute;
       width: 100%;
+      border: outset;
+      border-color: #1987545e;
 
 
     }
@@ -111,7 +115,7 @@
     }
 
     .Aberto {
-      background-color: #2ecc71;
+      background-color: #e74c3c;
     }
 
     .Andamento {
@@ -123,12 +127,36 @@
     }
 
     .Fechado {
-      background-color: #e74c3c;
+      background-color: #2ecc71;
+
 
     }
-    #iconeAutor{
+
+    #iconeAutor {
       clip-path: circle(farthest-side);
     }
+
+    .d-flex {
+      display: flex;
+    }
+
+    #imagemAnexada {
+      cursor: pointer;
+    }
+
+    .setas {
+      background-color: gainsboro;
+      border-radius: 6px;
+
+    }
+
+    .setas:hover {
+      cursor: pointer;
+      background-color: darkgray;
+      transition: 0.4s;
+      border-radius: 8px;
+    }
+
 
     /* .col-md-4 {
 
@@ -140,8 +168,8 @@
 </head>
 
 <body style="background-color: aliceblue;">
-  <!-- <a href="javascript:history.back();" class="returnButton"> -->
-  <a href="/SIASB_HTML/VendoChamados.html" style="z-index: 10" class="returnButton">
+  <!-- <a href="/SIASB_HTML/VendoChamados.html" style="z-index: 10" class="returnButton"> -->
+  <a href="javascript:history.back();" style="z-index: 10" class="returnButton">
     <h1><i class="bi-arrow-left-circle bi-lg"></i></h1>
   </a>
 
@@ -178,20 +206,18 @@
 
 
   <div class="chamados">
-    <div style="padding-top: 50px;" class="row">
+    <div style="padding-top: 80px;" class="row">
       <div class="col-md-8">
         <div class="card m-3">
           <div class="card-body container_card">
-
-
-
             <h5 class="card-text" id="assunto">ASSUNTO DO CHAMADO<br><br> </h5>
             <hr>
             <p style="color: rgb(75, 75, 75); font-weight: bold;">DESCRIÇÃO: </p>
             <p class="card-text" id="descricao"></p>
             <hr>
             <p class="card-text" style="font-weight: bold;">ANDAMENTO DO CHAMADO:</p>
-            <div class="resultados_log" id="resultados_log" style="background-color: red;">
+            <div class="resultados_log" id="resultados_log"
+              style="background-color: #40a38436; border-radius: 5px; padding: 6px;">
               <div class="container mt-4" id="logsContainer">
                 <!-- Div pré-existente que exibirá os logs -->
               </div>
@@ -202,7 +228,7 @@
 
 
       <div style="z-index: 2;" class="col-md-4">
-        <div class="card" style="padding-bottom:8%; margin-top: 15px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5)">
+        <div class="card" style="padding-bottom:8%; margin-top: 15px; box-shadow: 0px 2px 4px rgba(68, 68, 68, 0.267)">
           <div class="card-body">
             <h5>Informações Adicionais
               <hr>
@@ -220,62 +246,63 @@
             <p class="card-text" style="font-weight: bold;">STATUS:</p>
             <p id="status"> </p>
             <!-- </span> -->
-            <p class="card-text" id="equipamento" style="font-weight: bold;">EQUIPAMENTO: </p>
+            <p class="card-text" style="font-weight: bold;">EQUIPAMENTO: </p>
+            <p id="equipamento"></p>
           </div>
         </div>
         <div class="container my-3 p-0">
-          <button type="button" id="responsavel_tecnologia" class="btn btn-success" onclick="alterarChamado()" >
+          <button type="button" id="responsavel_tecnologia" class="btn btn-success" onclick="alterarChamado()">
             Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
           </button>
         </div>
 
       </div>
     </div>
-
-    <div>
-      <div class="anexo">
-        <div style="width: 1480px; ">
-          <div class="card m-3">
-            <div class="card-body">
-              <h5>ANEXOS:</h5>
-              <div class="container mt-4" id="anexosContainer">
-                <!-- Div pré-existente que exibirá os anexos -->
-              </div>
-            </div>
+    <div0 class="row">
+      <div class="card m-3">
+        <div class="card-body">
+          <h5>ANEXOS:</h5>
+          <div class="container mt-4" id="anexosContainer">
           </div>
         </div>
       </div>
-    </div>
 
-    <script src="sidebars/bootstrap.bundle.min.js"></script>
-    <script>
-      var url = new URL(window.location.href);
-      var IDChamado = url.searchParams.get("IDChamado"); //22
+      <script src="sidebars/bootstrap.bundle.min.js"></script>
+      <script>
+        var url = new URL(window.location.href);
+        var IDChamado = url.searchParams.get("IDChamado"); //22
 
-      connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
+        connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
+<<<<<<< HEAD
       verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
+=======
+        function connection(data, operation) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "DetalhandoChamado.php", true);
+>>>>>>> 4230f2c8c104ec3611a9aecc13bf00c4c5648747
 
-      function connection(data, operation) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "DetalhandoChamado.php", true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            if (operation == 1) {
-              unParse(xhr.responseText);
-              // console.log(xhr.responseText);
-            } else
-              if (operation == 2) {
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              if (operation == 1) {
+                unParse(xhr.responseText);
+              } else if (operation == 2) {
                 // console.log(xhr.responseText);
-              } else
-                if (operation == 'verificarSetor') {
-                  // console.log(xhr.responseText);
-                  if (xhr.responseText == '1') {
-                    controlarResponsavel_Tecnologia();
-                  }
+              } else if (operation == 'verificarSetor') {
+                if (xhr.responseText == '1') {
+                  controlarResponsavel_Tecnologia();
                 }
+              }
+            }
+          };
+
+          if (data instanceof FormData) {
+            xhr.send(data);
+          } else {
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(data);
           }
+<<<<<<< HEAD
         };
         xhr.send(data);
       }
@@ -334,150 +361,284 @@
         } else {
           document.getElementById("anexosContainer").innerHTML +=
             '<p>Nenhuma imagem anexada para este chamado.</p>';
+=======
+>>>>>>> 4230f2c8c104ec3611a9aecc13bf00c4c5648747
         }
 
-        if(icone){
-          document.getElementById("AutorLabel").innerHTML +=
-            '<img id="iconeAutor" src="data:image/jpeg;base64,' + icone + '" width="100px" alt="Ícone do autor" /></p>';
-        } else {
-          document.getElementById("AutorLabel").innerHTML +=
-            '';
 
-        }
+        function unParse(data) {
+          var dadosObjeto = JSON.parse(data)
+          var IDChamado = dadosObjeto.IDChamado;
+          var assunto = dadosObjeto.assunto;
+          var descricao = dadosObjeto.descricao;
+          var dataAbertura = dadosObjeto.dataAbertura;
+          var status_chamado = dadosObjeto.status_chamado;
+          var responsavel = dadosObjeto.responsavel;
+          var autor = dadosObjeto.autor;
+          var equipamento = dadosObjeto.equipamento;
+          var imagens = dadosObjeto.imagens;
+          var logs = dadosObjeto.logs;
+          var icone = dadosObjeto.icone;
 
-      }
+          // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
 
-      function exibeLogs(logs) {
-        const logsContainer = document.getElementById("logsContainer");
+          exibeLogs(logs);
+          exibeImagens(imagens)
 
-        logs.forEach((log) => {
-          const div = document.createElement("div");
-          div.classList.add("row", "mb-3");
+          dataAbertura = formatarDataHora(dataAbertura);
 
-          const col = document.createElement("div");
-          col.classList.add("col", "px-0");
+          document.getElementById("assunto").innerHTML += assunto;
+          document.getElementById("descricao").innerHTML += '<br>' + descricao;
+          document.getElementById("dataAbertura").innerHTML += dataAbertura;
+          // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
+          document.getElementById("status").innerHTML += status_chamado;
+          document.getElementById("responsavel").innerHTML += responsavel;
+          document.getElementById("autor").innerHTML += autor;
+          if (equipamento != null) {
+            document.getElementById("equipamento").innerHTML += `${equipamento}`;
+          } else {
+            // document.getElementById("equipamento").innerHTML += '---';
+            document.getElementById("equipamento").style.display = 'none';
 
-          const dFlex = document.createElement("div");
-          dFlex.classList.add("d-flex");
-
-          const div1 = document.createElement("div");
-
-          const responsavelStatus = document.createElement("p");
-          responsavelStatus.classList.add("mb-0");
-          responsavelStatus.textContent = log.responsavel + " alterou status para: " + log.status;
-          div1.appendChild(responsavelStatus);
-
-          const div2 = document.createElement("div");
-          div2.classList.add("border-start", "border-primary", "px-3");
-
-          const mensagem = document.createElement("p");
-          mensagem.classList.add("mb-0");
-          mensagem.textContent = "motivo:  " + log.mensagem;
-          div2.appendChild(mensagem);
-
-          const dataParagrafo = document.createElement("p");
-          dataParagrafo.classList.add("mb-0");
-          dataParagrafo.textContent = formatarDataHora(log.dataAlteracao);
-          div2.appendChild(dataParagrafo);
-
-          div.appendChild(col);
-          col.appendChild(dFlex);
-          dFlex.appendChild(div1);
-          div.appendChild(div2);
-
-          logsContainer.appendChild(div);
-        });
-      }
-
-      function formatarDataHora(dataOriginal) {
-        const date = new Date(dataOriginal);
-        const dia = ('0' + date.getDate()).slice(-2);
-        const mes = ('0' + (date.getMonth() + 1)).slice(-2);
-        const ano = date.getFullYear().toString().slice(-2);
-        const horas = ('0' + date.getHours()).slice(-2);
-        const minutos = ('0' + date.getMinutes()).slice(-2);
-
-        return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
-      }
-
-      function verificaSetor() {
-        var data = "verificarSetor=" + encodeURIComponent('1');
-        connection(data, 'verificarSetor');
-      }
-
-      function controlarResponsavel_Tecnologia() {
-        var responsavel_tecnologia = document.getElementById("responsavel_tecnologia");
-        responsavel_tecnologia.style.display = "inline";
-      }
-
-      function alterarChamado() {
-        // Criando um formulário HTML
-        const formHTML = `
-      <form id="alterarChamadoForm" class="text-start">
-        <div class="mb-3">
-          <div class="d-flex">
-          <label for="status" class="form-label" style="margin:auto; padding-right:5px;">Status:</label>
-            <select id="statusPopup" class="form-select form-select-sm">
-              <option value="1">Aberto</option>
-              <option value="2" selected>Andamento</option>
-              <option value="3">Pendente</option>
-              <option value="4">Fechado</option>
-            </select>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="mensagem" class="form-label">Mensagem:</label>
-          <textarea id="mensagem" class="form-control" rows="4"></textarea>
-        </div>
-      </form>
-    `;
-
-        // Exibindo o popup com o formulário
-        swal({
-          title: "Atualizar o Status do Chamado",
-          content: {
-            element: "div",
-            attributes: {
-              innerHTML: formHTML,
-            },
-          },
-          buttons: {
-            confirm: {
-              text: "Alterar",
-              className: "btn btn-primary",
-            },
-            cancel: {
-              text: "Cancelar",
-              className: "btn btn-secondary",
-              visible: true,
-            },
-          },
-          closeOnClickOutside: false,
-        }).then((result) => {
-          if (result) {
-            // Aqui você pode implementar o código para enviar o formulário
-            const status = document.getElementById("statusPopup").value;
-            const mensagem = document.getElementById("mensagem").value;
-
-
-            var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado);
-            // console.log(data);
-
-            connection(data, 2);
-            // window.location.reload();
-            // Exemplo de envio do formulário
-            swal("Chamado alterado com sucesso!", "", "success");
-            setTimeout(() => {
-              swal.close();
-              window.location.reload();
-            }, 2000);
           }
-        });
-      }
+          document.getElementById("numChamado").innerHTML += IDChamado;
+          // document.getElementById("imagem").innerHTML += imagem;
+          // if(ligacaoChamadoID == null){
+          //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
+          // }
 
+
+
+          if (icone) {
+            document.getElementById("AutorLabel").innerHTML +=
+              '<img id="iconeAutor" src="data:image/jpeg;base64,' + icone + '" width="100px" alt="Ícone do autor" /></p>';
+          } else {
+            document.getElementById("AutorLabel").innerHTML +=
+              '';
+
+          }
+
+        }
+      </script>
+      <style>
+        .imagensAnexo {
+          cursor: pointer;
+          width: 220px;
+          margin-right: 10px;
+
+        }
+
+        .imagensAnexo:hover {
+          transform: scale(1.1);
+          transition: 0.4s;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+          border-radius: 6px;
+
+        }
+
+        #anexosContainer {
+          display: flex;
+          flex-direction: row;
+        }
+      </style>
+      <script>
+
+        function exibeImagens(imagens) {
+          containerAnexos = document.getElementById("anexosContainer");
+
+          imagens.forEach((imagens) => {
+            containerAnexos.innerHTML += `
+          <div class="row">
+            <div class="col-md-4">
+              <img class="imagensAnexo" src="data:image/jpeg;base64, ${imagens}" alt="Imagem do chamado">
+            </div>
+          </div>
+          `;
+          })
+        }
+
+        function exibeLogs(logs) {
+          const logsContainer = document.getElementById("logsContainer");
+
+          logs.forEach((log) => {
+            const div = document.createElement("div");
+            div.classList.add("row", "mb-3");
+
+            const col = document.createElement("div");
+            col.classList.add("col", "px-0");
+
+            const dFlex = document.createElement("div");
+            // dFlex.classList.add("d-flex");
+
+            const div1 = document.createElement("div");
+            div1.classList.add("d-flex");
+
+            const responsavelStatus = document.createElement("p");
+            responsavelStatus.classList.add("mb-0");
+            responsavelStatus.style.marginRight = "10px";
+            responsavelStatus.textContent = log.responsavel + " alterou status para: " + log.status;
+            responsavelStatus.src = "Icones%20Site/anexo.png";
+
+            div1.appendChild(responsavelStatus);
+            if (log.imagem) {
+              const imagem = document.createElement("img");
+              imagem.classList.add("ml-3");
+              imagem.src = "Icones%20Site/anexo.png";
+              imagem.width = 30;
+              imagem.title = "Clique para visualizar a imagem anexada à resposta";
+              imagem.id = "imagemAnexada";
+              imagem.onclick = function () {
+                exibeImagensAnexadas(log.imagem);
+              }
+
+              div1.appendChild(imagem);
+            }
+
+
+            const div2 = document.createElement("div");
+            div2.classList.add("border-start", "border-primary", "px-3");
+
+            const mensagem = document.createElement("p");
+            mensagem.classList.add("mb-0");
+            mensagem.textContent = "motivo:  " + log.mensagem;
+            div2.appendChild(mensagem);
+
+            const dataParagrafo = document.createElement("p");
+            dataParagrafo.classList.add("mb-0");
+            dataParagrafo.textContent = formatarDataHora(log.dataAlteracao);
+            div2.appendChild(dataParagrafo);
+
+            div.appendChild(col);
+            col.appendChild(dFlex);
+            dFlex.appendChild(div1);
+            div.appendChild(div2);
+
+            logsContainer.appendChild(div);
+          });
+        }
+
+        function exibeImagensAnexadas(imagens) {
+          if (window.screen.width < 1025) {
+            var responsiveSize = window.screen.width * 0.65
+          } else {
+            var responsiveSize = window.screen.width * 0.8;
+          }
+
+<<<<<<< HEAD
 
   
     </script>
+=======
+          const html = `
+        <div id="esquerda" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-left"></span></div>
+        <div id="central" style="width:70%; display:inline;">
+          <img id="imagenLOG" src="data:image/jpeg;base64, ${imagens}" width="${responsiveSize}px;"  alt="Imagem do log">
+        </div>
+        <div id="direita" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-right"></span></div>
+        `;
+          Swal.fire({
+            title: "Imagem anexada",
+            // imageUrl: `data:image/jpeg;base64, ${imagens}`,
+            html: html,
+            width: window.screen.width,
+            margin: 0,
+            showCancelButton: false,
+            confirmButtonText: 'Fechar',
+            confirmButtonColor: '#00cc99',
+          })
+        }
+
+        function formatarDataHora(dataOriginal) {
+          const date = new Date(dataOriginal);
+          const dia = ('0' + date.getDate()).slice(-2);
+          const mes = ('0' + (date.getMonth() + 1)).slice(-2);
+          const ano = date.getFullYear().toString().slice(-2);
+          const horas = ('0' + date.getHours()).slice(-2);
+          const minutos = ('0' + date.getMinutes()).slice(-2);
+
+          return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+        }
+
+        verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
+
+        function verificaSetor() {
+          var data = "verificarSetor=" + encodeURIComponent('1');
+          connection(data, 'verificarSetor');
+        }
+
+        function controlarResponsavel_Tecnologia() {
+          var responsavel_tecnologia = document.getElementById("responsavel_tecnologia");
+          responsavel_tecnologia.style.display = "inline";
+        }
+
+        function alterarChamado() {
+          // Criando um formulário HTML
+          const formHTML = `
+          <form id="alterarChamadoForm" class="text-start" enctype="multipart/form-data">
+            <div class="mb-3 mt-3">
+              <div class="d-flex">
+                <label for="status" class="form-label" style="margin:auto; padding-right:15px; width:80px">Status:</label>
+                <select id="statusPopup" class="form-select form-select-sm">
+                  <option value="2" selected>Andamento</option>
+                  <option value="3">Pendente</option>
+                  <option value="4">Fechado</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="mensagem" class="form-label">Mensagem:</label>
+              <textarea id="mensagem" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="mb-3">
+              <label>Anexar Imagem:</label>
+              <input type="file" name="imagem" id="imagem" class="form-control">
+              </div>
+          </form>
+        `;
+
+          // Exibindo o popup com o formulário
+          Swal.fire({
+            title: "Atualizar o Status do Chamado",
+            html: formHTML,
+            showCancelButton: true,
+            confirmButtonColor: '#00cc99',
+            confirmButtonText: 'Atualizar Status',
+            cancelButtonText: 'Cancelar',
+            closeOnClickOutside: true,
+          }).then((result) => {
+            if (result) {
+              if (result.isConfirmed) {
+                // Aqui você pode implementar o código para enviar o formulário
+                var status = document.getElementById("statusPopup").value;
+                var mensagem = document.getElementById("mensagem").value;
+                var imagemInput = document.getElementById("imagem");
+
+                // var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado) + "&imagem=" + encodeURIComponent(imagemInput.files[0]) ;
+                var data = new FormData();
+                data.append("gerarLog", "1");
+                data.append("status", status);
+                data.append("mensagem", mensagem);
+                data.append("referencia", IDChamado);
+                data.append("imagem", imagemInput.files[0]); //criei o banco TBImagens, quando voltar, fazer as alterações necessarias para inserir a imagem diretamente nele.
+
+                connection(data, 2);
+                // window.location.reload();
+                // Exemplo de envio do formulário
+                Swal.fire({
+                  title: 'Alterado!',
+                  text: 'Chamado alterado com sucesso',
+                  icon: 'success',
+                  timer: 3000
+                }).then(() => {
+                  window.location.reload();
+                });
+              }
+            }
+          });
+        }
+
+      </script>
+>>>>>>> 4230f2c8c104ec3611a9aecc13bf00c4c5648747
 </body>
 
 </html>

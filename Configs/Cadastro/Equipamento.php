@@ -23,16 +23,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $resultArray['tipos'] = $tipos;
 
         // Consulta 2: SELECT * FROM TBSetor
-        $sql2 = "SELECT * FROM TBSecao";
+        $sql2 = "SELECT * FROM tbsetor_secao";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute();
         $result2 = $stmt2->get_result();
 
         $secoes = array();
         while ($row2 = $result2->fetch_assoc()) {
-            $IDSecao = $row2["IDSecao"];
-            $descricaoSecao = $row2["descricao_secao"];
-            $secoes[$IDSecao] = $descricaoSecao;
+            $ID = $row2["ID"];
+            $descricao = $row2["descricao"];
+            $secoes[$ID] = $descricao;
         }
         $resultArray['secoes'] = $secoes;
 
@@ -47,8 +47,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['Select_Person_on_secao'])){
-        $secao = $_POST['Select_Person_on_secao'];
-        $sql = "SELECT nomeCompleto, IDPessoa FROM TBPessoa WHERE secao ='$secao'";
+        $setor_secao = $_POST['Select_Person_on_secao'];
+        $sql = "SELECT nomeCompleto, IDPessoa FROM TBPessoa WHERE setor_secao ='$setor_secao'";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -71,11 +71,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $descricao = $_POST['descricao'];
         $ip = $_POST['ip'];
         $tipo = $_POST['tipo'];
-        $secao = $_POST['secao'];
+        $setor_secao = $_POST['secao'];
         $usuario = $_POST['usuario'];
 
-        $sql = "INSERT INTO TBEquipamentos (sti_ID, descricao, ip, tipo, usuario, secao) VALUES ('$stiId', '$descricao', '$ip', '$tipo', '$usuario', '$secao')
-        ON DUPLICATE KEY UPDATE sti_id = '$stiId', descricao = '$descricao', ip = '$ip', tipo = '$tipo', usuario = '$usuario', secao = '$secao'";
+        $sql = "INSERT INTO TBEquipamentos (sti_ID, descricao, ip, tipo, usuario, setor_secao) VALUES ('$stiId', '$descricao', '$ip', '$tipo', '$usuario', '$setor_secao')
+        ON DUPLICATE KEY UPDATE sti_id = '$stiId', descricao = '$descricao', ip = '$ip', tipo = '$tipo', usuario = '$usuario', setor_secao = '$setor_secao'";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

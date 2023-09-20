@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./../../flowSite/verificaSessao.js"></script>
+    <title>Index</title>
+    <style>
+        .upload-div {
+      width: 95%;
+      padding: 10px;
+      border-width: 2px;
+      border-style: dotted;
+      border-color: black;
+      border-radius: 5px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    </style>
+</head>
+<body>
+    <form action="" enctype="multipart/form-data">
+        <div class="upload-div">
+            <label for="iconePessoa">Envie abaixo uma imagem para a pessoa:</label>
+            <br>
+            <input type="file" id="iconePessoa" name="iconePessoa" required>
+          </div>
+    </form>
+    <button onclick="evento()">Evento</button>
+    <script>
+        function evento(){
+            var iconePessoa = document.getElementById("iconePessoa").files[0];
+            console.log('icone -> '+iconePessoa);
+            console.log(iconePessoa)
+        }
+    </script>
+
+</body>
+</html>

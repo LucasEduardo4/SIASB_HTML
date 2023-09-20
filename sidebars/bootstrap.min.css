@@ -1148,6 +1148,7 @@ progress {
     .col-md-6 {
         flex: 0 0 auto;
         width: 50%;
+        
     }
     .col-md-7 {
         flex: 0 0 auto;
@@ -1780,7 +1781,7 @@ progress {
     --bs-table-active-bg: rgba(0, 0, 0, 0.1);
     --bs-table-hover-color: var(--bs-body-color);
     --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
-    width: 100%;
+    /* width: 100%; */
     margin-bottom: 1rem;
     vertical-align: top;
     border-color: var(--bs-table-border-color);

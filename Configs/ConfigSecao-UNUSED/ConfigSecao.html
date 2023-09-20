@@ -28,7 +28,14 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: red;
+            background-color: white;
+
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
         }
 
         /* Header Styles */
@@ -40,6 +47,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 4%;
         }
 
         .back-button {
@@ -47,15 +55,21 @@
             text-decoration: none;
             margin-right: 10px;
             float: left;
-            margin-left: 30px;
+            margin-left: 20px;
         }
 
         .title {
             margin: auto;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            padding-top: 30px;
-            font-size: 45px;
+            /* padding-top: 30px; */
+            font-size: 38px;
             color: #000000;
+            text-align: start;
+            padding-left: 20px;
+            flex:none;
+            padding-top: 2px;
+
+
         }
 
         /* Main Content Styles */
@@ -63,14 +77,14 @@
             max-width: 1200px;
             margin: auto;
             padding: 50px;
-            padding-left: 100px;
-            padding-right: 100px;
-            /* background-color: #f0f0f0; */
+            /* padding-left: 100px;
+            padding-right: 100px; */
             border-radius: 15px;
             box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+            margin-top: 110px;
+            width: 100%;
 
-            text-align: center;
-            /* Center text in the main content */
+
         }
 
         h2 {
@@ -116,9 +130,10 @@
             margin-bottom: 40px;
             border-radius: 10px;
             overflow: hidden;
-            /* background-color:white; */
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: auto;
 
-            /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 
         }
 
@@ -127,6 +142,7 @@
         .table> :not(caption)>*>* {
 
             background-color: white;
+            border-radius: 10px;
 
         }
 
@@ -151,7 +167,7 @@
         table th,
         table td {
             padding: 12px;
-            /* border: 1px solid #00cc99; */
+            border-bottom: 1px solid #e0e0e0;
         }
 
         table tr:nth-child(even) {
@@ -167,6 +183,12 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
+            width: 100%;
+            padding-left: 40px;
+            padding-right: 40px;
+            font-weight: bold;
+            box-shadow: 10px 11px rgba(0, 0, 0, 0.1);
+
         }
 
         button i {
@@ -193,11 +215,46 @@
                 margin-bottom: 10px;
             }
         }
+
+
+
+        .swal-columns {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .swal-columns input {
+            margin: 20px 0px;
+        }
+
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
+
+            border-color: white;
+            border-width: 10px;
+        }
+
+        .form-select {
+
+            margin-left: 0px;
+        }
+        #theEnd{
+            position: absolute;
+            padding: 200px;
+            background-color: white;
+            left: 100px;
+
+        }
     </style>
 </head>
 
 
 <body onload="init()">
+    <h1 id="theEnd">..... DESCONTINUADO ...................... mantive aqui apenas para consulta dos códigos.</h1>
 
     <header class="header">
         <a href="../index.html" class="back-button"><i style="font-size: 40px"

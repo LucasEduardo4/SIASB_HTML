@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Cadastro</title>
+  <title>CADASTRO</title>
   <link rel="stylesheet" href="Inicial.css">
-  <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192"/>
+  <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192" />
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup Sweet alert-->
 
 
   <meta charset="UTF-8">
-
+  <style>
+    .upload-div {
+      width: 95%;
+      padding: 10px;
+      border-width: 2px;
+      border-style: dotted;
+      border-color: black;
+      border-radius: 5px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      margin-top: 20px;
+    }
+  </style>
 
 </head>
+
 <body onload="init()">
   <div class="container">
-    <h1>Cadastro</h1>
+    <h1 style="font-size: 25px;">CADASTRAR PESSOAS</h1>
+
+
+
     <!-- <h2>OBS. tirei o method do form.. preciso adicionar um XMLHttpRequest no script</h2> -->
-    <form>
+    <form enctype="multipart/form-data">
       <div class="form-group">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" placeholder="Informe seu nome">
@@ -24,6 +40,7 @@
       <div class="form-group">
         <label for="cpf">CPF:</label>
         <input type="text" id="cpf" name="cpf" placeholder="Informe seu CPF">
+
       </div>
       <div class="form-group">
         <label for="matricula">Número de Matrícula:</label>
@@ -44,37 +61,30 @@
           <label class="form-check-label" for="usuario">Vincular como usuário</label>
           <input class="form-check-input form-check-inline" type="checkbox" id="usuario" name="usuario" value="usuario">
         </div>
-        
-        
-      </div> 
+        <div class="upload-div">
+          <label for="iconePessoa">Envie abaixo uma imagem para a pessoa:</label>
+          <input type="file" id="iconePessoa" name="iconePessoa" required>
+        </div>
+      </div>
     </form>
     <div class="form-group">
       <button onclick="submitForm()">Cadastrar</button>
     </div>
-</div>
-</div>
-<div>
-  <p>Implementar depois:</p>
-  <p>Verificação dos valores digitados (email, cpf, etc.)</p>
-</div>
+  </div>
+  </div>
+
 </body>
-
-
-
 <script>
-  function init(){
+  function init() {
     getSelect();
   }
-  function getSelect(){
+  function getSelect() {
     var setor = document.getElementById("setor");
-
-    data= "select_setor=" + encodeURIComponent(1);
-
+    data = "select_setor=" + encodeURIComponent(1);
     connection(data, setor);
-
   }
 
-  function submitForm(){
+  function submitForm() {
     let nome = document.getElementById("nome").value;
     let cpf = document.getElementById("cpf").value;
     let matricula = document.getElementById("matricula").value;
@@ -82,11 +92,27 @@
     let email = document.getElementById("email").value;
     let usuario = document.getElementById("usuario").checked;
     var nomeSeparado = '';
-    if(usuario){
-      nomeSeparado = separarNomes(nome);
-      console.log(nomeSeparado);
+    var iconePessoa = document.getElementById("iconePessoa").files[0];
 
-        function separarNomes(username) {
+    // Validar o email
+    if (!validarEmail(email)) {
+      alert("Por favor, insira um endereço de email válido.");
+      return;
+    }
+
+    // Validar o CPF
+    if (!validarCPF(cpf)) {
+      alert("Por favor, insira um CPF válido no formato 999.999.999-99.");
+      return;
+    }
+
+
+
+    if (usuario) { //somente alimenta a variavel nomeSeparado, se o checkbox estiver marcado
+      nomeSeparado = separarNomes(nome);
+      // console.log(nomeSeparado);
+
+      function separarNomes(username) {
         username = username.toLowerCase();
 
         // Separar o primeiro e o último nome
@@ -98,44 +124,81 @@
         var nomeCompleto = primeiroNome + '' + ultimoNome;
 
         return nomeCompleto;
-        } 
-        
-      } 
-      if(nomeSeparado == ''){
-        var data = "insertUser=" + 0 + "&nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula)+ "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email) 
-      }else{
-        var data = "insertUser=" + 1 + "&nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula)+ "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email) + "&username=" + encodeURIComponent(nomeSeparado);
       }
-      // console.log(data);
-      connection(data, "reload");
-    }
-    function connection(data, output){
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "Cadastro.php", true)
-      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhr.onreadystatechange = function(){
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            if (output == "reload") {
-              Swal.fire({
-                icon: 'success',
-                title: 'Usuário inserido com sucesso',
-                showConfirmButton: false,
-                timer: 3000
-              }).then(() => {
-                window.location.reload();
-              });
-            }
-            if(output == setor);
-              setor.innerHTML += xhr.responseText;
-          } else {
-              console.error("Falha ao carregar as pessoas");
-          }
-        }
-      };
-      xhr.send(data);
 
     }
-  
+    // if (nomeSeparado == '') {
+    //   var data = "insertUser=" + 0 + "&nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula) + "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email) + "&imagem=" + encodeURIComponent(iconePessoa);
+    // } else {
+    //   var data = "insertUser=" + 1 + "&nome=" + encodeURIComponent(nome) + "&cpf=" + encodeURIComponent(cpf) + "&matricula=" + encodeURIComponent(matricula) + "&setor=" + encodeURIComponent(setor) + "&email=" + encodeURIComponent(email) + "&imagem=" + encodeURIComponent(iconePessoa) + "&username=" + encodeURIComponent(nomeSeparado);
+    // }
+    // connection(data, "reload");
+    // console.log('icone -> ' + iconePessoa);
+    // console.log(data);
+    var data = new FormData();
+    if (nomeSeparado != '') {
+      data.append("insertUser", 1);
+    } else {
+      data.append("insertUser", 0);
+    }
+    data.append("nome", nome);
+    data.append("cpf", cpf);
+    data.append("matricula", matricula);
+    data.append("setor", setor);
+    data.append("email", email);
+    data.append("imagem", iconePessoa);
+    if (nomeSeparado != '') {
+      data.append("username", nomeSeparado);
+    }
+    connection(data, "reload");
+
+  }
+
+  function connection(data, output) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "Cadastro.php", true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          if (output == "reload") {
+            // console.log(xhr.responseText);
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuário inserido com sucesso',
+              showConfirmButton: false,
+              timer: 3000
+            }).then(() => {
+              // window.location.reload();
+            });
+          }
+          if (output == setor);
+          setor.innerHTML += xhr.responseText;
+        } else {
+          console.error("Falha ao carregar as pessoas");
+        }
+      }
+    };
+    if (data instanceof FormData) {
+      xhr.send(data);
+    } else {
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.send(data);
+    }
+  }
+
+  function validarEmail(email) {
+    // Expressão regular para validar o formato do email
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  function validarCPF(cpf) {
+    // Expressão regular para validar o CPF
+    var regex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+    return regex.test(cpf);
+  }
+
 </script>
+
+
 </html>

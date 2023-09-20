@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
         
-        $sql = "Select IDSetor, descricao_setor, p.nomeCompleto from TBSetor
+        $sql = "Select ID, descricao, p.nomeCompleto from tbsetor_secao
         join TBPessoa p on gerente = p.IDPessoa";
 
         $stmt = $conn->prepare($sql);
@@ -16,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $IDSetor = $row["IDSetor"];
-                $descricao = $row["descricao_setor"];
+                $ID = $row["ID"];
+                $descricao = $row["descricao"];
                 $gerente = $row["nomeCompleto"];
 
 
                 echo "<tr>
-                <td>".$IDSetor."</td>
-                <td style='padding-left:90px'>".$descricao."</td>
+                <td>".$ID."</td>
+                <td>".$descricao."</td>
                 <td>".$gerente."</td>
                 </tr>";
                 
@@ -76,10 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $sql = "
-        SET @UltimoIDSetor = (SELECT MAX(IDSetor) FROM tbsetor);
-        SET @UltimoIDSetor = IFNULL(@UltimoIDSetor, 0) + 1;
-        INSERT INTO tbsetor (IDSetor, descricao_setor, gerente)
-        VALUES (@UltimoIDSetor, '$nomeSetor', '$gerente');
+        SET @UltimoID = (SELECT MAX(ID) FROM tbsetor_secao);
+        SET @UltimoID = IFNULL(@UltimoID, 0) + 1;
+        INSERT INTO tbsetor_secao (ID, descricao, gerente)
+        VALUES (@UltimoID, '$nomeSetor', '$gerente');
         ";
 
         if (mysqli_multi_query($conn, $sql)) {

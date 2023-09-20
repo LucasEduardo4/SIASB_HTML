@@ -84,24 +84,24 @@ $pdf->setTextColor(0,0,128);
 
 $text="DUMMY";
 
-$pdf->Cell(0, 0, $text, 1, 1, 'L', 1, 0);
+$pdf->Cell(0, 0, 'texto 0', 1, 1, 'L', 1, 0);
 
 $pdf->Ln();
 
-$pdf->setLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 255)));
+$pdf->setLineStyle(array('width' => 2.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 255)));
 $pdf->setFillColor(255,255,0);
 $pdf->setTextColor(0,0,255);
-$pdf->MultiCell(60, 4, $text, 1, 'C', 1, 0);
+$pdf->MultiCell(60, 4, 'texto 1', 1, 'C', 1, 0);
 
-$pdf->setLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(255, 255, 0)));
+$pdf->setLineStyle(array('width' => 0.3, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(255, 255, 0)));
 $pdf->setFillColor(0,0,255);
 $pdf->setTextColor(255,255,0);
-$pdf->MultiCell(60, 4, $text, 'TB', 'C', 1, 0);
+$pdf->MultiCell(60, 4, 'texto 2', 'TB', 'C', 1, 0);
 
 $pdf->setLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(255, 0, 255)));
 $pdf->setFillColor(0,255,0);
 $pdf->setTextColor(255,0,255);
-$pdf->MultiCell(60, 4, $text, 1, 'C', 1, 1);
+$pdf->MultiCell(60, 4, 'texto 3', 1, 'C', 1, 1);
 
 // ---------------------------------------------------------
 

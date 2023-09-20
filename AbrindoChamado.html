@@ -21,12 +21,17 @@
       /* height: 100vh; */
       padding: 50px;
       max-width: 100%;
-      background: none;
+      font-weight: 700;
+      /* background: none; */
+
+      /* background-image: url('https://e7.pngegg.com/pngimages/668/950/png-transparent-water-and-water-droplets-background.png');
+      background-repeat: repeat;
+      background-size:cover ; */
 
     }
 
     .div-superior {
-      width: 4000px;
+      width: 2000px;
       min-width: 800px;
       background-color: #ffffff;
       padding: 20px;
@@ -57,7 +62,7 @@
     }
 
     .div-inferior {
-      width: 4500px;
+      width: 1200px;
       min-width: 700px;
       background-color: #ffffff;
       padding: 20px;
@@ -106,7 +111,7 @@
 
     /* ================================================================ */
 
-    .setor-div,
+    .hardware-div,
     .assunto-div {
       flex-basis: 48%;
     }
@@ -155,28 +160,6 @@
       min-width: 500px;
     }
 
-    .hardware-div {
-      max-width: 98%;
-      min-width: 300px;
-      /* display: flex; */
-      text-align: center;
-      margin: 35px 0px;
-      display: none;
-
-    }
-
-    .hardware-div label {
-      padding: 10px;
-    }
-
-    .custom-fade-in {
-      animation-duration: 0.5s !important;
-    }
-
-    .custom-slide-in {
-      animation-duration: 1.5s !important;
-    }
-
     .my-custom-icon {
       font-size: 200px;
       /* Defina o tamanho desejado */
@@ -192,7 +175,88 @@
       -moz-appearance: textfield;
       /* Remove as setas no Firefox */
     }
+  
+
   </style>
+
+
+
+  <style>
+
+  /* Estilo para o rótulo personalizado */
+  input[type="radio"] {
+      display: none; /* Oculta o input padrão */
+    }
+  
+    /* Estilo para o rótulo personalizado */
+    .custom-radio {
+      position: relative;
+      padding-left: 30px; /* Espaço para o ícone do radio */
+      cursor: pointer;
+      /* margin-left: 50px; */
+
+      
+    }
+  
+    /* Ícone do radio personalizado */
+    .custom-radio:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #40a383;
+      border-radius: 50%;
+    }
+  
+    /* Estilização quando o radio está selecionado */
+    input[type="radio"]:checked + .custom-radio:before {
+      background-color: #40a383;
+    }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        button {
+            background-color: #40a383;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        h2 {
+          font-size: 16px;
+          padding-top: 20px;
+          padding-bottom: 20px;
+          font-family:Verdana, Geneva, Tahoma, sans-serif;
+          font-weight: 900;
+        }
+
+        .dropdown {
+        border: 2px solid #40a383;
+        max-height: 150px;
+        overflow-y: auto;
+        
+        
+        }
+
+        .item {
+        padding: 8px;
+        cursor: pointer;
+        }
+
+        .item:hover {
+        background-color: #f0f0f0;
+        }
+
+</style>
 
 </head>
 
@@ -200,10 +264,10 @@
 
   <div class="container">
     <div style="border-radius: 5px;" class="div-superior">
-      <div style="border-radius: 10px;" class="logo">
+      <!-- <div style="border-radius: 10px;" class="logo">
         <img src="..\SIASB_HTML\Icones Site\TELEFONE.png" alt="saaeb barretos" width="40" height="40">
-      </div>
-      <h2 style="color: #000000;">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
+      </div> -->
+      <h2 style="color: #40a383; font-size: 25px;">SISTEMA DE CHAMADO SAAEB BARRETOS</h2>
       <p>
         Aqui você pode abrir um chamado para solucionar algum problema que você está tendo no seu setor.
       </p>
@@ -213,244 +277,358 @@
 
   <div class="container">
     <div style="border-radius: 5px; " class="div-inferior">
-      <div style="border: 2px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
-      <h2> </h2>
-      <!-- Conteúdo adicional da div inferior -->
+      <div style="border: 2px; padding-bottom: 20px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
+      
       <form class="blue-theme-form" enctype="multipart/form-data">
 
+        <!-- =================== ================================= -->
+        <div class="step active" id="step-1">
+                
+          <h2>VOCÊ DESEJA ABRIR UM CHAMADO PARA VOCÊ OU PARA TERCEIROS ? </h2>
+
+                <input  type="radio" id="resposta-sim" name="resposta" value="sim">
+                <label class="custom-radio" style="font-weight: 500; padding-left: 30px; font-size: 14px;" for="resposta-sim"> PARA O COMPANHEIRO DE TRABALHO</label>
+
+                <input type="radio" id="resposta-nao" name="resposta" value="nao">
+                <label class="custom-radio" style="font-weight: 500; padding-left: 30px; font-size: 14px;" for="resposta-nao">PARA EU MESMO</label>
+
+
+                <button onclick="checkAnswer()" style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="nextStep(1)" >Próxima Etapa</button>
+      
+        </div>
+      
+        <div class="step" id="step-2">
+          <h2>VOCÊ IRÁ ABRIR UM CHAMADO PARA OUTRO FUNCIONÁRIO</h2>
+          
+          <label for="motivo">POR QUAL MOTIVO ESSA PESSOA NÃO PODE ABRIR O CHAMADO?</label>
+          <input type="text" id="motivo" name="motivo" required>
+          
+          <label  for="terceiros">QUAL O NOME DO FUNCIONÁRIO?</label>
+          <input type="text" id="terceiros" name="terceiros" required>
+          <div id="sugestoes"></div>
+          
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="validarCampos()" id="next" disabled>Próxima Etapa</button>
+        </div>
+        
+
+      <div class="step" id="step-3">
+          
         <div style="margin-top: 30px;" class="top-div">
           <div class="assunto-div">
             <label for="assunto">Assunto:</label>
-            <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto">
+            <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto" required>
           </div>
+          <div class="hardware-div">
+            <br>
+            <label for="sti_ID">STI_ID:</label>
+            <input style="width: 13%;" type="number" id="sti_ID" name="sti_ID" maxlength="4" size="4"
+              onkeyup="verificaTamanho(this, 4, 'descricao')" onblur="verificaEquipamento()" max="9999" required>
 
-
-          <div class="setor-div">
-            <label for="categoria">Categoria:</label>
-            <select id="categoria" name="categoria" onchange="verifySelect()">
-              <option value="" selected hidden required>Escolha uma das opções</option>
-              <option value="hardware">Hardware</option>
-              <option value="software">Software</option>
-              <!-- Adicione mais opções conforme necessário -->
-            </select>
+            <label for="nomeEquipamento"> Equipamento:</label>
+            <input type="text" id="nomeEquipamento" disabled value="" style="width: 40%;" required>
+            <h2 style="margin-left: 10px; display: none;" id="plusCircle" title="Cadastrar equipamento"><i
+            
+              id="cadastroIcone" onclick='handleCadastro(this, 0)' class="bi bi-plus-circle-fill"></i></h2>
           </div>
         </div>
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="validarCampos2()">Próxima Etapa</button>
+     
+      </div>
 
-        <div class="hardware-div animate__animated animate__fadeInDown custom-fade-in">
-          <label for="stiID">STI_ID:</label>
-          <input style="width: 150px;" type="number" id="stiID" name="stiID" onblur="verificaEquipamento()">
-          <label for="nomeEquipamento"> Equipamento:</label>
-          <input type="text" id="equipamentoNome" class="animate__animated animate__slideInRight" disabled value="">
-          <h2 style="margin-left: 10px; display: none;" class="animate__animated animate__slideInRight custom-slide-in"
-            id="plusCircle" title="Cadastrar equipamento"><i id="cadastroIcone" onclick='handleCadastro(this, 0)'
-              class="bi bi-plus-circle-fill"></i></h2>
-          <input type="checkbox" name="ExisteEquipamento" id="ExisteEquipamento" disabled hidden>
-          <!-- Se nao for encontrado, exibir um icone para fazer um mini cadastro -->
-        </div>
-
+      <div class="step" id="step-4">
+          
         <div style="margin-top: 0px;" class="descricao-div">
-          <label for="descricao">Descrição:</label>
+          <label style="padding-top: 20px;" for="descricao">Descrição:</label>
           <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
         </div>
 
         <div style="margin-top: 30px;" class="upload-div">
           <label for="imagem">Envie uma imagem do problema:</label>
-          <input type="file" id="imagem" name="imagem">
+          <input type="file" id="imagem" multiple name="imagem" required>
         </div>
         <div id="erromsg" class="container p-3 mt-3 bg-danger" style="border-radius: 16px; width: 70%; display: none;">
-          <p>Preencha corretamente as informações acima</p>
+          <p>Falta preencher algum campo acima, Verifique novamente</p>
         </div>
+        <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+        class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>     
+      </div>
+
+      <!-- ===================================================================== -->
 
       </form>
-      <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
-        class="btn btn-success" onclick="enviarFormulario()">ENVIAR</button>
-
-      <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
-      <script src="sidebars/bootstrap.bundle.min.js"></script>
-      <script>
-        // function breveCadastro(icone) {
-        //   var equipamento = document.getElementById("equipamentoNome");
-
-        //   if (icone.id == 'cadastroReady') {
-        //     // equipamento.value = equipamento.value;
-        //     equipamento.disabled = true;
-        //     icone.classList.add("bi-plus-circle-fill");
-        //     icone.classList.remove("bi-check-circle-fill");
-        //     icone.id = 'cadastroIcone';
-        //   } else {
-        //     equipamento.value = ''
-        //     equipamento.placeholder = 'Equipamento nao encontrado, digite uma breve descrição sobre o equipamento:'
-        //     equipamento.disabled = false;
-        //     icone.classList.remove("bi-plus-circle-fill");
-        //     icone.classList.add("bi-check-circle-fill");
-        //     icone.id = 'cadastroReady';
-        //     //bi bi-check-circle-fill
-        //   }
-        // }
-        function handleCadastro(icone, response) {
-          var equipamento = document.getElementById("equipamentoNome");
-          // var circle = document.getElementById("plusCircle");
-          var existe = document.getElementById("ExisteEquipamento");
-
-          if (response === 'Equipamento nao encontrado') {
-            // equipamento.style.width = '950';
-            equipamento.placeholder = 'Equipamento nao encontrado, digite uma breve descrição sobre o equipamento:';
-            // circle.style.display = 'block';
-            equipamento.value = '';
-            equipamento.disabled = false;
-            // icone.classList.remove("bi-plus-circle-fill");
-            // icone.classList.add("bi-check-circle-fill");
-            // icone.id = 'cadastroReady';
-            existe.checked = true;
-          } else if (response !== 'Equipamento nao encontrado') {
-            equipamento.style.width = '100%';
-            equipamento.placeholder = '';
-            // circle.style.display = 'none';
-            equipamento.disabled = true;
-            // icone.classList.add("bi-plus-circle-fill");
-            // icone.classList.remove("bi-check-circle-fill");
-            // icone.id = 'cadastroIcone';
-            existe.checked = false;
-          }
-        }
-
-
-        // function foo(response) {
-        //   var equipamento = document.getElementById("equipamentoNome");
-        //   var circle = document.getElementById("plusCircle");
-        //   var existe = document.getElementById("ExisteEquipamento");
-
-
-        //   if (response == 'Equipamento nao encontrado') {
-        //     equipamento.style.width = '950px';
-        //     equipamento.placeholder = 'Equipamento nao encontrado, digite uma breve descrição sobre o equipamento:';
-        //     circle.style.display = 'block';
-        //     // breveCadastro(document.getElementById("cadastroIcone") || document.getElementById("cadastroReady"));
-        //     handleCadastro(document.getElementById("cadastroIcone") || document.getElementById("cadastroReady"), response);
-        //   } else if (response != 'Equipamento nao encontrado') {
-        //     equipamento.disabled = true;
-        //     equipamento.style.width = '100%';
-        //     equipamento.placeholder = ''
-        //     circle.style.display = 'none';
-        //   }
-        //   if (equipamento.placeholder == 'Equipamento nao encontrado' || equipamento.placeholder == 'Equipamento nao encontrado, digite uma breve descrição sobre o equipamento:') {
-        //     existe.checked = true;
-        //   } else
-        //     existe.checked = false;
-        // }
-
-        function enviarFormulario() {
-          var assunto = document.getElementById("assunto").value;
-          var descricao = document.getElementById("descricao").value;
-          var imagemInput = document.getElementById("imagem");
-          var selectCategoria = document.getElementById("categoria");
-          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
-          var equipamento = "NULL";
-          var existeEquipamento = document.getElementById("ExisteEquipamento");
-          var equipamentoNome = "NULL";
-          
-          if (categoria == "hardware") {
-            equipamento = document.getElementById("stiID").value;
-            var equipamentoNome = document.getElementById("equipamentoNome").value;
-          }
-          if (assunto == '' || descricao == '' || categoria == '') {
-            document.getElementById("erromsg").style.display = 'flex';
-          } else {
-
-            if (assunto === '' || descricao === '' || categoria == '') {
-              document.getElementById("erromsg").style.display = 'flex';
-            } else {
-              var formData = new FormData();
-              formData.append("existeEquipamento", existeEquipamento.checked);
-              formData.append("assunto", assunto);
-              formData.append("descricao", descricao);
-              formData.append("equipamento", equipamento);
-              formData.append("equipamentoNome", equipamentoNome);
-              formData.append("categoria", categoria);
-              formData.append("imagem", imagemInput.files[0]);
-
-              var xhr = new XMLHttpRequest();
-              xhr.open("POST", "AbrindoChamado.php", true);
-
-              xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                  console.log(xhr.responseText);
-                }
-              };
-
-              xhr.send(formData);
-              // console.log(formData.assunto, formData.existeEquipamento);
-              exibirPopup();
-            }
-          }
-        }
-
-        function exibirPopup() {
-          Swal.fire({
-            icon: 'success',
-            title: 'Confirmação',
-            text: 'O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.',
-            showConfirmButton: true,
-            confirmButtonText: 'Entendi',
-            timer: 10000,
-            timerProgressBar: true, // Mostrar barra de progresso do timer
-          }).then((result) => {
-            // Após o tempo do timer, redireciona para a página desejada
-            window.location.href = 'VendoChamados.html';
-            // Verificar se o botão foi clicado
-            if (result.isConfirmed) {
-              // Redirecionar para a página desejada
-              window.location.href = 'VendoChamados.html';
-            }
-          });
-        }
-
-        function verifySelect() {
-          if (document.getElementById("categoria")[1].selected == true) {
-            document.querySelector(".hardware-div").style.display = "flex";
-          } else
-            if (document.getElementById("categoria")[2].selected == true) {
-              document.querySelector(".hardware-div").style.display = "none";
-            }
-        }
-
-        function verificaEquipamento() {
-          var selectCategoria = document.getElementById("categoria");
-          var categoria = selectCategoria.options[selectCategoria.selectedIndex].value;
-
-          if (categoria == "hardware") {
-            var stiID = document.getElementById("stiID").value;
-            var equipamento = document.getElementById("equipamentoNome");
-
-            connection('stiID=' + stiID, 1, 'AbrindoChamado.php');
-          }
-        }
-
-        function connection(data, output, file) {
-          var equipamento = document.getElementById("equipamentoNome");
-
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", file, true);
-          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              if (output == 1) {
-                var response = xhr.responseText;
-                // console.log(response);
-                equipamento.value = response;
-                // foo(response);
-                handleCadastro(document.getElementById("cadastroIcone") || document.getElementById("cadastroReady"), response);
-              }
-            }
-          }
-          xhr.send(data);
-        }
-      </script>
-
     </div>
   </div>
-  </div>
 
+  <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
+  <script src="sidebars/bootstrap.bundle.min.js"></script>
+  <script>
+
+    function verificaTamanho(inputElement, tamanho, proximoCampo) {
+      if (inputElement.value.length > tamanho) {
+        inputElement.value = inputElement.value.slice(0, tamanho);
+      }
+      if (inputElement.value.length === tamanho) {
+        document.getElementById(proximoCampo).focus();
+      }
+    }
+
+    function enviarFormulario() {
+      var assunto = document.getElementById("assunto").value;
+      var descricao = document.getElementById("descricao").value;
+      var imagemInput = document.getElementById("imagem");
+      var sti_ID = document.getElementById("sti_ID").value; 
+      var terceiros = document.getElementById("terceiros").value;
+      var motivo = document.getElementById("motivo").value;
+
+      if (assunto === '' || descricao === '' || sti_ID === '') {
+        document.getElementById("erromsg").style.display = 'flex';
+      }
+
+      var formData = new FormData();
+      formData.append("assunto", assunto);
+      formData.append("descricao", descricao);
+      formData.append("sti_ID", sti_ID);
+      formData.append("terceiros", terceiros);
+      formData.append("motivo", motivo);
+      if (imagemInput.files.length > 0) {
+        // Adicione todos os arquivos selecionados ao FormData
+        for (var i = 0; i < imagemInput.files.length; i++) {
+          formData.append("imagem[]", imagemInput.files[i]);
+        }
+      }
+
+      
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "AbrindoChamado.php", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            exibirPopup();
+          } else {
+            // Lida com erros aqui, se necessário
+          }
+        }
+      };
+
+      // Envie o FormData com os dados do formulário
+      xhr.send(formData);
+
+    }
+
+
+
+
+    function exibirPopup() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Confirmação',
+        text: 'O chamado foi aberto, aguarde até visualizarmos sua solicitação. Você será notificado por e-mail quando houver alteração no status.',
+        showConfirmButton: true,
+        confirmButtonText: 'Entendi',
+        timer: 3000,
+        timerProgressBar: true, // Mostrar barra de progresso do timer
+      }).then((result) => {
+        // Após o tempo do timer, redireciona para a página desejada
+        window.location.href = 'VendoChamados.html';
+        // Verificar se o botão foi clicado
+        if (result.isConfirmed) {
+          // Redirecionar para a página desejada
+          window.location.href = 'VendoChamados.html';
+        }
+      });
+    }
+
+    function handleCadastro(icone, response) {
+      var nomeEquipamento = document.getElementById("nomeEquipamento");
+
+      if (response === 'Equipamento nao encontrado') {
+        nomeEquipamento.placeholder = 'Código inválido';
+        nomeEquipamento.value = '';
+      } else if (response !== 'Equipamento nao encontrado') {
+        nomeEquipamento.placeholder = '';
+      }
+    }
+
+    function verificaEquipamento() {
+      var sti_ID = document.getElementById("sti_ID").value;
+      // var equipamento = document.getElementById("nomeEquipamento");
+
+      connection('sti_ID=' + sti_ID, 1, 'AbrindoChamado.php');
+    }
+
+    function connection(data, output, file) {
+      var nomeEquipamento = document.getElementById("nomeEquipamento");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", file, true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if (output == 1) {
+            var response = xhr.responseText;
+            // console.log(response);
+            nomeEquipamento.value = response;
+            // foo(response);
+            handleCadastro(document.getElementById("cadastroIcone") || document.getElementById("cadastroReady"), response);
+          }
+        }
+      }
+      xhr.send(data);
+    }
+  </script>
+
+
+
+
+
+
+  <!-- <=============================================================================================================================> -->
+
+  <script>
+    let currentStep = 1;
+
+    function nextStep(step) {
+
+        if (currentStep == 1 )
+        {
+            document.getElementById(`step-${1}`).classList.remove('active');
+        }
+
+
+
+        document.getElementById(`step-${step}`).classList.remove('active');
+        currentStep = step + 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+    }
+
+        // Captura o evento de pressionar uma tecla no campo de entrada
+        document.getElementById("assunto").addEventListener("keydown", function(event) {
+            // Verifica se a tecla pressionada é o "Enter"
+            if (event.key === "Enter") {
+                // Impede o envio automático do formulário
+                event.preventDefault();
+                // Nada acontece aqui, pois nenhum código foi adicionado
+            }
+        });
+
+        document.getElementById("sti_ID").addEventListener("keydown", function(event) {
+            // Verifica se a tecla pressionada é o "Enter"
+            if (event.key === "Enter") {
+                // Impede o envio automático do formulário
+                event.preventDefault();
+                // Nada acontece aqui, pois nenhum código foi adicionado
+            }
+        });
+
+
+    // FAZER MEU PRÓXIMO MÉTODO PARA MUDAR DE ABA (REDONDA)
+    // function changeStep(step) {
+    //     document.getElementById(`step-${currentStep}`).classList.remove('active');
+    //     document.getElementById(`tab-${currentStep}`).classList.remove('active');
+    //     currentStep = step;
+    //     document.getElementById(`step-${currentStep}`).classList.add('active');
+    //     document.getElementById(`tab-${currentStep}`).classList.add('active');
+    // }
+
+    function checkAnswer() {
+    const resposta = document.querySelector('input[name="resposta"]:checked').value;
+
+    if (resposta === "sim") {
+        nextStep(1); // Vá para a próxima etapa se a resposta for "sim"
+    } 
+    
+    if (resposta === "nao") {
+        nextStep(2); // Pule para a etapa desejada se a resposta for "não"
+    }
+    
+}
+
+
+function validarCampos() {
+  var motivo = document.getElementById("motivo").value;
+  var terceiros = document.getElementById("terceiros").value;
+  
+  if (motivo === "" || terceiros === "") {
+    alert("Por favor, preencha todos os campos antes de avançar.");
+  } else {
+
+    nextStep(2);
+  }
+}
+
+function validarCampos2() {
+
+  var assunto = document.getElementById("assunto").value;
+
+  if (assunto === "") {
+    alert("Por favor, preencha todos os campos antes de avançar.");
+  } else {
+    nextStep(3);
+  }
+}
+
+    // function checkAge() {
+    //     const idade = parseInt(document.getElementById('idade').value);
+    //     if (idade < 18) {
+    //         nextStep(1); // Se a idade for menor que 18, vá para a Etapa 4
+    //     }
+    //     if (idade > 18) {
+    //         nextStep(2); // Caso contrário, vá para a Etapa 5
+    //     }
+    // }
+
+    document.addEventListener("DOMContentLoaded", function () {
+  const inputterceiros = document.getElementById("terceiros");
+  const sugestoes = document.getElementById("sugestoes");
+  const nextButton = document.getElementById("next"); // Botão de envio
+
+  inputterceiros.addEventListener("input", function () {
+    const termo = inputterceiros.value;
+
+    if (termo.length >= 2) {
+      fetch(`buscar_nomes.php?termo=${termo}`)
+        .then((response) => response.json())
+        .then((data) => {
+          sugestoes.innerHTML = ""; // Limpe as sugestões existentes
+
+          const dropdown = document.createElement("div");
+          dropdown.classList.add("dropdown");
+
+          data.forEach((nome) => {
+            const sugestao = document.createElement("div");
+            sugestao.classList.add("item");
+            sugestao.textContent = nome;
+            sugestao.addEventListener("click", function () {
+              inputterceiros.value = nome;
+              sugestoes.innerHTML = "";
+              nextButton.disabled = false; // Habilita o botão quando uma sugestão é selecionada
+            });
+            dropdown.appendChild(sugestao);
+          });
+
+          sugestoes.appendChild(dropdown);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      sugestoes.innerHTML = "";
+      nextButton.disabled = true; // Desabilita o botão quando o termo é muito curto
+    }
+  });
+});
+
+
+    document.getElementById('step-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert('Formulário enviado com sucesso!');
+    });
+</script>
+
+
+<!-- ===================================================================================================================================== -->
 </body>
 
 </html>

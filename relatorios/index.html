@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+    <script src="/siasb_html/sidebars/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="../sidebars/bootstrap.min.css">
     <link rel="icon" href="../icons/warning.png" sizes="192x192" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -14,7 +15,7 @@
     <style>
         .esse {
             /* border: solid 3px black; */
-            box-shadow: 1px 2px 3px black;
+            box-shadow: 1px 1px 3px black;
             border-radius: 6px;
             padding: 20px;
         }
@@ -51,11 +52,12 @@
 
         .borda {
             border-bottom: solid 1px grey;
-            padding-bottom: 30px;
+            padding-bottom: 20px;
         }
 
         .ocultar {
             display: none;
+            transition: 1s;
         }
 
         .center {
@@ -64,6 +66,44 @@
             margin-bottom: -10px;
             margin-top: 10px;
         }
+
+        .desativo {
+            opacity: 0.3;
+        }
+
+        .desativo:hover {
+            cursor: not-allowed;
+        }
+
+        .form-check-input:checked {
+            background-color: #00cc99;
+            border-color: #00cc99;
+        }
+
+        .form-check-input:hover {
+            background-color: #00a383;
+            border-color: #00a383;
+            transition: 0.4s;
+        }
+
+        .btn {
+            color: white;
+            background-color: #00cc99;
+            border-color: #00cc99;
+            display: block;
+        }
+
+        .btn:hover {
+            color: white;
+            background-color: #00a383;
+            border-color: #00a383;
+            transition: 0.4s;
+        }
+
+        .btn:active {
+            background-color: whitesmoke;
+
+        }
     </style>
 </head>
 
@@ -71,86 +111,100 @@
     <div id="global">
         <div class="container container-fluid my-3 esse"
             style="margin: auto; max-width: fit-content; margin: 10px 10px;"> <!-- left -->
-            <div class="mb-5">
+            <div class="mb-3">
                 <h3>Filtrar por:</h3>
             </div>
             <form id="formularioFiltros">
                 <div class="my-3 borda" id="divDataAbertura">
-                    <label for="">Data de Abertura:</label>
+                    <label for="selectDataAbertura">Data de Abertura:</label>
                     <br>
-                    <select name="" id="selectDataAbertura" class="center"
-                        onchange="exibeIntervalo(document.getElementById('divDataAbertura'), this.value)">
+                    <select name="" id="selectDataAbertura" class="center form-select"
+                        onchange="exibeIntervalo(this.value)">
+                        <option value="9" selected hidden>Selecione</option>
                         <option value="0">A partir de</option>
                         <option value="1">Intervalo</option>
+                        <option value="4">Até Hoje</option>
                     </select>
                     <br>
-                    <label for="" class="ocultar">De:</label>
-                    <input type="date" name="filtroDEDataAbertura" id="filtroDEDataAbertura" class="form-control">
-                    <label for="" class="ocultar">Até:</label>
+                    <label for="filtroDEDataAbertura" id="labelDEAbertura" class="ocultar">De:</label>
+                    <input type="date" name="filtroDEDataAbertura" id="filtroDEDataAbertura"
+                        class="form-control ocultar">
+                    <!-- <br> -->
+                    <label for="filtroATEDataAbertura" id="labelATEAbertura" class="ocultar">Até:</label>
                     <input type="date" name="filtroATEDataAbertura" id="filtroATEDataAbertura"
                         class="form-control ocultar">
                 </div>
                 <div class="my-3 borda" id="divDataFechamento">
-                    <label for="filtroDataFechamento">Data de Fechamento:</label>
-                    <br>
-                    <select name="" id="selectDataFechamento" class="center"
-                        onchange="exibeIntervalo(document.getElementById('divDataFechamento'), this.value)">
+                    <label for="selectDataFechamento">Data de Fechamento:</label>
+                    <select name="" id="selectDataFechamento" class="center form-select"
+                        onchange="exibeIntervalo(this.value)">
+                        <option value="9" selected hidden>Selecione</option>
                         <option value="2">Fechado Até</option>
                         <option value="3">Intervalo</option>
+                        <option value="5">Até Hoje</option>
                     </select>
                     <br>
-                    <label for="" class="ocultar">De:</label>
-                    <input type="date" name="filtroDataFechamento" id="filtroDEDataFechamento" class="form-control">
-                    <label for="" class="ocultar">Até:</label>
+                    <label for="filtroDEDataFechamento" id="labelDEFechamento" class="ocultar">De:</label>
+                    <input type="date" name="filtroDataFechamento" id="filtroDEDataFechamento"
+                        class="form-control ocultar">
+                    <!-- <br> -->
+                    <label for="filtroATEDataFechamento" id="labelATEFechamento" class="ocultar">Até:</label>
                     <input type="date" name="filtroDataFechamento" id="filtroATEDataFechamento"
                         class="form-control ocultar">
                 </div>
                 <div class="my-3">
-                    <label for="filtroResponsavel">Responsável:</label>
-                    <select name="filtroResponsavel" id="filtroResponsavel" class="form-control">
-                    </select>
-                </div>
-                <div class="my-3">
                     <label for="filtroAutor">Autor:</label>
                     <select name="filtroAutor" id="filtroAutor" title="Só aparecem usuários que ja abriram chamado"
-                        class="form-control">
+                        class="form-control form-select">
                         <option value="" selected hidden>Selecione um usuário</option>
+                        <option value="">Nenhum selecionado</option>
 
                     </select>
                 </div>
                 <div class="my-3">
                     <label for="filtroStatus">Status do chamado:</label>
-                    <select name="filtroStatus" id="filtroStatus" class="form-control">
+                    <select name="filtroStatus" id="filtroStatus" class="form-control form-select">
                         <option value="1">Aberto</option>
                         <option value="2">Andamento</option>
                         <option value="3">Pendente</option>
                         <option value="4">Fechado</option>
-                        <option value="5" selected>TODOS</option>
+                        <option value="5" selected=>TODOS</option>
                     </select>
                 </div>
                 <div class="my-3">
                     <label for="filtroTipoEquipamento">Tipo Equipamento:</label>
-                    <select name="filtroTipoEquipamento" id="filtroTipoEquipamento" class="form-control">
+                    <select name="filtroTipoEquipamento" id="filtroTipoEquipamento" class="form-control form-select">
                         <option value="" selected hidden>Selecione um tipo</option>
 
                     </select>
                 </div>
                 <div class="my-3">
                     <label for="filtroSetor">Setor:</label>
-                    <select name="filtroSetor" id="filtroSetor" class="form-control">
+                    <select name="filtroSetor" id="filtroSetor" class="form-control form-select">
                         <option value="" selected hidden>Selecione um setor</option>
                     </select>
                 </div>
                 <div class="container ">
                     <a onclick="LimpaFiltros()" id="limpaFiltros" class="pointer">
-                        <h5>Limpar Filtros<i class="bi bi-eraser"></i></h5>
+                        <h5 class="btn">Zerar Filtros <i class="bi bi-eraser"></i></h5>
                     </a>
                 </div>
         </div>
 
-        <div class="container container-fluid"
-            style="margin: auto; max-width: fit-content; margin-top:100px; margin: 10px 10px;">
+        <div class="container container-fluid" style="margin: auto; max-width: fit-content; margin: 10px 10px;">
             <!-- right -->
+            <div class="container container-fluid esse my-2">
+                <p>Tipo de Relatório: </p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="relatorioTipo" id="sintetico" value="sintetico"
+                        checked>
+                    <label class="form-check-label" for="sintetico">Sintético</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="relatorioTipo" id="analitico" value="analitico">
+                    <label class="form-check-label" for="analitico">Analítico</label>
+                </div>
+            </div>
             <div class="container container-fluid esse my-2">
                 <label for="ordenar">Ordenar por:</label>
                 <select name="ordenar" id="ordenar" class="form-control">
@@ -169,35 +223,112 @@
                     <label for="decrescente" class="form-check-label" value="decrescente">Decrescente</label>
                 </div>
             </div>
+            <style>
+                .divColumnSelection {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-right: 10px;
+                    background-color: white;
+                    padding: 2px;
+                }
+                .divColumnSelection label{
+                    width: 180px;
+                    width: 26vh;
+                }
+                .divColumnSelection:hover{
+                    color: white;
+                    background-color: #1e90ff;
+                }
+
+                #columnSelection {
+                    display: flex; 
+                    flex-direction: column;
+                    border: solid 1px black;
+                    /* display: none; */
+                    position: absolute;
+                    width: 210px;
+                    background-color: white;
+                }
+                #columnSelector{
+                    border: solid 1px #dcdcdc;
+                    border-radius: 6px;
+                    padding: 6px;
+                }
+            </style>
+            <script>
+                function exibeColunas(){
+                    var columnSelection = document.getElementById('columnSelection');
+                    if(columnSelection.style.display == 'none'){
+                        columnSelection.style.display = 'flex';
+                    }else{
+                        columnSelection.style.display = 'none';
+                    }
+                }
+            </script>
 
             <div class="container container-fluid esse mt-3" style="margin: auto;">
                 <div class="form-check p-0">
 
-                    <label for="" class="form-check-label">Agrupar Por:</label>
-                    <select name="" id="agruparPor" class="form-control">
-                        <option value="" selected hidden>Escolha abaixo</option>
-                        <option value="IDChamado">ID</option>>
-                        <option value="Assunto">Assunto</option>>
-                        <option value="dataAbertura">Data Abertura</option>>
-                        <option value="dataFechamento">Data Fechamento</option>>
-                        <option value="responsavel">Responsável</option>>
-                        <option value="equipamento">Equipamento</option>>
-                        <option value="autor">Autor</option>>
-                        <option value="status_chamado">Status</option>>
-                    </select>
+                    <label for="selectColunas" class="form-check-label">Selecionar colunas:</label>
+                    <div id="columnSelector" onclick="exibeColunas()">Escolha abaixo:</div>
+                    <div id="columnSelection">
+                        <div class="divColumnSelection">
+                            <label for="IDChamado">IDChamado</label>
+                            <input class="form-check-input" type="checkbox" value="IDChamado" id="IDChamado"
+                                name="IDChamado" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Assunto">Assunto</label>
+                            <input class="form-check-input" type="checkbox" value="assunto" id="Assunto" name="Assunto"
+                                checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Descrição">Descrição</label>
+                            <input class="form-check-input" type="checkbox" value="descricao" id="Descrição"
+                                name="Descrição" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="DatadeAbertura">Data de Abertura</label>
+                            <input class="form-check-input" type="checkbox" value="dataAbertura" id="DatadeAbertura"
+                                name="DatadeAbertura" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="DatadeFechamento">Data de Fechamento</label>
+                            <input class="form-check-input" type="checkbox" value="dataFechamento" id="DatadeFechamento"
+                                name="DatadeFechamento" checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Status">Status</label>
+                            <input class="form-check-input" type="checkbox" value="status" id="Status" name="Status"
+                                checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Autor">Autor</label>
+                            <input class="form-check-input" type="checkbox" value="autor" id="Autor" name="Autor"
+                                checked>
+                        </div>
+                        <div class="divColumnSelection">
+                            <label for="Equipamento">Equipamento</label>
+                            <input class="form-check-input" type="checkbox" value="equipamento" id="Equipamento"
+                                name="Equipamento" checked>
+                        </div>
+                    </div>
+
+
                 </div>
                 </form>
                 <div class="container px-3">
-                    <button class="btn btn-primary mt-3" onclick="submitFilters()">Visualizar Relatório</button>
+                    <button class="btn btn-primary mt-3" onclick="submitFilters()">Visualizar Relatório <i
+                            class="bi bi-caret-right"></i></button>
                 </div>
             </div>
             <div class="container container-fluid esse mt-3">
 
                 <p>Salvar em arquivo:</p>
-                <img class="pointer" onclick="submitFilters('pdf')" src="../icons/PDF_file_icon.svg.png"
+                <img class="pointer" id="PDFIcon" onclick="submitFilters('pdf')" src="../icons/PDF_file_icon.svg.png"
                     alt="Ícone do PDF" width="45px">
-                <img class="pointer" onclick="submitFilters('xlsx')" src="../icons/excel.png" alt="Ícone do Excel"
-                    width="50px;">
+                <img class="pointer" id="ExcelIcon" onclick="submitFilters('xlsx')" src="../icons/excel.png"
+                    alt="Ícone do Excel" width="50px;">
             </div>
         </div>
         <div id="responseDiv" style="margin-top: 20px; width: 800px; height: fit-content;" class="esse">
@@ -213,7 +344,6 @@
                         <td>Assunto</td>
                         <td>Data Abertura</td>
                         <td>Data Fechamento</td>
-                        <td>Responsavel</td>
                         <td>Equipamento</td>
                         <td>Autor</td>
                         <td>Status</td>
@@ -228,39 +358,86 @@
         </div>
         <hr>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
-        function exibeIntervalo(divId, valor) {
+        function exibeIntervalo(valor) {
+            console.log(valor);
             var selectDataAbertura = document.getElementById('selectDataAbertura');
             var selectDataFechamento = document.getElementById('selectDataFechamento');
-            var elementosOcultos = divId.getElementsByClassName('ocultar');
+            var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
+            var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
+            var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
+            var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
+            var labelDEAbertura = document.getElementById("labelDEAbertura");
+            var labelATEAbertura = document.getElementById("labelATEAbertura");
+            var labelDEFechamento = document.getElementById("labelDEFechamento");
+            var labelATEFechamento = document.getElementById("labelATEFechamento");
+
+            var currentDate = new Date();
+            var day = currentDate.getDate();
+            var month = currentDate.getMonth() + 1; // Nesse método, os meses começam em zero, por isso o +1
+            var year = currentDate.getFullYear();
+            // var dataAtual = ('0' + day).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+            var dataAtual = year + '-' + ('0' + month).slice(-2) + '-' + ('0' + day).slice(-2);
 
             if (valor === '0') {
-                console.log('dataFechamento = 1')
-                for (var i = 0; i < elementosOcultos.length; i++) {
-                    elementosOcultos[i].style.display = 'none';
-                    var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
-                    filtroATEDataAbertura.value = "";
-                }
+                exibe(filtroDEDataAbertura);
+                oculta(filtroATEDataAbertura);
+                oculta(labelDEAbertura);
+                oculta(labelATEAbertura);
+                filtroDEDataAbertura.value = "";
+                filtroATEDataAbertura.value = "";
             } else
                 if (valor === '1') {
-                    for (var i = 0; i < elementosOcultos.length; i++) {
-                        elementosOcultos[i].style.display = 'inline';
-                    }
-                }
+                    exibe(filtroDEDataAbertura);
+                    exibe(filtroATEDataAbertura);
+                    exibe(labelDEAbertura);
+                    exibe(labelATEAbertura);
+                    filtroDEDataAbertura.value = "";
+                    filtroATEDataAbertura.value = "";
+                } else
+                    if (valor === '2') {
+                        exibe(filtroDEDataFechamento);
+                        oculta(filtroATEDataFechamento);
+                        oculta(labelDEFechamento);
+                        oculta(labelATEFechamento);
+                        filtroATEDataFechamento.value = "";
+                        filtroDEDataFechamento.value = "";
+                    } else
+                        if (valor === '3') {
+                            exibe(filtroDEDataFechamento);
+                            exibe(filtroATEDataFechamento);
+                            exibe(labelDEFechamento);
+                            exibe(labelATEFechamento);
+                            filtroATEDataFechamento.value = "";
+                            filtroDEDataFechamento.value = "";
+                        } else
+                            if (valor === '4') {
+                                exibe(filtroDEDataAbertura);
+                                exibe(filtroATEDataAbertura);
+                                exibe(labelDEAbertura);
+                                exibe(labelATEAbertura);
+                                filtroDEDataAbertura.value = "2023-01-01";
+                                filtroATEDataAbertura.value = dataAtual;
+                            } else
+                                if (valor === '5') {
+                                    exibe(filtroDEDataFechamento);
+                                    exibe(filtroATEDataFechamento);
+                                    exibe(labelDEFechamento);
+                                    exibe(labelATEFechamento);
+                                    filtroDEDataFechamento.value = "2023-01-01";
+                                    filtroATEDataFechamento.value = dataAtual;
+                                }
+            function exibe(objeto) {
+                console.log(objeto);
+                objeto.style.display = "block";
+            }
 
-            if (valor === '2') {
-                for (var i = 0; i < elementosOcultos.length; i++) {
-                    elementosOcultos[i].style.display = 'none';
-                    var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
-                    filtroATEDataFechamento.value = "";
-                }
-            } else
-                if (valor === '3') {
-                    for (var i = 0; i < elementosOcultos.length; i++) {
-                        elementosOcultos[i].style.display = 'inline';
-                    }
-                }
+            function oculta(objeto) {
+                objeto.style.display = "none";
+            }
         }
 
         function redirecionarComPOST() {
@@ -270,25 +447,26 @@
 
             form.setAttribute('method', 'post');
             form.setAttribute('action', 'preview.php');
+            form.setAttribute('target', '_blank');
+
 
             // Campos ocultos
             var camposOcultos = [
                 { name: 'gerarRelatorio', value: '1' },
                 { name: 'geraPDF', value: '1' },
-                { name: 'filtroDataAbertura', value: formularioExistente.filtroDEDataAbertura.value }, //<------ o problema está nesse form oculto... adicionar os campos novos
+                { name: 'filtroDataAbertura', value: formularioExistente.filtroDEDataAbertura.value },
                 { name: 'filtroDataFechamento', value: formularioExistente.filtroDEDataFechamento.value },
-                { name: 'filtroResponsavel', value: formularioExistente.filtroResponsavel.value },
                 { name: 'filtroAutor', value: formularioExistente.filtroAutor.value },
                 { name: 'filtroStatus', value: formularioExistente.filtroStatus.value },
                 { name: 'filtroTipoEquipamento', value: formularioExistente.filtroTipoEquipamento.value },
                 { name: 'filtroSetor', value: formularioExistente.filtroSetor.value },
                 { name: 'ordenar', value: formularioExistente.ordenar.value },
                 { name: 'ordem', value: formularioExistente.ordem.value },
-                { name: 'agruparPor', value: formularioExistente.agruparPor.value },
                 { name: 'filtroATEDataAbertura', value: formularioExistente.filtroATEDataAbertura.value },
-                { name: 'filtroATEDataFechamento', value: formularioExistente.filtroATEDataFechamento.value }
-
+                { name: 'filtroATEDataFechamento', value: formularioExistente.filtroATEDataFechamento.value },
+                { name: 'tipoRelatorio', value: formularioExistente.relatorioTipo.value }
             ];
+
             // Adicione os campos ocultos ao formulário
             camposOcultos.forEach(function (campo) {
                 var input = document.createElement('input');
@@ -319,13 +497,11 @@
         function LimpaFiltros() {
             var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
             var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
-            var filtroResponsavel = document.getElementById("filtroResponsavel");
             var filtroAutor = document.getElementById("filtroAutor");
             var filtroStatus = document.getElementById("filtroStatus");
             var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
             var filtroSetor = document.getElementById("filtroSetor");
             var ordenar = document.getElementById("ordenar");
-            var agruparPor = document.getElementById("agruparPor");
             var ordem = document.getElementsByName("ordem");
             var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
             var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
@@ -334,13 +510,11 @@
             filtroDEDataFechamento.value = "";
             filtroATEDataAbertura.value = "";
             filtroATEDataFechamento.value = "";
-            filtroResponsavel.value = "";
             filtroAutor.value = "";
             filtroStatus.value = "";
             filtroTipoEquipamento.value = "";
             filtroSetor.value = "";
             ordenar.value = "";
-            agruparPor.value = "";
             ordem[0].checked = true;
             ordem[1].checked = false;
             exibeIntervalo(document.getElementById('divDataAbertura'), 0);
@@ -351,7 +525,6 @@
         function selectInicial() {
             var data = 'SelectInicial=1';
             var response = connection(data, 'POST', 'SelectInicial');
-            // console.log(response);
         }
 
         function submitFilters(relatorio) {
@@ -359,13 +532,13 @@
             var filtroATEDataAbertura = document.getElementById("filtroATEDataAbertura");
             var filtroDataFechamento = document.getElementById("filtroDEDataFechamento");
             var filtroATEDataFechamento = document.getElementById("filtroATEDataFechamento");
-            var filtroResponsavel = document.getElementById("filtroResponsavel");
             var filtroAutor = document.getElementById("filtroAutor");
             var filtroStatus = document.getElementById("filtroStatus");
             var filtroTipoEquipamento = document.getElementById("filtroTipoEquipamento");
             var filtroSetor = document.getElementById("filtroSetor");
+            var tipoRelatorio = document.getElementsByName("relatorioTipo");
+            tipoRelatorio = tipoRelatorio[0].checked ? tipoRelatorio[0] : tipoRelatorio[1];
             var ordenar = document.getElementById("ordenar");
-            var agruparPor = document.getElementById("agruparPor");
             var ordem = document.getElementsByName("ordem");
             if (ordem[1].checked == true) {
                 ordem = ordem[1];
@@ -373,39 +546,72 @@
                 ordem = ordem[0];
             }
             // var ordemSelecionada = document.querySelector('input[name="ordem"]:checked').value;
+            if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 1) {
+                if (filtroATEDataAbertura.value == "" || filtroDEDataAbertura.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Abertura");
+                    return;
+                }
+            } else if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 0) {
+                if (filtroDEDataAbertura.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Abertura");
+                    return;
+                }
+            }
+
+            if (selectDataFechamento.options[selectDataFechamento.selectedIndex].value == 3) {
+                if (filtroATEDataFechamento.value == "" || filtroDEDataFechamento.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Fechamento");
+                    return;
+                }
+            } else if (selectDataFechamento.options[selectDataFechamento.selectedIndex].value == 2) {
+                if (filtroDEDataFechamento.value == "") {
+                    alert("Selecione um intervalo de datas válido para a Data de Fechamento");
+                    return;
+                }
+            }
+            // else if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 9) {
+            //     return;
+            // }
 
 
             var data = "filtroDataAbertura=" + encodeURIComponent(filtroDataAbertura.value) +
                 "&filtroDataFechamento=" + encodeURIComponent(filtroDataFechamento.value) +
-                "&filtroResponsavel=" + encodeURIComponent(filtroResponsavel.value) +
                 "&filtroAutor=" + encodeURIComponent(filtroAutor.value) +
                 "&filtroStatus=" + encodeURIComponent(filtroStatus.value) +
                 "&filtroTipoEquipamento=" + encodeURIComponent(filtroTipoEquipamento.value) +
                 "&filtroSetor=" + encodeURIComponent(filtroSetor.value) +
                 "&ordenar=" + encodeURIComponent(ordenar.value) +
                 "&ordem=" + encodeURIComponent(ordem.value) +
-                "&agruparPor=" + encodeURIComponent(agruparPor.value) +
                 "&filtroATEDataAbertura=" + encodeURIComponent(filtroATEDataAbertura.value) +
-                "&filtroATEDataFechamento=" + encodeURIComponent(filtroATEDataFechamento.value);
+                "&filtroATEDataFechamento=" + encodeURIComponent(filtroATEDataFechamento.value) +
+                "&tipoRelatorio=" + encodeURIComponent(tipoRelatorio.id);
 
 
-            // console.log(data);
             if (!relatorio) {
-                connection(data, 'POST', 'exibir');
                 console.log(data);
+                connection(data, 'POST', 'exibir');
 
-                verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor);
+                verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem,);
             } else
                 if (relatorio == 'pdf') {
-                    // var data = data + "&gerarRelatorio=1" + "&geraPDF=1";
-                    // var data = 'gerarRelatorio=1' + '&geraPDF=1' + '&' + data;
                     var data = data + '&gerarRelatorio=1' + '&geraPDF=1';
-                    console.log(data);
 
-                    connection(data, 'POST', 'relatorio')
+                    connection(data, 'POST', 'relatorioPDF')
+
+                    Swal.fire({
+                        title: 'Relatório exibido na nova página',
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonText: 'Fechar Pop-up',
+                        confirmButtonColor: '#00cc99'
+                    })
                 }
+            if (relatorio == 'xlsx') {
+                var data = data + '&gerarRelatorio=1' + '&geraXLSX=1';
+                connection(data, 'POST', 'relatorioXLSX')
+            }
 
-            function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroResponsavel, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem, agruparPor) {
+            function verificaFiltros(filtroDataAbertura, filtroDataFechamento, filtroAutor, filtroStatus, filtroTipoEquipamento, filtroSetor, ordenar, ordem,) {
                 var FiltrosSelecionados = document.getElementById("FiltrosSelecionados");
                 FiltrosSelecionados.innerHTML = '';
                 if (filtroDataAbertura.value != "") {
@@ -413,9 +619,6 @@
                 }
                 if (filtroDataFechamento.value != "") {
                     FiltrosSelecionados.innerHTML += "<p> Data de Fechamento: " + filtroDataFechamento.value + "</p>";
-                }
-                if (filtroResponsavel.value != "") {
-                    FiltrosSelecionados.innerHTML += "<p> Responsável: " + filtroResponsavel.value + "</p>";
                 }
                 if (filtroAutor.value != "") {
                     FiltrosSelecionados.innerHTML += "<p> Autor: " + filtroAutor.value + "</p>";
@@ -435,15 +638,13 @@
                 if (ordem.value != "") {
                     FiltrosSelecionados.innerHTML += "<p> Ordem: " + ordem.value + "</p>";
                 }
-                if (agruparPor.value != "") {
-                    FiltrosSelecionados.innerHTML += "<p> Agrupar por: " + agruparPor.value + "</p>";
-                }
-
             }
+
         }
 
         function unParse(data) {
-            var dadosObjeto = JSON.parse(data)
+            // console.log(data);
+            var dadosObjeto = JSON.parse(data);
             // recebendo os dados do php
             var responsaveis = dadosObjeto.responsaveis;
             var usuarios = dadosObjeto.usuarios;
@@ -451,21 +652,18 @@
             var tipo_equipamento = dadosObjeto.tipo_equipamento;
             var setor = dadosObjeto.setor;
             // declarando as variaveis que recebem os campos dos seects
-            let selectResponsavel = document.getElementById("filtroResponsavel");
             let selectAutor = document.getElementById("filtroAutor");
             let selectStatus = document.getElementById("filtroStatus");
             let selectTipoEquipamento = document.getElementById("filtroTipoEquipamento");
             let selectSetor = document.getElementById("filtroSetor");
             //configurando uma mensagem padrão para cada select
-            selectResponsavel.innerHTML = '<option value="" selected hidden>Selecione um usuário</option>';
-            selectAutor.innerHTML = '<option value="" selected hidden>Selecione um usuário</option>';
-            selectStatus.innerHTML = '<option value="" selected hidden>Selecione um status</option>';
-            selectTipoEquipamento.innerHTML = '<option value="" selected hidden>Selecione um tipo</option>';
-            selectSetor.innerHTML = '<option value="" selected hidden>Selecione um setor</option>';
+            selectAutor.innerHTML = '<option value="" selected hidden>Selecione um usuário</option><option value="" >Nenhum selecionado</option>';
+            selectStatus.innerHTML = '<option value="" selected hidden>Selecione um status</option><option value="" >Nenhum selecionado</option>';
+            selectTipoEquipamento.innerHTML = '<option value="" selected hidden>Selecione um tipo</option><option value="" >Nenhum selecionado</option>';
+            selectSetor.innerHTML = '<option value="" selected hidden>Selecione um setor</option><option value="" >Nenhum selecionado</option>';
             // adicionando os dados nos selects
             for (let key in responsaveis) {
                 let value = responsaveis[key];
-                selectResponsavel.innerHTML += `<option value="${key}">${value}</option>`;
             }
             for (let key in usuarios) {
                 let value = usuarios[key];
@@ -488,32 +686,66 @@
         }
 
         function connection(data, method, output) {
+            // console.log(data);
             var xhr = new XMLHttpRequest();
             xhr.open(method, "preview.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     if (output == 'exibir') {
+                        // console.log(xhr.responseText)
                         var responseTable = document.getElementById("responseTable");
+                        var PDFIcon = document.getElementById("PDFIcon");
+                        var ExcelIcon = document.getElementById("ExcelIcon");
                         if (xhr.responseText == 1) {
                             document.getElementById("errormsg").style.display = "block";
                             var top10 = document.getElementById("top10").style.display = "block";
                             responseTable.innerHTML = '';
+                            PDFIcon.classList.add("desativo");
+                            ExcelIcon.classList.add("desativo");
+                            PDFIcon.onclick = null;
+                            ExcelIcon.onclick = null;
+                            PDFIcon.classList.remove("pointer");
+                            ExcelIcon.classList.remove("pointer");
                         } else {
                             responseTable.innerHTML = xhr.responseText;
                             document.getElementById("errormsg").style.display = "none";
                             var top10 = document.getElementById("top10").style.display = "block";
+                            PDFIcon.classList.remove("desativo");
+                            ExcelIcon.classList.remove("desativo");
+                            PDFIcon.onclick = function () { submitFilters('pdf') };
+                            ExcelIcon.onclick = function () { submitFilters('xlsx') };
+
+                            PDFIcon.classList.add("pointer");
+                            ExcelIcon.classList.add("pointer");
+
                         }
                     } else
                         if (output == 'SelectInicial') {
-                            // console.log(xhr.response);
                             unParse(xhr.response);
 
                         } else
-                            if (output == 'relatorio') {
-                                // console.log(xhr.responseText);
+                            if (output == 'relatorioPDF') {
                                 redirecionarComPOST();
-                            }
+                            } else
+                                if (output == 'relatorioXLSX') {
+                                    var response = JSON.parse(xhr.response);
+                                    var data = response.data;
+                                    var colunas = response.colunas;
+                                    var nomeArquivo = response.nomeArquivo;
+                                    var wb = XLSX.utils.book_new();
+                                    var ws = XLSX.utils.json_to_sheet(data, { header: colunas });
+                                    XLSX.utils.book_append_sheet(wb, ws, "Relatório");
+                                    //Largura colunas
+                                    var columnWidths = [{ wch: 10 }, { wch: 20 }, {}, { wch: 11.5 }, { wch: 11.5 }/* ... */];
+                                    ws['!cols'] = columnWidths;
+                                    //texto centralizado:
+                                    var centerCellStyle = { alignment: { horizontal: 'center' } };
+                                    // Aplique o estilo à coluna desejada
+                                    XLSX.utils.sheet_add_aoa(ws, [], { origin: "A", style: centerCellStyle }); // Coluna A
+
+                                    XLSX.writeFile(wb, nomeArquivo);
+                                }
                 }
             }
             xhr.send(data);
@@ -521,9 +753,8 @@
 
     </script>
     <footer>
-        <div class="container mx-3 footer footer" style="margin-top: 600px;">
+        <div class="container mx-3 footer footer" style="margin-top: 300px;">
             <h3>A fazer:</h3>
-            <p>Interessante pré visualizar antes de gerar o pdf</p>
             <p>E também, deixar a opção de quais colunas exibir no relatório (no assessor isso fica salvo, vinculado ao
                 usuário)</p>
             <p>Outra coisa Interessante, é pensar em uma aba de "Requerente", caso alguém abra um chamado para outra
@@ -532,9 +763,6 @@
                 deve ser bem parecida com
                 a dos sql do php, tipo, caso tal opção esteja marcada, tal coluna deve aparecer na consulta, caso não,
                 cai no else, e continua.</p>
-            <p>Acrescentar funcionalidade: Sintético x Analítico</p>
-            <p>Adicionar alerta para quando selecionado Intervalo, tornar obrigatorio o preenchimento dos 2 campos</p>
-            <p>nos filtros de data, adicionar "Até Hoje"</p>
         </div>
     </footer>
 </body>

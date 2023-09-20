@@ -60,11 +60,6 @@ if ($result_id_usuario) {
 
 $conn = new mysqli('localhost', 'root', '', 'siasb');
 
-$_SESSION["nome"] = "Gabriel Fernandes";
-//criar um select com o banco de dados, para verificar se o IDPessoa é igual ao IDUsuario
-
-// $sql = 'SET @ID = (SELECT IDUsuario FROM tbusuario WHERE nome = "' . $_SESSION["username"] . '");
-//         SELECT nomeCompleto from tbpessoa where IDPessoa = @ID';
 $sql = "SELECT nomeCompleto 
         FROM TBUSUARIO u
         JOIN TBPessoa p ON p.IDPessoa = u.IDUsuario
@@ -110,6 +105,7 @@ $stmt->close();
             background-color: #f2f2f2;
             margin: 0;
             padding: 0;
+            z-index: 10;
         }
 
         .container {
@@ -393,10 +389,6 @@ $stmt->close();
             display: none;
         }
 
-        .notes-popup {
-            position: relative;
-        }
-
         .close-popup {
             position: absolute;
             top: 10px;
@@ -416,29 +408,29 @@ $stmt->close();
 
 
     <script>
-        function exibirHorarioAtual() {
-            var horasAtual = new Date();
-            var hora = horasAtual.getHours();
-            var minutos = horasAtual.getMinutes();
-            var segundos = horasAtual.getSeconds();
+        // function exibirHorarioAtual() {
+        //     var horasAtual = new Date();
+        //     var hora = horasAtual.getHours();
+        //     var minutos = horasAtual.getMinutes();
+        //     var segundos = horasAtual.getSeconds();
 
-            // Formatação para garantir que sempre tenhamos 2 dígitos
-            if (hora < 10) {
-                hora = "0" + hora;
-            }
-            if (minutos < 10) {
-                minutos = "0" + minutos;
-            }
-            if (segundos < 10) {
-                segundos = "0" + segundos;
-            }
+        //     // Formatação para garantir que sempre tenhamos 2 dígitos
+        //     if (hora < 10) {
+        //         hora = "0" + hora;
+        //     }
+        //     if (minutos < 10) {
+        //         minutos = "0" + minutos;
+        //     }
+        //     if (segundos < 10) {
+        //         segundos = "0" + segundos;
+        //     }
 
-            // Exibir o horário atual na página
-            document.getElementById("horario-atual").innerHTML = hora + ":" + minutos + ":" + segundos;
+        //     // Exibir o horário atual na página
+        //     document.getElementById("horario-atual").innerHTML = hora + ":" + minutos + ":" + segundos;
 
-            // Atualizar o horário a cada segundo
-            setTimeout(exibirHorarioAtual, 1000);
-        }
+        //     // Atualizar o horário a cada segundo
+        //     setTimeout(exibirHorarioAtual, 1000);
+        // }
 
         function exibirDataAtual() {
             var dataAtual = new Date();
@@ -465,7 +457,7 @@ $stmt->close();
 
 </head>
 
-<body onload="exibirHorarioAtual()" onload="exibirDataAtual()" style="background: none;">
+<body onload="exibirDataAtual()" style="background: none;">
     <div class="container">
 
 
@@ -474,28 +466,27 @@ $stmt->close();
             <h1>Bem-vindo,
                 <?php echo $_SESSION['nomeUsuario']; ?>!
             </h1>
-            <p>Aqui está o conteúdo restrito do painel de controle.</p>
+            <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
 
             <!-- Inclua o conteúdo adicional do painel de controle aqui -->
 
-            <a href="../flowSite/encerrarSessao.php">Sair</a> <!-- Adicione o link de logout para encerrar a sessão -->
+            <!-- <a href="../flowSite/encerrarSessao.php">Sair</a> -->
         </header>
 
 
         <div class="welcome-message">
-            <h2>Olá,
+            <!-- <h2>Olá,
                 <?php echo $_SESSION['nomeUsuario']; ?> !
-            </h2>
-            <p>Seja bem-vindo ao sistema de chamados. Esperamos que tenha um ótimo diaaaa.</p>
+            </h2> -->
         </div>
 
-        <div class="info-panel">
+        <!-- <div class="info-panel">
 
             <div>
                 <h3>Horário</h3>
                 <p id="horario-atual">[Horário Atual]</p>
             </div>
-        </div>
+        </div> -->
 
         <div class="calendar-container">
             <h1>Calendário</h1>
@@ -537,7 +528,7 @@ $stmt->close();
 
             <div id="notes-popup" class="notes-popup">
                 <button id="close-popup" class="close-popup">x</button>
-                <h2>Anotações</h2>
+                <h2>ANOTAÇÕES</h2>
                 <form id="notes-form">
                     <input type="hidden" id="selected-date" name="selected-date">
                     <textarea id="notes-content" class="notes-content" name="notes-content"
@@ -589,7 +580,7 @@ $stmt->close();
             <!-- Adicione este código PHP para exibir as anotações -->
 
             <div class="container">
-                <h3>Minhas Anotações:</h3>
+                <h3>MINHAS ANOTAÇÕES:</h3>
                 <ul class="anotacoes-list">
                     <?php foreach ($anotacoes_usuario as $anotacao) { ?>
                         <li class="anotacao-item">

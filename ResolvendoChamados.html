@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="sidebars/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <title>Resolvendo Chamados</title>
+    <style>
+        .container {
+            margin-top: 20px;
+            border: solid 1px black;
+            border-radius: 12px;
+        }
+
+        .table {
+            width: 80%;
+            margin: auto;
+        }
+
+        .table-heading {
+            background-color: #00a383;
+            color: white;
+        }
+        #opt{
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body onload="selectInicial()">
+    <div class="container container-fluid">
+        <h1>Resolvendo Chamados</h1>
+        <div class="container container-fluid">
+            <h2>Novos chamados</h2>
+            <table class="table table-hover table-striped">
+                <thead class="table-heading table-dark">
+                    <td>ID</td>
+                    <td>Assunto</td>
+                    <td>Data</td>
+                    <td>Prioridade</td>
+                    <td>Dias em aberto</td>
+                    <td>Status</td>
+                </thead>
+                <tbody id="novos">
+                </tbody>
+            </table>
+        </div>
+        <div class="container container-fluid">
+            <h2>Chamados que seu usuário está resolvendo</h2>
+            <table class="table table-hover table-striped">
+                <thead class="table-heading">
+                    <td>ID</td>
+                    <td>Assunto</td>
+                    <td>Data de Abertura</td>
+                    <td>Prioridade</td>
+                    <td>Status</td>
+                </thead>
+                <tbody id="resolvendo">
+                </tbody>
+            </table>
+        </div>
+        <!-- <div class="container container-fluid">
+            <h2>Todos os chamados</h2>
+            <table class="table table-hover table-striped" id="todos">
+                <thead class="table-heading">
+                    <td>ID</td>
+                    <td>Assunto</td>
+                    <td>Data de Abertura</td>
+                    <td>Prioridade</td>
+                    <td>Status</td>
+                </thead>
+                <tbody>
+                    <td>3</td>
+                    <td>Placeholder</td>
+                    <td>18/09/2023</td>
+                    <td>Baixa</td>
+                    <td>Aberto</td>
+                </tbody>
+            </table>
+        </div> -->
+    </div>
+
+</body>
+<script>
+    function selectInicial() {
+        var dados = 'selectChamados=1';
+        connection(dados, 'inicial');
+    }
+    function connection(dados, output) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", 'ResolvendoChamados.php');
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                if(output == 'inicial'){
+                    // console.log(resposta);
+                    var resposta = xhr.responseText;
+                    unParse(resposta);
+                }else
+                if(output == 'receberChamado'){
+                    window.location.reload();
+                }
+
+            }
+        }
+        xhr.send(dados);
+    }
+    function unParse(dados) {
+        var dados = JSON.parse(dados);
+        console.log(dados);
+
+        var novos = document.getElementById('novos');
+        var resolvendo = document.getElementById('resolvendo');
+        var todos = document.getElementById('todos');
+        const usuario = dados[0].usuario;
+        var dataHoje = new Date();
+        var d = dataHoje.getDate() + 1;
+        var m = dataHoje.getMonth() + 1;
+        var y = dataHoje.getFullYear();
+        dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
+
+        console.log(dataHoje);
+        console.log(usuario)
+
+        dados.forEach(element => {
+            if (element.usuario) {
+                return;
+            } else
+                if (element.responsavel == null) {
+                    var linha = document.createElement('tr');
+                    var id = document.createElement('td');
+                    var assunto = document.createElement('td');
+                    var data = document.createElement('td');
+                    var prioridade = document.createElement('td');
+                    var dias = document.createElement('td');
+                    var status = document.createElement('td');
+                    var opt = document.createElement('td');
+                    opt.onclick = function () {
+                        receberChamado(element.IDChamado);
+                    };
+                    var img = document.createElement('img');
+                    img.id = 'opt';
+                    img.setAttribute('src', 'Icones Site/iconeplus.png');
+                    img.setAttribute('width', '20px');
+                    img.setAttribute('alt', '');
+                    opt.appendChild(img);
+                    id.innerHTML = element.IDChamado;
+                    assunto.innerHTML = element.assunto;
+                    data.innerHTML = convertData(element.dataAbertura);
+                    prioridade.innerHTML = element.prioridade;
+
+                    dias.innerHTML = calcularDiasEmAberto(dataHoje, element.dataAbertura)
+                    status.innerHTML = element.status_chamado;
+                    // img.innerHTML = img;
+                    linha.appendChild(id);
+                    linha.appendChild(assunto);
+                    linha.appendChild(data);
+                    linha.appendChild(prioridade);
+                    linha.appendChild(dias);
+                    linha.appendChild(status);
+                    novos.appendChild(linha);
+                    assunto.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    id.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    data.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    prioridade.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    dias.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    status.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    linha.appendChild(opt);
+                }
+                else if (element.responsavel == usuario.toUpperCase() || usuario.toLowerCase() && element.status_chamado == 'Andamento' || element.status_chamado == 'Pendente') {
+                    var linha = document.createElement('tr');
+                    var id = document.createElement('td');
+                    var assunto = document.createElement('td');
+                    var data = document.createElement('td');
+                    var prioridade = document.createElement('td');
+                    var status = document.createElement('td');
+                    id.innerHTML = element.IDChamado;
+                    assunto.innerHTML = element.assunto;
+                    data.innerHTML = convertData(element.dataAbertura);
+                    prioridade.innerHTML = element.prioridade;
+                    status.innerHTML = element.status_chamado;
+                    linha.appendChild(id);
+                    linha.appendChild(assunto);
+                    linha.appendChild(data);
+                    linha.appendChild(prioridade);
+                    linha.appendChild(status);
+                    resolvendo.appendChild(linha);
+                    id.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    assunto.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    data.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    prioridade.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    status.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                }
+            function receberChamado(IDChamado) {
+                Swal.fire({
+                    title: 'Deseja dar andamento à este chamado?',
+                    text: 'Este chamado ficará vinculado ao seu usuário!',
+                    showCancelButton: true,
+                    confirmButtonColor: '#00cc99',
+                    confirmButtonText: 'Sim',
+                    cancelButtonText: 'Não'
+                }).then((result) => {
+                    if(result && result.isConfirmed){
+                        //passar o ID pro resolvendoChamados.php e fazer o select.
+                        var data = 'receberChamado=1&IDChamado=' + IDChamado;
+                        connection(data, 'receberChamado');
+                    }
+                })
+            }
+            // console.log(element);
+            function convertData(data) {
+                var novaData = new Date(data);
+                var d = novaData.getDate();
+                var m = novaData.getMonth() + 1;
+                var y = novaData.getFullYear();
+                data = ('0' + d).slice(-2) + '/' + ('0' + m).slice(-2) + '/' + y;
+                return data;
+            }
+            function calcularDiasEmAberto(dataAtual, dataAbertura) {
+                function converterDataFormato(dataString) {
+                    const partes = dataString.split("/");
+                    const dia = partes[0];
+                    const mes = partes[1];
+                    const ano = partes[2];
+
+                    return ano + "-" + mes + "-" + dia;
+                }
+
+                const dataAtualFormatada = new Date(converterDataFormato(dataAtual));
+                const dataAberturaFormatada = new Date(converterDataFormato(dataAbertura));
+
+                const diferencaEmMilissegundos = dataAtualFormatada - dataAberturaFormatada;
+                const diferencaEmDias = Math.floor(diferencaEmMilissegundos / (1000 * 60 * 60 * 24));
+
+                return diferencaEmDias;
+            }
+            function redireciona(IDChamado) {
+                window.location.href = 'DetalhandoChamado.html?IDChamado=' + IDChamado;
+            }
+        });
+
+
+    }
+</script>
+
+</html>

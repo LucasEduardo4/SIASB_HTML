@@ -89,18 +89,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ;
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['excluiNotificacao'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['excluiNotificacao'])) {
         $idNotificacao = $_POST['excluiNotificacao'];
         $sql = "UPDATE tbnotificacoes SET excluido = 1 WHERE IDNotificacao = '$idNotificacao'";
         $result = $conn->query($sql);
-        // if($result){
-        //     echo "Notificação excluida";
-        // }else{
-        //     echo "Erro na consulta SQL: " . $conn->error;
-        // }
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['limpaNotificacoes'])) {
+        $idUsuario = $_SESSION['username'];
+
+        $sql = "SELECT IDNotificacao FROM TBNotificacoes
+                LEFT JOIN TBChamados c on chamadoReferencia = c.IDChamado
+                LEFT JOIN TBUsuario u on c.autor = u.IDUsuario
+                where u.nome = '$idUsuario' and visualizado = 1 and excluido <> 1;";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultSelect = $stmt->get_result(); // Usar uma variável diferente
+
+        if ($resultSelect && $resultSelect->num_rows > 0) {
+            while ($row = $resultSelect->fetch_assoc()) {
+                $IDNotificacao = $row["IDNotificacao"];
+                $sql1 = "UPDATE tbnotificacoes SET excluido = 1 WHERE IDNotificacao = '$IDNotificacao'";
+                $resultUpdate = $conn->query($sql1); // Usar uma variável diferente
+            }
+        }
+    }
+}
+
 
 
 ?>
