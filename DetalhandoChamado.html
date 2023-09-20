@@ -254,7 +254,7 @@
 
       connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
-      // verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
+      verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
 
       function connection(data, operation) {
         var xhr = new XMLHttpRequest();
@@ -280,6 +280,7 @@
         xhr.send(data);
       }
 
+// verificaSetor();
 
       function unParse(data) {
         console.log(data)
@@ -474,6 +475,8 @@
         });
       }
 
+
+  
     </script>
 </body>
 
