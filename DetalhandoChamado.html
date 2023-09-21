@@ -360,7 +360,6 @@
           cursor: pointer;
           width: 220px;
           margin-right: 10px;
-
         }
 
         .imagensAnexo:hover {
@@ -368,7 +367,6 @@
           transition: 0.4s;
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
           border-radius: 6px;
-
         }
 
         #anexosContainer {
@@ -429,7 +427,6 @@
               div1.appendChild(imagem);
             }
 
-
             const div2 = document.createElement("div");
             div2.classList.add("border-start", "border-primary", "px-3");
 
@@ -454,7 +451,7 @@
 
         function exibeImagensAnexadas(imagens) {
           if (window.screen.width < 1025) {
-            var responsiveSize = window.screen.width * 0.65
+            var responsiveSize = window.screen.width * 0.65;
           } else {
             var responsiveSize = window.screen.width * 0.8;
           }
@@ -489,7 +486,7 @@
           return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
         }
 
-        verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
+        verificaSetor(); // precisa rodar essa função.. para que o administrador consiga dar andamento ao chamado.
 
         function verificaSetor() {
           var data = "verificarSetor=" + encodeURIComponent('1');

@@ -63,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     }
                     $resultArray['imagens'] = $resultImagens;
-
                 }
             }
         }
@@ -78,15 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             public $status;
             public $imagem;
 
-            public function __construct($IDLog, $mensagem, $dataAlteracao, $responsavel, $status, $imagem)
-            {
+            public function __construct($IDLog, $mensagem, $dataAlteracao, $responsavel, $status, $imagem){
                 $this->IDLog = $IDLog;
                 $this->mensagem = $mensagem;
                 $this->dataAlteracao = $dataAlteracao;
                 $this->responsavel = $responsavel;
                 $this->status = $status;
-                $this->imagem = $imagem;
-            }
+                $this->imagem = $imagem; }
         }
 
         $sql2 = "SELECT IDLog, mensagem, dataAlteracao, u.nome as 'responsavel', sc.descricao as 'status', referencia, imagem FROM TBLog_chamado
@@ -110,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $resultLogs[] = $logChamado;
             }
         }
-
         $resultArray['logs'] = $resultLogs;
         echo json_encode($resultArray);
     }
@@ -119,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['gerarLog'])) {
         // var_dump($_FILES);
         $conn = mysqli_connect("localhost", "root", "", "siasb");
-
         $status = $_POST['status'];
         $mensagem = $_POST['mensagem'];
         $referencia = $_POST['referencia'];

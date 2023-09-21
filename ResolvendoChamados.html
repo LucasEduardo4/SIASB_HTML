@@ -96,7 +96,6 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 if(output == 'inicial'){
-                    // console.log(resposta);
                     var resposta = xhr.responseText;
                     unParse(resposta);
                 }else
@@ -110,7 +109,6 @@
     }
     function unParse(dados) {
         var dados = JSON.parse(dados);
-        console.log(dados);
 
         var novos = document.getElementById('novos');
         var resolvendo = document.getElementById('resolvendo');
@@ -121,9 +119,6 @@
         var m = dataHoje.getMonth() + 1;
         var y = dataHoje.getFullYear();
         dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
-
-        console.log(dataHoje);
-        console.log(usuario)
 
         dados.forEach(element => {
             if (element.usuario) {
@@ -232,7 +227,6 @@
                     }
                 })
             }
-            // console.log(element);
             function convertData(data) {
                 var novaData = new Date(data);
                 var d = novaData.getDate();
