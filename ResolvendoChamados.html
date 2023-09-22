@@ -9,7 +9,7 @@
 
     <title>Resolvendo Chamados</title>
     <style>
-        .container {
+        .container-border {
             margin-top: 20px;
             border: solid 1px black;
             border-radius: 12px;
@@ -24,7 +24,12 @@
             background-color: #00a383;
             color: white;
         }
-        #opt{
+
+        #opt {
+            cursor: pointer;
+        }
+
+        tr>td:hover {
             cursor: pointer;
         }
     </style>
@@ -33,7 +38,7 @@
 <body onload="selectInicial()">
     <div class="container container-fluid">
         <h1>Resolvendo Chamados</h1>
-        <div class="container container-fluid">
+        <div class="container container-fluid container-border">
             <h2>Novos chamados</h2>
             <table class="table table-hover table-striped">
                 <thead class="table-heading table-dark">
@@ -48,7 +53,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="container container-fluid">
+        <div class="container container-fluid container-border">
             <h2>Chamados que seu usuário está resolvendo</h2>
             <table class="table table-hover table-striped">
                 <thead class="table-heading">
@@ -95,13 +100,13 @@
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                if(output == 'inicial'){
+                if (output == 'inicial') {
                     var resposta = xhr.responseText;
                     unParse(resposta);
-                }else
-                if(output == 'receberChamado'){
-                    window.location.reload();
-                }
+                } else
+                    if (output == 'receberChamado') {
+                        window.location.reload();
+                    }
 
             }
         }
@@ -220,7 +225,7 @@
                     confirmButtonText: 'Sim',
                     cancelButtonText: 'Não'
                 }).then((result) => {
-                    if(result && result.isConfirmed){
+                    if (result && result.isConfirmed) {
                         //passar o ID pro resolvendoChamados.php e fazer o select.
                         var data = 'receberChamado=1&IDChamado=' + IDChamado;
                         connection(data, 'receberChamado');

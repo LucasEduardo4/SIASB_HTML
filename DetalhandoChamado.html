@@ -274,18 +274,15 @@
 
         connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
-<<<<<<< HEAD
-      verificaSetor(); // precisa rodar esse comando.. para que o administrador consiga dar andamento ao chamado.
-=======
         function connection(data, operation) {
           var xhr = new XMLHttpRequest();
           xhr.open("POST", "DetalhandoChamado.php", true);
->>>>>>> 4230f2c8c104ec3611a9aecc13bf00c4c5648747
 
           xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
               if (operation == 1) {
                 unParse(xhr.responseText);
+                // console.log(xhr.responseText)
               } else if (operation == 2) {
                 // console.log(xhr.responseText);
               } else if (operation == 'verificarSetor') {
@@ -302,71 +299,11 @@
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(data);
           }
-<<<<<<< HEAD
-        };
-        xhr.send(data);
-      }
-
-// verificaSetor();
-
-      function unParse(data) {
-        console.log(data)
-        var dadosObjeto = JSON.parse(data)
-        console.log(dadosObjeto);
-        var IDChamado = dadosObjeto.IDChamado;
-        var assunto = dadosObjeto.assunto;
-        var descricao = dadosObjeto.descricao;
-        var dataAbertura = dadosObjeto.dataAbertura;
-        var status_chamado = dadosObjeto.status_chamado;
-        var responsavel = dadosObjeto.responsavel;
-        var autor = dadosObjeto.autor;
-        var equipamento = dadosObjeto.equipamento;
-        var imagem = dadosObjeto.imagem;
-        var categoria = dadosObjeto.categoria;
-        var logs = dadosObjeto.logs;
-        var icone = dadosObjeto.icone;
-        console.log(dadosObjeto);
-
-        // console.log(logs);
-        // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
-
-        exibeLogs(logs);
-
-        dataAbertura = formatarDataHora(dataAbertura);
-
-        document.getElementById("assunto").innerHTML += assunto;
-        document.getElementById("descricao").innerHTML += '<br>' + descricao;
-        document.getElementById("dataAbertura").innerHTML += dataAbertura;
-        // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
-        document.getElementById("status").innerHTML += status_chamado;
-        document.getElementById("responsavel").innerHTML += responsavel;
-        document.getElementById("autor").innerHTML += autor;
-        if (equipamento != null) {
-          document.getElementById("equipamento").innerHTML += equipamento;
-        } else {
-          // document.getElementById("equipamento").innerHTML += '---';
-          document.getElementById("equipamento").style.display = 'none';
-
-        }
-        document.getElementById("numChamado").innerHTML += IDChamado;
-        // document.getElementById("categoria").innerHTML += categoria; ainda nao exibimos
-        // document.getElementById("imagem").innerHTML += imagem;
-        // if(ligacaoChamadoID == null){
-        //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
-        // }
-
-        if (imagem) {
-          document.getElementById("anexosContainer").innerHTML +=
-            '<p>Imagem do chamado:<br> <img id="imagemChamado" src="data:image/jpeg;base64,' + imagem + '" width="auto" height="auto" alt="Imagem do chamado" /></p>';
-        } else {
-          document.getElementById("anexosContainer").innerHTML +=
-            '<p>Nenhuma imagem anexada para este chamado.</p>';
-=======
->>>>>>> 4230f2c8c104ec3611a9aecc13bf00c4c5648747
         }
 
 
         function unParse(data) {
+          // console.log(data);
           var dadosObjeto = JSON.parse(data)
           var IDChamado = dadosObjeto.IDChamado;
           var assunto = dadosObjeto.assunto;
@@ -376,14 +313,22 @@
           var responsavel = dadosObjeto.responsavel;
           var autor = dadosObjeto.autor;
           var equipamento = dadosObjeto.equipamento;
-          var imagens = dadosObjeto.imagens;
+          var imagensChamado = dadosObjeto.imagensChamado;
           var logs = dadosObjeto.logs;
           var icone = dadosObjeto.icone;
+          console.log(imagensChamado);
+
 
           // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
 
           exibeLogs(logs);
-          exibeImagens(imagens)
+          if (imagensChamado && imagensChamado.length == 0) {
+            document.getElementById("anexosContainer").innerHTML += '<p>Nenhuma imagem anexada para este chamado.</p>';
+          } else {
+            exibeImagens(imagensChamado)
+          }
+
+
 
           dataAbertura = formatarDataHora(dataAbertura);
 
@@ -441,21 +386,22 @@
       </style>
       <script>
 
-        function exibeImagens(imagens) {
+        function exibeImagens(imagensChamado) {
           containerAnexos = document.getElementById("anexosContainer");
 
-          imagens.forEach((imagens) => {
+          imagensChamado.forEach((imagensChamado) => {
             containerAnexos.innerHTML += `
           <div class="row">
             <div class="col-md-4">
-              <img class="imagensAnexo" src="data:image/jpeg;base64, ${imagens}" alt="Imagem do chamado">
+              <img class="imagensAnexo" src="data:image/jpeg;base64, ${imagensChamado}" alt="Imagem do chamado">
             </div>
           </div>
           `;
           })
         }
-
+//O PROBLEMA ESTÁ AQU, NA HORA DE PASSAR O ID DO LOG PARA ESSAS FUNÇÕES ABAIXO.. PENSAR EM ALGO PARA SOLUCIONAR ISSO
         function exibeLogs(logs) {
+          // console.log(logs);
           const logsContainer = document.getElementById("logsContainer");
 
           logs.forEach((log) => {
@@ -478,7 +424,7 @@
             responsavelStatus.src = "Icones%20Site/anexo.png";
 
             div1.appendChild(responsavelStatus);
-            if (log.imagem) {
+            if (log.imagensLog) {
               const imagem = document.createElement("img");
               imagem.classList.add("ml-3");
               imagem.src = "Icones%20Site/anexo.png";
@@ -486,7 +432,7 @@
               imagem.title = "Clique para visualizar a imagem anexada à resposta";
               imagem.id = "imagemAnexada";
               imagem.onclick = function () {
-                exibeImagensAnexadas(log.imagem);
+                exibeImagensAnexadas(log.imagensLog, log.IDLog);
               }
 
               div1.appendChild(imagem);
@@ -514,35 +460,65 @@
           });
         }
 
-        function exibeImagensAnexadas(imagens) {
+        function exibeImagensAnexadas(imagens, IDLog) {
+          console.log(imagens + '\n' + IDLog);
+
           if (window.screen.width < 1025) {
-            var responsiveSize = window.screen.width * 0.65;
-          } else {
-            var responsiveSize = window.screen.width * 0.8;
+              var responsiveSize = window.screen.width * 0.65;
+            } else {
+              var responsiveSize = window.screen.width * 0.8;
+            }
+
+            let currentIndex = 0; // Índice da imagem atual
+            
+            function showImage(index) {
+              console.log(imagem[index]);
+              if (imagens[index].referencia == IDLog) {
+              const html = `
+              <div id="esquerda" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-left"></span></div>
+              <div id="central" style="width:70%; display:inline;">
+                <img id="imagenLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">
+              </div>
+              <div id="direita" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-right"></span></div>
+            `;
+
+              Swal.fire({
+                title: "Imagem anexada",
+                html: html,
+                width: window.screen.width,
+                showCancelButton: false,
+                confirmButtonText: 'Fechar',
+                confirmButtonColor: '#00cc99'
+              });
+
+              // Adicione manipuladores de eventos às setas esquerda e direita
+              const esquerda = document.getElementById("esquerda");
+              const direita = document.getElementById("direita");
+
+              esquerda.addEventListener("click", () => {
+                if (currentIndex > 0) {
+                  currentIndex--;
+                  updateImage(currentIndex, IDLog);
+                }
+              });
+
+              direita.addEventListener("click", () => {
+                if (currentIndex < imagens.length - 1) {
+                  currentIndex++;
+                  updateImage(currentIndex, IDLog);
+                }
+              });
+            }
+
+            function updateImage(index, IDLog) {
+              if(imagens[index].referencia == IDLog)
+              document.getElementById("central").innerHTML = `<img id="imagenLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">`;
+            }
+
+            showImage(currentIndex);
+
+
           }
-
-<<<<<<< HEAD
-
-  
-    </script>
-=======
-          const html = `
-        <div id="esquerda" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-left"></span></div>
-        <div id="central" style="width:70%; display:inline;">
-          <img id="imagenLOG" src="data:image/jpeg;base64, ${imagens}" width="${responsiveSize}px;"  alt="Imagem do log">
-        </div>
-        <div id="direita" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-right"></span></div>
-        `;
-          Swal.fire({
-            title: "Imagem anexada",
-            // imageUrl: `data:image/jpeg;base64, ${imagens}`,
-            html: html,
-            width: window.screen.width,
-            margin: 0,
-            showCancelButton: false,
-            confirmButtonText: 'Fechar',
-            confirmButtonColor: '#00cc99',
-          })
         }
 
         function formatarDataHora(dataOriginal) {
@@ -588,7 +564,7 @@
             </div>
             <div class="mb-3">
               <label>Anexar Imagem:</label>
-              <input type="file" name="imagem" id="imagem" class="form-control">
+              <input type="file" name="imagem" id="imagem" class="form-control" multiple>
               </div>
           </form>
         `;
@@ -616,9 +592,16 @@
                 data.append("status", status);
                 data.append("mensagem", mensagem);
                 data.append("referencia", IDChamado);
-                data.append("imagem", imagemInput.files[0]); //criei o banco TBImagens, quando voltar, fazer as alterações necessarias para inserir a imagem diretamente nele.
+
+                var imagemInput = document.getElementById("imagem"); // Supondo que você tenha um elemento de entrada de arquivo para imagens
+                var imagens = imagemInput.files;
+
+                for (var i = 0; i < imagens.length; i++) {
+                  data.append("imagem[]", imagens[i]); // Use colchetes no nome do campo para indicar que é uma matriz de imagens
+                }
 
                 connection(data, 2);
+
                 // window.location.reload();
                 // Exemplo de envio do formulário
                 Swal.fire({
@@ -635,7 +618,6 @@
         }
 
       </script>
->>>>>>> 4230f2c8c104ec3611a9aecc13bf00c4c5648747
 </body>
 
 </html>
