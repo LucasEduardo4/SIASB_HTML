@@ -107,7 +107,9 @@ if ($imageData) {
     }
 
 
-
+    .row {
+      padding-top:0px;
+    }
 
 
 
@@ -393,10 +395,6 @@ if ($imageData) {
     #icone {
       clip-path: circle(farthest-side);
     }
-
-
-
-
 
 
     .menu-image {

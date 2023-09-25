@@ -91,17 +91,32 @@ if ($imageData) {
             padding: 10px; /* Opcional: adiciona espaçamento interno às divs */
             box-sizing: border-box; /* Opcional: inclui o padding na largura total */
             width: 100%;
+            margin-inline:auto;
 
         }
         .div1 {
-            background-color: #f0f0f0; /* Cor de fundo da primeira div */
+            background-color: #f0f0f0; 
+            text-align: center;
+
         }
         .div2 {
-            background-color: #ccc; /* Cor de fundo da segunda div */
+            /* background-color: #ccc;  */
         }
         .alt_senha
         {
             color: green;
+        }
+
+        .texto {
+            margin: auto;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding-top: 30px;
+            font-size: 35px;
+            color: #000000;
+            width: 180vh;
+            flex:none;
+            text-align: center;
+            padding-top: 10px;
         }
     </style>
 
@@ -146,13 +161,11 @@ if ($imageData) {
 
     <!-- ======================================================= -->
     
-    <div style="font-size:30px; width:100%; margin:auto">INFORMAÇÕES DO USUÁRIO</div>
+    <div class="texto">INFORMAÇÕES DO USUÁRIO</div>
 
-<div class="container">
-
-<div class="div1" style="width:50%" >
+<div class="div1" style="width:100%" >
         
-        <div style="padding-left: 300px;">
+        <div >
             <div id="anexosContainer"></div>
         </div>
 
@@ -217,7 +230,7 @@ $conn->close();
 
 </div>
 
-<div class="div2" style="width:50%" >
+<div class="div2" style="width:70%" >
     <div id="user-info-div">
         <div id="user-info" >
 
@@ -278,11 +291,11 @@ $conn->close();
 
     <div class="div2">
 
-    <h2 style="font-size: 15px;" >Alteração de Senha</h2>
+    <h2 style="font-size: 15px; text-align:center" >ALTERAÇÃO DE SENHA</h2>
 
     <form method="POST">
 
-    <label for="nova_senha">Nova Senha:</label>
+    <label for="nova_senha" style="font-weight: 550;" >NOVA SENHA:</label>
     <input type="password" id="nova_senha" name="nova_senha" required><br><br>
 
     <input type="submit" value="Alterar Senha">
