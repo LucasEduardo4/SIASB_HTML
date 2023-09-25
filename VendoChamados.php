@@ -101,6 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $responsavel = $_POST['responsavel'];
+        if($responsavel == '0'){
+            $sql .= " AND responsavel IS NULL";
+        }else 
         if ($responsavel != '') {
             $sql .= " AND responsavel = '$responsavel'";
         }
@@ -149,6 +152,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // <div class='CamposResultados responsavel_tecnologia'> <h1 class='bi bi-gear' onclick='detalharChamado(this)'></h1> </div>
             }
         } else {
+            // echo $sql;
+
             echo "
             <div class='FaixaFormResults'>
                 <div class='cells'><p></p></div>
