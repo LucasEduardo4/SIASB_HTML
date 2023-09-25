@@ -282,6 +282,17 @@
       <form class="blue-theme-form" enctype="multipart/form-data">
 
         <!-- =================== ================================= -->
+
+        <div class="step" id="step-0">
+                
+          <label for="motivo">POR QUAL MOTIVO ESSA PESSOA NÃO PODE ABRIR O CHAMADO?</label>
+          <input type="text" id="teste" name="teste" required>
+
+
+                <button onclick="checkAnswer()" style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="nextStep(0)" >Próxima Etapa</button>
+      
+        </div>
+
         <div class="step active" id="step-1">
                 
           <h2>VOCÊ DESEJA ABRIR UM CHAMADO PARA VOCÊ OU PARA TERCEIROS ? </h2>
@@ -494,13 +505,40 @@
         if (currentStep == 1 )
         {
             document.getElementById(`step-${1}`).classList.remove('active');
+            currentStep = step + 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        }
+
+        if (currentStep == 2 )
+        {
+            document.getElementById(`step-${2}`).classList.remove('active');
+            currentStep = step + 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        }
+
+        if (currentStep == 3 )
+        {
+            document.getElementById(`step-${3}`).classList.remove('active');
+            currentStep = step + 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        }
+
+        if (currentStep == 4 )
+        {
+            document.getElementById(`step-${4}`).classList.remove('active');
+            currentStep = step + 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        }
+
+        // ETAPA FANTASMA PARA REALIZAR O PROCEDIMENTO DO ENVIO DO FORMULARIO
+        if (currentStep == 0 )
+        {
+            document.getElementById(`step-${0}`).classList.remove('active');
+            currentStep = step + 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
         }
 
 
-
-        document.getElementById(`step-${step}`).classList.remove('active');
-        currentStep = step + 1;
-        document.getElementById(`step-${currentStep}`).classList.add('active');
     }
 
         // Captura o evento de pressionar uma tecla no campo de entrada

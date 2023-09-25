@@ -7,10 +7,19 @@
     <link rel="stylesheet" href="sidebars/bootstrap.min.css">
     <title>Resolvendo Chamados</title>
     <style>
+
+        h2 {
+            font-size: 20px;
+            text-align: center;
+            padding-top: 20px;
+            font-weight: 700;
+        }
+
         .container {
             margin-top: 20px;
             border: solid 1px black;
             border-radius: 12px;
+            padding-bottom:22px;
         }
 
         .table {
@@ -22,68 +31,135 @@
             background-color: #00a383;
             color: white;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            /* overflow: hidden; */
+            background-color:white; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            margin: auto;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) > * {
+            --bs-table-bg-type:none;
+        }
+
+        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+            padding-bottom: 50px;
+        }
+
+
+        /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
+        .table> :not(caption)>*>* {
+
+            background-color: white;
+            color: black;
+
+        }
+
+
+        /* =========================================================================== */
+
+        .table-heading {
+            background: linear-gradient(135deg, #007bff, #00cc99);
+            color: #fff;
+        }
+
+        .table-heading th {
+            padding: 4px;
+            color: #ffffff;
+            background-color: #00a383;
+            border-radius: 30px;
+
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .title {
+            margin: auto;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding-top: 30px;
+            font-size: 40px;
+            color: #000000;
+            text-align:start;
+            width: 180vh;
+            flex:none;
+            text-align: center;
+            padding-top: 10px;
+        }
+
     </style>
 </head>
 
 <body onload="selectInicial()">
-    <div class="container container-fluid">
-        <h1>Resolvendo Chamados</h1>
-        <div class="container container-fluid">
-            <h2>Novos chamados</h2>
+    <div  class=" container-fluid">
+        <h1 class="title">RESOLVENDO CHAMADOS</h1>
+        <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
+            <h2 style="padding-bottom: 20px;" >NOVOS CHAMADOS</h2>
             <table class="table table-hover table-striped" >
-                <thead class="table-heading table-dark">
+                <thead style="font-weight: 700;" class="table-heading table-dark">
                     <td>ID</td>
-                    <td>Assunto</td>
-                    <td>Data</td>
-                    <td>Prioridade</td>
-                    <td>Dias em aberto</td>
-                    <td>Status</td>
+                    <td>ASSUNTO</td>
+                    <td>DATA</td>
+                    <td>PRIORIDADE</td>
+                    <td>D/ABERTO</td>
+                    <td>STATUS</td>
                 </thead>
                 <tbody id="novos">
                     <td>1</td>
                     <td>Placeholder</td>
                     <td>18/09/2023</td>
-                    <td>Alta</td>
+                    <td style="color: red; font-weight: 900;" >ALTA</td>
                     <td>3</td>
                     <td>Aberto</td>
                     <td><img src="Icones Site/iconeplus.png" width="20px" alt=""></td>
                 </tbody>
-            </table>
-        </div>
-        <div class="container container-fluid">
-            <h2>Chamados que seu usuário está resolvendo</h2>
+            </table style="padding-bottom:20px">
+        </div  >
+        <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
+            <h2 style="padding-bottom: 20px;" >CHAMADOS QUE O SEU USUÁRIO ESTÁ RESOLVENDO</h2>
             <table class="table table-hover table-striped" >
-                <thead class="table-heading">
+                <thead style="font-weight: 700;" class="table-heading">
                     <td>ID</td>
-                    <td>Assunto</td>
-                    <td>Data de Abertura</td>
-                    <td>Prioridade</td>
-                    <td>Status</td>
+                    <td>ASSUNTO</td>
+                    <td>DATA DE ABERTURA</td>
+                    <td>PRIORIDADE</td>
+                    <td>STATUS</td>
                 </thead>
                 <tbody id="resolvendo">
                     <td>2</td>
                     <td>Placeholder</td>
                     <td>18/09/2023</td>
-                    <td>Média</td>
+                    <td style="color: rgb(255, 196, 0); font-weight: 900;" >MÉDIA</td>
                     <td>Em andamento</td>
                 </tbody>
             </table>
         </div>
-        <div class="container container-fluid">
-            <h2>Todos os chamados</h2>
+        <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
+            <h2 style="padding-bottom: 20px;" >TODOS OS CHAMADOS</h2>
             <table class="table table-hover table-striped" id="todos">
-                <thead class="table-heading">
+                <thead style="font-weight: 700;" class="table-heading">
                     <td>ID</td>
-                    <td>Assunto</td>
-                    <td>Data de Abertura</td>
-                    <td>Prioridade</td>
-                    <td>Status</td>
+                    <td>ASSUNTO</td>
+                    <td>DATA DE ABERTURA</td>
+                    <td>PRIORIDADE</td>
+                    <td>STATUS</td>
                 </thead>
                 <tbody>
                     <td>3</td>
                     <td>Placeholder</td>
                     <td>18/09/2023</td>
-                    <td>Baixa</td>
+                    <td style="color: green; font-weight: 900;" >BAIXA</td>
                     <td>Aberto</td>
                 </tbody>
             </table>
