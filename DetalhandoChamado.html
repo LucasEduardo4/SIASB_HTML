@@ -612,20 +612,6 @@
 
 
         // ===========================================================
-
-        function exibeImagens(imagensChamado) {
-          containerAnexos = document.getElementById("anexosContainer");
-
-          imagensChamado.forEach((imagensChamado) => {
-            containerAnexos.innerHTML += `
-          <div class="row">
-            <div class="col-md-4">
-              <img class="imagensAnexo" src="data:image/jpeg;base64, ${imagensChamado}" alt="Imagem do chamado">
-            </div>
-          </div>
-          `;
-          })
-        }
         function exibeLogs(logs) {
           const logsContainer = document.getElementById("logsContainer");
 
@@ -688,7 +674,7 @@
 
 
 
-        function exibeImagensAnexadas(imagens, IDLog) {
+        function exibeImagensAnexadas(imagens) {
           // console.log(imagens + '\n' + IDLog);
 
           if (window.screen.width < 1025) {

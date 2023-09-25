@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="sidebars/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <title>Resolvendo Chamados</title>
     <style>
 
@@ -34,13 +32,72 @@
             color: white;
         }
 
-        #opt {
-            cursor: pointer;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            /* overflow: hidden; */
+            background-color:white; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            margin: auto;
         }
 
-        tr>td:hover {
-            cursor: pointer;
+        .table-striped > tbody > tr:nth-of-type(odd) > * {
+            --bs-table-bg-type:none;
         }
+
+        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+            padding-bottom: 50px;
+        }
+
+
+        /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
+        .table> :not(caption)>*>* {
+
+            background-color: white;
+            color: black;
+
+        }
+
+
+        /* =========================================================================== */
+
+        .table-heading {
+            background: linear-gradient(135deg, #007bff, #00cc99);
+            color: #fff;
+        }
+
+        .table-heading th {
+            padding: 4px;
+            color: #ffffff;
+            background-color: #00a383;
+            border-radius: 30px;
+
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .title {
+            margin: auto;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding-top: 30px;
+            font-size: 40px;
+            color: #000000;
+            text-align:start;
+            width: 180vh;
+            flex:none;
+            text-align: center;
+            padding-top: 10px;
+        }
+
     </style>
 </head>
 
@@ -106,28 +163,24 @@
                     <td>Aberto</td>
                 </tbody>
             </table>
-        </div> -->
+        </div>
     </div>
 
 </body>
 <script>
     function selectInicial() {
         var dados = 'selectChamados=1';
-        connection(dados, 'inicial');
+        connection(dados);
     }
-    function connection(dados, output) {
+    function connection(dados) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", 'ResolvendoChamados.php');
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                if (output == 'inicial') {
-                    var resposta = xhr.responseText;
-                    unParse(resposta);
-                } else
-                    if (output == 'receberChamado') {
-                        window.location.reload();
-                    }
+                var resposta = xhr.responseText;
+                unParse(resposta);
+                // console.log(resposta);
 
             }
         }
@@ -135,156 +188,71 @@
     }
     function unParse(dados) {
         var dados = JSON.parse(dados);
+        console.log(dados);
 
         var novos = document.getElementById('novos');
         var resolvendo = document.getElementById('resolvendo');
         var todos = document.getElementById('todos');
-        const usuario = dados[0].usuario;
-        var dataHoje = new Date();
-        var d = dataHoje.getDate() + 1;
-        var m = dataHoje.getMonth() + 1;
-        var y = dataHoje.getFullYear();
-        dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
+        const usuario = dados[0].responsavel;
+        console.log(dados[0])
 
         dados.forEach(element => {
-            if (element.usuario) {
-                return;
-            } else
-                if (element.responsavel == null) {
-                    var linha = document.createElement('tr');
-                    var id = document.createElement('td');
-                    var assunto = document.createElement('td');
-                    var data = document.createElement('td');
-                    var prioridade = document.createElement('td');
-                    var dias = document.createElement('td');
-                    var status = document.createElement('td');
-                    var opt = document.createElement('td');
-                    opt.onclick = function () {
-                        receberChamado(element.IDChamado);
-                    };
-                    var img = document.createElement('img');
-                    img.id = 'opt';
-                    img.setAttribute('src', 'Icones Site/iconeplus.png');
-                    img.setAttribute('width', '20px');
-                    img.setAttribute('alt', '');
-                    opt.appendChild(img);
-                    id.innerHTML = element.IDChamado;
-                    assunto.innerHTML = element.assunto;
-                    data.innerHTML = convertData(element.dataAbertura);
-                    prioridade.innerHTML = element.prioridade;
-
-                    dias.innerHTML = calcularDiasEmAberto(dataHoje, element.dataAbertura)
-                    status.innerHTML = element.status_chamado;
-                    // img.innerHTML = img;
-                    linha.appendChild(id);
-                    linha.appendChild(assunto);
-                    linha.appendChild(data);
-                    linha.appendChild(prioridade);
-                    linha.appendChild(dias);
-                    linha.appendChild(status);
-                    novos.appendChild(linha);
-                    assunto.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    id.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    data.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    prioridade.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    dias.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    status.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    linha.appendChild(opt);
-                }
-                else if (element.responsavel == usuario.toUpperCase() || usuario.toLowerCase() && element.status_chamado == 'Andamento' || element.status_chamado == 'Pendente') {
-                    var linha = document.createElement('tr');
-                    var id = document.createElement('td');
-                    var assunto = document.createElement('td');
-                    var data = document.createElement('td');
-                    var prioridade = document.createElement('td');
-                    var status = document.createElement('td');
-                    id.innerHTML = element.IDChamado;
-                    assunto.innerHTML = element.assunto;
-                    data.innerHTML = convertData(element.dataAbertura);
-                    prioridade.innerHTML = element.prioridade;
-                    status.innerHTML = element.status_chamado;
-                    linha.appendChild(id);
-                    linha.appendChild(assunto);
-                    linha.appendChild(data);
-                    linha.appendChild(prioridade);
-                    linha.appendChild(status);
-                    resolvendo.appendChild(linha);
-                    id.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    assunto.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    data.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    prioridade.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                    status.addEventListener('click', function () {
-                        redireciona(element.IDChamado);
-                    })
-                }
-            function receberChamado(IDChamado) {
-                Swal.fire({
-                    title: 'Deseja dar andamento à este chamado?',
-                    text: 'Este chamado ficará vinculado ao seu usuário!',
-                    showCancelButton: true,
-                    confirmButtonColor: '#00cc99',
-                    confirmButtonText: 'Sim',
-                    cancelButtonText: 'Não'
-                }).then((result) => {
-                    if (result && result.isConfirmed) {
-                        //passar o ID pro resolvendoChamados.php e fazer o select.
-                        var data = 'receberChamado=1&IDChamado=' + IDChamado;
-                        connection(data, 'receberChamado');
-                    }
+            if(element.responsavel == null){
+                var linha = document.createElement('tr');
+                var id = document.createElement('td');
+                var assunto = document.createElement('td');
+                var data = document.createElement('td');
+                var prioridade = document.createElement('td');
+                var dias = document.createElement('td');
+                var status = document.createElement('td');
+                var opt = document.createElement('td');
+                var img = document.createElement('img');
+                img.setAttribute('src', 'Icones Site/iconeplus.png');
+                img.setAttribute('width', '20px');
+                img.setAttribute('alt', '');
+                opt.appendChild(img);
+                id.innerHTML = element.IDChamado;
+                assunto.innerHTML = element.assunto;
+                data.innerHTML = element.dataAbertura;
+                prioridade.innerHTML = element.prioridade;
+                dias.innerHTML = element.dias;
+                status.innerHTML = element.status_chamado;
+                // img.innerHTML = img;
+                linha.appendChild(id);
+                linha.appendChild(assunto);
+                linha.appendChild(data);
+                linha.appendChild(prioridade);
+                linha.appendChild(dias);
+                linha.appendChild(status);
+                linha.appendChild(opt);
+                novos.appendChild(linha);
+                linha.addEventListener('click', function(){
+                    window.location.href = 'DetalhandoChamado.html?IDChamado='+element.IDChamado;
                 })
             }
-            function convertData(data) {
-                var novaData = new Date(data);
-                var d = novaData.getDate();
-                var m = novaData.getMonth() + 1;
-                var y = novaData.getFullYear();
-                data = ('0' + d).slice(-2) + '/' + ('0' + m).slice(-2) + '/' + y;
-                return data;
+            else if(element.responsavel == usuario && element.status == '2' || element.status == '3'){
+                var linha = document.createElement('tr');
+                var id = document.createElement('td');
+                var assunto = document.createElement('td');
+                var data = document.createElement('td');
+                var prioridade = document.createElement('td');
+                var status = document.createElement('td');
+                id.innerHTML = element.IDChamado;
+                assunto.innerHTML = element.assunto;
+                data.innerHTML = element.dataAbertura;
+                prioridade.innerHTML = element.prioridade;
+                status.innerHTML = element.status;
+                linha.appendChild(id);
+                linha.appendChild(assunto);
+                linha.appendChild(data);
+                linha.appendChild(prioridade);
+                linha.appendChild(status);
+                resolvendo.appendChild(linha);
             }
-            function calcularDiasEmAberto(dataAtual, dataAbertura) {
-                function converterDataFormato(dataString) {
-                    const partes = dataString.split("/");
-                    const dia = partes[0];
-                    const mes = partes[1];
-                    const ano = partes[2];
-
-                    return ano + "-" + mes + "-" + dia;
-                }
-
-                const dataAtualFormatada = new Date(converterDataFormato(dataAtual));
-                const dataAberturaFormatada = new Date(converterDataFormato(dataAbertura));
-
-                const diferencaEmMilissegundos = dataAtualFormatada - dataAberturaFormatada;
-                const diferencaEmDias = Math.floor(diferencaEmMilissegundos / (1000 * 60 * 60 * 24));
-
-                return diferencaEmDias;
-            }
-            function redireciona(IDChamado) {
-                window.location.href = 'DetalhandoChamado.html?IDChamado=' + IDChamado;
-            }
+            // console.log(element);
         });
-
-
+            
+        
     }
 </script>
 
