@@ -109,9 +109,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result2 = $stmt2->get_result();
         $resultLogs = array();
         if ($result2->num_rows > 0) {
-            $imagens = array(); // Crie um array para armazenar todas as imagens
 
             while ($row2 = $result2->fetch_assoc()) {
+                $logChamado = new LogChamado(
+                    $row2["IDLog"],
+                    $row2["mensagem"],
+                    $row2["dataAlteracao"],
+                    $row2["responsavel"],
+                    $row2["status"],
+                    $imagens = array()
+                );
+
                 $sqlImagens = "SELECT * FROM tbimagens WHERE LOG IS NOT NULL AND referencia = " . $row2["IDLog"];
                 $stmtImagens = $conn->prepare($sqlImagens);
                 $stmtImagens->execute();
@@ -125,18 +133,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $imagemencoded,
                             $rowImagem["referencia"]
                         );
-                        $imagensLog[] = $imagem;
+                        $logChamado->imagensLog[] = $imagem;
+
                     }
                 }
 
-                $logChamado = new LogChamado(
-                    $row2["IDLog"],
-                    $row2["mensagem"],
-                    $row2["dataAlteracao"],
-                    $row2["responsavel"],
-                    $row2["status"],
-                    $imagensLog // Passamos o array de objetos Imagem
-                );
                 $resultLogs[] = $logChamado;
                 // echo json_encode($resultLogs);
             }

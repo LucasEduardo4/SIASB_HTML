@@ -145,23 +145,74 @@
     }
 
     .setas {
-      background-color: gainsboro;
-      border-radius: 6px;
-
+      background-color: #00cc99;
+      color: white;
+      border-radius: 20px;
+      height: 20px;
+      width: 2.5%;
+      padding: 10px;
+      display: inline;
+      position: absolute;
+      box-sizing: content-box;
     }
 
     .setas:hover {
       cursor: pointer;
-      background-color: darkgray;
+      background-color: #00a383;
       transition: 0.4s;
-      border-radius: 8px;
+      border-radius: 30px;
     }
 
+    #imagemLOG {
+      border: solid 1px black;
+      /* box-shadow: 1px 8px 30px 10px grey; */
+      box-shadow: 1px 8px 8px 3px grey;
+    }
 
-    /* .col-md-4 {
+    #esquerda {
+      margin: auto;
+      left: 20px;
+      top: 50%;
+      height: fit-content;
+    }
 
+    #direita {
+      height: fit-content;
+      right: 20px;
+      top: 50%;
+    }
 
-    } */
+    .imagensAnexo {
+      cursor: pointer;
+      width: 220px;
+      margin-right: 10px;
+    }
+
+    .imagensAnexo:hover {
+      transform: scale(1.1);
+      transition: 0.4s;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+    }
+
+    #anexosContainer {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .indicador {
+      width: 10px;
+      height: 10px;
+      background-color: lightgray;
+      border-radius: 50%;
+      margin: 0 5px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .indicador.ativo {
+      background-color: darkgray;
+    }
   </style>
 
   <title>Detalhando Chamado</title>
@@ -204,7 +255,6 @@
   xhr.send();
   </script> -->
 
-
   <div class="chamados">
     <div style="padding-top: 80px;" class="row">
       <div class="col-md-8">
@@ -219,7 +269,6 @@
             <div class="resultados_log" id="resultados_log"
               style="background-color: #40a38436; border-radius: 5px; padding: 6px;">
               <div class="container mt-4" id="logsContainer">
-                <!-- Div pré-existente que exibirá os logs -->
               </div>
             </div>
           </div>
@@ -282,7 +331,6 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
               if (operation == 1) {
                 unParse(xhr.responseText);
-                // console.log(xhr.responseText)
               } else if (operation == 2) {
                 // console.log(xhr.responseText);
               } else if (operation == 'verificarSetor') {
@@ -303,7 +351,6 @@
 
 
         function unParse(data) {
-          // console.log(data);
           var dadosObjeto = JSON.parse(data)
           var IDChamado = dadosObjeto.IDChamado;
           var assunto = dadosObjeto.assunto;
@@ -316,19 +363,20 @@
           var imagensChamado = dadosObjeto.imagensChamado;
           var logs = dadosObjeto.logs;
           var icone = dadosObjeto.icone;
-          console.log(imagensChamado);
+
+          if (logs[0]) {
+            exibeLogs(logs);
+          } else {
+            var logAndamento = document.getElementById("resultados_log");
+            logAndamento.innerHTML = "Aguarde, ainda não houve alteração no seu chamado.";
+          }
 
 
-          // var ligacaoChamadoID = dadosObjeto.ligacaoChamadoID;
-
-          exibeLogs(logs);
           if (imagensChamado && imagensChamado.length == 0) {
             document.getElementById("anexosContainer").innerHTML += '<p>Nenhuma imagem anexada para este chamado.</p>';
           } else {
             exibeImagens(imagensChamado)
           }
-
-
 
           dataAbertura = formatarDataHora(dataAbertura);
 
@@ -342,16 +390,9 @@
           if (equipamento != null) {
             document.getElementById("equipamento").innerHTML += `${equipamento}`;
           } else {
-            // document.getElementById("equipamento").innerHTML += '---';
             document.getElementById("equipamento").style.display = 'none';
-
           }
           document.getElementById("numChamado").innerHTML += IDChamado;
-          // document.getElementById("imagem").innerHTML += imagem;
-          // if(ligacaoChamadoID == null){
-          //   document.getElementById("resultados_log").innerHTML = "Não há logs para este chamado.";
-          // }
-
 
 
           if (icone) {
@@ -364,27 +405,6 @@
           }
 
         }
-      </script>
-      <style>
-        .imagensAnexo {
-          cursor: pointer;
-          width: 220px;
-          margin-right: 10px;
-        }
-
-        .imagensAnexo:hover {
-          transform: scale(1.1);
-          transition: 0.4s;
-          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-          border-radius: 6px;
-        }
-
-        #anexosContainer {
-          display: flex;
-          flex-direction: row;
-        }
-      </style>
-      <script>
 
         function exibeImagens(imagensChamado) {
           containerAnexos = document.getElementById("anexosContainer");
@@ -399,9 +419,7 @@
           `;
           })
         }
-//O PROBLEMA ESTÁ AQU, NA HORA DE PASSAR O ID DO LOG PARA ESSAS FUNÇÕES ABAIXO.. PENSAR EM ALGO PARA SOLUCIONAR ISSO
         function exibeLogs(logs) {
-          // console.log(logs);
           const logsContainer = document.getElementById("logsContainer");
 
           logs.forEach((log) => {
@@ -432,7 +450,7 @@
               imagem.title = "Clique para visualizar a imagem anexada à resposta";
               imagem.id = "imagemAnexada";
               imagem.onclick = function () {
-                exibeImagensAnexadas(log.imagensLog, log.IDLog);
+                exibeImagensAnexadas(log.imagensLog);
               }
 
               div1.appendChild(imagem);
@@ -460,66 +478,86 @@
           });
         }
 
-        function exibeImagensAnexadas(imagens, IDLog) {
-          console.log(imagens + '\n' + IDLog);
-
+        function exibeImagensAnexadas(imagens) {
           if (window.screen.width < 1025) {
-              var responsiveSize = window.screen.width * 0.65;
-            } else {
-              var responsiveSize = window.screen.width * 0.8;
-            }
+            var responsiveSize = window.screen.width * 0.65;
+          } else {
+            var responsiveSize = window.screen.width * 0.8;
+          }
 
-            let currentIndex = 0; // Índice da imagem atual
-            
-            function showImage(index) {
-              console.log(imagem[index]);
-              if (imagens[index].referencia == IDLog) {
-              const html = `
-              <div id="esquerda" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-left"></span></div>
+          let currentIndex = 0; // Índice da imagem atual
+
+          function showImage(index) {
+            const html = `<div id="indicadores"></div>
+              <div id="esquerda" class="setas"><span class="bi bi-arrow-left"></span></div>
               <div id="central" style="width:70%; display:inline;">
-                <img id="imagenLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">
+                <img id="imagemLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">
               </div>
-              <div id="direita" style="width:2.5%; padding:200px 10px; display:inline;" class="setas"><span class="bi bi-arrow-right"></span></div>
+              <div id="direita" class="setas"><span class="bi bi-arrow-right"></span></div>
             `;
 
-              Swal.fire({
-                title: "Imagem anexada",
-                html: html,
-                width: window.screen.width,
-                showCancelButton: false,
-                confirmButtonText: 'Fechar',
-                confirmButtonColor: '#00cc99'
-              });
+            Swal.fire({
+              title: "Imagem anexada",
+              html: html,
+              width: window.screen.width,
+              showCancelButton: false,
+              confirmButtonText: 'Fechar',
+              confirmButtonColor: '#00cc99'
+            });
 
-              // Adicione manipuladores de eventos às setas esquerda e direita
-              const esquerda = document.getElementById("esquerda");
-              const direita = document.getElementById("direita");
+            const indicadoresDiv = document.getElementById("indicadores");
+            indicadoresDiv.innerHTML = "";
 
-              esquerda.addEventListener("click", () => {
-                if (currentIndex > 0) {
-                  currentIndex--;
-                  updateImage(currentIndex, IDLog);
-                }
-              });
+            for (let i = 0; i < imagens.length; i++) {
+              const indicador = document.createElement("div");
+              indicador.classList.add("indicador");
 
-              direita.addEventListener("click", () => {
-                if (currentIndex < imagens.length - 1) {
-                  currentIndex++;
-                  updateImage(currentIndex, IDLog);
-                }
-              });
+              // Defina uma classe especial para o indicador da imagem atual
+              if (i === index) {
+                indicador.classList.add("ativo");
+              }
+
+              // Adicione o indicador à seção de indicadores
+              indicadoresDiv.appendChild(indicador);
             }
 
-            function updateImage(index, IDLog) {
-              if(imagens[index].referencia == IDLog)
-              document.getElementById("central").innerHTML = `<img id="imagenLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">`;
-            }
+            // Adicione manipuladores de eventos às setas esquerda e direita
+            const esquerda = document.getElementById("esquerda");
+            const direita = document.getElementById("direita");
 
-            showImage(currentIndex);
+            esquerda.addEventListener("click", () => {
+              if (currentIndex > 0) {
+                currentIndex--;
+                updateImage(currentIndex);
+              }
+            });
 
+            direita.addEventListener("click", () => {
+              if (currentIndex < imagens.length - 1) {
+                currentIndex++;
+                updateImage(currentIndex);
+              }
+            });
 
           }
+
+          function updateImage(index) {
+            const indicadores = document.querySelectorAll(".indicador");
+
+            indicadores.forEach((indicador) => {
+              indicador.classList.remove("ativo");
+            });
+
+            indicadores[index].classList.add("ativo");
+
+            document.getElementById("central").innerHTML = `<img id="imagemLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">`;
+          }
+
+          showImage(currentIndex);
+
+
         }
+
 
         function formatarDataHora(dataOriginal) {
           const date = new Date(dataOriginal);
