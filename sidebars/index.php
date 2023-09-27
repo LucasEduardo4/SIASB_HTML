@@ -252,6 +252,8 @@ if ($imageData) {
 
     p {
       padding-left: 10px;
+      padding-bottom: 0.5rem;
+      padding-top: 2px;
     }
 
     p:hover {
@@ -662,7 +664,7 @@ if ($imageData) {
         <div onclick="abrirResolvendo()">
           <li onclick="alterarCor(this)" class="menu-item">
             <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
-            <p style="color: white;"> RESOLVER </p>
+            <p style="color: white; "> RESOLVER </p>
           </li>
         </div>
         
