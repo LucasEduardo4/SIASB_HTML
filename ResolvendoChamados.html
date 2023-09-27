@@ -77,6 +77,49 @@
 
         }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            /* overflow: hidden; */
+            background-color:white; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            margin: auto;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) > * {
+            --bs-table-bg-type:none;
+        }
+
+        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+            padding-bottom: 50px;
+        }
+
+
+        /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
+        .table> :not(caption)>*>* {
+
+            background-color: white;
+            color: black;
+
+        }
+
+
+        /* =========================================================================== */
+
+        .table-heading {
+            background: linear-gradient(135deg, #007bff, #00cc99);
+            color: #fff;
+        }
+
+        .table-heading th {
+            padding: 4px;
+            color: #ffffff;
+            background-color: #00a383;
+            border-radius: 30px;
+
+        }
+
         table th,
         table td {
             padding: 12px;
@@ -172,7 +215,7 @@
                     <td>Aberto</td> -->
                 </tbody>
             </table>
-        </div> 
+        </div>
     </div>
 </body>
 <script>
@@ -181,7 +224,7 @@
         connection(dados, 'inicial');
         connection('fechados=1', 'fechados')
     }
-    function connection(dados, output) {
+    function connection(dados) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", 'ResolvendoChamados.php');
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -206,16 +249,18 @@
     function unParse(dados) {
         // console.log(dados);
         var dados = JSON.parse(dados);
+        console.log(dados);
 
         var novos = document.getElementById('novos');
         var resolvendo = document.getElementById('resolvendo');
-        var fechados = document.getElementById('fechados');
+        var todos = document.getElementById('todos');
         const usuario = dados[0].usuario;
         var dataHoje = new Date();
         var d = dataHoje.getDate() + 1;
         var m = dataHoje.getMonth() + 1;
         var y = dataHoje.getFullYear();
         dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
+        
 
 
         
@@ -443,8 +488,8 @@
                 window.location.href = 'DetalhandoChamado.html?IDChamado=' + IDChamado;
             }
         });
-
-
+            
+        
     }
 </script>
 
