@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="sidebars/bootstrap.min.css">
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+  <script src="/siasb_html/flowSite/verificaAtivo.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -638,7 +639,7 @@
             responsavelStatus.src = "Icones%20Site/anexo.png";
 
             div1.appendChild(responsavelStatus);
-            if (log.imagensLog) {
+            if (log.imagensLog && log.imagensLog.length > 0) {
               const imagem = document.createElement("img");
               imagem.classList.add("ml-3");
               imagem.src = "Icones%20Site/anexo.png";
