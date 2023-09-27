@@ -4,6 +4,40 @@ if (!isset($_SESSION['username'])) {
   header("Location: ../login.html");
   exit();
 }
+
+
+//abaixo está a verificação se o usuário está ativo:
+    $conn = mysqli_connect('localhost', 'root', '', 'siasb');
+    $username = $_SESSION['username'];
+    
+    $sql = "SELECT * FROM TBUsuario u  
+        LEFT JOIN TBPessoa p on p.IDPessoa = u.IDUsuario
+        WHERE u.nome = '$username'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $habilitado = $row["habilitado"];
+            $setor_secao = $row["setor_secao"];
+    
+            // $resultHabilitado = $habilitado == 1 ? true : false;
+            // $resultSetorSecao = $setor_secao == 1 ? true : false;
+    
+            // if($resultHabilitado && $resultSetorSecao){
+            //     echo 'true';
+            // }else{
+            //     echo 'false';
+            // }
+    
+            if ($habilitado != 1) {
+                header("Location: flowsite/usuarioinativo.html");
+            } else {
+                echo 'permitido!';
+            }
+        }
+    }
 ?>
 
 <?php

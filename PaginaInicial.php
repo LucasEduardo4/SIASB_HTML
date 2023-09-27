@@ -1,14 +1,36 @@
 <?php
 // Verifica se o usuário está autenticado
 session_start();
+
 if (!isset($_SESSION['username'])) {
     header("Location: login.php"); // Redireciona para a página de login se não estiver autenticado
     exit();
 }
+
+//abaixo está a verificação se o usuário está ativo:
+$conn = mysqli_connect('localhost', 'root', '', 'siasb');
+$username = $_SESSION['username'];
+
+$sql = "SELECT * FROM TBUsuario u  
+    LEFT JOIN TBPessoa p on p.IDPessoa = u.IDUsuario
+    WHERE u.nome = '$username'";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $habilitado = $row["habilitado"];
+        $setor_secao = $row["setor_secao"];
+
+        if ($habilitado != 1) {
+            header("Location: flowsite/usuarioinativo.html");
+        } 
+    
+    }
+}
+
 ?>
-
-
-<!-- PHP PARA REALIZAR A INSERÇÃO DAS ANOTAÇÕES NO BANCO DE DADOS -->
 <?php
 // Faça a consulta para obter o ID do usuário
 // Realizar a conexão com o banco de dados (substitua os valores conforme suas configurações)
@@ -93,6 +115,7 @@ $stmt->close();
 
 <head>
     <meta charset="UTF-8">
+
     <title>Página Home</title>
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 

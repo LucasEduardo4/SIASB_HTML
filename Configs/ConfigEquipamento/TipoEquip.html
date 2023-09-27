@@ -2,16 +2,48 @@
 <html lang="en">
 
 <head>
-    <script src='./../../flowSite/verificaSessao.js'></script>
-    <script src="/flowSite/verificaSessao.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurar tipo de equipamento</title>
-
     <link rel="icon" href="../../icons/warning.png" sizes="192x192" />
     <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
     <link rel="stylesheet" href="../lib/stylesheet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script>
+        function verifySess() {
+            function cnxn(path, data, operation) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", path, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        if (operation == 'sessao') {
+                            if (xhr.responseText == "false") {
+                                window.location.href = `/siasb_html/Login.html?error=true`;
+                            }
+                        } else
+                            if (operation == 'permissao') {
+                                if (xhr.responseText == "sem permissao") {
+                                    window.location.href = `/siasb_html/flowsite/permissaonegada.html`;
+                                    verificado = true;
+                                } else
+                                    if (xhr.responseText == 'desabilitado') {
+                                        window.location.href = `/siasb_html/flowsite/usuarioinativo.html`;
+                                        verificado = true;
+                                    } else {
+                                        verificado = true;
+                                    }
+                            }
+                    }
+                }
+                xhr.send(data);
+            }
+            cnxn('../../flowsite/verificaSessao.php', 'verify=1', 'sessao');
+            cnxn('../../flowsite/verificaPermissao.php', 'verificaPermissao=1', 'permissao');
+            select()
+        }
+    </script>
+
+    <title>Configurar tipo de equipamento</title>
     <style>
         #cadastro {
             display: none;
@@ -68,7 +100,7 @@
             color: #000000;
             /* text-align: start; */
             padding-left: 20px;
-            flex:none;
+            flex: none;
 
         }
 
@@ -241,10 +273,9 @@
             margin-left: 0px;
         }
     </style>
-
 </head>
 
-<body onload="select()">
+<body onload="verifySess()">
     <header class="header">
 
         <a href="../index.html" class="back-button"><i style="font-size: 40px"
@@ -315,6 +346,8 @@
             connection("POST", data, "reset")
         }
         function connection(method, data, output) {
+            var xhr = new XMLHttpRequest();
+
             xhr.open(method, "ConfigTipoEquipamento.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {

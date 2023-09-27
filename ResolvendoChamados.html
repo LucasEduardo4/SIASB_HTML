@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="sidebars/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/siasb_html/flowSite/verificaSessao.js"></script>
+    <script src="/siasb_html/flowSite/verificaPermissao.js"></script>
+    <script src="/siasb_html/flowSite/verificaAtivo.js"></script>
+
+
 
     <title>Resolvendo Chamados</title>
     <style>
@@ -25,22 +30,76 @@
         }
 
         .table {
-            width: 80%;
-            margin: auto;
-        }
-
-        .table-heading {
             background-color: #00a383;
             color: white;
         }
 
-        #opt {
-            cursor: pointer;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            /* overflow: hidden; */
+            background-color:white; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            margin: auto;
         }
 
-        tr>td:hover {
-            cursor: pointer;
+        .table-striped > tbody > tr:nth-of-type(odd) > * {
+            --bs-table-bg-type:none;
         }
+
+        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+            padding-bottom: 50px;
+        }
+
+
+        /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
+        .table> :not(caption)>*>* {
+
+            background-color: white;
+            color: black;
+
+        }
+
+
+        /* =========================================================================== */
+
+        .table-heading {
+            background: linear-gradient(135deg, #007bff, #00cc99);
+            color: #fff;
+        }
+
+        .table-heading th {
+            padding: 4px;
+            color: #ffffff;
+            background-color: #00a383;
+            border-radius: 30px;
+
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .title {
+            margin: auto;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding-top: 30px;
+            font-size: 40px;
+            color: #000000;
+            text-align:start;
+            width: 180vh;
+            flex:none;
+            text-align: center;
+            padding-top: 10px;
+        }
+
     </style>
 </head>
 
@@ -53,19 +112,22 @@
                 <thead style="font-weight: 700;" class="table-heading table-dark">
                     <td>ID</td>
                     <td>ASSUNTO</td>
+                    <td>AUTOR</td>
+                    <td>SETOR/SEÇÃO</td>
                     <td>DATA</td>
                     <td>PRIORIDADE</td>
                     <td>D/ABERTO</td>
                     <td>STATUS</td>
+                    <td>ADD</td>
                 </thead>
                 <tbody id="novos">
-                    <td>1</td>
+                    <!-- <td>1</td>
                     <td>Placeholder</td>
                     <td>18/09/2023</td>
                     <td style="color: red; font-weight: 900;" >ALTA</td>
                     <td>3</td>
                     <td>Aberto</td>
-                    <td><img src="Icones Site/iconeplus.png" width="20px" alt=""></td>
+                    <td><img src="Icones Site/iconeplus.png" width="20px" alt=""></td> -->
                 </tbody>
             </table style="padding-bottom:20px">
         </div  >
@@ -75,45 +137,49 @@
                 <thead style="font-weight: 700;" class="table-heading">
                     <td>ID</td>
                     <td>ASSUNTO</td>
+                    <td>AUTOR</td>
+                    <td>SETOR/SEÇÃO</td>
                     <td>DATA DE ABERTURA</td>
                     <td>PRIORIDADE</td>
                     <td>STATUS</td>
                 </thead>
                 <tbody id="resolvendo">
-                    <td>2</td>
+                    <!-- <td>2</td>
                     <td>Placeholder</td>
                     <td>18/09/2023</td>
-                    <td style="color: rgb(255, 196, 0); font-weight: 900;" >MÉDIA</td>
-                    <td>Em andamento</td>
+                    <td style="color: rgb(255, 196, 0); font-weight: 900;" >Média</td>
+                    <td>Em andamento</td> -->
                 </tbody>
             </table>
         </div>
         <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
-            <h2 style="padding-bottom: 20px;" >TODOS OS CHAMADOS</h2>
+            <h2 style="padding-bottom: 20px;" >RESOLVIDOS</h2>
             <table class="table table-hover table-striped" id="todos">
                 <thead style="font-weight: 700;" class="table-heading">
                     <td>ID</td>
                     <td>ASSUNTO</td>
                     <td>DATA DE ABERTURA</td>
+                    <td>AUTOR</td>
+                    <td>SETOR/SEÇÃO</td>
                     <td>PRIORIDADE</td>
                     <td>STATUS</td>
                 </thead>
-                <tbody>
-                    <td>3</td>
+                <tbody id="fechados">
+                    <!-- <td>3</td>
                     <td>Placeholder</td>
                     <td>18/09/2023</td>
                     <td style="color: green; font-weight: 900;" >BAIXA</td>
-                    <td>Aberto</td>
+                    <td>Aberto</td> -->
                 </tbody>
             </table>
-        </div> -->
+        </div> 
     </div>
-
 </body>
 <script>
     function selectInicial() {
         var dados = 'selectChamados=1';
         connection(dados, 'inicial');
+        connection('fechados=1', 'fechados')
     }
     function connection(dados, output) {
         var xhr = new XMLHttpRequest();
@@ -127,6 +193,10 @@
                 } else
                     if (output == 'receberChamado') {
                         window.location.reload();
+                    }else
+                    if(output == 'fechados'){
+                        var resposta = xhr.responseText;
+                        unParse(resposta);
                     }
 
             }
@@ -134,11 +204,12 @@
         xhr.send(dados);
     }
     function unParse(dados) {
+        // console.log(dados);
         var dados = JSON.parse(dados);
 
         var novos = document.getElementById('novos');
         var resolvendo = document.getElementById('resolvendo');
-        var todos = document.getElementById('todos');
+        var fechados = document.getElementById('fechados');
         const usuario = dados[0].usuario;
         var dataHoje = new Date();
         var d = dataHoje.getDate() + 1;
@@ -146,15 +217,19 @@
         var y = dataHoje.getFullYear();
         dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
 
+
+        
         dados.forEach(element => {
             if (element.usuario) {
                 return;
             } else
-                if (element.responsavel == null) {
+                if (element.responsavel == null && element.status_chamado == 'Aberto') {
                     var linha = document.createElement('tr');
                     var id = document.createElement('td');
                     var assunto = document.createElement('td');
                     var data = document.createElement('td');
+                    var autor = document.createElement('td');
+                    var setor_secao = document.createElement('td');
                     var prioridade = document.createElement('td');
                     var dias = document.createElement('td');
                     var status = document.createElement('td');
@@ -172,17 +247,22 @@
                     assunto.innerHTML = element.assunto;
                     data.innerHTML = convertData(element.dataAbertura);
                     prioridade.innerHTML = element.prioridade;
+                    autor.innerHTML = element.autor;
+                    setor_secao.innerHTML = element.setor_secao;
 
                     dias.innerHTML = calcularDiasEmAberto(dataHoje, element.dataAbertura)
                     status.innerHTML = element.status_chamado;
                     // img.innerHTML = img;
                     linha.appendChild(id);
                     linha.appendChild(assunto);
+                    linha.appendChild(autor);
+                    linha.appendChild(setor_secao);
                     linha.appendChild(data);
                     linha.appendChild(prioridade);
                     linha.appendChild(dias);
                     linha.appendChild(status);
                     novos.appendChild(linha);
+                    verificaPrioridade(prioridade);
                     assunto.addEventListener('click', function () {
                         redireciona(element.IDChamado);
                     })
@@ -190,6 +270,12 @@
                         redireciona(element.IDChamado);
                     })
                     data.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    autor.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    setor_secao.addEventListener('click', function () {
                         redireciona(element.IDChamado);
                     })
                     prioridade.addEventListener('click', function () {
@@ -207,6 +293,8 @@
                     var linha = document.createElement('tr');
                     var id = document.createElement('td');
                     var assunto = document.createElement('td');
+                    var autor = document.createElement('td');
+                    var setor_secao = document.createElement('td');
                     var data = document.createElement('td');
                     var prioridade = document.createElement('td');
                     var status = document.createElement('td');
@@ -215,8 +303,13 @@
                     data.innerHTML = convertData(element.dataAbertura);
                     prioridade.innerHTML = element.prioridade;
                     status.innerHTML = element.status_chamado;
+                    autor.innerHTML = element.autor;
+                    setor_secao.innerHTML = element.setor_secao;
+                    verificaPrioridade(prioridade);
                     linha.appendChild(id);
                     linha.appendChild(assunto);
+                    linha.appendChild(autor);
+                    linha.appendChild(setor_secao);
                     linha.appendChild(data);
                     linha.appendChild(prioridade);
                     linha.appendChild(status);
@@ -225,6 +318,59 @@
                         redireciona(element.IDChamado);
                     })
                     assunto.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    autor.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    setor_secao.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    data.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    prioridade.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    status.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+
+                }else if(element.responsavel == usuario.toUpperCase() || usuario.toLowerCase() && element.status_chamado == 'Fechado'){
+                    var linha = document.createElement('tr');
+                    var id = document.createElement('td');
+                    var assunto = document.createElement('td');
+                    var autor = document.createElement('td');
+                    var setor_secao = document.createElement('td');
+                    var data = document.createElement('td');
+                    var prioridade = document.createElement('td');
+                    var status = document.createElement('td');
+                    id.innerHTML = element.IDChamado;
+                    assunto.innerHTML = element.assunto;
+                    data.innerHTML = convertData(element.dataAbertura);
+                    prioridade.innerHTML = element.prioridade;
+                    status.innerHTML = element.status_chamado;
+                    autor.innerHTML = element.autor;
+                    setor_secao.innerHTML = element.setor_secao;
+                    verificaPrioridade(prioridade);
+                    linha.appendChild(id);
+                    linha.appendChild(assunto);
+                    linha.appendChild(autor);
+                    linha.appendChild(setor_secao);
+                    linha.appendChild(data);
+                    linha.appendChild(prioridade);
+                    linha.appendChild(status);
+                    fechados.appendChild(linha);
+                    id.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    assunto.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    autor.addEventListener('click', function () {
+                        redireciona(element.IDChamado);
+                    })
+                    setor_secao.addEventListener('click', function () {
                         redireciona(element.IDChamado);
                     })
                     data.addEventListener('click', function () {
@@ -237,6 +383,20 @@
                         redireciona(element.IDChamado);
                     })
                 }
+
+            function verificaPrioridade(prioridade){
+                // console.log(prioridade);
+                if(prioridade.innerHTML == 'Alta'){
+                    prioridade.classList.add('Alta');
+                }else
+                if(prioridade.innerHTML == 'Média'){
+                    prioridade.classList.add('Média');
+                }else
+                if(prioridade.innerHTML == 'Baixa'){
+                    prioridade.classList.add('Baixa');
+                }
+            }
+
             function receberChamado(IDChamado) {
                 Swal.fire({
                     title: 'Deseja dar andamento à este chamado?',

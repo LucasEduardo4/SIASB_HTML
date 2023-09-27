@@ -5,14 +5,48 @@
   <title>Cadastro</title>
   <link rel="stylesheet" href="../../Inicial.css">
   <link rel="icon" href="https://saaeb.com.br/wp-content/uploads/2019/09/favicon.png" sizes="192x192" />
-  <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- //para o popup Sweet alert-->
   <script src='./../../flowSite/verificaSessao.js'></script>
+  <script src='./../../flowSite/verificaPermissao.js'></script>
   <meta charset="UTF-8">
+  <script>
+    function verifySess() {
+        function cnxn(path, data, operation) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", path, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (operation == 'sessao') {
+                        if (xhr.responseText == "false") {
+                            window.location.href = `/siasb_html/Login.html?error=true`;
+                        }
+                    } else
+                        if (operation == 'permissao') {
+                            if (xhr.responseText == "sem permissao") {
+                                window.location.href = `/siasb_html/flowsite/permissaonegada.html`;
+                                verificado = true;
+                            } else
+                                if (xhr.responseText == 'desabilitado') {
+                                    window.location.href = `/siasb_html/flowsite/usuarioinativo.html`;
+                                    verificado = true;
+                                } else {
+                                    verificado = true;
+                                }
+                        }
+                }
+            }
+            xhr.send(data);
+        }
+        cnxn('../../flowsite/verificaSessao.php', 'verify=1', 'sessao');
+        cnxn('../../flowsite/verificaPermissao.php', 'verificaPermissao=1', 'permissao');
+        init()
+    }
+</script>
 
 </head>
 
-<body onload="init()">
+<body onload="verifySess()">
   <div class="container">
     <h1 style="font-size: 25px; padding-bottom: 30px;">CADASTRAR EQUIPAMENTOS</h1>
 
@@ -60,32 +94,35 @@
 
     function handleURL() {
       var url = window.location.href;
-      console.log(url);
-      var queryString = url.split("?")[1];
-      var equip = queryString.split("=")[1];
-      var equipamento = JSON.parse(decodeURIComponent(equip));
-      console.log(equipamento);
-      document.getElementById("stiID").value = equipamento.sti_id;
-      document.getElementById("descricao").value = equipamento.descricao;
-      document.getElementById("ip").value = equipamento.ip;
-      var secao = document.getElementById("selectSecoes");
-      secao.selectedIndex = 1;
-      console.log(equipamento.IDPessoa);
-      setTimeout(function () {
-        document.getElementById("selectPessoas").value = equipamento.IDPessoa;
+      if (url.includes("equip=") == false) {
+        return;
+      } else {
+        // console.log(url);
+        var queryString = url.split("?")[1];
+        var equip = queryString.split("=")[1];
+        var equipamento = JSON.parse(decodeURIComponent(equip));
+        console.log(equipamento);
+        document.getElementById("stiID").value = equipamento.sti_id;
+        document.getElementById("descricao").value = equipamento.descricao;
+        document.getElementById("ip").value = equipamento.ip;
+        var secao = document.getElementById("selectSecoes");
+        secao.selectedIndex = 1;
+        console.log(equipamento.IDPessoa);
+        setTimeout(function () {
+          document.getElementById("selectPessoas").value = equipamento.IDPessoa;
 
-        var selectTipos = document.getElementById("selectTipos");
-        for (let i in selectTipos) {
-          if (selectTipos[i].value == 1) {
-            selectTipos[i].disabled = true;
-            selectTipos[i].hidden = true;
-            break;
+          var selectTipos = document.getElementById("selectTipos");
+          for (let i in selectTipos) {
+            if (selectTipos[i].value == 1) {
+              selectTipos[i].disabled = true;
+              selectTipos[i].hidden = true;
+              break;
+            }
           }
-        }
-      }, 100);
-      selectPerson();
+        }, 100);
+        selectPerson();
 
-
+      }
     }
     function init() {
       SelectsTipo_Secao();
@@ -198,7 +235,7 @@
     }
 
     function unParse(data) {
-      console.log(data)
+      // console.log(data)
       var dadosObjeto = JSON.parse(data)
       var tipos = dadosObjeto.tipos;
       var secoes = dadosObjeto.secoes;
