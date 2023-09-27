@@ -472,7 +472,7 @@ $stmt->close();
             var dataFormatada = dia + '/' + mes + '/' + ano;
 
             // Exibe a data atual na página
-            document.getElementById('dataAtual').textContent = dataFormatada;
+            // document.getElementById('dataAtual').textContent = dataFormatada;
         }
 
     </script>

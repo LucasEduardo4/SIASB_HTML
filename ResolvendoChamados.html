@@ -201,9 +201,9 @@
                 <thead style="font-weight: 700;" class="table-heading">
                     <td>ID</td>
                     <td>ASSUNTO</td>
-                    <td>DATA DE ABERTURA</td>
                     <td>AUTOR</td>
                     <td>SETOR/SEÇÃO</td>
+                    <td>DATA DE ABERTURA</td>
                     <td>PRIORIDADE</td>
                     <td>STATUS</td>
                 </thead>
@@ -224,7 +224,7 @@
         connection(dados, 'inicial');
         connection('fechados=1', 'fechados')
     }
-    function connection(dados) {
+    function connection(dados, output) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", 'ResolvendoChamados.php');
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -247,9 +247,7 @@
         xhr.send(dados);
     }
     function unParse(dados) {
-        // console.log(dados);
         var dados = JSON.parse(dados);
-        console.log(dados);
 
         var novos = document.getElementById('novos');
         var resolvendo = document.getElementById('resolvendo');
@@ -260,7 +258,7 @@
         var m = dataHoje.getMonth() + 1;
         var y = dataHoje.getFullYear();
         dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
-        
+
 
 
         
@@ -430,7 +428,6 @@
                 }
 
             function verificaPrioridade(prioridade){
-                // console.log(prioridade);
                 if(prioridade.innerHTML == 'Alta'){
                     prioridade.classList.add('Alta');
                 }else

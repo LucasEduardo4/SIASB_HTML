@@ -17,7 +17,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
 
   //PEGANDO UM DETERMINADO DADO DO BANCO DE DADOS (ÓTIMO PARA REALIZAR QUANDO ESTAMOS TRABALHANDO COM UM USUÁRIO CONECTADO NO SISTEMA)
-  $sql = "SELECT * FROM tbusuario WHERE nome = ? ";
+  $sql = "SELECT * FROM tbusuario WHERE nome = ? AND habilitado = 1";
   $stmt = $conn->prepare($sql);
   $stmt->bind_param("s", $username);
   $stmt->execute();

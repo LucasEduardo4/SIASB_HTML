@@ -11,6 +11,8 @@
     <!-- <script src='./../../flowSite/verificaSessao.js'></script> -->
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
     <script src="/siasb_html/flowSite/verificaPermissao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <title>Config Setor</title>
@@ -240,6 +242,31 @@
 
             margin-left: 0px;
         }
+        #popupEdit #head {
+            width: 100px;
+            height: auto;
+            text-align: center;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        #popupEdit p {
+            display: inline-block;
+            vertical-align: middle;
+            margin: auto;
+        }
+
+        .swal2-input {
+            margin: 5px 0px;
+        }
+
+        #head .checkbox {
+            width: 250px;
+        }
+
+        #ativo {
+            left: 0px;
+        }
 
 
     </style>
@@ -292,6 +319,7 @@
                 <th>ID Setor</th>
                 <th>Nome Setor/Seção</th>
                 <th>Responsável</th>
+                <th>Ações</th>
             </tr>
             <tr></tr>
         </table>
@@ -390,6 +418,119 @@
                 }
             };
             xhr.send("nomeSetor=" + encodeURIComponent(novo) + "&responsavel=" + encodeURIComponent(responsavel));
+
+        }
+        
+        function action(recebido) {
+            console.log(recebido);
+            var acao = recebido.split("-");
+            comando = acao[0];
+            id = acao[1];
+            //dados recebidos:
+            var ID = document.getElementById("id-" + id).innerHTML;
+            var descricao = document.getElementById("desc-" + id).innerHTML;
+            var gerente = document.getElementById("gerente-" + id).innerHTML;
+
+            console.log(ID, descricao, gerente)
+
+            if (comando == 'edit') {//botao editar
+                openEditPopup(ID, descricao, gerente)
+
+            } else
+                if (comando == 'trash') {
+                    Swal.fire({
+                        title: 'Tem certeza?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#00cc99',
+                        confirmButtonText: 'Sim, delete!',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var data = "deleteLocal=1&ID=" + ID;
+                            connection(data, 'refresh2');
+
+                            var asnc = async () => {
+                                await sleep(250)
+                                var result = document.getElementById('divinv').innerHTML;
+                                if (result == true || result == 'true') {
+                                    Swal.fire({
+                                        title: 'Deletado!',
+                                        text: 'O local foi deletado com sucesso.',
+                                        icon: 'success',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });;
+                                } else {
+                                    Swal.fire({
+                                        title: 'Não foi possível deletar ',
+                                        text: 'Existem outros dados vinculados à esse Local',
+                                        icon: 'error',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                            asnc();
+                        }
+                    })
+                }
+
+            function openEditPopup(id, descricao, gerente,) {
+                Swal.fire({
+                    title: 'Editar Dados',
+                    html: `
+                        <div id="popupEdit" class="container">
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="descricao">Descrição:</p>
+                                </div><div class="col">
+                                <input id="descricao" type="text" class="swal2-input" value="${descricao}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="end">Responsável:</p>
+                                </div><div class="col">
+                                <select></select>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Salvar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#00cc99', // Altera a cor do botão Confirmar
+                    // padding: '2rem', // Aumenta a margem geral do popup
+                    customClass: {
+                        confirmButton: 'swal2-small', // Reduz o tamanho do botão Confirmar
+                        cancelButton: 'swal2-small' // Reduz o tamanho do botão Cancelar
+                    },
+                    preConfirm: () => {
+                        const descricao = document.getElementById('descricao').value;
+                        const endereco = document.getElementById('end').value;
+                        const ativo = document.getElementById('ativo').checked ? '1' : '0';
+                        var data = "updateLocal=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&endereco=" + encodeURIComponent(endereco) + "&ativo=" + ativo;
+                        connection(data, 'refresh2');
+                        return descricao, endereco, ativo;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Dados Atualizados',
+                            text: 'Os dados foram atualizados com sucesso!',
+                            icon: 'success',
+                            timer: 3000
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    }
+                });
+            }
+
 
         }
     </script>

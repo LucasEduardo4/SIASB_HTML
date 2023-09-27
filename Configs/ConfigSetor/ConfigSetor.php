@@ -22,9 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                 echo "<tr>
-                <td>".$ID."</td>
-                <td>".$descricao."</td>
-                <td>".$gerente."</td>
+                <td id='id-$ID'>".$ID."</td>
+                <td id='desc-$ID'>".$descricao."</td>
+                <td id='gerente-$ID'>".$gerente."</td>
+                <td><span class='bi bi-pencil' onclick='action(`edit-{$ID}`)' id='edit-{$ID}'></span>
+                <span class='bi bi-trash' onclick='action(`trash-{$ID}`)' id='trash-{$ID}'></span></td>
                 </tr>";
                 
             }

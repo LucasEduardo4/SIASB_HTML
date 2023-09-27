@@ -255,6 +255,9 @@
                     border-radius: 6px;
                     padding: 6px;
                 }
+                .disabledDiv{
+                    color: #dcdcdc;
+                }
             </style>
             <script>
                 function exibeColunas(){
@@ -270,8 +273,8 @@
             <div class="container container-fluid esse mt-3" style="margin: auto;">
                 <div class="form-check p-0">
 
-                    <label for="selectColunas" class="form-check-label">Selecionar colunas:</label>
-                    <div id="columnSelector" onclick="exibeColunas()">Escolha abaixo:</div>
+                    <p for="columnSelector" class="form-check-label mb-0">Selecionar colunas:</p>
+                    <div id="columnSelector" class="disabledDiv" onclick="exibeColunas()">Escolha abaixo:</div>
                     <div id="columnSelection">
                         <div class="divColumnSelection">
                             <label for="IDChamado">IDChamado</label>
@@ -364,7 +367,7 @@
     <script>
 
         function exibeIntervalo(valor) {
-            console.log(valor);
+            // console.log(valor);
             var selectDataAbertura = document.getElementById('selectDataAbertura');
             var selectDataFechamento = document.getElementById('selectDataFechamento');
             var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
@@ -432,7 +435,7 @@
                                     filtroATEDataFechamento.value = dataAtual;
                                 }
             function exibe(objeto) {
-                console.log(objeto);
+                // console.log(objeto);
                 objeto.style.display = "block";
             }
 
@@ -495,7 +498,7 @@
                 }
         }
 
-        function LimpaFiltros() {
+        function LimpaFiltros() { 
             var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
             var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
             var filtroAutor = document.getElementById("filtroAutor");
@@ -518,14 +521,16 @@
             ordenar.value = "";
             ordem[0].checked = true;
             ordem[1].checked = false;
-            exibeIntervalo(document.getElementById('divDataAbertura'), 0);
-            exibeIntervalo(document.getElementById('divDataFechamento'), 2);
+            exibeIntervalo(0);
+            exibeIntervalo(2);
 
         }
 
         function selectInicial() {
             var data = 'SelectInicial=1';
             var response = connection(data, 'POST', 'SelectInicial');
+            exibeColunas();
+
         }
 
         function submitFilters(relatorio) {
