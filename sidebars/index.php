@@ -107,12 +107,6 @@ if ($imageData) {
     }
 
 
-    .row {
-      padding-top:0px;
-    }
-
-
-
     .sidebar {
       width: 97%;
       background-color: #00a383;
@@ -462,8 +456,8 @@ if ($imageData) {
       justify-content: flex-end;
       align-items: flex-end;
       z-index: 0;
-      min-height: 100%;
       margin-left: 95%;
+      bottom: 10px;
     }
 
     .troca_cor {
