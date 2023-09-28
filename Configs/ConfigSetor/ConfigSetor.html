@@ -17,7 +17,6 @@
 
     <title>Config Setor</title>
     <style>
-        
         #cadastro {
             display: none;
         }
@@ -70,8 +69,8 @@
             /* padding-top: 30px; */
             font-size: 33px;
             color: #000000;
-            text-align:start;
-            flex:none;
+            text-align: start;
+            flex: none;
             padding-top: 2px;
 
         }
@@ -90,7 +89,7 @@
             /* margin-left: 20vh;
             margin-top: 2vh; */
 
-           
+
         }
 
         h2 {
@@ -136,11 +135,11 @@
             margin-bottom: 40px;
             border-radius: 10px;
             overflow: hidden;
-            background-color:white; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
-            
-            
+
+
         }
 
 
@@ -173,7 +172,7 @@
         table th,
         table td {
             padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         table tr:nth-child(even) {
@@ -189,7 +188,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
-            width:100%;
+            width: 100%;
             padding-left: 40px;
             padding-right: 40px;
             font-weight: bold;
@@ -228,20 +227,27 @@
             display: flex;
             flex-direction: column;
         }
+
         .swal-columns input {
             margin: 20px 0px;
         }
-        
-        tbody, td, tfoot, th, thead, tr{
+
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
 
             border-color: white;
             border-width: 10px;
         }
-        
+
         .form-select {
 
             margin-left: 0px;
         }
+
         #popupEdit #head {
             width: 100px;
             height: auto;
@@ -268,7 +274,9 @@
             left: 0px;
         }
 
-
+        .bi {
+            width: 300px;
+        }
     </style>
 
 
@@ -288,25 +296,32 @@
     <main class="main-content">
 
         <hr>
-        <h3 style="font-size: 18px" id="novo" onclick="novoSetor();"> ADICIONAR NOVO SETOR/SEÇÃO: <i id="iconeNovoSetor"
-                class="bi bi-plus-circle"></i></h3>
+        <h3 style="font-size: 18px" id="novo" onclick="novoSetor('click');"> ADICIONAR NOVO SETOR/SEÇÃO: <i
+                id="iconeNovoSetor" class="bi bi-plus-circle"></i></h3>
 
         <div id="cadastro" class="container-fluid p-5 border">
             <form>
                 <div class="mb-3">
-                    <label for="" class="form-label">NOME</label>
+                    <label for="novoSetor" class="form-label">NOME</label>
                     <input type="text" class="form-control" id="novoSetor">
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">RESPONSÁVEL</label>
+                    <label for="selects" class="form-label">RESPONSÁVEL</label>
                     <select name="" id="selects" class="form-select">
                         <!-- <option value="" disabled selected hidden>-------------------------</option> -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="selectLocal" class="form-label">LOCAL</label>
+                    <select name="" id="selectLocal" class="form-select">
+
                     </select>
                 </div>
             </form>
 
             <div class="text-center">
-                <button class="btn btn-success" style="background-color: #004b39;;" onclick="adicionarSetor()">ADICIONAR SETOR</button>
+                <button class="btn btn-success" style="background-color: #004b39;;" onclick="adicionarSetor()">ADICIONAR
+                    SETOR</button>
             </div>
             <p id="response"></p>
 
@@ -319,16 +334,25 @@
                 <th>ID Setor</th>
                 <th>Nome Setor/Seção</th>
                 <th>Responsável</th>
+                <th>Local</th>
                 <th>Ações</th>
             </tr>
             <tr></tr>
         </table>
 
     </main>
+    <div style="display: none;">
+        <p id="divinv"></p> <!-- NÃO APAGAR...-->
+    </div>
 
     <script>
+        const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+        var pessoas = [];
+        var locais = [];
         function init() {
             loadSetores();
+            novoSetor('init');
         }
 
         function loadSetores() {
@@ -351,26 +375,29 @@
             var controle = 1; //para nao duplicar os dados.
             var consultaUnica = 1;
         }
-        function novoSetor() {
+
+        function novoSetor(call) {
             var consultaUnica = 1;
             var icone = document.getElementById("iconeNovoSetor");
-            
+
             if (icone.classList.contains("bi-plus-circle")) {
-                document.getElementById("cadastro").style.display = "grid"
-                icone.classList.remove("bi-plus-circle");
-                icone.classList.add("bi-dash-circle");
-                var novo = document.getElementById("novo");
-                novo.innerHTML = "ADICIONAR NOVO SETOR/SEÇÃO: <i id='iconeNovoSetor' class='bi bi-dash-circle'></i>"
-
+                if (call == 'click') {
+                    document.getElementById("cadastro").style.display = "grid"
+                    icone.classList.remove("bi-plus-circle");
+                    icone.classList.add("bi-dash-circle");
+                    var novo = document.getElementById("novo");
+                    novo.innerHTML = "ADICIONAR NOVO SETOR/SEÇÃO: <i id='iconeNovoSetor' class='bi bi-dash-circle'></i>"
+                }
                 if (consultaUnica == 1) {
-
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "ConfigSetor.php", true)
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
-                                selects.innerHTML = xhr.responseText;
+                                // selects.innerHTML = xhr.responseText;
+                                recebePessoas(xhr.responseText, call);
+
                             } else {
                                 selects.innerHTML = "Falha ao carregar as pessoas";
                             }
@@ -389,53 +416,73 @@
                     novo.innerHTML = "ADICIONAR NOVO SETOR/SEÇÃO: <i id='iconeNovoSetor' class='bi bi-plus-circle'></i>"
                     controle = 1;
                 }
+
+
+            function recebePessoas(data, call) {
+                var dataJson = JSON.parse(data);
+
+                pessoas.push(dataJson[0].pessoas);
+                locais.push(dataJson[0].locais);
+                // console.log(locais)
+                if (call == 'click') {
+
+                    selects.innerHTML = "";
+
+                    for (var i = 0; i < pessoas[0].length; i++) {
+                        var option = document.createElement("option");
+                        option.value = pessoas[0][i].IDPessoa;
+                        option.text = pessoas[0][i].gerente;
+                        selects.appendChild(option);
+                    }
+
+                    selectLocal.innerHTML = "";
+
+                    for (var i = 0; i < locais[0].length; i++) {
+                        var option = document.createElement("option");
+                        option.value = locais[0][i].ID;
+                        option.text = locais[0][i].descricao;
+                        selectLocal.appendChild(option);
+                    }
+                }
+            }
         }
+
         function adicionarSetor() {
             var novo = document.getElementById("novoSetor").value;
             var foo = document.getElementById("selects");
             var response = document.getElementById("response")
+            var local = document.getElementById("selectLocal").value;
             var i = 0;
 
-            while (i < foo.options.length) {  // Correção: use '<' em vez de '<=' para verificar o comprimento
-                if (foo.options[i].selected) {  // Correção: .selected é suficiente, não precisa comparar com 'true'
+            while (i < foo.options.length) {
+                if (foo.options[i].selected) {
                     var responsavel = foo.options[i].value;
                 }
                 i++;
             }
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "ConfigSetor.php", true)
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        window.location.reload();
-                        // window.location.href = "ConfigSetor.php";
-                        // response.innerHTML = xhr.responseText;
 
-                    } else {
-                        console.error("Falha ao carregar as pessoas");
-                    }
-                }
-            };
-            xhr.send("nomeSetor=" + encodeURIComponent(novo) + "&responsavel=" + encodeURIComponent(responsavel));
-
+            var data = "nomeSetor=" + encodeURIComponent(novo) + "&responsavel=" + encodeURIComponent(responsavel) + "&local=" + encodeURIComponent(local);
+            connection(data, 'refresh');
         }
-        
+
         function action(recebido) {
-            console.log(recebido);
             var acao = recebido.split("-");
             comando = acao[0];
             id = acao[1];
-            //dados recebidos:
+
             var ID = document.getElementById("id-" + id).innerHTML;
             var descricao = document.getElementById("desc-" + id).innerHTML;
             var gerente = document.getElementById("gerente-" + id).innerHTML;
+            var local = document.getElementById("local-" + id).innerHTML;
+            var tdResponsavel = document.getElementById("gerente-" + id);
+            var responsavelID = tdResponsavel.getAttribute("value");
+            var tdLocal = document.getElementById("local-" + id);
+            var localID = tdLocal.getAttribute("value");
 
-            console.log(ID, descricao, gerente)
+   
 
             if (comando == 'edit') {//botao editar
-                openEditPopup(ID, descricao, gerente)
-
+                openEditPopup(ID, descricao, gerente, responsavelID, localID)
             } else
                 if (comando == 'trash') {
                     Swal.fire({
@@ -447,16 +494,17 @@
                         cancelButtonText: 'Cancelar',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            var data = "deleteLocal=1&ID=" + ID;
+                            var data = "deleteSetor=1&ID=" + ID;
                             connection(data, 'refresh2');
 
                             var asnc = async () => {
                                 await sleep(250)
                                 var result = document.getElementById('divinv').innerHTML;
+                                console.log(result);
                                 if (result == true || result == 'true') {
                                     Swal.fire({
                                         title: 'Deletado!',
-                                        text: 'O local foi deletado com sucesso.',
+                                        text: 'Setor/Seção deletado com sucesso.',
                                         icon: 'success',
                                         timer: 3000
                                     }).then(() => {
@@ -465,7 +513,7 @@
                                 } else {
                                     Swal.fire({
                                         title: 'Não foi possível deletar ',
-                                        text: 'Existem outros dados vinculados à esse Local',
+                                        text: 'Existem outros dados vinculados à esse(a) Setor/Seção',
                                         icon: 'error',
                                         timer: 3000
                                     }).then(() => {
@@ -478,7 +526,7 @@
                     })
                 }
 
-            function openEditPopup(id, descricao, gerente,) {
+            function openEditPopup(id, descricao, gerente, responsavelID, localID) {
                 Swal.fire({
                     title: 'Editar Dados',
                     html: `
@@ -490,11 +538,18 @@
                                 <input id="descricao" type="text" class="swal2-input" value="${descricao}">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" style='margin-top:10px;'>
                                 <div class="col" id="head">
                                 <p for="end">Responsável:</p>
                                 </div><div class="col">
-                                <select></select>
+                                <select id='selectResponsaveis' class='form-select' style='width: 280px; height:50px;'>${geraOptions(1)}</select>
+                                </div>
+                            </div>
+                            <div class="row" style='margin-top:10px;'>
+                                <div class="col" id="head">
+                                <p for="end">Local:</p>
+                                </div><div class="col">
+                                <select id='selectLocais' class='form-select' style='width: 280px; height:50px;'>${geraOptions(2)}</select>
                                 </div>
                             </div>
                         
@@ -503,19 +558,18 @@
                     showCancelButton: true,
                     confirmButtonText: 'Salvar',
                     cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#00cc99', // Altera a cor do botão Confirmar
-                    // padding: '2rem', // Aumenta a margem geral do popup
+                    confirmButtonColor: '#00cc99',
                     customClass: {
-                        confirmButton: 'swal2-small', // Reduz o tamanho do botão Confirmar
-                        cancelButton: 'swal2-small' // Reduz o tamanho do botão Cancelar
+                        confirmButton: 'swal2-small',
+                        cancelButton: 'swal2-small'
                     },
                     preConfirm: () => {
                         const descricao = document.getElementById('descricao').value;
-                        const endereco = document.getElementById('end').value;
-                        const ativo = document.getElementById('ativo').checked ? '1' : '0';
-                        var data = "updateLocal=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&endereco=" + encodeURIComponent(endereco) + "&ativo=" + ativo;
-                        connection(data, 'refresh2');
-                        return descricao, endereco, ativo;
+                        const responsavel = document.getElementById('selectResponsaveis').value;
+                        const local = document.getElementById('selectLocais').value;
+                        var data = "updateSetor=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&responsavel=" + encodeURIComponent(responsavel) + "&local=" + encodeURIComponent(local);
+                        connection(data, 'update');
+                        return descricao, responsavel;
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -529,10 +583,56 @@
                         });
                     }
                 });
+                function geraOptions(opt) {
+                    if (opt == 1) {
+
+                        var options = '';
+                        for (var i = 0; i < pessoas[0].length; i++) {
+                            if (pessoas[0][i].IDPessoa == responsavelID) {
+                                options += '<option value="' + pessoas[0][i].IDPessoa + '" selected>' + pessoas[0][i].gerente + '</option>';
+                            } else {
+                                options += '<option value="' + pessoas[0][i].IDPessoa + '">' + pessoas[0][i].gerente + '</option>';
+                            }
+                        }
+                        return options;
+                    } else
+                        if (opt == 2) {
+                            var options = '';
+                            for (var i = 0; i < locais[0].length; i++) {
+                                if (locais[0][i].ID == localID) {
+                                    options += '<option value="' + locais[0][i].ID + '" selected>' + locais[0][i].descricao + '</option>';
+                                } else {
+                                    options += '<option value="' + locais[0][i].ID + '">' + locais[0][i].descricao + '</option>';
+                                }
+                            }
+                            return options;
+                        }
+                }
             }
-
-
         }
+
+        function connection(data, operation) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "ConfigSetor.php", true)
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (operation == 'refresh2') {
+                        // window.location.reload();
+                        var divinv = document.getElementById("divinv");
+                        divinv.innerHTML = xhr.responseText
+                    } else
+                        if (operation == 'update') {
+                        } else
+                            if (operation == 'refresh') {
+                                window.location.reload();
+
+                            }
+                }
+            };
+            xhr.send(data);
+        }
+
     </script>
 </body>
 

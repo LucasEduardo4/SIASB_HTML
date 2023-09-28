@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../../sidebars/bootstrap.min.css">
     <link rel="stylesheet" href="../lib/stylesheet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function verifySess() {
             function cnxn(path, data, operation) {
@@ -272,6 +274,32 @@
 
             margin-left: 0px;
         }
+
+        #popupEdit #head {
+            width: 100px;
+            height: auto;
+            text-align: center;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        #popupEdit p {
+            display: inline-block;
+            vertical-align: middle;
+            margin: auto;
+        }
+
+        .swal2-input {
+            margin: 5px 0px;
+        }
+
+        #head .checkbox {
+            width: 250px;
+        }
+
+        #ativo {
+            left: 0px;
+        }
     </style>
 </head>
 
@@ -306,15 +334,19 @@
                 <tr class="table-dark">
                     <th>IDTipo</th>
                     <th>Descrição</th>
-                    <th>Deletar</th>
+                    <th>Ações</th>
                 </tr>
                 <tr></tr>
             </table>
         </div>
 
     </main>
+    <div style="display: none;">
+        <p id="divinv"></p> <!-- NÃO APAGAR...-->
+    </div>
 
     <script>
+        const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
         var controle = 1;
         function exibirCadastro() {
             if (controle == 1) {
@@ -358,11 +390,113 @@
                         if (output == "reset") {
                             window.location.reload();
                             // console.log(xhr.responseText);
-                        }
+                        } else
+                            if (output == 'refresh2') {
+                                var divinv = document.getElementById("divinv");
+                                divinv.innerHTML = xhr.responseText
+                                // window.location.reload();
+                            }
                 }
             }
             xhr.send(data);
-        }  
+        }
+        function action(recebido) {
+            var acao = recebido.split("-");
+            comando = acao[0];
+            id = acao[1];
+
+            var ID = document.getElementById("id-" + id).innerHTML;
+            var descricao = document.getElementById("desc-" + id).innerHTML;
+
+            if (comando == 'edit') {//botao editar
+                openEditPopup(ID, descricao)
+            } else
+                if (comando == 'trash') {
+                    Swal.fire({
+                        title: 'Tem certeza?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#00cc99',
+                        confirmButtonText: 'Sim, delete!',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var data = "delete=1&ID=" + ID;
+                            connection('POST', data, 'refresh2');
+
+                            var asnc = async () => {
+                                await sleep(250)
+                                var result = document.getElementById('divinv').innerHTML;
+                                if (result == true || result == 'true') {
+                                    Swal.fire({
+                                        title: 'Deletado!',
+                                        text: 'Tipo Equipamento deletado com sucesso.',
+                                        icon: 'success',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });;
+                                } else {
+                                    Swal.fire({
+                                        title: 'Não foi possível deletar ',
+                                        text: 'Existem outros dados vinculados à esse(a) Tipo Equipamento',
+                                        icon: 'error',
+                                        timer: 3000
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                            asnc();
+                        }
+                    })
+                }
+
+            function openEditPopup(id, descricao) {
+                Swal.fire({
+                    title: 'Editar Dados',
+                    html: `
+                        <div id="popupEdit" class="container">
+                            <div class="row">
+                                <div class="col" id="head">
+                                <p for="descricao">Descrição:</p>
+                                </div><div class="col">
+                                <input id="descricao" type="text" class="swal2-input" value="${descricao}">
+                                </div>
+                            </div>
+                        
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Salvar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#00cc99',
+                    customClass: {
+                        confirmButton: 'swal2-small',
+                        cancelButton: 'swal2-small'
+                    },
+                    preConfirm: () => {
+                        const descricao = document.getElementById('descricao').value;
+                        var data = "updateTipoEquip=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao);
+                        console.log(data);
+                        connection('POST', data, 'reset');
+                        return descricao;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Dados Atualizados',
+                            text: 'Os dados foram atualizados com sucesso!',
+                            icon: 'success',
+                            timer: 3000
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    }
+                });
+            }
+        }
+
     </script>
 </body>
 

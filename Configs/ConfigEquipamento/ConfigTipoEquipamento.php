@@ -1,9 +1,9 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "siasb");
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // var_dump($_POST);
-    if(isset($_POST['select'])){
+    if (isset($_POST['select'])) {
         // echo "entrou aqui";
         $sql = "SELECT * FROM tbtipo_equipamentos";
 
@@ -15,48 +15,59 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             while ($row = $result->fetch_assoc()) {
                 $IDTipo = $row["IDTipo"];
                 $descricao = $row["descricao"];
+                $ID = $IDTipo;
 
                 echo "<tr>
-                <td>".$IDTipo."</td>
-                <td>".$descricao."</td>
-                <td><h5 class='bi bi-trash' onclick='deletarTipo(". $IDTipo .")'></h5></td>
+                <td id='id-$ID'>" . $IDTipo . "</td>
+                <td id='desc-$ID'>" . $descricao . "</td>
+                <td><span class='bi bi-pencil' onclick='action(`edit-{$ID}`)' id='edit-{$ID}'></span>
+                <span class='bi bi-trash' onclick='action(`trash-{$ID}`)' id='trash-{$ID}'></span></td>
                 </tr>";
             }
         }
-    }
-}
+    } else
+        if (isset($_POST['insert'])) {
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['insert'])){
+            $descricao = $_POST['digitado'];
 
-        $descricao = $_POST['digitado'];
-
-        $sql = "SET @UltimoIDTipo = (SELECT MAX(IDTipo) FROM tbtipo_equipamentos);
+            $sql = "SET @UltimoIDTipo = (SELECT MAX(IDTipo) FROM tbtipo_equipamentos);
         SET @UltimoIDTipo = IFNULL(@UltimoIDTipo, 0) + 1;
         INSERT INTO tbtipo_equipamentos (IDTipo, descricao)
-        VALUES (@UltimoIDTipo, '$descricao');";        
-        if (mysqli_multi_query($conn, $sql)) {
-            echo "Nova seção adicionada com sucesso!";
-        } else {
-            echo "Erro ao adicionar nova seção: " . mysqli_error($conn);
-        }
+        VALUES (@UltimoIDTipo, '$descricao');";
+            if (mysqli_multi_query($conn, $sql)) {
+                echo "Nova seção adicionada com sucesso!";
+            } else {
+                echo "Erro ao adicionar nova seção: " . mysqli_error($conn);
+            }
 
-        $conn->close();
-    }
-} 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['delete'])){
-        $IDTipo = $_POST['IDTipo'];
+            $conn->close();
+        } else
+            if (isset($_POST['delete'])) {
+                $IDTipo = $_POST['ID'];
 
-        $sql = "DELETE FROM tbtipo_equipamentos WHERE IDTipo = '$IDTipo'";
+                $sql = "DELETE FROM tbtipo_equipamentos WHERE IDTipo = '$IDTipo'";
 
-        if ($conn->query($sql) === TRUE) {
-            echo "Tipo de equipamento deletado com sucesso!";
-        } else {
-            echo "Erro ao deletar tipo de equipamento: " . $conn->error;
-        }
+                if ($conn->query($sql) === TRUE) {
+                    echo "true";
+                } else {
+                    echo "Erro ao deletar tipo de equipamento: " . $conn->error;
+                }
 
-        $conn->close();
-    }
+                $conn->close();
+            } else
+                if (isset($_POST['updateTipoEquip'])) {
+                    $IDTipo = $_POST['ID'];
+                    $descricao = $_POST['descricao'];
+
+                    $sql = "UPDATE tbtipo_equipamentos SET descricao = '$descricao' WHERE IDTipo = '$IDTipo'";
+
+                    if ($conn->query($sql) === TRUE) {
+                        echo "Tipo de equipamento atualizado com sucesso!";
+                    } else {
+                        echo "Erro ao atualizar tipo de equipamento: " . $conn->error;
+                    }
+
+                    $conn->close();
+                }
 }
 ?>
