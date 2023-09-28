@@ -30,8 +30,8 @@
         }
 
         .table {
-            background-color: #00a383;
-            color: white;
+            /* background-color: #00a383; */
+            /* color: white; */
         }
 
         table {
@@ -42,6 +42,7 @@
             background-color:white; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
             margin: auto;
+            
         }
 
         .table-striped > tbody > tr:nth-of-type(odd) > * {
@@ -95,18 +96,7 @@
             padding-bottom: 50px;
         }
 
-
-        /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
-        .table> :not(caption)>*>* {
-
-            background-color: white;
-            color: black;
-
-        }
-
-
-        /* =========================================================================== */
-
+        
         .table-heading {
             background: linear-gradient(135deg, #007bff, #00cc99);
             color: #fff;
@@ -122,8 +112,8 @@
 
         table th,
         table td {
-            padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         table tr:nth-child(even) {
@@ -142,6 +132,16 @@
             text-align: center;
             padding-top: 10px;
         }
+
+        .celula {
+            
+            border-radius: 10px;
+            text-align: center;
+            text-shadow: 0px 0px 1px black;
+            color: white;
+            
+        }
+
 
     </style>
 </head>
@@ -164,13 +164,7 @@
                     <td>ADD</td>
                 </thead>
                 <tbody id="novos">
-                    <!-- <td>1</td>
-                    <td>Placeholder</td>
-                    <td>18/09/2023</td>
-                    <td style="color: red; font-weight: 900;" >ALTA</td>
-                    <td>3</td>
-                    <td>Aberto</td>
-                    <td><img src="Icones Site/iconeplus.png" width="20px" alt=""></td> -->
+                    
                 </tbody>
             </table style="padding-bottom:20px">
         </div  >
@@ -306,6 +300,7 @@
                     linha.appendChild(status);
                     novos.appendChild(linha);
                     verificaPrioridade(prioridade);
+                    verificaStatus(status);
                     assunto.addEventListener('click', function () {
                         redireciona(element.IDChamado);
                     })
@@ -349,6 +344,7 @@
                     autor.innerHTML = element.autor;
                     setor_secao.innerHTML = element.setor_secao;
                     verificaPrioridade(prioridade);
+                    verificaStatus(status);
                     linha.appendChild(id);
                     linha.appendChild(assunto);
                     linha.appendChild(autor);
@@ -396,6 +392,7 @@
                     autor.innerHTML = element.autor;
                     setor_secao.innerHTML = element.setor_secao;
                     verificaPrioridade(prioridade);
+                    verificaStatus(status);
                     linha.appendChild(id);
                     linha.appendChild(assunto);
                     linha.appendChild(autor);
@@ -427,17 +424,34 @@
                     })
                 }
 
-            function verificaPrioridade(prioridade){
-                if(prioridade.innerHTML == 'Alta'){
-                    prioridade.classList.add('Alta');
-                }else
-                if(prioridade.innerHTML == 'Média'){
-                    prioridade.classList.add('Média');
-                }else
-                if(prioridade.innerHTML == 'Baixa'){
-                    prioridade.classList.add('Baixa');
-                }
-            }
+    function verificaPrioridade(prioridade) {
+    prioridade.style.fontWeight = '700';
+    if (prioridade.innerHTML == 'Alta') {
+        prioridade.style.color = 'red'; 
+    } else if (prioridade.innerHTML == 'Média') {
+        prioridade.style.color = '#f5ac00'; 
+    } else if (prioridade.innerHTML == 'Baixa') {
+        prioridade.style.color = 'green'; 
+    }
+}
+
+function verificaStatus(status) {
+    status.classList.add('celula');
+    status.style.fontWeight = '600';
+    if (status.innerHTML == 'Aberto') {
+        status.style.backgroundColor = '#e74c3c';
+        status.style.color = 'white';
+    } else if (status.innerHTML == 'Andamento') {
+        status.style.backgroundColor = '#7241dcf6'; 
+        status.style.color = 'white';
+    } else if (status.innerHTML == 'Fechado') {
+        status.style.backgroundColor = '#2ecc71'; 
+        status.style.color = 'white';
+    }else if (status.innerHTML == 'Pendente') {
+        status.style.backgroundColor = '#e67e22'; 
+        status.style.color = 'white';
+    }
+}
 
             function receberChamado(IDChamado) {
                 Swal.fire({

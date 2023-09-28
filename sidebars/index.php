@@ -284,9 +284,8 @@ if ($imageData) {
 
     p {
       padding-left: 10px;
-      padding-bottom: 0.5rem;
-      padding-top: 2px;
-    }
+      margin-bottom: 0.7rem;
+     }
 
     p:hover {
       color: white;
