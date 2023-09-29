@@ -1,6 +1,5 @@
 var xhr = new XMLHttpRequest();
 var currentPath = window.location.pathname;
-
 if(currentPath == 'blank'){
     basePath = '/siasb_html/flowSite/verificaSessao.php'
 }else{

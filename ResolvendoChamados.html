@@ -7,14 +7,32 @@
     <link rel="stylesheet" href="sidebars/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
-    <script src="/siasb_html/flowSite/verificaPermissao.js"></script>
     <script src="/siasb_html/flowSite/verificaAtivo.js"></script>
+    <script>
+        var xhr = new XMLHttpRequest();
+        basePath = 'flowSite/verificaPermissao.php'
 
+        console.log(basePath);
 
+        xhr.open("POST", basePath, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+                if (xhr.responseText == "sem permissao") {
+                    window.location.href = `/siasb_html/flowsite/permissaonegada.html`;
+                } else
+                    if (xhr.responseText == 'desabilitado') {
+                        window.location.href = `/siasb_html/flowsite/usuarioinativo.html`;
+                    }
+            }
+        }
+        xhr.send("verificaPermissao=" + encodeURIComponent(1));
+
+    </script>
 
     <title>Resolvendo Chamados</title>
     <style>
-
         h2 {
             font-size: 20px;
             text-align: center;
@@ -26,7 +44,7 @@
             margin-top: 20px;
             border: solid 1px black;
             border-radius: 12px;
-            padding-bottom:22px;
+            padding-bottom: 22px;
         }
 
         .table {
@@ -39,17 +57,23 @@
             border-collapse: collapse;
             margin-bottom: 40px;
             /* overflow: hidden; */
-            background-color:white; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
-            
+
         }
 
-        .table-striped > tbody > tr:nth-of-type(odd) > * {
-            --bs-table-bg-type:none;
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            --bs-table-bg-type: none;
         }
 
-        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        .container,
+        .container-fluid,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl,
+        .container-xxl {
             padding-bottom: 50px;
         }
 
@@ -83,20 +107,26 @@
             border-collapse: collapse;
             margin-bottom: 40px;
             /* overflow: hidden; */
-            background-color:white; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
         }
 
-        .table-striped > tbody > tr:nth-of-type(odd) > * {
-            --bs-table-bg-type:none;
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            --bs-table-bg-type: none;
         }
 
-        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        .container,
+        .container-fluid,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl,
+        .container-xxl {
             padding-bottom: 50px;
         }
 
-        
+
         .table-heading {
             background: linear-gradient(135deg, #007bff, #00cc99);
             color: #fff;
@@ -126,32 +156,30 @@
             padding-top: 30px;
             font-size: 40px;
             color: #000000;
-            text-align:start;
+            text-align: start;
             width: 180vh;
-            flex:none;
+            flex: none;
             text-align: center;
             padding-top: 10px;
         }
 
         .celula {
-            
+
             border-radius: 10px;
             text-align: center;
             text-shadow: 0px 0px 1px black;
             color: white;
-            
+
         }
-
-
     </style>
 </head>
 
 <body onload="selectInicial()">
-    <div  class=" container-fluid">
+    <div class=" container-fluid">
         <h1 class="title">RESOLVENDO CHAMADOS</h1>
         <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
-            <h2 style="padding-bottom: 20px;" >NOVOS CHAMADOS</h2>
-            <table class="table table-hover table-striped" >
+            <h2 style="padding-bottom: 20px;">NOVOS CHAMADOS</h2>
+            <table class="table table-hover table-striped">
                 <thead style="font-weight: 700;" class="table-heading table-dark">
                     <td>ID</td>
                     <td>ASSUNTO</td>
@@ -164,13 +192,13 @@
                     <td>ADD</td>
                 </thead>
                 <tbody id="novos">
-                    
+
                 </tbody>
             </table style="padding-bottom:20px">
-        </div  >
+        </div>
         <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
-            <h2 style="padding-bottom: 20px;" >CHAMADOS QUE O SEU USUÁRIO ESTÁ RESOLVENDO</h2>
-            <table class="table table-hover table-striped" >
+            <h2 style="padding-bottom: 20px;">CHAMADOS QUE O SEU USUÁRIO ESTÁ RESOLVENDO</h2>
+            <table class="table table-hover table-striped">
                 <thead style="font-weight: 700;" class="table-heading">
                     <td>ID</td>
                     <td>ASSUNTO</td>
@@ -190,7 +218,7 @@
             </table>
         </div>
         <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
-            <h2 style="padding-bottom: 20px;" >RESOLVIDOS</h2>
+            <h2 style="padding-bottom: 20px;">RESOLVIDOS</h2>
             <table class="table table-hover table-striped" id="todos">
                 <thead style="font-weight: 700;" class="table-heading">
                     <td>ID</td>
@@ -230,11 +258,11 @@
                 } else
                     if (output == 'receberChamado') {
                         window.location.reload();
-                    }else
-                    if(output == 'fechados'){
-                        var resposta = xhr.responseText;
-                        unParse(resposta);
-                    }
+                    } else
+                        if (output == 'fechados') {
+                            var resposta = xhr.responseText;
+                            unParse(resposta);
+                        }
 
             }
         }
@@ -255,7 +283,7 @@
 
 
 
-        
+
         dados.forEach(element => {
             if (element.usuario) {
                 return;
@@ -375,7 +403,7 @@
                         redireciona(element.IDChamado);
                     })
 
-                }else if(element.responsavel == usuario.toUpperCase() || usuario.toLowerCase() && element.status_chamado == 'Fechado'){
+                } else if (element.responsavel == usuario.toUpperCase() || usuario.toLowerCase() && element.status_chamado == 'Fechado') {
                     var linha = document.createElement('tr');
                     var id = document.createElement('td');
                     var assunto = document.createElement('td');
@@ -424,34 +452,34 @@
                     })
                 }
 
-    function verificaPrioridade(prioridade) {
-    prioridade.style.fontWeight = '700';
-    if (prioridade.innerHTML == 'Alta') {
-        prioridade.style.color = 'red'; 
-    } else if (prioridade.innerHTML == 'Média') {
-        prioridade.style.color = '#f5ac00'; 
-    } else if (prioridade.innerHTML == 'Baixa') {
-        prioridade.style.color = 'green'; 
-    }
-}
+            function verificaPrioridade(prioridade) {
+                prioridade.style.fontWeight = '700';
+                if (prioridade.innerHTML == 'Alta') {
+                    prioridade.style.color = 'red';
+                } else if (prioridade.innerHTML == 'Média') {
+                    prioridade.style.color = '#f5ac00';
+                } else if (prioridade.innerHTML == 'Baixa') {
+                    prioridade.style.color = 'green';
+                }
+            }
 
-function verificaStatus(status) {
-    status.classList.add('celula');
-    status.style.fontWeight = '600';
-    if (status.innerHTML == 'Aberto') {
-        status.style.backgroundColor = '#e74c3c';
-        status.style.color = 'white';
-    } else if (status.innerHTML == 'Andamento') {
-        status.style.backgroundColor = '#7241dcf6'; 
-        status.style.color = 'white';
-    } else if (status.innerHTML == 'Fechado') {
-        status.style.backgroundColor = '#2ecc71'; 
-        status.style.color = 'white';
-    }else if (status.innerHTML == 'Pendente') {
-        status.style.backgroundColor = '#e67e22'; 
-        status.style.color = 'white';
-    }
-}
+            function verificaStatus(status) {
+                status.classList.add('celula');
+                status.style.fontWeight = '600';
+                if (status.innerHTML == 'Aberto') {
+                    status.style.backgroundColor = '#e74c3c';
+                    status.style.color = 'white';
+                } else if (status.innerHTML == 'Andamento') {
+                    status.style.backgroundColor = '#7241dcf6';
+                    status.style.color = 'white';
+                } else if (status.innerHTML == 'Fechado') {
+                    status.style.backgroundColor = '#2ecc71';
+                    status.style.color = 'white';
+                } else if (status.innerHTML == 'Pendente') {
+                    status.style.backgroundColor = '#e67e22';
+                    status.style.color = 'white';
+                }
+            }
 
             function receberChamado(IDChamado) {
                 Swal.fire({
@@ -499,8 +527,8 @@ function verificaStatus(status) {
                 window.location.href = 'DetalhandoChamado.html?IDChamado=' + IDChamado;
             }
         });
-            
-        
+
+
     }
 </script>
 
