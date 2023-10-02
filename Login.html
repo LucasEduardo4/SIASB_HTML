@@ -10,6 +10,13 @@
 
 
   <style>
+
+    body {
+      background-image: url('icons/2.1.png');
+      background-size:cover;
+      background-repeat:repeat;
+    }
+
     .custom-fade-in {
       animation-duration: 2s !important;
     }
@@ -24,14 +31,42 @@
       min-width: 380px;
       display: none;
     }
+
+    .container1 {
+      max-width: 400px;
+      height: 400px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+   /* margin-top: 70px;  */
+   margin-left: 60px; 
+  margin-top: 120px; 
+}
+
+h1 {
+  font-size: 50px;
+}
+
+/* button {
+  margin-top: 200px;
+} */
+
   </style>
 
   <title>Login</title>
 </head>
 
 <body>
-  <div class="container">
-    <h1>SIASB</h1>
+  <div class="container1">
+    <!-- <h1>SIASB</h1> -->
+
+    <a>
+      <img style="width: 400px; padding-bottom: 30px;" src="icons/TEC.png" alt="Logo SAAEB">
+  </a>
+    
     <form action="Login.php" method="post">
       <div class="form-group">
         <label for="username">Usuario:</label>
