@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ID = $_POST['ID'];
             $ativo = $_POST['ativo'];
             $sql = "UPDATE tblocal SET ativo = $ativo WHERE ID = $ID";
-            echo $sql;
+            // echo $sql;
             $conn->query($sql);
             $conn->close();
         }

@@ -100,9 +100,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['select_ready_equipment'])) {
 
         $sql = "
-        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, p.IDPessoa, e.setor_secao FROM TBEquipamentos e
+        SELECT e.sti_id, e.descricao, e.ip, te.descricao as 'tipo',p.nomeCompleto, p.IDPessoa, sc.descricao as 'setor_secao' FROM TBEquipamentos e
         join TBTipo_Equipamentos te on te.IDTipo = e.tipo
         join TBPessoa p on p.IDPessoa = e.usuario
+        join tbsetor_secao sc on sc.ID = e.setor_secao
         ";
 
         $stmt = $conn->prepare($sql);
@@ -183,9 +184,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->get_result();
     }
 }
-
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['desabilitarUsuario']) || isset($_POST['habilitarUsuario'])) {
