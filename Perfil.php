@@ -125,6 +125,8 @@ if ($imageData) {
 
 <head>
     <title>Informações do Usuário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 
     <style>
@@ -185,11 +187,7 @@ if ($imageData) {
             text-align: center;
             padding-top: 10px;
         }
-    </style>
 
-
-
-    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -218,7 +216,6 @@ if ($imageData) {
             border-radius: 8px;
         }
     </style>
-
 
 </head>
 

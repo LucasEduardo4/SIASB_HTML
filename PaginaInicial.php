@@ -120,6 +120,8 @@ $stmt->close();
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
     <style>
         /* Definir uma fonte mais elegante */
@@ -129,10 +131,13 @@ $stmt->close();
             margin: 0;
             padding: 0;
             z-index: 10;
+            /* min-width: 100%;
+            min-height: 100%; */
+            max-width: 100%;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 100%;
             margin: 20px auto;
             background-color: #fff;
             padding: 20px;
@@ -203,7 +208,8 @@ $stmt->close();
         }
 
         .calendar-container {
-            max-width: 800px;
+            max-width: 100%;
+            width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
@@ -338,7 +344,7 @@ $stmt->close();
 
         /* Estilos do contêiner principal */
         .container {
-            max-width: 800px;
+            max-width: 100%;
             margin: 50px auto;
             background-color: #fff;
             border-radius: 10px;

@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Abrindo Chamado</title>
   <script src="/siasb_html/flowSite/verificaSessao.js"></script>
   <script src="/siasb_html/flowSite/verificaAtivo.js"></script>
@@ -33,7 +35,8 @@
 
     .div-superior {
       width: 2000px;
-      min-width: 800px;
+      /* min-width: 800px; */
+      max-width: 100%;
       background-color: #ffffff;
       padding: 20px;
       font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -64,7 +67,8 @@
 
     .div-inferior {
       width: 1200px;
-      min-width: 700px;
+      /* min-width: 700px; */
+      max-width: 100%;
       background-color: #ffffff;
       padding: 20px;
       /* z-index: 1; */
@@ -77,8 +81,8 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      min-width: 600px;
-
+      /* min-width: 600px; */
+      max-width: 100%;
       /* position: absolute; */
       background-color: #00a383;
       color: #ffffff;

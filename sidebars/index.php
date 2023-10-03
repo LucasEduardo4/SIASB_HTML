@@ -150,6 +150,7 @@ if ($imageData) {
       display: flex;
       justify-content: flex-end;
       z-index: 0;
+      max
     }
 
     .sidebar_icon {
@@ -436,6 +437,7 @@ if ($imageData) {
       margin: 0;
       padding: 0;
       height: 100%;
+      
       /* overflow: hidden; */
     }
 
@@ -461,7 +463,8 @@ if ($imageData) {
     }
 
     .menu-container:hover {
-      width: 21em;
+      width: 17em;
+      min-width: 15em;
     }
 
     .menu-container:hover .menu-hidden {
@@ -483,24 +486,25 @@ if ($imageData) {
 
 
     .perfil_img {
-      position: absolute;
+      position: relative;
       margin: 0;
       display: flex;
-      justify-content: flex-end;
-      align-items: flex-end;
       z-index: 0;
-      margin-left: 95%;
-      bottom: 10px;
+      bottom: 20%;
     }
 
+    @media (max-width: 768px) {
+    .perfil_img {
+      bottom: 8%;
+    }
+  }
+
     .troca_cor {
-      position: absolute;
-      margin-left: 5px;
+      position: relative;
+      margin: 0;
       display: flex;
-      justify-content: flex-end;
-      align-items: flex-end;
-      z-index: 11;
-      margin-top: 5px;
+      z-index: 0;
+      bottom: 3%;
     }
   </style>
 
@@ -538,7 +542,7 @@ if ($imageData) {
 
 
 
-  <div class="perfil_img">
+  <!-- <div class="perfil_img">
     <hr>
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
@@ -546,7 +550,7 @@ if ($imageData) {
 
 
 
-        <div style="">
+        <div>
           <div id="anexosContainer"></div>
         </div>
 
@@ -564,15 +568,11 @@ if ($imageData) {
         </script>
 
 
-        <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
-
-
 
 
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
 
-        <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
         <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
         <li>
           <hr class="dropdown-divider">
@@ -580,7 +580,7 @@ if ($imageData) {
         <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
       </ul>
     </div>
-  </div>
+  </div> -->
   </div>
 
   <!-- <header >
@@ -698,6 +698,51 @@ if ($imageData) {
             <p style="color: white; "> RESOLVER </p>
           </li>
         </div>
+
+  <div class="perfil_img">
+    <hr>
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+        data-bs-toggle="dropdown" aria-expanded="false">
+
+
+
+        <div>
+          <div id="anexosContainer"></div>
+        </div>
+
+        <script>
+
+          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
+          if (imagem) {
+            document.getElementById("anexosContainer").innerHTML +=
+              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="150" height="150" alt="" /></p>';
+          } else {
+            document.getElementById("anexosContainer").innerHTML +=
+              '<p>Nenhuma imagem anexada para este chamado.</p>';
+          }
+        </script>
+
+
+        <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+
+
+
+
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+
+        <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
+        <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
+      </ul>
+    </div>
+  </div>
+
         
 
         <div class="troca_cor">
