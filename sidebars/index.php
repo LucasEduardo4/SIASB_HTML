@@ -153,15 +153,14 @@ if ($imageData) {
     }
 
     .sidebar_icon {
-      margin-left: 95%;
+      /* margin-left: 95%; */
+      right: 20px;
       margin-top: 10px;
       position: absolute;
       display: flex;
       justify-content: flex-end;
       z-index: 0;
       border-radius: 100px;
-
-      background-color: gainsboro;
     }
 
     .sidebar_icon:hover {
@@ -269,7 +268,6 @@ if ($imageData) {
       flex-direction: column;
     }
 
-
     .menu-item {
       cursor: pointer;
       padding: 10px;
@@ -279,7 +277,7 @@ if ($imageData) {
       margin-bottom: 40px;
       font-weight: bold;
       display: inline-flex;
-      padding-left: 10px;
+      /* padding-left: 10px; */
     }
 
     p {
@@ -396,10 +394,12 @@ if ($imageData) {
       font-size: 16px;
       position: fixed;
       top: 0px;
-      left: 70px;
+      left: 60px;
       width: 100%;
       height: 100%;
       display: none;
+      background-color: rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
     }
 
     .circleDiv {
@@ -426,8 +426,8 @@ if ($imageData) {
 
     .menu-image {
       /* width: 30px;  */
-      height: 30px;
-      vertical-align: middle;
+      height: 22px;
+      /* vertical-align: middle; */
       /* Alinhar verticalmente com o texto */
     }
 
@@ -629,7 +629,7 @@ if ($imageData) {
 
   <!-- CÓDIGO DA SIDEBAR SUPERIOR -->
   <div id="centerBox">
-    <div id="map">
+    <div id="map" title="Clique para fechar a janela de notificaçoes">
       <!-- Essa div é apenas para deiaxr um mapa na tela, para que seja possível fechar a notificação quando é clicada-->
     </div>
   </div>
@@ -887,20 +887,13 @@ if ($imageData) {
         verificaNovaNotificacao(nova);
       }
 
-      function bar() {
-        var iframe = document.getElementById("myNotifications");
-        iframe.src = iframe.src;
-      }
-
-
-
       var iframe = document.createElement("iframe");
       iframe.src = "notificacoes.html";
       iframe.style.position = "fixed";
       iframe.style.top = "80px";
-      iframe.style.right = "10px";
+      iframe.style.right = "20px";
       // iframe.style.width = "100%";
-      iframe.style.width = "420px";
+      iframe.style.width = "370px";
       iframe.style.height = "500px";
       iframe.style.backgroundColor = "rgba(0, 0, 0, 0.0)";
       iframe.style.zIndex = "9999";
@@ -938,7 +931,7 @@ if ($imageData) {
           iframe.hidden = true;
         }
       }
-      // VOLTAR AQUI <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------------------------------------------------------------------------------------------------------------------------
+
       function fecharNotificacao(event) {
         if (event) {
           event.stopPropagation();

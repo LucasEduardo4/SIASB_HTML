@@ -58,7 +58,7 @@ if ($result->num_rows > 0) {
         if ($habilitado != 1) {
             header("Location: flowsite/usuarioinativo.html");
         } else {
-            echo 'permitido!';
+            // echo 'permitido!';
         }
     }
 }

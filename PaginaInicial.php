@@ -955,9 +955,6 @@ $stmt->close();
                 showAllNotes();
             });
 
-
-
-
             function saveNotesToDatabase(selectedDate, notesContent) {
                 // Fazer a requisição AJAX usando jQuery
                 $.ajax({
@@ -975,14 +972,11 @@ $stmt->close();
                     }
                 });
             }
-
-
-
         </script>
 
 
         <footer>
-            &copy; <p> 2023 Sistema de Chamados. Todos os direitos reservados. </p>
+            &copy; <p> 2023 Sistema Informatizado de Atendimento SAAE Barretos. Todos os direitos reservados. </p>
         </footer>
     </div>
 </body>
