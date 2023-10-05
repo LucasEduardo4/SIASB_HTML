@@ -11,13 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $IDChamado = $_POST['ChamadoID'];
 
-        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', p.icone
+        $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', p.icone, pr.descricao as 'prioridade'
                 FROM TBChamados c
                 LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus
                 LEFT JOIN TBUsuario a on c.responsavel = a.IDUsuario
                 LEFT JOIN TBUsuario u on c.autor = u.IDUsuario    
                 LEFT JOIN TBEquipamentos e on c.equipamento = e.sti_ID
                 LEFT JOIN TBPessoa p on c.autor = p.IDPessoa
+                LEFT JOIN TBPrioridade pr on c.prioridade = pr.ID
                 WHERE IDChamado = $IDChamado";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -35,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $status_chamado = "<p class='statusColors $status_chamado'>$status_chamado</p>";
                     $responsavel = $row["responsavel"];
                     $autor = $row["autor"];
+                    $prioridadeChamado = $row["prioridade"];
                     $equipamento = $row["equipamento"];
                     // $imagem = $row["imagem"];
                     $icone = $row["icone"];
@@ -47,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $resultArray['responsavel'] = $responsavel;
                     $resultArray['autor'] = $autor;
                     $resultArray['equipamento'] = $equipamento;
+                    $resultArray['prioridadeChamado'] = $prioridadeChamado;
                     // $resultArray['imagem'] = base64_encode($imagem);
                     $resultArray['icone'] = base64_encode($icone);
 
@@ -89,7 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             public $status;
             public $imagensLog;
 
-            public function __construct($IDLog, $mensagem, $dataAlteracao, $responsavel, $status, $imagens){
+            public function __construct($IDLog, $mensagem, $dataAlteracao, $responsavel, $status, $imagens)
+            {
                 $this->IDLog = $IDLog;
                 $this->mensagem = $mensagem;
                 $this->dataAlteracao = $dataAlteracao;
@@ -102,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql2 = "SELECT IDLog, mensagem, dataAlteracao, u.nome as 'responsavel', sc.descricao as 'status', referencia FROM TBLog_chamado
                 left join tbusuario u on responsavel = u.IDUsuario
                 left join tbstatus_chamado sc on status = sc.IDStatus WHERE referencia = $IDChamado";
-                // echo $sql2;
+        // echo $sql2;
 
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute();
@@ -144,6 +148,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $resultArray['logs'] = $resultLogs;
 
+        $status = array();
+        $sql3 = "SELECT * FROM tbstatus_chamado";
+        $stmt3 = $conn->prepare($sql3);
+        $stmt3->execute();
+        $result3 = $stmt3->get_result();
+        if ($result3->num_rows > 0) {
+            while ($row3 = $result3->fetch_assoc()) {
+                $status[] = array(
+                    'ID' => $row3['IDStatus'],
+                    'descricao' => $row3['descricao']
+                );
+            }
+
+        }
+        $resultArray['status'] = $status;
+
+        $prioridadePopup = array();
+        $sql4 = "SELECT * FROM tbprioridade";
+        $stmt4 = $conn->prepare($sql4);
+        $stmt4->execute();
+        $result4 = $stmt4->get_result();
+        if ($result4->num_rows > 0) {
+            while ($row4 = $result4->fetch_assoc()) {
+                $prioridadePopup[] = array(
+                    'ID' => $row4['ID'],
+                    'descricao' => $row4['descricao']
+                );
+            }
+        }
+        $resultArray['prioridadePopup'] = $prioridadePopup;
+
+        $conn->close();
         echo json_encode($resultArray);
         // var_dump($resultArray);
 
@@ -155,6 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // var_dump($_FILES);
         $conn = mysqli_connect("localhost", "root", "", "siasb");
         $status = $_POST['status'];
+        $prioridade = $_POST['prioridade'];
         $mensagem = $_POST['mensagem'];
         $referencia = $_POST['referencia'];
         $responsavel = $_SESSION['username'];
@@ -171,35 +208,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // }
         $imagens = array();
 
-        foreach ($_FILES['imagem']['tmp_name'] as $key => $tmp_name) {
-            // Receba a imagem
-            $imagem_temp = $_FILES['imagem']['tmp_name'][$key];
-            $imagem_nome = $_FILES['imagem']['name'][$key];
-            $imagem_tipo = $_FILES['imagem']['type'][$key];
+        if (isset($_FILES)) {
+            foreach ($_FILES['imagem']['tmp_name'] as $key => $tmp_name) {
+                // Receba a imagem
+                $imagem_temp = $_FILES['imagem']['tmp_name'][$key];
+                $imagem_nome = $_FILES['imagem']['name'][$key];
+                $imagem_tipo = $_FILES['imagem']['type'][$key];
 
-            // Verifique se o arquivo é uma imagem (você pode adicionar validações adicionais)
-            if (strpos($imagem_tipo, 'image') !== false) {
-                // Converta a imagem para dados binários (blob)
-                $imagem_blob = addslashes(file_get_contents($imagem_temp));
+                // Verifique se o arquivo é uma imagem (você pode adicionar validações adicionais)
+                if (strpos($imagem_tipo, 'image') !== false) {
+                    // Converta a imagem para dados binários (blob)
+                    $imagem_blob = addslashes(file_get_contents($imagem_temp));
 
-                // Armazene os dados da imagem em um array
-                $imagens[] = array(
-                    'nome' => $imagem_nome,
-                    'tipo' => $imagem_tipo,
-                    'blob' => $imagem_blob
-                );
+                    // Armazene os dados da imagem em um array
+                    $imagens[] = array(
+                        'nome' => $imagem_nome,
+                        'tipo' => $imagem_tipo,
+                        'blob' => $imagem_blob
+                    );
+                }
             }
         }
 
-        $sql = "SET @UltimoID = (SELECT MAX(IDLog) FROM tblog_chamado);
-        SET @UltimoID = IFNULL(@UltimoID, 0) + 1;
-        SET @responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '$responsavel');
-        INSERT INTO tblog_chamado(IDLog, mensagem, dataAlteracao, responsavel, status, referencia)
-        VALUES (NULL, '$mensagem', NOW(), @responsavel, $status, $referencia);";
-        // echo $sql;
-        foreach ($imagens as $imagem) {
-            $sql .= "INSERT INTO tbimagens (imagem, referencia, log) VALUES ('{$imagem['blob']}', @UltimoID, '1');";
-            // 
+        if (!$status || !$mensagem || !$prioridade) {
+            echo "Erro ao adicionar novo status de chamado: " . mysqli_error($conn);
+            exit();
+        } else
+            if ($prioridade && !$mensagem & !$status) {
+                $sql = "UPDATE tbchamados SET prioridade = $prioridade WHERE IDChamado = $referencia;";
+            } else {
+
+                $sql = "SET @UltimoID = (SELECT MAX(IDLog) FROM tblog_chamado);
+                    SET @UltimoID = IFNULL(@UltimoID, 0) + 1;
+                    SET @responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '$responsavel');
+                    INSERT INTO tblog_chamado(IDLog, mensagem, dataAlteracao, responsavel, status, referencia)
+                    VALUES (NULL, '$mensagem', NOW(), @responsavel, $status, $referencia);
+                    UPDATE tbchamados SET prioridade = $prioridade WHERE IDChamado = $referencia;";
+            }
+        echo $sql;
+        if ($imagens) {
+            foreach ($imagens as $imagem) {
+                $sql .= "INSERT INTO tbimagens (imagem, referencia, log) VALUES ('{$imagem['blob']}', @UltimoID, '1');";
+                // 
+            }
         }
         // echo $sql;
         if (mysqli_multi_query($conn, $sql)) {
@@ -209,6 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         // echo $sql;
         $conn->close();
+
     }
 }
 

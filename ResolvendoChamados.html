@@ -12,13 +12,11 @@
         var xhr = new XMLHttpRequest();
         basePath = 'flowSite/verificaPermissao.php'
 
-        console.log(basePath);
 
         xhr.open("POST", basePath, true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log(xhr.responseText);
                 if (xhr.responseText == "sem permissao") {
                     window.location.href = `/siasb_html/flowsite/permissaonegada.html`;
                 } else
@@ -47,16 +45,10 @@
             padding-bottom: 22px;
         }
 
-        .table {
-            /* background-color: #00a383; */
-            /* color: white; */
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 40px;
-            /* overflow: hidden; */
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
@@ -209,11 +201,6 @@
                     <td>STATUS</td>
                 </thead>
                 <tbody id="resolvendo">
-                    <!-- <td>2</td>
-                    <td>Placeholder</td>
-                    <td>18/09/2023</td>
-                    <td style="color: rgb(255, 196, 0); font-weight: 900;" >Média</td>
-                    <td>Em andamento</td> -->
                 </tbody>
             </table>
         </div>
@@ -230,11 +217,6 @@
                     <td>STATUS</td>
                 </thead>
                 <tbody id="fechados">
-                    <!-- <td>3</td>
-                    <td>Placeholder</td>
-                    <td>18/09/2023</td>
-                    <td style="color: green; font-weight: 900;" >BAIXA</td>
-                    <td>Aberto</td> -->
                 </tbody>
             </table>
         </div>

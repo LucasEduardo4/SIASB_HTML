@@ -6,37 +6,37 @@ if (!isset($_SESSION['username'])) {
 }
 
 //abaixo está a verificação se o usuário está ativo:
-  $conn = mysqli_connect('localhost', 'root', '', 'siasb');
-  $username = $_SESSION['username'];
-  
-  $sql = "SELECT * FROM TBUsuario u  
+$conn = mysqli_connect('localhost', 'root', '', 'siasb');
+$username = $_SESSION['username'];
+
+$sql = "SELECT * FROM TBUsuario u  
       LEFT JOIN TBPessoa p on p.IDPessoa = u.IDUsuario
       WHERE u.nome = '$username'";
-  $stmt = $conn->prepare($sql);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  
-  if ($result->num_rows > 0) {
-      while ($row = $result->fetch_assoc()) {
-          $habilitado = $row["habilitado"];
-          $setor_secao = $row["setor_secao"];
-  
-          // $resultHabilitado = $habilitado == 1 ? true : false;
-          // $resultSetorSecao = $setor_secao == 1 ? true : false;
-  
-          // if($resultHabilitado && $resultSetorSecao){
-          //     echo 'true';
-          // }else{
-          //     echo 'false';
-          // }
-  
-          if ($habilitado != 1) {
-              header("Location: ../flowsite/usuarioinativo.html");
-          } else {
-              // echo 'permitido!';
-          }
-      }
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+  while ($row = $result->fetch_assoc()) {
+    $habilitado = $row["habilitado"];
+    $setor_secao = $row["setor_secao"];
+
+    // $resultHabilitado = $habilitado == 1 ? true : false;
+    // $resultSetorSecao = $setor_secao == 1 ? true : false;
+
+    // if($resultHabilitado && $resultSetorSecao){
+    //     echo 'true';
+    // }else{
+    //     echo 'false';
+    // }
+
+    if ($habilitado != 1) {
+      header("Location: ../flowsite/usuarioinativo.html");
+    } else {
+      // echo 'permitido!';
+    }
   }
+}
 ?>
 <?php
 // Conectar ao banco de dados
@@ -257,7 +257,6 @@ if ($imageData) {
     }
 
     .menu {
-
       padding: 10px;
     }
 
@@ -271,20 +270,29 @@ if ($imageData) {
 
     .menu-item {
       cursor: pointer;
-      padding: 10px;
-      margin-right: 180px;
+      padding: 10px 0px;
+      height: 70px;
       color: #333;
-      border-radius: 5px;
       margin-bottom: 40px;
       font-weight: bold;
-      display: inline-flex;
-      /* padding-left: 10px; */
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-item li {
+      height: 45px;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
     }
 
     p {
       padding-left: 10px;
-      margin-bottom: 0.7rem;
-     }
+      margin-bottom: 0rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
 
     p:hover {
       color: white;
@@ -424,20 +432,12 @@ if ($imageData) {
       clip-path: circle(farthest-side);
     }
 
-
-    .menu-image {
-      /* width: 30px;  */
-      height: 22px;
-      /* vertical-align: middle; */
-      /* Alinhar verticalmente com o texto */
-    }
-
     body,
     html {
       margin: 0;
       padding: 0;
       height: 100%;
-      
+
       /* overflow: hidden; */
     }
 
@@ -448,21 +448,18 @@ if ($imageData) {
       width: 4em;
       height: 100%;
       background-color: #333;
-      transition: width 0.3s ease;
+      transition: all 0.5s cubic-bezier(0, 0.19, 1, 1.01);
       overflow: hidden;
       z-index: 10;
     }
 
-    .menu-expanded {
-      width: 21em;
-    }
-
     .menu-hidden {
       display: none;
-      padding: 20px;
     }
-
+    
     .menu-container:hover {
+      /* transition: all 3s ease-in-out; */
+      transition: all 3s cubic-bezier(0, 0.19, 1, 1.01);
       width: 17em;
       min-width: 15em;
     }
@@ -481,8 +478,8 @@ if ($imageData) {
     }
 
     .menu-container:hover .teste {
-      display: none;
-    }
+    display: none;
+}
 
 
     .perfil_img {
@@ -494,10 +491,10 @@ if ($imageData) {
     }
 
     @media (max-width: 768px) {
-    .perfil_img {
-      bottom: 8%;
+      .perfil_img {
+        bottom: 8%;
+      }
     }
-  }
 
     .troca_cor {
       position: relative;
@@ -653,169 +650,169 @@ if ($imageData) {
 
     <div class="menu-container" id="menu">
       <div class="menu-hidden" id="menuHidden">
+        <p
+          style="color:white; font-size:30px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
+          SIASB</p>
 
-        <p style="color:white; font-size:30px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"> SIASB</p>
-
-        <div onclick="abrirHome()">
-          <li onclick="alterarCor(this)" class="menu-item">
-            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image">
-            <p style="color: white;"> HOME </p>
+        <div onclick="abrirHome()" class="menu-item">
+          <li onclick="alterarCor(this)">
+            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image" height="30">
           </li>
+          <p style="color: white;"> HOME </p>
         </div>
 
-        <div onclick="abrirChamados()">
-          <li onclick="alterarCor(this)" class="menu-item" style="padding-left: ;">
-            <img src="..\Icones Site\telefone.PNG" alt="saaeb barretos" height="22">
-            <p style="color: white; padding-left:20px; flex:none"> ABRIR CHAMADO </p>
+        <div onclick="abrirChamados()" class="menu-item">
+          <li onclick="alterarCor(this)">
+            <img src="..\Icones Site\telefone.PNG" alt="saaeb barretos" height="30">
           </li>
+          <p style="color:white"> ABRIR CHAMADO </p>
         </div>
 
         <!-- <div class="dropdown" onclick="abrirDropdown()"> -->
-        <div onclick="abrirIframe('Ver Chamados')">
-          <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-            <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
-            <p style="color: white;"> CHAMADOS </p>
+        <div onclick="abrirIframe('Ver Chamados')" class="menu-item">
+          <li onclick="alterarCor(this)">
+            <img src="..\Icones Site\CHAMADO BRANCO2.png" alt=" saaeb barretos" height="30">
           </li>
+          <p style="color: white;"> HISTORICO DE CHAMADOS </p>
         </div>
-        
+
 
         <!-- <div onclick="abrirSite()">
           <li style="padding-left:0px;" onclick="alterarCor(this)" class="menu-item">
-            <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
+            <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="30">
             <p style="color: white;"> SITE </p>
           </li>
         </div> -->
 
-        <div onclick="abrirConfiguracoes()">
-          <li onclick="alterarCor(this)" class="menu-item">
-            <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
-            <p style="color: white;"> CONFIGURAÇÕES </p>
+        <div onclick="abrirConfiguracoes()" class="menu-item">
+          <li onclick="alterarCor(this)">
+            <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="30">
           </li>
+          <p style="color: white;"> CONFIGURAÇÕES </p>
         </div>
-        <div onclick="abrirResolvendo()">
-          <li onclick="alterarCor(this)" class="menu-item">
-            <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
-            <p style="color: white; "> RESOLVER </p>
+        <div onclick="abrirResolvendo()" class="menu-item">
+          <li onclick="alterarCor(this)">
+            <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="30">
           </li>
+          <p style="color: white; "> RESOLVER </p>
         </div>
 
-  <div class="perfil_img">
-    <hr>
-    <div class="dropdown">
-      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-        data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="perfil_img">
+          <hr>
+          <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+              data-bs-toggle="dropdown" aria-expanded="false">
 
 
 
-        <div>
-          <div id="anexosContainer"></div>
+              <div>
+                <div id="anexosContainer"></div>
+              </div>
+
+              <script>
+
+                var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
+                if (imagem) {
+                  document.getElementById("anexosContainer").innerHTML +=
+                    '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="150" height="150" alt="" /></p>';
+                } else {
+                  document.getElementById("anexosContainer").innerHTML +=
+                    '<p>Nenhuma imagem anexada para este chamado.</p>';
+                }
+              </script>
+
+
+              <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+
+
+
+
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+
+              <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
+              <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
+            </ul>
+          </div>
         </div>
 
-        <script>
 
-          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
-
-          if (imagem) {
-            document.getElementById("anexosContainer").innerHTML +=
-              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="150" height="150" alt="" /></p>';
-          } else {
-            document.getElementById("anexosContainer").innerHTML +=
-              '<p>Nenhuma imagem anexada para este chamado.</p>';
-          }
-        </script>
-
-
-        <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
-
-
-
-
-      </a>
-      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-
-        <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
-        <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
-        <li>
-          <hr class="dropdown-divider">
-        </li>
-        <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
-      </ul>
-    </div>
-  </div>
-
-        
 
         <div class="troca_cor">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-      <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-        <use href="#circle-half"></use>
-      </svg>
-      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-      <li>
-        <button onclick="alterarTema('claro')" id="btnTemaClaro" type="button"
-          class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#sun-fill"></use>
-          </svg>
-          Claro
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button onclick="alterarTema('escuro')" id="btnTemaEscuro" class="dropdown-item d-flex align-items-center"
-          data-bs-theme-value="dark" aria-pressed="false">
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#moon-stars-fill"></use>
-          </svg>
-          Escuro
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-    </ul>
-  </div>
+          <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+            aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+            <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+              <use href="#circle-half"></use>
+            </svg>
+            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+            <li>
+              <button onclick="alterarTema('claro')" id="btnTemaClaro" type="button"
+                class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                  <use href="#sun-fill"></use>
+                </svg>
+                Claro
+                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                  <use href="#check2"></use>
+                </svg>
+              </button>
+            </li>
+            <li>
+              <button onclick="alterarTema('escuro')" id="btnTemaEscuro" class="dropdown-item d-flex align-items-center"
+                data-bs-theme-value="dark" aria-pressed="false">
+                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                  <use href="#moon-stars-fill"></use>
+                </svg>
+                Escuro
+                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                  <use href="#check2"></use>
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </div>
 
       </div>
 
       <div class="teste">
+        <div >
+          <p style="color:white; font-size:30px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
+          &nbsp;</p>
+        </div>
+        <div class="menu-item">
+          <li>
+            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="30">
+          </li>
+        </div>
+        <div class="menu-item">
+          <li>
+            <img src="..\Icones Site\telefone.png" alt=" saaeb barretos" height="30">
+          </li>
+        </div>
+        <div class="menu-item">
+          <li>
+            <img src="..\Icones Site\CHAMADO BRANCO2.png" alt=" saaeb barretos" height="30">
+          </li>
+        </div>
+        <div class="menu-item">
 
-        <!-- <img src="..\Icones Site\logo.png" alt="saaeb barretos" width="60" height="80"> -->
-
-       
-        <li style="padding-left:17px; padding-top: 40px; margin-top:70px;" class="menu-item">
-          <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
-        </li>
-
-
-        <li style="padding-left:20px;" class="menu-item">
-          <img src="..\Icones Site\telefone.png" alt=" saaeb barretos" height="22">
-        </li>
-
-        <li style="padding-left:7px;" class="menu-item">
-          <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
-        </li>
-
-        <!-- <li style="padding-left:9px;" class="menu-item">
-          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
-        </li> -->
-
-        <li style="padding-left:17px;" class="menu-item">
-          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
-        </li>
-        <li style="padding-left:17px;" class="menu-item">
-          <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
-        </li>
+          <li>
+            <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="30">
+          </li>
+        </div>
+        <div class="menu-item">
+          <li>
+            <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="30">
+          </li>
+        </div>
       </div>
-
-
-
-
     </div>
 
 
