@@ -282,7 +282,7 @@ if ($imageData) {
     }
 
     p {
-      padding-left: 10px;
+      /* padding-left: 10px; */
       margin-bottom: 0.7rem;
      }
 
@@ -491,6 +491,7 @@ if ($imageData) {
       display: flex;
       z-index: 0;
       bottom: 20%;
+      padding-left: 15px;
     }
 
     @media (max-width: 768px) {
@@ -659,14 +660,14 @@ if ($imageData) {
         <div onclick="abrirHome()">
           <li onclick="alterarCor(this)" class="menu-item">
             <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image">
-            <p style="color: white;"> HOME </p>
+            <p style="color: white; padding-left:10px"> HOME </p>
           </li>
         </div>
 
         <div onclick="abrirChamados()">
           <li onclick="alterarCor(this)" class="menu-item" style="padding-left: ;">
             <img src="..\Icones Site\telefone.PNG" alt="saaeb barretos" height="22">
-            <p style="color: white; padding-left:20px; flex:none"> ABRIR CHAMADO </p>
+            <p style="color: white; padding-left:10px; flex:none"> ABRIR CHAMADO </p>
           </li>
         </div>
 
@@ -689,13 +690,13 @@ if ($imageData) {
         <div onclick="abrirConfiguracoes()">
           <li onclick="alterarCor(this)" class="menu-item">
             <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
-            <p style="color: white;"> CONFIGURAÇÕES </p>
+            <p style="color: white; padding-left:10px;"> CONFIGURAÇÕES </p>
           </li>
         </div>
         <div onclick="abrirResolvendo()">
           <li onclick="alterarCor(this)" class="menu-item">
             <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
-            <p style="color: white; "> RESOLVER </p>
+            <p style="color: white; padding-left:10px;"> RESOLVER </p>
           </li>
         </div>
 
@@ -708,7 +709,7 @@ if ($imageData) {
 
 
         <div>
-          <div id="anexosContainer"></div>
+          <div style="padding-left:10px" id="anexosContainer"></div>
         </div>
 
         <script>
@@ -717,7 +718,7 @@ if ($imageData) {
 
           if (imagem) {
             document.getElementById("anexosContainer").innerHTML +=
-              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="150" height="150" alt="" /></p>';
+              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="120" height="120" alt="" /></p>';
           } else {
             document.getElementById("anexosContainer").innerHTML +=
               '<p>Nenhuma imagem anexada para este chamado.</p>';
@@ -744,7 +745,7 @@ if ($imageData) {
   </div>
 
         
-
+<!-- 
         <div class="troca_cor">
     <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
       aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
@@ -779,7 +780,7 @@ if ($imageData) {
         </button>
       </li>
     </ul>
-  </div>
+  </div> -->
 
       </div>
 
@@ -811,6 +812,25 @@ if ($imageData) {
         <li style="padding-left:17px;" class="menu-item">
           <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
         </li>
+
+        <li style="padding-left:5px;" class="menu-item">
+        <div id="anexosContainer2" height="22"></div>
+        </li>
+        
+        <script>
+
+          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
+          if (imagem) {
+            document.getElementById("anexosContainer2").innerHTML +=
+              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="50" height="50" alt="" /></p>';
+          } else {
+            document.getElementById("anexosContainer2").innerHTML +=
+              '<p>Nenhuma imagem anexada para este chamado.</p>';
+          }
+        </script>
+
+
       </div>
 
 
