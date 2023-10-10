@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
 
-        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, sc.descricao, p.email, p.gestor, u.IDUsuario, u.administrador, u.habilitado
+        $sql = "SELECT p.IDPessoa, p.nomeCompleto, p.cpf, p.matricula, sc.descricao, p.email, u.IDUsuario, u.administrador, u.habilitado
                 FROM TBPessoa p
                 JOIN tbsetor_secao sc ON p.setor_secao = sc.ID
                 LEFT JOIN TBUsuario	u on p.IDPessoa = u.IDUsuario
@@ -25,19 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $matricula = $row["matricula"];
                 $setor_secao = $row["descricao"];
                 $email = $row['email'];
-                $gerente = $row['gestor'];
                 $IDUsuario = $row['IDUsuario'];
                 $administrador = $row['administrador'];
                 $habilitado = $row['habilitado'];
-
-                // Verifica se $gerente é igual a 1
-                if ($gerente == 1) {
-                    // Usar ícone para gerente
-                    $icone = "<i class='bi bi-check-square' onclick='onoffGerente(" . $IDPessoa . ")' data-value='" . $gerente . "' id='sqr-" . $IDPessoa . "'></i>";
-                } else {
-                    // Usar ícone padrão
-                    $icone = "<i class='bi bi-square' onclick='onoffGerente(" . $IDPessoa . ")' data-value='" . $gerente . "' id='sqr-" . $IDPessoa . "'></i>";
-                }
+             
                 if ($IDUsuario) {
                     $userType = "<h3 onclick=verificaUsuario(this) id='usuarioComum' title='Usuário comum' class='bi bi-person-fill  my-custom-icon'></h3>";
                     if ($administrador) {
@@ -57,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td>" . $matricula . "</td>
                 <td>" . $setor_secao . "</td>
                 <td>" . $email . "</td>
-                <td id=" . $IDPessoa . ">" . $icone . "</td>
                 <td id=" . $IDPessoa . ">" . $userType . "</td>
                 </tr>";
             }
@@ -78,12 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
         // $sql = "UPDATE tbstatus_chamado SET descricao = '$editedValue' WHERE IDStatus = '$id'";
-        if ($verifica == "desmarcado") {
-            $sql = "UPDATE tbpessoa SET gestor = b'1' WHERE IDPessoa = '$id';";
-        } else
-            if ($verifica == "marcado") {
-                $sql = "UPDATE tbpessoa SET gestor = b'0' WHERE IDPessoa = '$id';";
-            }
+        
         if ($conn->query($sql) === TRUE) {
             // Atualização bem-sucedida
             echo json_encode(array("success" => true, "message" => "Status atualizado com sucesso!"));

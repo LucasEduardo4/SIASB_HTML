@@ -437,7 +437,9 @@
                 }
 
                 function unParse(json) {
-                    // console.log(json);
+                    if(json.includes('window.location')){
+                        window.parent.location.reload();
+                    }
                     var JSONObj = JSON.parse(json);
                     var selectAutores = document.getElementById("selectAutores");
                     var selectResponsavel = document.getElementById("selectResponsavel");

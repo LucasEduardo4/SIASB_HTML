@@ -439,17 +439,14 @@
     connection('ChamadoID=' + encodeURIComponent(IDChamado), 1);
 
     function connection(data, operation) {
-      console.log(data);
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "DetalhandoChamado.php", true);
 
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log(xhr.responseText)
           if (operation == 1) {
             unParse(xhr.responseText);
           } else if (operation == 2) {
-            // console.log(xhr.responseText);
           } else if (operation == 'verificarSetor') {
             if (xhr.responseText == '1') {
               controlarResponsavel_Tecnologia();
@@ -485,9 +482,6 @@
       PRIORIDADEPOPUP = prioridadePopup;
       STATUS = status;
 
-      console.log(PRIORIDADEPOPUP);
-      console.log(STATUS);
-
       if (logs[0]) {
         exibeLogs(logs);
       } else {
@@ -509,7 +503,7 @@
       document.getElementById("dataAbertura").innerHTML += dataAbertura;
       // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
       document.getElementById("status").innerHTML += status_chamado;
-      document.getElementById("prioridade").innerHTML += ' ' + prioridadeChamado;
+      document.getElementById("prioridade").innerHTML += ' ' + prioridadeChamado == 'undefined'? prioridadeChamado : 'Ainda não definida';
       document.getElementById("prioridade").classList.add(prioridadeChamado);
       document.getElementById("responsavel").innerHTML += responsavel;
       document.getElementById("autor").innerHTML += autor;
@@ -691,7 +685,6 @@
     }
 
     function exibeImagensAnexadas(imagens) {
-      // console.log(imagens + '\n' + IDLog);
 
       if (window.screen.width < 1025) {
         var responsiveSize = window.screen.width * 0.65;
@@ -844,10 +837,6 @@
             var prioridade = document.getElementById("prioridadePopup").value;
             var mensagem = document.getElementById("mensagem").value;
             var imagemInput = document.getElementById("imagem");
-
-            console.log(status)
-            console.log(prioridade)
-            console.log(mensagem);
 
             if (!status && !prioridade && !mensagem) {
               Swal.fire({

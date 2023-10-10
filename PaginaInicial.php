@@ -3,30 +3,39 @@
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php"); // Redireciona para a página de login se não estiver autenticado
-    exit();
-}
+    $_SESSION['even'] = 0;
 
-//abaixo está a verificação se o usuário está ativo:
-$conn = mysqli_connect('localhost', 'root', '', 'siasb');
-$username = $_SESSION['username'];
+    if (!isset($_SESSION['username'])) {
+        $_SESSION['even'] = $_SESSION['even'] + 1;
+        if ($_SESSION['even'] / 2 == 0) {
+            header("Location: ../login.html");
+            exit();
+        } else
+            echo "<script>window.parent.location.reload();</script>";
 
-$sql = "SELECT * FROM TBUsuario u  
+
+        //abaixo está a verificação se o usuário está ativo:
+        $conn = mysqli_connect('localhost', 'root', '', 'siasb');
+        $username = $_SESSION['username'];
+
+        $sql = "SELECT * FROM TBUsuario u  
     LEFT JOIN TBPessoa p on p.IDPessoa = u.IDUsuario
     WHERE u.nome = '$username'";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$result = $stmt->get_result();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $habilitado = $row["habilitado"];
-        $setor_secao = $row["setor_secao"];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $habilitado = $row["habilitado"];
+                $setor_secao = $row["setor_secao"];
 
-        if ($habilitado != 1) {
-            header("Location: flowsite/usuarioinativo.html");
-        } 
-    
+                if ($habilitado != 1) {
+                    header("Location: flowsite/usuarioinativo.html");
+                }
+
+            }
+        }
     }
 }
 
