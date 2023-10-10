@@ -287,12 +287,18 @@ if ($imageData) {
     }
 
     p {
+<<<<<<< HEAD
+      /* padding-left: 10px; */
+      margin-bottom: 0.7rem;
+     }
+=======
       padding-left: 10px;
       margin-bottom: 0rem;
       height: 100%;
       display: flex;
       align-items: center;
     }
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
 
     p:hover {
       color: white;
@@ -488,6 +494,7 @@ if ($imageData) {
       display: flex;
       z-index: 0;
       bottom: 20%;
+      padding-left: 15px;
     }
 
     @media (max-width: 768px) {
@@ -654,16 +661,32 @@ if ($imageData) {
           style="color:white; font-size:30px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
           SIASB</p>
 
+<<<<<<< HEAD
+        <p style="color:white; font-size:30px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"> SIASB</p>
+
+        <div onclick="abrirHome()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image">
+            <p style="color: white; padding-left:10px"> HOME </p>
+=======
         <div onclick="abrirHome()" class="menu-item">
           <li onclick="alterarCor(this)">
             <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" class="menu-image" height="30">
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
           </li>
           <p style="color: white;"> HOME </p>
         </div>
 
+<<<<<<< HEAD
+        <div onclick="abrirChamados()">
+          <li onclick="alterarCor(this)" class="menu-item" style="padding-left: ;">
+            <img src="..\Icones Site\telefone.PNG" alt="saaeb barretos" height="22">
+            <p style="color: white; padding-left:10px; flex:none"> ABRIR CHAMADO </p>
+=======
         <div onclick="abrirChamados()" class="menu-item">
           <li onclick="alterarCor(this)">
             <img src="..\Icones Site\telefone.PNG" alt="saaeb barretos" height="30">
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
           </li>
           <p style="color:white"> ABRIR CHAMADO </p>
         </div>
@@ -684,15 +707,29 @@ if ($imageData) {
           </li>
         </div> -->
 
+<<<<<<< HEAD
+        <div onclick="abrirConfiguracoes()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
+            <p style="color: white; padding-left:10px;"> CONFIGURAÇÕES </p>
+=======
         <div onclick="abrirConfiguracoes()" class="menu-item">
           <li onclick="alterarCor(this)">
             <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="30">
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
           </li>
           <p style="color: white;"> CONFIGURAÇÕES </p>
         </div>
+<<<<<<< HEAD
+        <div onclick="abrirResolvendo()">
+          <li onclick="alterarCor(this)" class="menu-item">
+            <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
+            <p style="color: white; padding-left:10px;"> RESOLVER </p>
+=======
         <div onclick="abrirResolvendo()" class="menu-item">
           <li onclick="alterarCor(this)">
             <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="30">
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
           </li>
           <p style="color: white; "> RESOLVER </p>
         </div>
@@ -705,6 +742,10 @@ if ($imageData) {
 
 
 
+<<<<<<< HEAD
+        <div>
+          <div style="padding-left:10px" id="anexosContainer"></div>
+=======
               <div>
                 <div id="anexosContainer"></div>
               </div>
@@ -739,9 +780,79 @@ if ($imageData) {
               <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
             </ul>
           </div>
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
         </div>
 
 
+<<<<<<< HEAD
+          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
+          if (imagem) {
+            document.getElementById("anexosContainer").innerHTML +=
+              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="120" height="120" alt="" /></p>';
+          } else {
+            document.getElementById("anexosContainer").innerHTML +=
+              '<p>Nenhuma imagem anexada para este chamado.</p>';
+          }
+        </script>
+
+
+        <!-- <strong style="padding-left: 10px;color:black;"><?php echo $_SESSION['username']; ?></strong> -->
+
+
+
+
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+
+        <!-- ANTERAÇÕES DO PERFIL ESTÁ SENDO REALIZADA -->
+        <li><a onclick="abrirPerfil()" class="dropdown-item" href="#">PERFIL</a></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li><a onclick="encerrarSessao()" class="dropdown-item" href="#">SAIR</a></li>
+      </ul>
+    </div>
+  </div>
+
+        
+<!-- 
+        <div class="troca_cor">
+    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+      <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+        <use href="#circle-half"></use>
+      </svg>
+      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+      <li>
+        <button onclick="alterarTema('claro')" id="btnTemaClaro" type="button"
+          class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <use href="#sun-fill"></use>
+          </svg>
+          Claro
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button onclick="alterarTema('escuro')" id="btnTemaEscuro" class="dropdown-item d-flex align-items-center"
+          data-bs-theme-value="dark" aria-pressed="false">
+          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <use href="#moon-stars-fill"></use>
+          </svg>
+          Escuro
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+    </ul>
+  </div> -->
+=======
 
         <div class="troca_cor">
           <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
@@ -778,6 +889,7 @@ if ($imageData) {
             </li>
           </ul>
         </div>
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
 
       </div>
 
@@ -803,6 +915,53 @@ if ($imageData) {
         </div>
         <div class="menu-item">
 
+<<<<<<< HEAD
+        <!-- <img src="..\Icones Site\logo.png" alt="saaeb barretos" width="60" height="80"> -->
+
+       
+        <li style="padding-left:17px; padding-top: 40px; margin-top:70px;" class="menu-item">
+          <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
+        </li>
+
+
+        <li style="padding-left:20px;" class="menu-item">
+          <img src="..\Icones Site\telefone.png" alt=" saaeb barretos" height="22">
+        </li>
+
+        <li style="padding-left:7px;" class="menu-item">
+          <img src="..\Icones Site\CHAMADO BRANCO.png" alt=" saaeb barretos" height="22">
+        </li>
+
+        <!-- <li style="padding-left:9px;" class="menu-item">
+          <img src="..\Icones Site\SITE BRANCO.png" alt="saaeb barretos" height="22">
+        </li> -->
+
+        <li style="padding-left:17px;" class="menu-item">
+          <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
+        </li>
+        <li style="padding-left:17px;" class="menu-item">
+          <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
+        </li>
+
+        <li style="padding-left:5px;" class="menu-item">
+        <div id="anexosContainer2" height="22"></div>
+        </li>
+        
+        <script>
+
+          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
+          if (imagem) {
+            document.getElementById("anexosContainer2").innerHTML +=
+              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="50" height="50" alt="" /></p>';
+          } else {
+            document.getElementById("anexosContainer2").innerHTML +=
+              '<p>Nenhuma imagem anexada para este chamado.</p>';
+          }
+        </script>
+
+
+=======
           <li>
             <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="30">
           </li>
@@ -812,6 +971,7 @@ if ($imageData) {
             <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="30">
           </li>
         </div>
+>>>>>>> e0501aea1b54048b8e5bb128998dc4be8d4f1a5a
       </div>
     </div>
 
