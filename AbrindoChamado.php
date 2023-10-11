@@ -4,7 +4,6 @@ session_start();
 $conn = mysqli_connect("localhost", "root", "", "siasb");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['sti_ID'])) {
-
         $conn = mysqli_connect("localhost", "root", "", "siasb");
 
         $sti_ID = $_POST['sti_ID'];
@@ -22,9 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Digite um STI_ID valido (números inteiros)";
         }
         echo $descricao;
-    }
-}
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    }else
     if (isset($_POST['assunto']) && isset($_POST['descricao']) && isset($_POST['sti_ID']) && isset($_POST['terceiros']) && isset($_POST['motivo']) ) {
         $assunto = $_POST['assunto'];
         $descricao = $_POST['descricao'];
@@ -99,8 +96,18 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             echo $sql;
         }
 
-    }
+    }else
+    if(isset($_POST['verify'])){
+        // var_dump($_SESSION);
+        if(!isset($_SESSION['username'])){
+            echo "false";
+        }else{
+            echo 'true';
+        }
 
+
+    
+    }
 }
 
 ?>

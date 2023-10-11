@@ -43,13 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['insertUser'])) {
+        var_dump($_POST);
         $nome = $_POST['nome'];
         $cpf = $_POST['cpf'];
         $matricula = $_POST['matricula'];
         $setor_secao = $_POST['setor'];
         $email = $_POST['email'];
         $insertUser = $_POST['insertUser'];
-        $iconePessoa = $_FILES['imagem'];
         $cpf = str_replace(".", "", $cpf);
         $cpf = str_replace("-", "", $cpf);
 
@@ -60,34 +60,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $imagem_tipo = $_FILES['imagem']['type'];
 
             $imagem_blob = addslashes(file_get_contents($imagem));
-        }else{
+        } else {
             $imagem_blob = NULL;
         }
 
-            if (isset($nome) && isset($cpf) && isset($matricula) && isset($setor_secao) && isset($email)) {
-                $sql = "INSERT INTO TBPessoa (nomeCompleto, cpf, matricula, setor_secao, email, gestor, icone) VALUES (
+        if (isset($nome) && isset($cpf) && isset($matricula) && isset($setor_secao) && isset($email)) {
+            $sql = "INSERT INTO TBPessoa (nomeCompleto, cpf, matricula, setor_secao, email, icone) VALUES (
                 '$nome',
                 '$cpf',
                 '$matricula',
                 '$setor_secao',
                 '$email',
-                '',
                 '$imagem_blob'
             )";
-                // echo $sql;
+            // echo $sql;
 
-                if (mysqli_query($conn, $sql)) {
-                    if ($insertUser == 1) {
-                        $username = $_POST['username'];
-                        inserirUsuario($conn, $username, $cpf);
-                    }
-                } else {
-                    // echo "Erro ao adicionar nova pessoa: motivo->" . mysqli_error($conn);
+            if (mysqli_query($conn, $sql)) {
+                if ($insertUser == 1) {
+                    $username = $_POST['username'];
+                    inserirUsuario($conn, $username, $cpf);
                 }
-
-                $conn->close();
+            } else {
+                // echo "Erro ao adicionar nova pessoa: motivo->" . mysqli_error($conn);
             }
-        
-    }
+
+            $conn->close();
+        }
+
+    } else
+        if (isset($_POST['verify_usernames'])) {
+            $username1 = $_POST['username1'];
+            if (isset($_POST['username2']))
+                $username2 = $_POST['username2'];
+            else
+                $username2 = "";
+
+            $sql = "SELECT * FROM TBUsuario WHERE nome = '$username1'";
+            $result = mysqli_query($conn, $sql);
+            $result->fetch_assoc();
+            if ($result->num_rows > 0) {
+                $username1 = $username1 . "1";
+            }
+
+            $sql2 = "SELECT * FROM TBUsuario WHERE nome = '$username2'";
+            $result2 = mysqli_query($conn, $sql2);
+            $result2->fetch_assoc();
+            if ($result2->num_rows > 0) {
+                if ($username2 != "")
+                    $username2 = $username2 . "1";
+            }
+
+            $result = array();
+            $result[0] = $username1;
+            $result[1] = $username2;
+
+            echo json_encode($result);
+
+        } else if (isset($_POST['check_name'])) {
+            $username = $_POST['username'];
+            $sql = "SELECT * FROM TBUsuario WHERE nome = '$username'";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_row($result);
+            if ($result->num_rows > 0) {
+                echo "error";
+            } else {
+                echo "$username";
+            }
+
+
+        }
 }
 ?>

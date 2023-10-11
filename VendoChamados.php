@@ -15,11 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $dataHora->format('d/m/y');
     }
     $conn = mysqli_connect("localhost", "root", "", "siasb");
-    $username = $_SESSION['username'];
+    if(isset($_SESSION['username'])){
+        $username = $_SESSION['username'];
+    }else{
+        echo "javascript:window.location='../login.html';";
+    }
     if (isset($_POST['Select']) && $_POST['Select'] == '1') {
         $sql = "SELECT * FROM tbusuario u join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
 
-        $setor_secao = 0;
 
         $result = $conn->query($sql);
         if ($result) {
@@ -27,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 while ($row = $result->fetch_assoc()) {
                     $IDUsuario = $row["IDUsuario"];
                     $nome = $row["nome"];
-                    $setor_secao = $row["setor_secao"];
-                    $_SESSION['setor_secao'] = $setor_secao;
+                    $administrador = $row["administrador"];
+                    $_SESSION['administrador'] = $administrador;
                 }
             } else {
-                $setor_secao = 0;
+                $administrador = 0;
             }
         } else {
             echo "Erro na consulta SQL: " . $conn->error;
@@ -44,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     left join tbpessoa p on autor = p.IDPessoa
                     left join tbpessoa p2 on responsavel = p2.IDPessoa";
 
-        if ($setor_secao == 1) { //setor_secao 1 == tecnologia
+        if ($administrador == 1) { //setor_secao 1 == tecnologia
             $sql .= " WHERE 1=1"; // Consulta básica ADM:
         } else {
             $sql .= " WHERE autor = '$IDUsuario'"; //Consulta básica Usuário comum
@@ -165,9 +168,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } else
         if (isset($_POST['Select']) && $_POST['Select'] == '2') {
-            $setor_secao = $_SESSION['setor_secao'];
+            $administrador = $_SESSION['administrador'];
             // $sql = "Select * from tbusuario LEFT JOIN tbpessoa on tbusuario.IDUsuario = tbpessoa.IDPessoa";
-            if ($setor_secao == 1)
+            if ($administrador == 1)
                 $sql = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.autor = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa";
             else
                 $sql = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.autor = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where u.nome = '$username'";
@@ -187,8 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // $sql2 = "SELECT * from tbusuario u LEFT JOIN tbpessoa p on u.IDUsuario = p.IDPessoa where p.setor_secao = 1";
-            $sql2 = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.responsavel = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where p.setor_secao = 1";
+            $sql2 = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.responsavel = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where p.administrador = 1";
             $responsaveis = array();
             $result2 = $conn->query($sql2);
             if ($result2 && $result2->num_rows > 0) {

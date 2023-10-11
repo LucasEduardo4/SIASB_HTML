@@ -144,7 +144,6 @@
             margin: auto;
         }
 
-<<<<<<< HEAD
         @media (max-width: 768px) {
     table {
         width: 100%; /* Ajuste a largura para 100% para dispositivos móveis */
@@ -152,8 +151,6 @@
 }
 
 
-=======
->>>>>>> e88110dc6a7b8ecce13eb466eb8c0851c08ae70d
         /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
         .table> :not(caption)>*>* {
 
@@ -313,12 +310,6 @@
                     <input type="text" class="form-control" id="novoSetor">
                 </div>
                 <div class="mb-3">
-                    <label for="selects" class="form-label">RESPONSÁVEL</label>
-                    <select name="" id="selects" class="form-select">
-                        <!-- <option value="" disabled selected hidden>-------------------------</option> -->
-                    </select>
-                </div>
-                <div class="mb-3">
                     <label for="selectLocal" class="form-label">LOCAL</label>
                     <select name="" id="selectLocal" class="form-select">
 
@@ -340,7 +331,6 @@
             <tr class="table table-dark">
                 <th>ID Setor</th>
                 <th>Nome Setor/Seção</th>
-                <th>Responsável</th>
                 <th>Local</th>
                 <th>Ações</th>
             </tr>
@@ -410,7 +400,7 @@
                             }
                         }
                     };
-                    xhr.send("gerente=" + encodeURIComponent(1));
+                    xhr.send("local=" + encodeURIComponent(1));
                     consultaUnica++;
                 }
             } else
@@ -426,21 +416,12 @@
 
 
             function recebePessoas(data, call) {
+                console.log(data);
                 var dataJson = JSON.parse(data);
 
-                pessoas.push(dataJson[0].pessoas);
                 locais.push(dataJson[0].locais);
                 // console.log(locais)
                 if (call == 'click') {
-
-                    selects.innerHTML = "";
-
-                    for (var i = 0; i < pessoas[0].length; i++) {
-                        var option = document.createElement("option");
-                        option.value = pessoas[0][i].IDPessoa;
-                        option.text = pessoas[0][i].gerente;
-                        selects.appendChild(option);
-                    }
 
                     selectLocal.innerHTML = "";
 
@@ -456,19 +437,12 @@
 
         function adicionarSetor() {
             var novo = document.getElementById("novoSetor").value;
-            var foo = document.getElementById("selects");
-            var response = document.getElementById("response")
+            var response = document.getElementById("response");
             var local = document.getElementById("selectLocal").value;
             var i = 0;
 
-            while (i < foo.options.length) {
-                if (foo.options[i].selected) {
-                    var responsavel = foo.options[i].value;
-                }
-                i++;
-            }
-
-            var data = "nomeSetor=" + encodeURIComponent(novo) + "&responsavel=" + encodeURIComponent(responsavel) + "&local=" + encodeURIComponent(local);
+            var data = "nomeSetor=" + encodeURIComponent(novo) + "&local=" + encodeURIComponent(local);
+            console.log(data);
             connection(data, 'refresh');
         }
 
@@ -479,17 +453,14 @@
 
             var ID = document.getElementById("id-" + id).innerHTML;
             var descricao = document.getElementById("desc-" + id).innerHTML;
-            var gerente = document.getElementById("gerente-" + id).innerHTML;
             var local = document.getElementById("local-" + id).innerHTML;
-            var tdResponsavel = document.getElementById("gerente-" + id);
-            var responsavelID = tdResponsavel.getAttribute("value");
             var tdLocal = document.getElementById("local-" + id);
             var localID = tdLocal.getAttribute("value");
 
    
 
             if (comando == 'edit') {//botao editar
-                openEditPopup(ID, descricao, gerente, responsavelID, localID)
+                openEditPopup(ID, descricao, localID)
             } else
                 if (comando == 'trash') {
                     Swal.fire({
@@ -533,7 +504,7 @@
                     })
                 }
 
-            function openEditPopup(id, descricao, gerente, responsavelID, localID) {
+            function openEditPopup(id, descricao, localID) {
                 Swal.fire({
                     title: 'Editar Dados',
                     html: `
@@ -543,13 +514,6 @@
                                 <p for="descricao">Descrição:</p>
                                 </div><div class="col">
                                 <input id="descricao" type="text" class="swal2-input" value="${descricao}">
-                                </div>
-                            </div>
-                            <div class="row" style='margin-top:10px;'>
-                                <div class="col" id="head">
-                                <p for="end">Responsável:</p>
-                                </div><div class="col">
-                                <select id='selectResponsaveis' class='form-select' style='width: 280px; height:50px;'>${geraOptions(1)}</select>
                                 </div>
                             </div>
                             <div class="row" style='margin-top:10px;'>
@@ -572,11 +536,10 @@
                     },
                     preConfirm: () => {
                         const descricao = document.getElementById('descricao').value;
-                        const responsavel = document.getElementById('selectResponsaveis').value;
                         const local = document.getElementById('selectLocais').value;
-                        var data = "updateSetor=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&responsavel=" + encodeURIComponent(responsavel) + "&local=" + encodeURIComponent(local);
+                        var data = "updateSetor=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) +  "&local=" + encodeURIComponent(local);
                         connection(data, 'update');
-                        return descricao, responsavel;
+                        return descricao;
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -591,18 +554,6 @@
                     }
                 });
                 function geraOptions(opt) {
-                    if (opt == 1) {
-
-                        var options = '';
-                        for (var i = 0; i < pessoas[0].length; i++) {
-                            if (pessoas[0][i].IDPessoa == responsavelID) {
-                                options += '<option value="' + pessoas[0][i].IDPessoa + '" selected>' + pessoas[0][i].gerente + '</option>';
-                            } else {
-                                options += '<option value="' + pessoas[0][i].IDPessoa + '">' + pessoas[0][i].gerente + '</option>';
-                            }
-                        }
-                        return options;
-                    } else
                         if (opt == 2) {
                             var options = '';
                             for (var i = 0; i < locais[0].length; i++) {
@@ -632,6 +583,7 @@
                         if (operation == 'update') {
                         } else
                             if (operation == 'refresh') {
+                                // console.log(xhr.responseText);
                                 window.location.reload();
 
                             }

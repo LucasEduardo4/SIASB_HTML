@@ -180,29 +180,28 @@
       -moz-appearance: textfield;
       /* Remove as setas no Firefox */
     }
-  
-
   </style>
 
 
 
   <style>
-
-  /* Estilo para o rótulo personalizado */
-  input[type="radio"] {
-      display: none; /* Oculta o input padrão */
+    /* Estilo para o rótulo personalizado */
+    input[type="radio"] {
+      display: none;
+      /* Oculta o input padrão */
     }
-  
+
     /* Estilo para o rótulo personalizado */
     .custom-radio {
       position: relative;
-      padding-left: 30px; /* Espaço para o ícone do radio */
+      padding-left: 30px;
+      /* Espaço para o ícone do radio */
       cursor: pointer;
       /* margin-left: 50px; */
 
-      
+
     }
-  
+
     /* Ícone do radio personalizado */
     .custom-radio:before {
       content: "";
@@ -214,58 +213,57 @@
       border: 2px solid #40a383;
       border-radius: 50%;
     }
-  
+
     /* Estilização quando o radio está selecionado */
-    input[type="radio"]:checked + .custom-radio:before {
+    input[type="radio"]:checked+.custom-radio:before {
       background-color: #40a383;
     }
 
-        .step {
-            display: none;
-        }
+    .step {
+      display: none;
+    }
 
-        .step.active {
-            display: block;
-        }
+    .step.active {
+      display: block;
+    }
 
-        button {
-            background-color: #40a383;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
+    button {
+      background-color: #40a383;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
 
-        h2 {
-          font-size: 16px;
-          padding-top: 20px;
-          padding-bottom: 20px;
-          font-family:Verdana, Geneva, Tahoma, sans-serif;
-          font-weight: 900;
-        }
+    h2 {
+      font-size: 16px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: 900;
+    }
 
-        .dropdown {
-        border: 2px solid #40a383;
-        max-height: 150px;
-        overflow-y: auto;
-        
-        
-        }
+    .dropdown {
+      border: 2px solid #40a383;
+      max-height: 150px;
+      overflow-y: auto;
 
-        .item {
-        padding: 8px;
-        cursor: pointer;
-        }
 
-        .item:hover {
-        background-color: #f0f0f0;
-        }
+    }
 
-</style>
+    .item {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .item:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
 
 </head>
 
-<body style="background: none;">
+<body style="background: none;" onload="init();">
 
   <div class="container">
     <div style="border-radius: 5px;" class="div-superior">
@@ -283,23 +281,25 @@
   <div class="container">
     <div style="border-radius: 5px; " class="div-inferior">
       <div style="border: 2px; padding-bottom: 20px;" class="div-azul">DESCREVA ABAIXO SUA SOLICITAÇÃO</div>
-      
+
       <form class="blue-theme-form" enctype="multipart/form-data">
 
         <!-- =================== ================================= -->
 
         <div class="step" id="step-0">
-                
+
           <label for="motivo">POR QUAL MOTIVO ESSA PESSOA NÃO PODE ABRIR O CHAMADO?</label>
           <input type="text" id="teste" name="teste" required>
 
 
-                <button onclick="checkAnswer()" style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="nextStep(0)" >Próxima Etapa</button>
-      
+          <button onclick="checkAnswer()"
+            style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+            onclick="nextStep(0)">Próxima Etapa</button>
+
         </div>
 
         <div class="step active" id="step-1">
-                
+
           <h2>VOCÊ DESEJA ABRIR UM CHAMADO PARA VOCÊ OU PARA TERCEIROS ? </h2>
 
                 <input type="radio" id="resposta-nao" name="resposta" value="nao">
@@ -311,67 +311,71 @@
                 
 
 
-                <button onclick="checkAnswer()" style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="nextStep(1)" >Próxima Etapa</button>
-      
+          <button onclick="checkAnswer()"
+            style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+            onclick="nextStep(1)">Próxima Etapa</button>
+
         </div>
-      
+
         <div class="step" id="step-2">
           <h2>VOCÊ IRÁ ABRIR UM CHAMADO PARA OUTRO FUNCIONÁRIO</h2>
-          
+
           <label for="motivo">POR QUAL MOTIVO ESSA PESSOA NÃO PODE ABRIR O CHAMADO?</label>
           <input type="text" id="motivo" name="motivo" required>
-          
-          <label  for="terceiros">QUAL O NOME DO FUNCIONÁRIO?</label>
+
+          <label for="terceiros">QUAL O NOME DO FUNCIONÁRIO?</label>
           <input type="text" id="terceiros" name="terceiros" required>
           <div id="sugestoes"></div>
-          
-          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="validarCampos()" id="next" disabled>Próxima Etapa</button>
-        </div>
-        
 
-      <div class="step" id="step-3">
-          
-        <div style="margin-top: 30px;" class="top-div">
-          <div class="assunto-div">
-            <label for="assunto">Assunto:</label>
-            <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto" required>
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+            onclick="validarCampos()" id="next" disabled>Próxima Etapa</button>
+        </div>
+
+
+        <div class="step" id="step-3">
+
+          <div style="margin-top: 30px;" class="top-div">
+            <div class="assunto-div">
+              <label for="assunto">Assunto:</label>
+              <input placeholder="Digite o assunto" type="text" id="assunto" name="assunto" required>
+            </div>
+            <div class="hardware-div">
+              <br>
+              <label for="sti_ID">STI_ID:</label>
+              <input style="width: 13%;" type="number" id="sti_ID" name="sti_ID" maxlength="4" size="4"
+                onkeyup="verificaTamanho(this, 4, 'descricao')" onblur="verificaEquipamento()" max="9999" required>
+
+              <label for="nomeEquipamento"> Equipamento:</label>
+              <input type="text" id="nomeEquipamento" disabled value="" style="width: 40%;" required>
+              <h2 style="margin-left: 10px; display: none;" id="plusCircle" title="Cadastrar equipamento"><i
+                  id="cadastroIcone" onclick='handleCadastro(this, 0)' class="bi bi-plus-circle-fill"></i></h2>
+            </div>
           </div>
-          <div class="hardware-div">
-            <br>
-            <label for="sti_ID">STI_ID:</label>
-            <input style="width: 13%;" type="number" id="sti_ID" name="sti_ID" maxlength="4" size="4"
-              onkeyup="verificaTamanho(this, 4, 'descricao')" onblur="verificaEquipamento()" max="9999" required>
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+            onclick="validarCampos2()">Próxima Etapa</button>
 
-            <label for="nomeEquipamento"> Equipamento:</label>
-            <input type="text" id="nomeEquipamento" disabled value="" style="width: 40%;" required>
-            <h2 style="margin-left: 10px; display: none;" id="plusCircle" title="Cadastrar equipamento"><i
-            
-              id="cadastroIcone" onclick='handleCadastro(this, 0)' class="bi bi-plus-circle-fill"></i></h2>
+        </div>
+
+        <div class="step" id="step-4">
+
+          <div style="margin-top: 0px;" class="descricao-div">
+            <label style="padding-top: 20px;" for="descricao">Descrição:</label>
+            <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
           </div>
-        </div>
-          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;" onclick="validarCampos2()">Próxima Etapa</button>
-     
-      </div>
 
-      <div class="step" id="step-4">
-          
-        <div style="margin-top: 0px;" class="descricao-div">
-          <label style="padding-top: 20px;" for="descricao">Descrição:</label>
-          <textarea placeholder="Descreva aqui o seu problema..." id="descricao" name="descricao" rows="4"></textarea>
+          <div style="margin-top: 30px;" class="upload-div">
+            <label for="imagem">Envie uma imagem do problema:</label>
+            <input type="file" id="imagem" multiple name="imagem" required>
+          </div>
+          <div id="erromsg" class="container p-3 mt-3 bg-danger"
+            style="border-radius: 16px; width: 70%; display: none;">
+            <p>Falta preencher algum campo acima, Verifique novamente</p>
+          </div>
+          <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
+            onclick="enviarFormulario()">ENVIAR</button>
         </div>
 
-        <div style="margin-top: 30px;" class="upload-div">
-          <label for="imagem">Envie uma imagem do problema:</label>
-          <input type="file" id="imagem" multiple name="imagem" required>
-        </div>
-        <div id="erromsg" class="container p-3 mt-3 bg-danger" style="border-radius: 16px; width: 70%; display: none;">
-          <p>Falta preencher algum campo acima, Verifique novamente</p>
-        </div>
-        <button style="padding-top: 10px; padding-bottom: 10px; margin-top: 20px; width: 100%; border-radius: 16px;"
-         onclick="enviarFormulario()">ENVIAR</button>     
-      </div>
-
-      <!-- ===================================================================== -->
+        <!-- ===================================================================== -->
 
       </form>
     </div>
@@ -380,6 +384,10 @@
   <!-- PASSANDO OS DADOS PARA O JAVASCRIPT -->
   <script src="sidebars/bootstrap.bundle.min.js"></script>
   <script>
+
+    function init() {
+      connection('verify=' + 1, "verifySession", 'AbrindoChamado.php');
+    }
 
     function verificaTamanho(inputElement, tamanho, proximoCampo) {
       if (inputElement.value.length > tamanho) {
@@ -394,7 +402,7 @@
       var assunto = document.getElementById("assunto").value;
       var descricao = document.getElementById("descricao").value;
       var imagemInput = document.getElementById("imagem");
-      var sti_ID = document.getElementById("sti_ID").value; 
+      var sti_ID = document.getElementById("sti_ID").value;
       var terceiros = document.getElementById("terceiros").value;
       var motivo = document.getElementById("motivo").value;
 
@@ -415,8 +423,8 @@
         }
       }
 
-      
-      
+
+
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "AbrindoChamado.php", true);
       xhr.onreadystatechange = function () {
@@ -490,7 +498,11 @@
             nomeEquipamento.value = response;
             // foo(response);
             handleCadastro(document.getElementById("cadastroIcone") || document.getElementById("cadastroReady"), response);
-          }
+          } else if (output == 'verifySession') {
+              if (xhr.responseText == 'false'){
+                window.parent.location.reload();
+              }
+            }
         }
       }
       xhr.send(data);
@@ -509,63 +521,58 @@
 
     function nextStep(step) {
 
-        if (currentStep == 1 )
-        {
-            document.getElementById(`step-${1}`).classList.remove('active');
-            currentStep = step + 1;
+      if (currentStep == 1) {
+        document.getElementById(`step-${1}`).classList.remove('active');
+        currentStep = step + 1;
         document.getElementById(`step-${currentStep}`).classList.add('active');
-        }
+      }
 
-        if (currentStep == 2 )
-        {
-            document.getElementById(`step-${2}`).classList.remove('active');
-            currentStep = step + 1;
+      if (currentStep == 2) {
+        document.getElementById(`step-${2}`).classList.remove('active');
+        currentStep = step + 1;
         document.getElementById(`step-${currentStep}`).classList.add('active');
-        }
+      }
 
-        if (currentStep == 3 )
-        {
-            document.getElementById(`step-${3}`).classList.remove('active');
-            currentStep = step + 1;
+      if (currentStep == 3) {
+        document.getElementById(`step-${3}`).classList.remove('active');
+        currentStep = step + 1;
         document.getElementById(`step-${currentStep}`).classList.add('active');
-        }
+      }
 
-        if (currentStep == 4 )
-        {
-            document.getElementById(`step-${4}`).classList.remove('active');
-            currentStep = step + 1;
+      if (currentStep == 4) {
+        document.getElementById(`step-${4}`).classList.remove('active');
+        currentStep = step + 1;
         document.getElementById(`step-${currentStep}`).classList.add('active');
-        }
+      }
 
-        // ETAPA FANTASMA PARA REALIZAR O PROCEDIMENTO DO ENVIO DO FORMULARIO
-        if (currentStep == 0 )
-        {
-            document.getElementById(`step-${0}`).classList.remove('active');
-            currentStep = step + 1;
+      // ETAPA FANTASMA PARA REALIZAR O PROCEDIMENTO DO ENVIO DO FORMULARIO
+      if (currentStep == 0) {
+        document.getElementById(`step-${0}`).classList.remove('active');
+        currentStep = step + 1;
         document.getElementById(`step-${currentStep}`).classList.add('active');
-        }
+      }
 
 
     }
 
-        // Captura o evento de pressionar uma tecla no campo de entrada
-        document.getElementById("assunto").addEventListener("keydown", function(event) {
-            // Verifica se a tecla pressionada é o "Enter"
-            if (event.key === "Enter") {
-                // Impede o envio automático do formulário
-                event.preventDefault();
-                // Nada acontece aqui, pois nenhum código foi adicionado
-            }
-        });
+    // Captura o evento de pressionar uma tecla no campo de entrada
+    document.getElementById("assunto").addEventListener("keydown", function (event) {
+      // Verifica se a tecla pressionada é o "Enter"
+      if (event.key === "Enter") {
+        // Impede o envio automático do formulário
+        event.preventDefault();
+        // Nada acontece aqui, pois nenhum código foi adicionado
+      }
+    });
 
-        document.getElementById("sti_ID").addEventListener("keydown", function(event) {
-            // Verifica se a tecla pressionada é o "Enter"
-            if (event.key === "Enter") {
-                // Impede o envio automático do formulário
-                event.preventDefault();
-                // Nada acontece aqui, pois nenhum código foi adicionado
-            }
-        });
+    document.getElementById("sti_ID").addEventListener("keydown", function (event) {
+      // Verifica se a tecla pressionada é o "Enter"
+      if (event.key === "Enter") {
+        // Impede o envio automático do formulário
+        event.preventDefault();
+        // Nada acontece aqui, pois nenhum código foi adicionado
+      }
+    });
 
 
     // FAZER MEU PRÓXIMO MÉTODO PARA MUDAR DE ABA (REDONDA)
@@ -578,41 +585,41 @@
     // }
 
     function checkAnswer() {
-    const resposta = document.querySelector('input[name="resposta"]:checked').value;
+      const resposta = document.querySelector('input[name="resposta"]:checked').value;
 
-    if (resposta === "sim") {
+      if (resposta === "sim") {
         nextStep(1); // Vá para a próxima etapa se a resposta for "sim"
-    } 
-    
-    if (resposta === "nao") {
+      }
+
+      if (resposta === "nao") {
         nextStep(2); // Pule para a etapa desejada se a resposta for "não"
+      }
+
     }
-    
-}
 
 
-function validarCampos() {
-  var motivo = document.getElementById("motivo").value;
-  var terceiros = document.getElementById("terceiros").value;
-  
-  if (motivo === "" || terceiros === "") {
-    alert("Por favor, preencha todos os campos antes de avançar.");
-  } else {
+    function validarCampos() {
+      var motivo = document.getElementById("motivo").value;
+      var terceiros = document.getElementById("terceiros").value;
 
-    nextStep(2);
-  }
-}
+      if (motivo === "" || terceiros === "") {
+        alert("Por favor, preencha todos os campos antes de avançar.");
+      } else {
 
-function validarCampos2() {
+        nextStep(2);
+      }
+    }
 
-  var assunto = document.getElementById("assunto").value;
+    function validarCampos2() {
 
-  if (assunto === "") {
-    alert("Por favor, preencha todos os campos antes de avançar.");
-  } else {
-    nextStep(3);
-  }
-}
+      var assunto = document.getElementById("assunto").value;
+
+      if (assunto === "") {
+        alert("Por favor, preencha todos os campos antes de avançar.");
+      } else {
+        nextStep(3);
+      }
+    }
 
     // function checkAge() {
     //     const idade = parseInt(document.getElementById('idade').value);
@@ -625,55 +632,55 @@ function validarCampos2() {
     // }
 
     document.addEventListener("DOMContentLoaded", function () {
-  const inputterceiros = document.getElementById("terceiros");
-  const sugestoes = document.getElementById("sugestoes");
-  const nextButton = document.getElementById("next"); // Botão de envio
+      const inputterceiros = document.getElementById("terceiros");
+      const sugestoes = document.getElementById("sugestoes");
+      const nextButton = document.getElementById("next"); // Botão de envio
 
-  inputterceiros.addEventListener("input", function () {
-    const termo = inputterceiros.value;
+      inputterceiros.addEventListener("input", function () {
+        const termo = inputterceiros.value;
 
-    if (termo.length >= 2) {
-      fetch(`buscar_nomes.php?termo=${termo}`)
-        .then((response) => response.json())
-        .then((data) => {
-          sugestoes.innerHTML = ""; // Limpe as sugestões existentes
+        if (termo.length >= 2) {
+          fetch(`buscar_nomes.php?termo=${termo}`)
+            .then((response) => response.json())
+            .then((data) => {
+              sugestoes.innerHTML = ""; // Limpe as sugestões existentes
 
-          const dropdown = document.createElement("div");
-          dropdown.classList.add("dropdown");
+              const dropdown = document.createElement("div");
+              dropdown.classList.add("dropdown");
 
-          data.forEach((nome) => {
-            const sugestao = document.createElement("div");
-            sugestao.classList.add("item");
-            sugestao.textContent = nome;
-            sugestao.addEventListener("click", function () {
-              inputterceiros.value = nome;
-              sugestoes.innerHTML = "";
-              nextButton.disabled = false; // Habilita o botão quando uma sugestão é selecionada
+              data.forEach((nome) => {
+                const sugestao = document.createElement("div");
+                sugestao.classList.add("item");
+                sugestao.textContent = nome;
+                sugestao.addEventListener("click", function () {
+                  inputterceiros.value = nome;
+                  sugestoes.innerHTML = "";
+                  nextButton.disabled = false; // Habilita o botão quando uma sugestão é selecionada
+                });
+                dropdown.appendChild(sugestao);
+              });
+
+              sugestoes.appendChild(dropdown);
+            })
+            .catch((error) => {
+              console.error(error);
             });
-            dropdown.appendChild(sugestao);
-          });
-
-          sugestoes.appendChild(dropdown);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      sugestoes.innerHTML = "";
-      nextButton.disabled = true; // Desabilita o botão quando o termo é muito curto
-    }
-  });
-});
+        } else {
+          sugestoes.innerHTML = "";
+          nextButton.disabled = true; // Desabilita o botão quando o termo é muito curto
+        }
+      });
+    });
 
 
     // document.getElementById('step-form').addEventListener('submit', function (e) {
     //     e.preventDefault();
     //     alert('Formulário enviado com sucesso!');
     // }); Estava dando erro, então comentei...
-</script>
+  </script>
 
 
-<!-- ===================================================================================================================================== -->
+  <!-- ===================================================================================================================================== -->
 </body>
 
 </html>

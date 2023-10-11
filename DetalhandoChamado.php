@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $resultArray['responsavel'] = $responsavel;
                     $resultArray['autor'] = $autor;
                     $resultArray['equipamento'] = $equipamento;
-                    $resultArray['prioridadeChamado'] = $prioridadeChamado;
+                    $resultArray['prioridadeChamado'] = $prioridadeChamado? $prioridadeChamado : "undefined";
                     // $resultArray['imagem'] = base64_encode($imagem);
                     $resultArray['icone'] = base64_encode($icone);
 

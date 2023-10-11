@@ -52,11 +52,12 @@
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
-
+            padding: 20px;
         }
 
-        .table-striped>tbody>tr:nth-of-type(odd)>* {
-            --bs-table-bg-type: none;
+        thead td {
+            background-color: rgb(250, 250, 250);
+            color: black;
         }
 
         .container,
@@ -71,7 +72,7 @@
 
 
         /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
-        .table> :not(caption)>*>* {
+        #tbody> :not(caption)>*>* {
 
             background-color: white;
             color: black;
@@ -82,7 +83,8 @@
         /* =========================================================================== */
 
         .table-heading {
-            background: linear-gradient(135deg, #007bff, #00cc99);
+            /* background: linear-gradient(135deg, #007bff, #00cc99); */
+            background-color: rgb(250, 250, 250);
             color: #fff;
         }
 
@@ -92,20 +94,6 @@
             background-color: #00a383;
             border-radius: 30px;
 
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 40px;
-            /* overflow: hidden; */
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: auto;
-        }
-
-        .table-striped>tbody>tr:nth-of-type(odd)>* {
-            --bs-table-bg-type: none;
         }
 
         .container,
@@ -138,13 +126,14 @@
             border-bottom: 1px solid #e0e0e0;
         }
 
-        table tr:nth-child(even) {
-            background-color: #f2f2f2;
+        tbody {
+            border-radius: 30px;
+
         }
 
         .title {
             margin: auto;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-family: Impact, 'Arial Narrow Bold', sans-serif;
             padding-top: 30px;
             font-size: 40px;
             color: #000000;
@@ -163,35 +152,44 @@
             color: white;
 
         }
+
+        .table-container {
+            border-radius: 30px;
+            overflow: hidden;
+            /* Garante que o conteúdo não vaze para fora do contêiner arredondado */
+        }
     </style>
 </head>
 
 <body onload="selectInicial()">
     <div class=" container-fluid">
         <h1 class="title">RESOLVENDO CHAMADOS</h1>
-        <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
+        <div style="background-color: rgb(250, 250, 250);" class="container container-fluid">
             <h2 style="padding-bottom: 20px;">NOVOS CHAMADOS</h2>
-            <table class="table table-hover table-striped">
-                <thead style="font-weight: 700;" class="table-heading table-dark">
-                    <td>ID</td>
-                    <td>ASSUNTO</td>
-                    <td>AUTOR</td>
-                    <td>SETOR/SEÇÃO</td>
-                    <td>DATA</td>
-                    <td>PRIORIDADE</td>
-                    <td>D/ABERTO</td>
-                    <td>STATUS</td>
-                    <td>ADD</td>
+            <table class="table table-hover">
+                <thead style="font-weight: 700;" class="">
+                    <tr>
+                        <td>ID</td>
+                        <td>ASSUNTO</td>
+                        <td>AUTOR</td>
+                        <td>SETOR/SEÇÃO</td>
+                        <td>DATA</td>
+                        <td>PRIORIDADE</td>
+                        <td>D/ABERTO</td>
+                        <td>STATUS</td>
+                        <td>ADD</td>
+                    </tr>
                 </thead>
-                <tbody id="novos">
+
+                <tbody id="novos" class="tbody">
 
                 </tbody>
             </table style="padding-bottom:20px">
         </div>
-        <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
+        <div style="background-color: rgb(250, 250, 250);" class="container container-fluid">
             <h2 style="padding-bottom: 20px;">CHAMADOS QUE O SEU USUÁRIO ESTÁ RESOLVENDO</h2>
-            <table class="table table-hover table-striped">
-                <thead style="font-weight: 700;" class="table-heading">
+            <table class="table table-hover">
+                <thead style="font-weight: 700;" class="table-heading" style="background-color: rgb(250, 250, 250);">
                     <td>ID</td>
                     <td>ASSUNTO</td>
                     <td>AUTOR</td>
@@ -200,14 +198,14 @@
                     <td>PRIORIDADE</td>
                     <td>STATUS</td>
                 </thead>
-                <tbody id="resolvendo">
+                <tbody id="resolvendo" class="tbody">
                 </tbody>
             </table>
         </div>
-        <div style="background-color: rgb(255, 255, 255);" class="container container-fluid">
+        <div style="background-color: rgb(250, 250, 250);" class="container container-fluid">
             <h2 style="padding-bottom: 20px;">RESOLVIDOS</h2>
-            <table class="table table-hover table-striped" id="todos">
-                <thead style="font-weight: 700;" class="table-heading">
+            <table class="table table-hover" id="todos">
+                <thead style="font-weight: 700;" class="table-heading" style="background-color: rgb(221, 221, 221);">
                     <td>ID</td>
                     <td>ASSUNTO</td>
                     <td>AUTOR</td>
@@ -216,7 +214,7 @@
                     <td>PRIORIDADE</td>
                     <td>STATUS</td>
                 </thead>
-                <tbody id="fechados">
+                <tbody id="fechados" class="tbody">
                 </tbody>
             </table>
         </div>
@@ -264,7 +262,18 @@
         dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
 
 
-
+        function verificaStrings(comparativo, upper, lower){
+            if(comparativo == upper){
+                // return console.log("string: " + comparativo + " é igual à "+ upper );
+                return true;
+            }else if(comparativo == lower){
+                // return console.log("string: " + comparativo + " é igual à "+ lower );
+                return true;
+            }else
+            return false;
+            // return console.log("string: " + comparativo + " é diferente de "+ upper + " e " + lower);
+        }
+    
 
         dados.forEach(element => {
             if (element.usuario) {
@@ -285,6 +294,8 @@
                         receberChamado(element.IDChamado);
                     };
                     var img = document.createElement('img');
+                    opt.style.textAlign = 'center';
+                    opt.style.cursor = 'pointer';
                     img.id = 'opt';
                     img.setAttribute('src', 'Icones Site/iconeplus.png');
                     img.setAttribute('width', '20px');
@@ -337,7 +348,11 @@
                     })
                     linha.appendChild(opt);
                 }
-                else if (element.responsavel == usuario.toUpperCase() || usuario.toLowerCase() && element.status_chamado == 'Andamento' || element.status_chamado == 'Pendente') {
+                else if (
+                    (verificaStrings(element.responsavel, usuario.toUpperCase(), usuario.toLowerCase()) == true) &&
+                    (element.status_chamado == 'Andamento' || element.status_chamado == 'Pendente')
+                ) {
+                    
                     var linha = document.createElement('tr');
                     var id = document.createElement('td');
                     var assunto = document.createElement('td');

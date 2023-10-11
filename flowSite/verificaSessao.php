@@ -5,6 +5,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if(!isset($_SESSION['username'])){
             echo 'false';
+        }else{
+            echo 'true';
         }
         
     } 

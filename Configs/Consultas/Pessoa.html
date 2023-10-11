@@ -336,7 +336,6 @@
                 <th>Matrícula</th>
                 <th>Setor / Seção</th>
                 <th>E-mail</th>
-                <th>Gestor</th>
                 <th>Usuário</th>
             </tr>
         </table>
@@ -381,29 +380,6 @@
             }
         }
 
-        function onoffGerente(ID) {
-            console.log("entrou")
-            var verifica = document.getElementById(`sqr-${ID}`)
-            if (verifica.dataset.value == 0) {
-                verifica = 'desmarcado';
-            } else if (verifica.dataset.value == 1) {
-                verifica = 'marcado';
-            }
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "php/consultas.php", true)
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        window.location.reload();
-                    } else {
-                        console.error("Falha ao carregar as pessoas");
-                    }
-                }
-            };
-            xhr.send("verifica=" + encodeURIComponent(verifica) + "&id=" + ID);
-        }
 
         function verificaUsuario(usuario) {
             var usuarioID = usuario.id

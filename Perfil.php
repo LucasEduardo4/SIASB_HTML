@@ -1,9 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: ../login.html");
-    exit();
+$_SESSION['even'] = 0;
 
+if (!isset($_SESSION['username'])) {
+    $_SESSION['even'] = $_SESSION['even'] + 1;
+    if ($_SESSION['even'] / 2 == 0) {
+        header("Location: ../login.html");
+        exit();
+    } else
+        echo "<script>window.parent.location.reload();</script>";
 
     //abaixo está a verificação se o usuário está ativo:
     $conn = mysqli_connect('localhost', 'root', '', 'siasb');
@@ -27,6 +32,8 @@ if (!isset($_SESSION['username'])) {
 
         }
     }
+    exit();
+
 }
 
 

@@ -155,7 +155,9 @@ if ($imageData) {
 
     .sidebar_icon {
       /* margin-left: 95%; */
+      background-color: #B3B3B3;
       right: 20px;
+      border: solid 0.5px black;
       margin-top: 10px;
       position: absolute;
       display: flex;
@@ -166,11 +168,13 @@ if ($imageData) {
 
     .sidebar_icon:hover {
       cursor: pointer;
+      background-color: #939393;
     }
 
     #notificationSign {
       margin: 10px;
       width: 35px;
+      fill: gold;
     }
 
     .sidebar ul {
@@ -192,8 +196,6 @@ if ($imageData) {
       padding: 20px;
     }
 
-    /* IMAGEM ANTIGA QUE EU ESTAVA UTILIZANDO */
-
     #imagemContainer {
       width: 60px;
       height: 60px;
@@ -206,8 +208,6 @@ if ($imageData) {
       height: 100%;
       object-fit: cover;
     }
-
-    /* ================================== */
 
     body {
       background-color: #f6f6f6;
@@ -287,7 +287,7 @@ if ($imageData) {
     }
 
     p {
-      /* padding-left: 10px; */
+      padding-left: 10px;
       margin-bottom: 0rem;
       height: 100%;
       display: flex;
@@ -425,7 +425,7 @@ if ($imageData) {
       background-color: rgb(64, 163, 131);
       border-radius: 50%;
       border: solid 1px black;
-      display: none;
+      /* display: none; */
     }
 
     #icone {
@@ -456,7 +456,7 @@ if ($imageData) {
     .menu-hidden {
       display: none;
     }
-    
+
     .menu-container:hover {
       /* transition: all 3s ease-in-out; */
       transition: all 3s cubic-bezier(0, 0.19, 1, 1.01);
@@ -478,8 +478,8 @@ if ($imageData) {
     }
 
     .menu-container:hover .teste {
-    display: none;
-}
+      display: none;
+    }
 
 
     .perfil_img {
@@ -498,11 +498,12 @@ if ($imageData) {
     }
 
     .troca_cor {
-      position: relative;
+      position: absolute;
       margin: 0;
       display: flex;
       z-index: 0;
       bottom: 3%;
+      left: 0.5%;
     }
   </style>
 
@@ -685,13 +686,13 @@ if ($imageData) {
           </li>
         </div> -->
 
-        <div onclick="abrirConfiguracoes()" class="menu-item">
+        <div onclick="abrirConfiguracoes()" class="menu-item administrador">
           <li onclick="alterarCor(this)">
             <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="30">
           </li>
           <p style="color: white;"> CONFIGURAÇÕES </p>
         </div>
-        <div onclick="abrirResolvendo()" class="menu-item">
+        <div onclick="abrirResolvendo()" class="menu-item administrador">
           <li onclick="alterarCor(this)">
             <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="30">
           </li>
@@ -744,7 +745,7 @@ if ($imageData) {
 
 
 
-        <!-- <div class="troca_cor">
+        <div class="troca_cor">
           <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
             aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
             <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
@@ -778,64 +779,74 @@ if ($imageData) {
               </button>
             </li>
           </ul>
-        </div> -->
+        </div>
 
       </div>
 
       <div class="teste">
-        <div >
-          <p style="color:white; font-size:30px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
-          &nbsp;</p>
+        <div>
+          <p
+            style="color:white; font-size:22px; padding-bottom:20px,font-weight: 900; padding-bottom:10px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">
+            &nbsp;</p> <!-- <<<<<<<< espaço pra logo aqui -->
         </div>
         <div class="menu-item">
           <li>
-            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="30">
-          </li>
-        </div>
-        <div class="menu-item">
-          <li>
-            <img src="..\Icones Site\telefone.png" alt=" saaeb barretos" height="30">
+            <img src="..\Icones Site\HOME BRANCO.png" alt="saaeb barretos" height="22">
           </li>
         </div>
         <div class="menu-item">
           <li>
-            <img src="..\Icones Site\CHAMADO BRANCO2.png" alt=" saaeb barretos" height="30">
-          </li>
-        </div>
-        <div class="menu-item">
-
-          <li>
-            <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="30">
+            <img src="..\Icones Site\telefone.png" alt=" saaeb barretos" height="22">
           </li>
         </div>
         <div class="menu-item">
           <li>
-            <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="30">
+            <img src="..\Icones Site\CHAMADO BRANCO2.png" alt=" saaeb barretos" height="22">
           </li>
         </div>
-
-        <div  >
+        <div class="menu-item administrador">
           <li>
-          <div id="anexosContainer2" height="22"></div>
-
+            <img src="..\Icones Site\ENGRENAGEM BRANCO.png" alt="saaeb barretos" height="22">
           </li>
         </div>
-
-        <script>
-
-          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
-
-          if (imagem) {
-            document.getElementById("anexosContainer2").innerHTML +=
-              '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="50" height="50" alt="" /></p>';
-          } else {
-            document.getElementById("anexosContainer2").innerHTML +=
-              '<p>Nenhuma imagem anexada para este chamado.</p>';
-          }
-        </script>
+        <div class="menu-item administrador">
+          <li>
+            <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
+          </li>
+        </div>
       </div>
     </div>
 
+    <script>
+      function verificaADM(response) {
+        var opcoes = document.getElementsByClassName("administrador");
+        if (response == 1) {
+          for (var i = 0; i < opcoes.length; i++) {
+            opcoes[i].style.display = "flex";
+          }
+        } else {
+          for (var i = 0; i < opcoes.length; i++) {
+            opcoes[i].style.display = "none";
+          }
+        }
+
+      }
+
+    </script>
+
+    <?php
+    $conn = mysqli_connect("localhost", "root", "", "siasb");
+    $usuario = $_SESSION['username'];
+    $sql = "SELECT * FROM tbusuario WHERE nome = '$usuario'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    if ($row['administrador'] == '1') {
+      echo "<script>verificaADM(1)</script>";
+    } else {
+      echo "<script>verificaADM(0)</script>";
+    }
+
+    ?>
 
 
 
