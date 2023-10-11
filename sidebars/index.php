@@ -155,7 +155,9 @@ if ($imageData) {
 
     .sidebar_icon {
       /* margin-left: 95%; */
+      background-color: #B3B3B3;
       right: 20px;
+      border: solid 0.5px black;
       margin-top: 10px;
       position: absolute;
       display: flex;
@@ -166,11 +168,13 @@ if ($imageData) {
 
     .sidebar_icon:hover {
       cursor: pointer;
+      background-color: #939393;
     }
 
     #notificationSign {
       margin: 10px;
       width: 35px;
+      fill: gold;
     }
 
     .sidebar ul {
@@ -192,8 +196,6 @@ if ($imageData) {
       padding: 20px;
     }
 
-    /* IMAGEM ANTIGA QUE EU ESTAVA UTILIZANDO */
-
     #imagemContainer {
       width: 60px;
       height: 60px;
@@ -206,8 +208,6 @@ if ($imageData) {
       height: 100%;
       object-fit: cover;
     }
-
-    /* ================================== */
 
     body {
       background-color: #f6f6f6;
@@ -425,7 +425,7 @@ if ($imageData) {
       background-color: rgb(64, 163, 131);
       border-radius: 50%;
       border: solid 1px black;
-      display: none;
+      /* display: none; */
     }
 
     #icone {
