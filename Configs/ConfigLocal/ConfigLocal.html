@@ -504,6 +504,7 @@
                         const endereco = document.getElementById('end').value;
                         const ativo = document.getElementById('ativo').checked ? '1' : '0';
                         var data = "updateLocal=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&endereco=" + encodeURIComponent(endereco) + "&ativo=" + ativo;
+                        console.log(data);
                         connection(data, 'refresh2');
                         return descricao, endereco, ativo;
                     }

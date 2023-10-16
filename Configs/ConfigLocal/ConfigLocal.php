@@ -45,23 +45,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (isset($_POST['updateLocal'])) {
         var_dump($_POST);
-        // var data = "updateLocal=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&endereco=" + encodeURIComponent(endereco) + "&ativo=" + ativo;
+        echo "<br><br>";
+        require_once '../logs/functions.php';
         if (isset($_POST['ID']) && isset($_POST['descricao']) && isset($_POST['endereco']) && isset($_POST['ativo'])) {
             $ID = $_POST['ID'];
             $descricao = $_POST['descricao'];
             $endereco = $_POST['endereco'];
             $ativo = $_POST['ativo'];
 
+            $tabela = "tblocal";
+            $colName = "ID";
+            $oldValues = getOlderValues($conn, $tabela, $ID, $colName);
+
             $sql = "UPDATE tblocal SET descricao = '$descricao', endereco = '$endereco', ativo = $ativo WHERE ID = $ID";
 
             $conn->query($sql);
+
+            $newValues = getNewerValues($conn, $tabela, $ID, $colName);
+            logChanges($tabela, $oldValues, $ID, $newValues);
+
             $conn->close();
         } else if (isset($_POST['ID']) && isset($_POST['ativo'])) {
             $ID = $_POST['ID'];
             $ativo = $_POST['ativo'];
+
+            $tabela = "tblocal";
+            $colName = "ID";
+            $oldValues = getOlderValues($conn, $tabela, $ID, $colName);
+
             $sql = "UPDATE tblocal SET ativo = $ativo WHERE ID = $ID";
             // echo $sql;
             $conn->query($sql);
+
+            $newValues = getNewerValues($conn, $tabela, $ID, $colName);
+            logChanges($tabela, $oldValues, $ID, $newValues);
+
             $conn->close();
         }
 

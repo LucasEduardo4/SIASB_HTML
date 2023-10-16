@@ -1,5 +1,6 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "siasb");
+$connMulti = mysqli_connect("localhost", "root", "", "siasb");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST["select_ready"])) {
         if ($conn->connect_error) {
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
         $conn->close();
     } else
-        if (isset($_POST["local"]) && !isset($_POST["nomeSetor"])) {
+        if (isset($_POST["consultaLocal"]) && !isset($_POST["nomeSetor"])) {
 
             $sql2 = "SELECT * FROM tblocal";
             $stmt2 = $conn->prepare($sql2);
@@ -102,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $conn->close();
                 } else
                     if (isset($_POST['updateSetor'])) {
-                        echo 'at least';
+                        require_once "../logs/functions.php";
+
                         $ID = $_POST['ID'];
                         $descricao = $_POST['descricao'];
                         $local = $_POST['local'];
@@ -111,14 +113,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
                         }
 
+                        $oldValues = getOlderValues($conn, 'tbsetor_secao', $ID, "ID");
+                        
                         $sql = "UPDATE tbsetor_secao SET descricao = '$descricao' WHERE ID = $ID;
                         UPDATE localsetorsecao SET localID = $local WHERE setorSecaoID = $ID;";
-                        echo $sql;
-                        if (mysqli_multi_query($conn, $sql)) {
+
+                        // echo $sql;
+
+                        if (mysqli_multi_query($connMulti, $sql)) {
                             echo "true";
                         } else {
                             echo "Erro ao atualizar setor: " . mysqli_error($conn);
                         }
+
+                        $newValues = getNewerValues($conn, 'tbsetor_secao', $ID, "ID");
+                        var_dump($newValues);
+                        var_dump($oldValues);
+                        logChanges('tbsetor_secao', $oldValues, $ID, $newValues);
 
                         $conn->close();
                     }

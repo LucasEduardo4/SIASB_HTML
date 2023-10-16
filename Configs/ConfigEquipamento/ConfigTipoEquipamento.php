@@ -56,16 +56,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $conn->close();
             } else
                 if (isset($_POST['updateTipoEquip'])) {
+                    require_once '../logs/functions.php';
                     $IDTipo = $_POST['ID'];
                     $descricao = $_POST['descricao'];
+
+                    $tabela = "tbtipo_equipamentos";
+                    $oldValues = getOlderValues($conn, $tabela, $IDTipo, "IDTipo");
 
                     $sql = "UPDATE tbtipo_equipamentos SET descricao = '$descricao' WHERE IDTipo = '$IDTipo'";
 
                     if ($conn->query($sql) === TRUE) {
                         echo "Tipo de equipamento atualizado com sucesso!";
+                        $newValues = getNewerValues($conn, $tabela, $IDTipo, "IDTipo");
                     } else {
                         echo "Erro ao atualizar tipo de equipamento: " . $conn->error;
                     }
+
+                    logChanges($tabela, $oldValues, $IDTipo, $newValues);
 
                     $conn->close();
                 }

@@ -76,7 +76,8 @@ if ($result->num_rows > 0) {
   $row = $result->fetch_assoc();
   $imageData = $row['icone']; // Use 'icone' em vez de 'imagem_coluna'
 } else {
-  echo "Imagem não encontrada.";
+  $imageData = base64_encode(file_get_contents('../icons/149071.png'));
+
   exit;
 }
 
@@ -85,9 +86,10 @@ $conn->close();
 if ($imageData) {
   // Display the image using base64 encoding
   $base64Image = base64_encode($imageData);
-  // echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
+   //echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
 } else {
-  echo "Image not found.";
+  $base64Image = base64_encode(file_get_contents('../icons/149071.png'));
+  // echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
 }
 ?>
 
@@ -555,7 +557,7 @@ if ($imageData) {
 
         <script>
 
-          var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+          var imagem = <?php //echo json_encode(base64_encode($imageData)); ?>;
 
           if (imagem) {
             document.getElementById("anexosContainer").innerHTML +=
@@ -713,14 +715,17 @@ if ($imageData) {
 
               <script>
 
-                var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+                var imagem = <?php echo json_encode(base64_encode($imageData));?>;
+                
+                console.log(imagem);
 
-                if (imagem) {
+                if (imagem != '') {
                   document.getElementById("anexosContainer").innerHTML +=
                     '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="150" height="150" alt="" /></p>';
                 } else {
-                  document.getElementById("anexosContainer").innerHTML +=
-                    '<p>Nenhuma imagem anexada para este chamado.</p>';
+                  imagem = 
+                  console.log(imagem);
+                  document.getElementById("anexosContainer").innerHTML += `<p> <img id="icone" src="data:image/jpeg;base64,' + '<?php  $imagem = base64_encode(file_get_contents('../icons/149071.png')); echo $imagem;?>' + '" width="150" height="150" alt="" /></p>`;
                 }
               </script>
 

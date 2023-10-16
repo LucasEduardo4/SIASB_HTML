@@ -393,14 +393,14 @@
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
                                 // selects.innerHTML = xhr.responseText;
-                                recebePessoas(xhr.responseText, call);
+                                recebeLocais(xhr.responseText, call);
 
                             } else {
                                 selects.innerHTML = "Falha ao carregar as pessoas";
                             }
                         }
                     };
-                    xhr.send("local=" + encodeURIComponent(1));
+                    xhr.send("consultaLocal=" + encodeURIComponent(1));
                     consultaUnica++;
                 }
             } else
@@ -415,8 +415,8 @@
                 }
 
 
-            function recebePessoas(data, call) {
-                console.log(data);
+            function recebeLocais(data, call) {
+                // console.log(data);
                 var dataJson = JSON.parse(data);
 
                 locais.push(dataJson[0].locais);
@@ -442,7 +442,7 @@
             var i = 0;
 
             var data = "nomeSetor=" + encodeURIComponent(novo) + "&local=" + encodeURIComponent(local);
-            console.log(data);
+            // console.log(data);
             connection(data, 'refresh');
         }
 
@@ -478,7 +478,7 @@
                             var asnc = async () => {
                                 await sleep(250)
                                 var result = document.getElementById('divinv').innerHTML;
-                                console.log(result);
+                                // console.log(result);
                                 if (result == true || result == 'true') {
                                     Swal.fire({
                                         title: 'Deletado!',
@@ -581,6 +581,7 @@
                         divinv.innerHTML = xhr.responseText
                     } else
                         if (operation == 'update') {
+                            // console.log(xhr.responseText)
                         } else
                             if (operation == 'refresh') {
                                 // console.log(xhr.responseText);

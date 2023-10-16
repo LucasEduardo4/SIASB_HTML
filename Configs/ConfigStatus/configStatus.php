@@ -1,4 +1,5 @@
 <?php
+session_start();
 $conn = mysqli_connect("localhost", "root", "", "siasb");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST["novoStatus"])) {
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // $conn = mysqli_connect("localhost", "root", "", "siasb");
     $sql = "SELECT IDStatus, descricao FROM tbstatus_chamado";
     $result = $conn->query($sql);
@@ -38,21 +39,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
             $descValue = $row["descricao"];
 
             // Adicionar os valores na tabela HTML com ícones de ação
-            echo "<tr><td id='id-".$idValue."'>".$idValue."</td><td id='desc-".$idValue."'>".$descValue."</td><td>
-            <span class='bi bi-pencil' aria-hidden='true' id='edit-btn-".$idValue."'></span> 
-            <span class='bi bi-trash' aria-hidden='true' id='trash-btn-".$idValue."'></span>
-            <span class='bi bi-check-square' aria-hidden='true' id='save-btn-".$idValue."'></span></td></tr>";
+            echo "<tr><td id='id-" . $idValue . "'>" . $idValue . "</td><td id='desc-" . $idValue . "'>" . $descValue . "</td><td>
+            <span class='bi bi-pencil' aria-hidden='true' id='edit-btn-" . $idValue . "'></span> 
+            <span class='bi bi-trash' aria-hidden='true' id='trash-btn-" . $idValue . "'></span>
+            <span class='bi bi-check-square' aria-hidden='true' id='save-btn-" . $idValue . "'></span></td></tr>";
             // echo "<tr><td>".$idValue."</td><td id='desc-".$idValue."'>".$descValue."</td><td><a href='editar.php?id=".$idValue."'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a> <a href='excluir.php?id=".$idValue."'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a></td></tr>";
         }
     } else {
-    echo "Nenhum resultado encontrado.";
-}
-    $conn->close(); 
+        echo "Nenhum resultado encontrado.";
+    }
+    $conn->close();
 }
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once '../logs/functions.php';
     if (isset($_POST["editedValue"], $_POST["id"])) {
+        
         // $conn = mysqli_connect("localhost", "root", "", "siasb");
         $editedValue = $_POST['editedValue'];
         $id = $_POST['id'];
@@ -61,17 +64,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
         }
 
-        $sql = "UPDATE tbstatus_chamado SET descricao = '$editedValue' WHERE IDStatus = '$id'";
+        $oldValues = getOlderValues($conn, "tbstatus_chamado", $id, "IDStatus");
 
+        $sql = "UPDATE tbstatus_chamado SET descricao = '$editedValue' WHERE IDStatus = '$id'";
+        
+        $newValues = "";
         if ($conn->query($sql) === TRUE) {
             // Atualização bem-sucedida
             echo json_encode(array("success" => true, "message" => "Status atualizado com sucesso!"));
+            $newValues = getNewerValues($conn, "tbstatus_chamado", $id, "IDStatus");
         } else {
             // Erro ao executar a consulta SQL
             echo json_encode(array("success" => false, "message" => "Erro ao atualizar o status: " . $conn->error));
         }
 
-        $conn->close();
+
+
+        logChanges("tbstatus_chamado", $oldValues, $id, $newValues);
+
+ 
+
+
     }
 }
 // DELETE FROM `tbstatus_chamado` WHERE `tbstatus_chamado`.`IDStatus` = 8

@@ -1,6 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
+    echo "Não autorizado";
     header("Location: login.php");
 
     exit();
