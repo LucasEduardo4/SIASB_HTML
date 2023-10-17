@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="./../../flowSite/verificaSessao.js"></script>
     <script src="./../../flowSite/verificaPermissao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <style>
-
-#cadastro {
+        #cadastro {
             display: none;
         }
 
@@ -24,7 +25,7 @@
         }
 
         /* Global Styles */
-        body{
+        body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
@@ -35,7 +36,7 @@
             margin: 0;
             /* display: flex; */
             justify-content: center;
-            align-items: center;    
+            align-items: center;
         }
 
         /* html {
@@ -70,20 +71,20 @@
             /* padding-top: 30px; */
             font-size: 33px;
             color: #000000;
-            text-align:start;
+            text-align: start;
             padding-left: 20px;
             width: 180vh;
-            flex:none;
+            flex: none;
         }
 
         @media (max-width: 768px) {
-    .title {
-        font-size: 20px;
-        max-width: 100%;
-    }
-}
+            .title {
+                font-size: 20px;
+                max-width: 100%;
+            }
+        }
 
-        
+
 
         /* Main Content Styles */
         .main-content {
@@ -97,7 +98,7 @@
             margin-top: 40px;
             width: 100%;
 
-           
+
         }
 
         h2 {
@@ -143,11 +144,11 @@
             margin-bottom: 40px;
             border-radius: 10px;
             overflow: hidden;
-            background-color:white; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: auto;
-            
-            
+
+
         }
 
 
@@ -184,7 +185,7 @@
         table th,
         table td {
             padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         table tr:nth-child(even) {
@@ -200,7 +201,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
-            width:100%;
+            width: 100%;
             padding-left: 40px;
             padding-right: 40px;
             font-weight: bold;
@@ -233,28 +234,29 @@
             }
         }
 
-
-
-        .swal-columns {
-            display: flex;
-            flex-direction: column;
-        }
-        .swal-columns input {
-            margin: 20px 0px;
-        }
-        
-        tbody, td, tfoot, th, thead, tr{
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
 
             border-color: white;
             border-width: 10px;
         }
-        
+
         .form-select {
 
             margin-left: 0px;
         }
 
+        #oldValue {
+            color: red;
+        }
 
+        #newValue {
+            color: green;
+        }
     </style>
 
     <title>CONFIGURAÇÕES DE STATUS</title>
@@ -262,16 +264,18 @@
 
 <body onload="init()">
     <header class="header">
-        <a href="../index.html" class="back-button"><i style="font-size: 40px" class="bi-arrow-left-circle bi-lg"></i></a>
+        <a href="../index.html" class="back-button"><i style="font-size: 40px"
+                class="bi-arrow-left-circle bi-lg"></i></a>
         <h1 class="title">CONFIGURAÇÕES DE STATUS</h1>
     </header>
-    
-<main class="main-content">
-        <form class="add-status-form">
+
+    <main class="main-content">
+        <div class="add-status-form">
             <label style="font-size: 13px;font-weight: bold;" for="novoStatus">ADICIONAR STATUS:</label>
             <input type="text" name="novoStatus" id="novoStatus" required>
             <button onclick="submitForm()"><i class="bi bi-plus"></i>Adicionar</button>
-        </form>
+            <button onclick="exibirLogs()"><i class="bi bi-plus"></i>Logs</button>
+        </div>
         <div id="tableStatusContainer">
             <!-- <h2>Status Existentes:</h2> -->
             <table border id="tableStatus" class="table table-hover">
@@ -286,162 +290,245 @@
     </main>
 
 </body>
+
 </html>
 
-    
-    <script>
-        function init() {
-            loadStatus()
-                .then(hideSaveButton)
-                .then(setupEditButtons)
-                .catch(function(error) {
-                    console.error(error);
-                });
+<!-- array(7) {
+    [0]=> array(6) {
+       ["usuario"]=> string(1) "1" 
+       ["old_value"]=> array(2){ 
+           [".IDStatus."]=> string(1) "5" 
+           [".descricao."]=> string(10) "TODOSssaaa" 
+       } 
+       ["new_value"]=> array(2) { 
+           [".IDStatus."]=> string(1) "5" 
+           [".descricao."]=> string(5) "TODOS" 
+       } 
+       ["dataHora"]=> string(19) "2023-10-16 12:22:54" 
+   }
+} -->
+<script>
+    function unParse(data) {
+        console.log("recebido> " + data);
+        var parsedData = JSON.parse(data);
+        var table = document.getElementById("resultado");
+        var tableHTML = "<table border='1'>";
+        tableHTML += "<tr><th>Usuário</th><th>Coluna</th><th>Alteração</th><th>Data e hora</th></tr>";
+        for (var i = 0; i < parsedData.length; i++) {
+            var row = parsedData[i];
+            tableHTML += "<tr>";
+            tableHTML += "<td>" + row.usuario + "</td>";
+            var diff = compararJSON(row.old_value, row.new_value);
+            tableHTML += "<td>" + capitalizeFirstLetter(diff.column.replace(/\./g, "")) + "</td>";
+            tableHTML += "<td>" + "Alterado de: <span id='oldValue'>" + diff.oldValue + "</span> para <span id='newValue'>" + diff.newValue + "</span></td>";
+            tableHTML += "<td>" + row.dataHora + "</td>";
+            tableHTML += "</tr>";
         }
-
-        function loadStatus() {
-            return new Promise(function(resolve, reject) {
-                var tableStatus = document.getElementById("tableStatus");
-
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "configStatus.php", true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            tableStatus.innerHTML += xhr.responseText;
-                            resolve();
-                        } else {
-                            tableStatus.innerHTML += "Falha ao carregar os status";
-                        }
-                    }
-                };
-                xhr.send();
-            });
+        tableHTML += "</table>";
+        return tableHTML;
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
         }
+    }
 
-        function hideSaveButton() {
-            var saveButtons = document.getElementsByClassName("bi bi-check-square");
-            for (var i = 0; i < saveButtons.length; i++) {
-                var saveButton = saveButtons[i];
-                saveButton.style.display = "none";
+    function compararJSON(oldValue, newValue) {
+        const result = {};
+
+        for (const key in oldValue) {
+            if (oldValue[key] !== newValue[key]) {
+                result.column = key;
+                result.oldValue = oldValue[key];
+                result.newValue = newValue[key];
             }
         }
 
-        function submitForm() {
-            var novoStatus = document.getElementsByName('novoStatus')[0].value;
+        return result;
+    }
+
+    // Exemplo de uso:
+    const oldJSON = { "IDStatus": "5", "descricao": "TODOSssaaa" };
+    const newJSON = { "IDStatus": "5", "descricao": "TODOS" };
+
+
+    const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+    async function exibirLogs() {
+        var RESPONSE = "";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../logs/handleLogs.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                RESPONSE = xhr.responseText;
+            }
+        }
+        xhr.send("tabela=" + encodeURIComponent("tbstatus_chamado"));
+        if (RESPONSE == "") {
+            await sleep(250);
+        }
+        Swal.fire({
+            title: 'Logs',
+            width: '80%',
+            html: unParse(RESPONSE),
+            icon: 'info',
+            confirmButtonText: 'OK'
+        })
+    };
+
+    function init() {
+        loadStatus()
+            .then(hideSaveButton)
+            .then(setupEditButtons)
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
+
+    function loadStatus() {
+        return new Promise(function (resolve, reject) {
+            var tableStatus = document.getElementById("tableStatus");
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "configStatus.php", true);
+            xhr.open("GET", "configStatus.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    setupEditButtons();
-                    window.location.reload();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        tableStatus.innerHTML += xhr.responseText;
+                        resolve();
+                    } else {
+                        tableStatus.innerHTML += "Falha ao carregar os status";
+                    }
                 }
             };
-            
-            xhr.send("novoStatus=" + encodeURIComponent(novoStatus));
+            xhr.send();
+        });
+    }
+
+
+    function hideSaveButton() {
+        var saveButtons = document.getElementsByClassName("bi bi-check-square");
+        for (var i = 0; i < saveButtons.length; i++) {
+            var saveButton = saveButtons[i];
+            saveButton.style.display = "none";
         }
+    }
+
+    function submitForm() {
+        var novoStatus = document.getElementsByName('novoStatus')[0].value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "configStatus.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                setupEditButtons();
+                window.location.reload();
+            }
+        };
+
+        xhr.send("novoStatus=" + encodeURIComponent(novoStatus));
+    }
 
 
 
-        function setupEditButtons() {
-            var editButtons = document.getElementsByClassName("bi bi-pencil");
-            var saveButtons = document.getElementsByClassName("bi bi-check-square");
-            var removeButtons = document.getElementsByClassName("bi bi-trash");
+    function setupEditButtons() {
+        var editButtons = document.getElementsByClassName("bi bi-pencil");
+        var saveButtons = document.getElementsByClassName("bi bi-check-square");
+        var removeButtons = document.getElementsByClassName("bi bi-trash");
 
-            for (var i = 0; i < editButtons.length; i++) {
-                (function(id) {
-                    var editButton = editButtons[i];
-                    editButton.addEventListener("click", function() {
-                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
-                        var ref = element.cells[0].innerText;
-                        openEditInput(ref);
-                    });
+        for (var i = 0; i < editButtons.length; i++) {
+            (function (id) {
+                var editButton = editButtons[i];
+                editButton.addEventListener("click", function () {
+                    var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                    var ref = element.cells[0].innerText;
+                    openEditInput(ref);
+                });
 
-                    var saveButton = saveButtons[i];
-                    saveButton.addEventListener("click", function() {
-                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
-                        var ref = element.cells[0].innerText;
-                        saveEditedValue(ref);
-                    });
+                var saveButton = saveButtons[i];
+                saveButton.addEventListener("click", function () {
+                    var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                    var ref = element.cells[0].innerText;
+                    saveEditedValue(ref);
+                });
 
-                    var removeButton = removeButtons[i];
-                    removeButton.addEventListener("click", function() {
+                var removeButton = removeButtons[i];
+                removeButton.addEventListener("click", function () {
                     // Pergunta ao usuário se deseja realmente excluir a anotação
                     var confirmExclusao = confirm("Tem certeza que deseja excluir este status?"); //essa função abre um alerta com a mensagem selecionada
 
                     if (confirmExclusao) {
-                    var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
-                    var ref = element.cells[0].innerText;
-                    removeValue(ref);
-    }
-});
-
-                })(i);
-            }
-        }
-
-        function openEditInput(id) {
-            if(id == "ID Status"){
-                id = 1;
-            }
-            var cell = document.getElementById("desc-" + id);
-
-            if (cell) {
-                var descValue = cell.innerHTML;
-                var inputElement = document.createElement("input");
-                inputElement.type = "text";
-                inputElement.value = descValue;
-                inputElement.id = "edit-input-" + id;
-                cell.innerHTML = "";
-                cell.appendChild(inputElement);
-                document.getElementById("edit-btn-" + id).style.display = "none";
-                document.getElementById("trash-btn-" + id).style.display = "none";
-                document.getElementById("save-btn-" + id).style.display = "inline-block";
-            }
-        }
-
-        function saveEditedValue(id) {
-            if(id == "ID Status"){
-                id = 1;
-            }
-            var editedInput = document.getElementById("edit-input-" + id);
-            var editedValue = editedInput.value;
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "configStatus.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    // console.log(xhr.responseText)
-                    var response = xhr.responseText.split("}");
-                    var response = JSON.parse(response[0] + "}");
-                    if (response.success) {
-                        window.location.reload();
-                    } else {
-                        alert("Erro ao atualizar o status: " + response.message);
+                        var element = document.querySelector("#tableStatus tr:nth-child(" + (id + 1) + ")");
+                        var ref = element.cells[0].innerText;
+                        removeValue(ref);
                     }
-                }
-            };
-            xhr.send("editedValue=" + encodeURIComponent(editedValue) + "&id=" + id);
-        }
+                });
 
-        function removeValue(id) {
-            if(id == "ID Status"){
-                id = 1;
-            }
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "configStatus.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    window.location.reload();
-                }
-            };
-            xhr.send("deletedId=" + id);
+            })(i);
         }
-    </script>
+    }
+
+    function openEditInput(id) {
+        if (id == "ID Status") {
+            id = 1;
+        }
+        var cell = document.getElementById("desc-" + id);
+
+        if (cell) {
+            var descValue = cell.innerHTML;
+            var inputElement = document.createElement("input");
+            inputElement.type = "text";
+            inputElement.value = descValue;
+            inputElement.id = "edit-input-" + id;
+            cell.innerHTML = "";
+            cell.appendChild(inputElement);
+            document.getElementById("edit-btn-" + id).style.display = "none";
+            document.getElementById("trash-btn-" + id).style.display = "none";
+            document.getElementById("save-btn-" + id).style.display = "inline-block";
+        }
+    }
+
+    function saveEditedValue(id) {
+        if (id == "ID Status") {
+            id = 1;
+        }
+        var editedInput = document.getElementById("edit-input-" + id);
+        var editedValue = editedInput.value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "configStatus.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // console.log(xhr.responseText)
+                var response = xhr.responseText.split("}");
+                var response = JSON.parse(response[0] + "}");
+                if (response.success) {
+                    window.location.reload();
+                } else {
+                    alert("Erro ao atualizar o status: " + response.message);
+                }
+            }
+        };
+        xhr.send("editedValue=" + encodeURIComponent(editedValue) + "&id=" + id);
+    }
+
+    function removeValue(id) {
+        if (id == "ID Status") {
+            id = 1;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "configStatus.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                window.location.reload();
+            }
+        };
+        xhr.send("deletedId=" + id);
+    }
+</script>
 </body>
+
 </html>

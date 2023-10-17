@@ -86,7 +86,7 @@ $conn->close();
 if ($imageData) {
   // Display the image using base64 encoding
   $base64Image = base64_encode($imageData);
-   //echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
+  //echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
 } else {
   $base64Image = base64_encode(file_get_contents('../icons/149071.png'));
   // echo "<img src='data:image/jpeg;base64,$base64Image' alt='User Profile Image'>";
@@ -432,6 +432,8 @@ if ($imageData) {
 
     #icone {
       clip-path: circle(farthest-side);
+      border: solid 1px white;
+      border-radius: 50%;
     }
 
     body,
@@ -715,17 +717,16 @@ if ($imageData) {
 
               <script>
 
-                var imagem = <?php echo json_encode(base64_encode($imageData));?>;
-                
-                console.log(imagem);
+                var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
+
 
                 if (imagem != '') {
                   document.getElementById("anexosContainer").innerHTML +=
                     '<p> <img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="150" height="150" alt="" /></p>';
                 } else {
-                  imagem = 
-                  console.log(imagem);
-                  document.getElementById("anexosContainer").innerHTML += `<p> <img id="icone" src="data:image/jpeg;base64,' + '<?php  $imagem = base64_encode(file_get_contents('../icons/149071.png')); echo $imagem;?>' + '" width="150" height="150" alt="" /></p>`;
+                  imagem =
+                  document.getElementById("anexosContainer").innerHTML += `<p> <img id="icone" src="data:image/jpeg;base64,' + '<?php $imagem = base64_encode(file_get_contents('../icons/149071.png'));
+                  echo $imagem; ?>' + '" width="150" height="150" alt="" /></p>`;
                 }
               </script>
 
@@ -819,10 +820,23 @@ if ($imageData) {
             <img src="..\Icones Site\SETA BRANCO.PNG" alt="saaeb barretos" height="22">
           </li>
         </div>
+        <div class="menu-item" id="imagem-retraida">
+        </div>
       </div>
     </div>
 
     <script>
+      if (imagem != '') {
+        document.getElementById("imagem-retraida").innerHTML +=
+          '<img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="57" alt="" />';
+      } else {
+        imagem =
+        document.getElementById("imagem-retraida").innerHTML += `<img id="icone" src="data:image/jpeg;base64,' + '<?php $imagem = base64_encode(file_get_contents('../icons/149071.png'));
+        echo $imagem; ?>' + '"  width="57" alt="" />`;
+      }
+
+
+
       function verificaADM(response) {
         var opcoes = document.getElementsByClassName("administrador");
         if (response == 1) {
@@ -937,7 +951,6 @@ if ($imageData) {
       });
 
       function init() {
-        // console.log("init")
         var Frame = document.getElementById("myIframe");
         Frame.contentDocument.location.reload(true);
       }
@@ -953,10 +966,8 @@ if ($imageData) {
       }
 
       function foo(idNotificacao, nova) {
-        console.log(idNotificacao);
         var split = idNotificacao.split(';');
         idNotificacao = split[1]; // Obtemos a primeira parte da string
-        console.log(idNotificacao);
         var iframe = document.getElementById("myNotifications");
         iframe.hidden = true;
         var iframeContainer = document.getElementById('myIframe');
@@ -1039,7 +1050,6 @@ if ($imageData) {
           }
         };
         xhr.send("shutdown=" + encodeURIComponent(1));
-        console.log("Envia a req.")
 
       }
 
@@ -1155,7 +1165,6 @@ if ($imageData) {
     //         else if (msg.data == 'refreshcss') refreshCSS();
     //       };
     //       if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-    //         console.log('Live reload enabled.');
     //         sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
     //       }
     //     })();
@@ -1192,7 +1201,6 @@ if ($imageData) {
     //         else if (msg.data == 'refreshcss') refreshCSS();
     //       };
     //       if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-    //         console.log('Live reload enabled.');
     //         sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
     //       }
     //     })();

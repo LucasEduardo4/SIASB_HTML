@@ -478,7 +478,7 @@
                     preConfirm: () => {
                         const descricao = document.getElementById('descricao').value;
                         var data = "updateTipoEquip=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao);
-                        console.log(data);
+                        // console.log(data);
                         connection('POST', data, 'reset');
                         return descricao;
                     }
