@@ -9,6 +9,8 @@
     <!-- <link rel="stylesheet" href="sidebars/bootstrap.min.css"> -->
     <script src="/siasb_html/flowSite/verificaSessao.js"></script>
     <script src="/siasb_html/flowSite/verificaAtivo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <style>
@@ -17,16 +19,18 @@
         .top-div {
             display: flex;
             /* flex-direction: column; */
-            align-items: center; 
-            justify-content: space-between;       
-            margin: 30px auto;    
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px auto;
         }
-        .row{
+
+        .row {
             display: flex;
             align-items: center;
-            justify-content: space-between;       
+            justify-content: space-between;
 
         }
+
         #myIframe {
             width: 100%;
         }
@@ -64,7 +68,27 @@
             margin-bottom: 50px;
             border-radius: 5px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5)
+        }
 
+        .table {
+            --bs-table-color-type: initial;
+            --bs-table-bg-type: initial;
+            --bs-table-color-state: initial;
+            --bs-table-bg-state: initial;
+            --bs-table-color: var(--bs-body-color);
+            --bs-table-bg: var(--bs-body-bg);
+            --bs-table-border-color: var(--bs-border-color);
+            --bs-table-accent-bg: transparent;
+            --bs-table-striped-color: var(--bs-body-color);
+            --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+            --bs-table-active-color: var(--bs-body-color);
+            --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+            --bs-table-hover-color: var(--bs-body-color);
+            --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+            /* width: 100%; */
+            margin-bottom: 1rem;
+            vertical-align: top;
+            border-color: var(--bs-table-border-color);
         }
 
         form {
@@ -211,7 +235,8 @@
             display: inline-block;
             vertical-align: middle;
         }
-        #sendButton{
+
+        #sendButton {
             width: 70%;
             margin: auto;
         }
@@ -249,54 +274,309 @@
         .CamposResultados p {
             cursor: pointer;
         }
-       
+
+        .swal2-html-container {
+            word-break: none !important;
+        }
+
+        table {
+            margin: auto;
+        }
+
+        .linha {
+
+            /* background-color: gainsboro; */
+            border-radius: 30px;
+        }
+
+
+        .swal2-input {
+            margin: 5px 0px;
+        }
+
+        table td{
+            border-top: solid 1px black;
+            padding: 10px 5px;
+        }
+        th{
+            padding: 5px;
+        }
+
+        tbody tr:hover{
+            background-color: #e9ecef;
+        }
+        table tr:last-child td{
+            border-bottom: solid 1px black;
+        }
+
+        #popupEdit #head {
+            width: 100px;
+            height: auto;
+            text-align: center;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        #novos th {
+            width: fit-content;
+            word-break: normal;
+            padding: 5px;
+        }
     </style>
 </head>
 
-<body onload="init()">
-    <div class="container">
-        <div style="border-radius: 5px;" class="div-superior">
-            <!-- <div style="border-radius: 10px;" class="logo">
-                <img src="..\SIASB_HTML\Icones Site\TELEFONE.png">
-            </div> -->
-            <h2 style="color: #004235b6; font-size: 21px;">ABRIR CHAMADO</h2>
-            <button onclick="window.location.href = 'AbrindoChamado.html'">
-                Novo Chamado
-            </button>
-            <!-- Conteúdo adicional da div superior -->
+<body>
+    <div class="row" style="justify-content: flex-start;">
+        <div class="container" style="margin-right: 25px;">
+            <div class="col">
+                <div class="div-superior" style="border-radius: 5px;">
+                    <h2 style="color: #004235b6; font-size: 21px;">ABRIR CHAMADO</h2>
+                    <button onclick="window.location.href = 'AbrindoChamado.html'">Novo Chamado</button>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="display: none;" id="divNovosChamados">
+            <div class="col">
+                <div class="container container-fluid" id="">
+                    <div class="div-superior" style="border-radius: 5px;">
+                        <h2 id="novosChamados">Placeholder</h2>
+                        <button onclick="visualizarSemResponsaveis()">Verificar</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- <div class="container">
+    <script>
 
-        <div class="container">
+        function visualizarSemResponsaveis() {
+            xhrRequest('chamadosNovos=1', 'chamadosNovos');
+            Swal.fire({
+                title: 'Novos Chamados:',
+                html: `<div id='popupEdit'><table class='table' border='0' cellspacing="0" cellpadding="0"> <thead style="font-weight: 700;">
+                    <tr>
+                        <th>ID</th>
+                        <th>ASSUNTO</th>
+                        <th>AUTOR</th>
+                        <th>SETOR/SEÇÃO</th>
+                        <th>DATA</th>
+                        <th>PRIORIDADE</th>
+                        <th>D/ABERTO</th>
+                        <th>STATUS</th>
+                        <th>ADD</th>
+                    </tr>
+                </thead><tbody id='novos'></tbody></table></div>`,
+                icon: 'warning',
+                width: '1100',
+                showCancelButton: false,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Fechar Janela!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'VendoChamados.html';
+                }
+            })
+        }
+        var CHAMADOS = [];
 
-            <a href="FiltroChamados.html" id="temp">
-                <p>Filtro Chamados</p>
-            </a>
-        </div>
-        <div class="container">
+        function unParseNovos(dados) {
+            console.log(dados);
+            var dados = JSON.parse(dados);
+            var novos = document.getElementById('novos');
+            var resolvendo = document.getElementById('resolvendo');
+            var todos = document.getElementById('todos');
+            const usuario = dados[0].usuario;
+            var dataHoje = new Date();
+            var d = dataHoje.getDate();
+            var m = dataHoje.getMonth() + 1;
+            var y = dataHoje.getFullYear();
+            dataHoje = d + '/' + ('0' + m).slice(-2) + '/' + y;
 
-            <a href="DetalhandoChamado.html" id="temp">
-                <p>Detalhando chamado</p>
-            </a>
-        </div>
-    </div> -->
+            function verificaStrings(comparativo, upper, lower) {
+                if (comparativo == upper) {
+                    // return console.log("string: " + comparativo + " é igual à "+ upper );
+                    return true;
+                } else if (comparativo == lower) {
+                    // return console.log("string: " + comparativo + " é igual à "+ lower );
+                    return true;
+                } else
+                    return false;
+                // return console.log("string: " + comparativo + " é diferente de "+ upper + " e " + lower);
+            }
 
+
+            dados.forEach(element => {
+                if (element.usuario) {
+                    return;
+                } else
+                    if (element.responsavel == null && element.status_chamado == 'Aberto') {
+                        var linha = document.createElement('tr');
+                        linha.classList.add('linha');
+                        var id = document.createElement('td');
+                        var assunto = document.createElement('td');
+                        var data = document.createElement('td');
+                        var autor = document.createElement('td');
+                        var setor_secao = document.createElement('td');
+                        var prioridade = document.createElement('td');
+                        var dias = document.createElement('td');
+                        var status = document.createElement('td');
+                        var divStatus = document.createElement('div');
+                        var opt = document.createElement('td');
+                        opt.onclick = function () {
+                            receberChamado(element.IDChamado);
+                        };
+                        var img = document.createElement('img');
+                        opt.style.textAlign = 'center';
+                        opt.style.cursor = 'pointer';
+                        img.id = 'opt';
+                        img.setAttribute('src', 'Icones Site/iconeplus.png');
+                        img.setAttribute('width', '20px');
+                        img.setAttribute('alt', '');
+                        opt.appendChild(img);
+                        id.innerHTML = element.IDChamado;
+                        assunto.innerHTML = element.assunto;
+                        data.innerHTML = convertData(element.dataAbertura);
+                        prioridade.innerHTML = element.prioridade == null ? 'Não definida' : element.prioridade;
+                        autor.innerHTML = element.autor;
+                        setor_secao.innerHTML = element.setor_secao;
+                        dias.innerHTML = calcularDiasEmAberto(dataHoje, element.dataAbertura)
+                        divStatus.innerHTML = element.status_chamado;
+                        divStatus.style.fontWeight = '600';
+                        divStatus.style.borderRadius = '30px';
+                        divStatus.style.padding = '10px';
+                        status.appendChild(divStatus);
+                        linha.appendChild(id);
+                        linha.appendChild(assunto);
+                        linha.appendChild(autor);
+                        linha.appendChild(setor_secao);
+                        linha.appendChild(data);
+                        linha.appendChild(prioridade);
+                        linha.appendChild(dias);
+                        linha.appendChild(status);
+                        novos.appendChild(linha);
+                        novos.style.cursor = 'pointer';
+                        verificaPrioridade(prioridade);
+                        verificaStatus(divStatus);
+                        assunto.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        id.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        data.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        autor.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        setor_secao.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        prioridade.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        dias.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        status.addEventListener('click', function () {
+                            redireciona(element.IDChamado);
+                        })
+                        linha.appendChild(opt);
+                    }
+
+
+                function verificaPrioridade(prioridade) {
+                    if (prioridade.innerHTML == 'Alta') {
+                        prioridade.style.color = 'red';
+                    } else if (prioridade.innerHTML == 'Média') {
+                        prioridade.style.color = '#f5ac00';
+                    } else if (prioridade.innerHTML == 'Baixa') {
+                        prioridade.style.color = 'green';
+                    }
+                }
+
+                function verificaStatus(status) {
+                    status.classList.add('celula');
+                    status.style.fontWeight = '600';
+                    if (status.innerHTML == 'Aberto') {
+                        status.style.backgroundColor = '#e74c3c';
+                        status.style.color = 'white';
+                    } else if (status.innerHTML == 'Andamento') {
+                        status.style.backgroundColor = '#7241dcf6';
+                        status.style.color = 'white';
+                    } else if (status.innerHTML == 'Fechado') {
+                        status.style.backgroundColor = '#2ecc71';
+                        status.style.color = 'white';
+                    } else if (status.innerHTML == 'Pendente') {
+                        status.style.backgroundColor = '#e67e22';
+                        status.style.color = 'white';
+                    }
+                }
+
+                function receberChamado(IDChamado) {
+                    Swal.fire({
+                        html: `<h2>Deseja dar andamento à este chamado?</h2><p>Este chamado ficará vinculado ao seu usuário!</p>`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#00cc99',
+                        confirmButtonText: 'Sim',
+                        width: '600',
+                        cancelButtonText: 'Não'
+                    }).then((result) => {
+                        if (result && result.isConfirmed) {
+                            //passar o ID pro resolvendoChamados.php e fazer o select.
+                            var data = 'receberChamado=1&IDChamado=' + IDChamado;
+                            xhrRequest(data, 'receberChamado');
+                        }
+                    })
+                }
+
+                function convertData(data) {
+                    var novaData = new Date(data);
+                    var d = novaData.getDate();
+                    var m = novaData.getMonth() + 1;
+                    var y = novaData.getFullYear();
+                    data = ('0' + d).slice(-2) + '/' + ('0' + m).slice(-2) + '/' + y;
+                    return data;
+                }
+
+                function calcularDiasEmAberto(dataAtual, dataAbertura) {
+                    console.log(dataAtual)
+                    function converterDataFormato(dataString) {
+                        const partes = dataString.split("/");
+                        const dia = partes[0];
+                        const mes = partes[1];
+                        const ano = partes[2];
+
+                        return ano + "-" + mes + "-" + dia;
+                    }
+
+                    const dataAtualFormatada = new Date(converterDataFormato(dataAtual));
+                    const dataAberturaFormatada = new Date(converterDataFormato(dataAbertura));
+
+                    const diferencaEmMilissegundos = dataAtualFormatada - dataAberturaFormatada;
+                    const diferencaEmDias = Math.floor(diferencaEmMilissegundos / (1000 * 60 * 60 * 24)) + 1;
+
+                    return diferencaEmDias;
+                }
+
+                function redireciona(IDChamado) {
+                    window.location.href = 'DetalhandoChamado.html?IDChamado=' + IDChamado;
+                }
+            });
+        }
+
+    </script>
     <form style="background-color: white; border-radius: 5px;" id="filtroForm">
         <h2>FILTROS DE CHAMADOS</h2>
-
         <div class="top-div">
             <div class="row">
                 <div class="MeusCampos">
                     <label for="codigoSolicitacao">Código:</label>
                     <input type="text" id="codigoSolicitacao" style="width: 40px;">
                 </div>
-                
                 <div class="MeusCampos">
                     <label for="selectAutores">Autor</label>
                     <select name="selectAutores" id="selectAutores">
                         <option value="" selected hidden>Escolha Abaixo:</option>
-                        <!-- <option value="">Nenhum</option> -->
                     </select>
                 </div>
                 <div class="MeusCampos">
@@ -306,12 +586,12 @@
                         <option value="0">Nenhum</option>
                     </select>
                 </div>
-                <div class="MeusCampos"  style="margin-right: 0px;">
+                <div class="MeusCampos" style="margin-right: 0px;">
                     <label for="stiID">Equipamento</label>
-                    <input type="text" id="stiID" onkeyup="verificaTamanho(this,4,'sendButton')"
-                       placeholder="STI-ID" onblur="verificaEquipamento()" style="width: 40px;" name="sti_ID" id="sti_ID">
+                    <input type="text" id="stiID" onkeyup="verificaTamanho(this,4,'sendButton')" placeholder="STI-ID"
+                        onblur="verificaEquipamento()" style="width: 40px;" name="sti_ID" id="sti_ID">
                 </div>
-                <div style="margin-top: 25px; margin-left: -15px; " class="MeusCampos">
+                <div style="margin-top: 30px; margin-left: -15px; " class="MeusCampos">
                     <input type="text" id="equipamentoNome" disabled style="width: 120px;">
                 </div>
             </div>
@@ -325,11 +605,11 @@
                     </select>
                 </div>
                 <div class="MeusCampos datas">
-                    <label for="dataDe"> </label> <!--deixei esse label vazio para nao desalinhar a data-->
+                    <label for="dataDe"> </label> <!-- label vazio para nao desalinhar a data-->
                     <input type="date" id="dataDe" class="datas" placeholder="De:" disabled readonly required>
                 </div>
                 <div class="MeusCampos datas" style="margin-left: 15px;">
-                    <label for="dataAte"> </label> <!-- deixei esse label vazio para nao desalinhar a data -->
+                    <label for="dataAte"> </label> <!-- label vazio para nao desalinhar a data -->
                     <input type="date" id="dataAte" class="datas" placeholder="Até:" disabled readonly required>
                 </div>
                 <div class="MeusCampos" style="margin-left: 30px;">
@@ -338,8 +618,6 @@
                         <option value="5" selected hidden>Selecione...</option>
                     </select>
                 </div>
-
-                
             </div>
         </div>
         <button type="submit" id="sendButton">Aplicar Filtros</button>
@@ -347,9 +625,6 @@
 
     <div class="resultados" id="resultadosContainer" style="display: none;">
         <div class="FaixaForm" style="color: white;">
-            <!-- <div class="CamposResultados">
-                <p style="padding-left: 10px;"> ID da Solicitação </p>
-            </div> -->
             <div class="CamposResultados">
                 <p class="sortable" onclick="ordenar('dataAbertura', this)"> Data de Abertura</p>
             </div>
@@ -368,28 +643,21 @@
             <div class="CamposResultados">
                 <p class="sortable" onclick="ordenar('status_chamado', this)"> Status</p>
             </div>
-            <!-- <div class="CamposResultados responsavel_tecnologia"> <p>Andamento</p> </div> -->
         </div>
         <div id="resultados">
 
             <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
             <script>
-                flatpickr("#dataDe", {
-                    dateFormat: "d/m/Y"
-                });
-                flatpickr("#dataAte", {
-                    dateFormat: "d/m/Y"
-                });
+                flatpickr("#dataDe", { dateFormat: "d/m/Y" });
+                flatpickr("#dataAte", { dateFormat: "d/m/Y" });
+
                 const filtroForm = document.getElementById('filtroForm');
                 const resultadosContainer = document.getElementById('resultadosContainer');
                 const resultados = document.getElementById('resultados');
                 ativaIntervalo(0);
-
-                function init() {
-                    selectChamados();
-                    selectPessoas();
-                }
+                //init():
+                selectChamados();
+                selectPessoas();
 
                 function ordenar(coluna, elemento) {
                     var colunasOrdenaveis = document.querySelectorAll('.sortable');
@@ -403,7 +671,6 @@
 
                     if (elemento.innerHTML.includes('▼')) {
                         elemento.innerHTML = elemento.innerHTML.replace('▼', '▲');
-                        // submitForm('desc');
                     } else if (elemento.innerHTML.includes('▲')) {
                         elemento.innerHTML = elemento.innerHTML.replace('▲', '▼');
                     } else
@@ -437,13 +704,15 @@
                 }
 
                 function unParse(json) {
-                    if(json.includes('window.location')){
+                    console.log(json);
+                    if (json.includes('window.location')) {
                         window.parent.location.reload();
                     }
                     var JSONObj = JSON.parse(json);
                     var selectAutores = document.getElementById("selectAutores");
                     var selectResponsavel = document.getElementById("selectResponsavel");
                     var selectStatus = document.getElementById("status");
+                    var novosChamados = document.getElementById("novosChamados");
 
                     for (var i = 0; i < JSONObj.usuarios.length; i++) {
                         var option = document.createElement("option");
@@ -466,7 +735,11 @@
                         selectStatus.appendChild(option);
                     }
 
+                    novosChamados.innerHTML = "Há <span style='color:red; font-weight:bold'>" + JSONObj.chamadosNovos + "</span> novos chamados";
 
+                    if (JSONObj.administrador == 1) {
+                        document.getElementById("divNovosChamados").style.display = 'flex';
+                    }
                 }
 
                 function ativaIntervalo(param) {
@@ -519,7 +792,7 @@
                         data += "&ordenar=" + encodeURIComponent('dataAbertura') +
                             "&ordem=" + encodeURIComponent('desc');
                     }
-                    xhrRequest(data, resultados);
+                    xhrRequest(data, "resultados");
                 }
 
                 function detalharChamado(IDChamado) {
@@ -550,8 +823,7 @@
                         "&stiID=" + encodeURIComponent('') +
                         "&ordenar=" + encodeURIComponent('dataAbertura') +
                         "&ordem=" + encodeURIComponent('desc');
-
-                    xhrRequest(data, resultados);
+                    xhrRequest(data, "resultados");
                 }
 
                 function xhrRequest(data, output) {
@@ -560,7 +832,8 @@
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4 && xhr.status === 200) {
-                            if (output.id == 'resultados') {
+                            if (output == 'resultados') {
+                                output = document.getElementById("resultados");
                                 output.innerHTML = xhr.responseText;
                             } else
                                 if (output == 'selectsJSON') {
@@ -569,7 +842,13 @@
                                     if (output == 'Equipamento') {
                                         var equipamento = document.getElementById("equipamentoNome");
                                         equipamento.value = xhr.responseText;
-                                    }
+                                    } else
+                                        if (output == 'chamadosNovos') {
+                                            unParseNovos(xhr.responseText);
+                                        } else
+                                            if (output == 'receberChamado') {
+                                                window.location.reload();
+                                            }
                         }
                     };
                     xhr.send(data);

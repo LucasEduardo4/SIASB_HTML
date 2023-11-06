@@ -138,7 +138,8 @@ if ($imageData) {
 
     <style>
         img {
-            border-radius: 30px;
+            border-radius: 50%;
+            border: solid 2px grey;
         }
 
         button {

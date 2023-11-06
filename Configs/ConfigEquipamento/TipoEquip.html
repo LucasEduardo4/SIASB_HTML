@@ -207,7 +207,7 @@
 
         /* Button Styles */
         button {
-            background-color: #00cc99;
+            background-color: #00a383;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -300,6 +300,14 @@
         #ativo {
             left: 0px;
         }
+
+        #oldValue {
+            color: red;
+        }
+
+        #newValue {
+            color: green;
+        }
     </style>
 </head>
 
@@ -315,8 +323,22 @@
     <main style="margin-left:18vh" class="main-content">
 
         <hr>
-        <h3 style="font-size: 18px" id="novo" onclick="exibirCadastro()">CADASTRAR NOVO TIPO : <i
-                class="bi bi-plus-circle"></i></h3>
+        <div class="row-cols-1">
+            <div class="d-flex" style="justify-content: space-around;">
+                <div>
+                    <button class="" style="font-size: 18px" id="novo" onclick="exibirCadastro();">
+                        <i id="iconeNovoSetor" class="bi bi-plus-circle"></i> Cadastrar Novo Tipo:
+                    </button>
+                </div>
+                <div style="width: 200px;">
+                    <button class="ml-2" onclick="exibirLogs()"></i>Logs</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
 
         <div id="cadastro" class="container-fluid p-5 border">
             <form>
@@ -347,6 +369,69 @@
 
     <script>
         const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+        async function exibirLogs() {
+            var RESPONSE = "";
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../logs/handleLogs.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    RESPONSE = xhr.responseText;
+                }
+            }
+            xhr.send("tabela=" + encodeURIComponent("tbtipo_equipamentos"));
+            if (RESPONSE == "") {
+                await sleep(250);
+            }
+            Swal.fire({
+                title: 'Logs',
+                width: '80%',
+                html: unParseLog(RESPONSE),
+                icon: 'info',
+                confirmButtonText: 'OK'
+            })
+        };
+
+        function unParseLog(data) {
+            if (data == "Nenhum Log") {
+                return '<h2>Não há logs de alteraçoes para essa tabela</h2>';
+            } else {
+                var parsedData = JSON.parse(data);
+                var table = document.getElementById("resultado");
+                var tableHTML = "<table border='1'>";
+                tableHTML += "<tr><th>Data</th><th>Usuário</th><th>Coluna</th><th>Alteração</th></tr>";
+                for (var i = 0; i < parsedData.length; i++) {
+                    var row = parsedData[i];
+                    tableHTML += "<tr>";
+                    tableHTML += "<td>" + row.dataHora + "</td>";
+                    tableHTML += "<td>" + row.usuario + "</td>";
+                    var diff = compararJSON(row.old_value, row.new_value);
+                    tableHTML += "<td>" + capitalizeFirstLetter(diff.column.replace(/\./g, "")) + "</td>";
+                    tableHTML += "<td>" + "Alterado de: <span id='oldValue'>" + diff.oldValue + "</span> para <span id='newValue'>" + diff.newValue + "</span></td>";
+                    tableHTML += "</tr>";
+                }
+                tableHTML += "</table>";
+                return tableHTML;
+                function capitalizeFirstLetter(string) {
+                    return string.charAt(0).toUpperCase() + string.slice(1);
+                }
+            }
+        }
+        function compararJSON(oldValue, newValue) {
+            const result = {};
+
+            for (const key in oldValue) {
+                if (oldValue[key] !== newValue[key]) {
+                    result.column = key;
+                    result.oldValue = oldValue[key];
+                    result.newValue = newValue[key];
+                }
+            }
+
+            return result;
+        }
+
         var controle = 1;
         function exibirCadastro() {
             if (controle == 1) {

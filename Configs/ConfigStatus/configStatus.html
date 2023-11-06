@@ -194,7 +194,7 @@
 
         /* Button Styles */
         button {
-            background-color: #00cc99;
+            background-color: #00a383;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -274,7 +274,7 @@
             <label style="font-size: 13px;font-weight: bold;" for="novoStatus">ADICIONAR STATUS:</label>
             <input type="text" name="novoStatus" id="novoStatus" required>
             <button onclick="submitForm()"><i class="bi bi-plus"></i>Adicionar</button>
-            <button onclick="exibirLogs()"><i class="bi bi-plus"></i>Logs</button>
+            <button onclick="exibirLogs()">Logs</button>
         </div>
         <div id="tableStatusContainer">
             <!-- <h2>Status Existentes:</h2> -->
@@ -308,26 +308,30 @@
    }
 } -->
 <script>
-    function unParse(data) {
-        console.log("recebido> " + data);
-        var parsedData = JSON.parse(data);
-        var table = document.getElementById("resultado");
-        var tableHTML = "<table border='1'>";
-        tableHTML += "<tr><th>Usuário</th><th>Coluna</th><th>Alteração</th><th>Data e hora</th></tr>";
-        for (var i = 0; i < parsedData.length; i++) {
-            var row = parsedData[i];
-            tableHTML += "<tr>";
-            tableHTML += "<td>" + row.usuario + "</td>";
-            var diff = compararJSON(row.old_value, row.new_value);
-            tableHTML += "<td>" + capitalizeFirstLetter(diff.column.replace(/\./g, "")) + "</td>";
-            tableHTML += "<td>" + "Alterado de: <span id='oldValue'>" + diff.oldValue + "</span> para <span id='newValue'>" + diff.newValue + "</span></td>";
-            tableHTML += "<td>" + row.dataHora + "</td>";
-            tableHTML += "</tr>";
-        }
-        tableHTML += "</table>";
-        return tableHTML;
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
+    function unParseLog(data) {
+        // console.log("recebido> " + data);
+        if (data == "Nenhum Log") {
+            return '<h2>Não há logs de alteraçoes para essa tabela</h2>';
+        } else {
+            var parsedData = JSON.parse(data);
+            var table = document.getElementById("resultado");
+            var tableHTML = "<table border='1'>";
+            tableHTML += "<tr><th>Data</th><th>Usuário</th><th>Coluna</th><th>Alteração</th></tr>";
+            for (var i = 0; i < parsedData.length; i++) {
+                var row = parsedData[i];
+                tableHTML += "<tr>";
+                tableHTML += "<td>" + row.dataHora + "</td>";
+                tableHTML += "<td>" + row.usuario + "</td>";
+                var diff = compararJSON(row.old_value, row.new_value);
+                tableHTML += "<td>" + capitalizeFirstLetter(diff.column.replace(/\./g, "")) + "</td>";
+                tableHTML += "<td>" + "Alterado de: <span id='oldValue'>" + diff.oldValue + "</span> para <span id='newValue'>" + diff.newValue + "</span></td>";
+                tableHTML += "</tr>";
+            }
+            tableHTML += "</table>";
+            return tableHTML;
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
         }
     }
 
@@ -344,11 +348,6 @@
 
         return result;
     }
-
-    // Exemplo de uso:
-    const oldJSON = { "IDStatus": "5", "descricao": "TODOSssaaa" };
-    const newJSON = { "IDStatus": "5", "descricao": "TODOS" };
-
 
     const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 
@@ -369,7 +368,7 @@
         Swal.fire({
             title: 'Logs',
             width: '80%',
-            html: unParse(RESPONSE),
+            html: unParseLog(RESPONSE),
             icon: 'info',
             confirmButtonText: 'OK'
         })

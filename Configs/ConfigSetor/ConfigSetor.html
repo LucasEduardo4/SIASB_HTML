@@ -75,10 +75,10 @@
         }
 
         @media (max-width: 768px) {
-    .title {
-        font-size: 20px;
-    }
-}
+            .title {
+                font-size: 20px;
+            }
+        }
 
         /* Main Content Styles */
         .main-content {
@@ -145,10 +145,11 @@
         }
 
         @media (max-width: 768px) {
-    table {
-        width: 100%; /* Ajuste a largura para 100% para dispositivos móveis */
-    }
-}
+            table {
+                width: 100%;
+                /* Ajuste a largura para 100% para dispositivos móveis */
+            }
+        }
 
 
         /* NOVOS CSS PUXADOS DO BOOTSTRAP PARA REALIZAR ALTERAÇÃO DIRETAMENTE DA PAGINA */
@@ -185,7 +186,7 @@
 
         /* Button Styles */
         button {
-            background-color: #00cc99;
+            background-color: #00a383;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -224,8 +225,6 @@
                 margin-bottom: 10px;
             }
         }
-
-
 
         .swal-columns {
             display: flex;
@@ -281,6 +280,14 @@
         .bi {
             width: 300px;
         }
+
+        #oldValue {
+            color: red;
+        }
+
+        #newValue {
+            color: green;
+        }
     </style>
 
 
@@ -300,9 +307,18 @@
     <main class="main-content">
 
         <hr>
-        <h3 style="font-size: 18px" id="novo" onclick="novoSetor('click');"> ADICIONAR NOVO SETOR/SEÇÃO: <i
-                id="iconeNovoSetor" class="bi bi-plus-circle"></i></h3>
-
+        <div class="row-cols-1">
+            <div class="d-flex" style="justify-content: space-around;">
+                <div>
+                    <button class="" style="font-size: 18px" id="novo" onclick="novoSetor('click');">
+                        <i id="iconeNovoSetor" class="bi bi-plus-circle"></i> Adicionar Novo Setor/Seção:
+                    </button>
+                </div>
+                <div style="width: 200px;">
+                    <button class="ml-2" onclick="exibirLogs()"></i>Logs</button>
+                </div>
+            </div>
+        </div>
         <div id="cadastro" class="container-fluid p-5 border">
             <form>
                 <div class="mb-3">
@@ -316,14 +332,11 @@
                     </select>
                 </div>
             </form>
-
             <div class="text-center">
                 <button class="btn btn-success" style="background-color: #004b39;;" onclick="adicionarSetor()">ADICIONAR
                     SETOR</button>
             </div>
             <p id="response"></p>
-
-
         </div>
         <br><br>
         <h3 style="font-size: 18px; margin-bottom: 20px;">SETORES/SEÇÕES CADASTRADAS:</h3>
@@ -339,13 +352,76 @@
 
     </main>
     <div style="display: none;">
-        <p id="divinv"></p> <!-- NÃO APAGAR...-->
+        <p id="divinv"></p>
     </div>
 
     <script>
         const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+        async function exibirLogs() {
+            var RESPONSE = "";
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../logs/handleLogs.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    RESPONSE = xhr.responseText;
+                }
+            }
+            xhr.send("tabela1=" + encodeURIComponent("tbsetor_secao") + "&tabela2=" + encodeURIComponent("localsetorsecao"));
+            if (RESPONSE == "") {
+                await sleep(250);
+            }
+            Swal.fire({
+                title: 'Logs',
+                width: '80%',
+                html: unParseLog(RESPONSE),
+                icon: 'info',
+                confirmButtonText: 'OK'
+            })
+        };
 
-        var pessoas = [];
+        function unParseLog(data) {
+            // console.log(data);
+            if (data == "Nenhum Log") {
+                return '<h2>Não há logs de alteraçoes para essa tabela</h2>';
+            } else {
+                var parsedData = JSON.parse(data);
+                var table = document.getElementById("resultado");
+                var tableHTML = "<table border='1'>";
+                tableHTML += "<tr><th>Data</th><th>Usuário</th><th>Coluna</th><th>Alteração</th></tr>";
+                for (var i = 0; i < parsedData.length; i++) {
+                    var row = parsedData[i];
+                    tableHTML += "<tr>";
+                    tableHTML += "<td>" + row.dataHora + "</td>";
+                    tableHTML += "<td>" + row.usuario + "</td>";
+                    var diff = compararJSON(row.old_value, row.new_value);
+                    tableHTML += "<td>" + capitalizeFirstLetter(diff.column.replace(/\./g, "")) + "</td>";
+                    tableHTML += "<td>" + "Alterado de: <span id='oldValue'>" + diff.oldValue + "</span> para <span id='newValue'>" + diff.newValue + "</span></td>";
+                    tableHTML += "</tr>";
+                }
+                tableHTML += "</table>";
+                return tableHTML;
+                function capitalizeFirstLetter(string) {
+                    return string.charAt(0).toUpperCase() + string.slice(1);
+                }
+            }
+        }
+
+        function compararJSON(oldValue, newValue) {
+            const result = {};
+
+            for (const key in oldValue) {
+                if (oldValue[key] !== newValue[key]) {
+                    result.column = key;
+                    result.oldValue = oldValue[key];
+                    result.newValue = newValue[key];
+                }
+            }
+
+            return result;
+        }
+
+
         var locais = [];
         function init() {
             loadSetores();
@@ -353,7 +429,6 @@
         }
 
         function loadSetores() {
-
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "ConfigSetor.php", true)
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -457,8 +532,6 @@
             var tdLocal = document.getElementById("local-" + id);
             var localID = tdLocal.getAttribute("value");
 
-   
-
             if (comando == 'edit') {//botao editar
                 openEditPopup(ID, descricao, localID)
             } else
@@ -537,7 +610,7 @@
                     preConfirm: () => {
                         const descricao = document.getElementById('descricao').value;
                         const local = document.getElementById('selectLocais').value;
-                        var data = "updateSetor=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) +  "&local=" + encodeURIComponent(local);
+                        var data = "updateSetor=1&ID=" + id + "&descricao=" + encodeURIComponent(descricao) + "&local=" + encodeURIComponent(local);
                         connection(data, 'update');
                         return descricao;
                     }
@@ -554,17 +627,17 @@
                     }
                 });
                 function geraOptions(opt) {
-                        if (opt == 2) {
-                            var options = '';
-                            for (var i = 0; i < locais[0].length; i++) {
-                                if (locais[0][i].ID == localID) {
-                                    options += '<option value="' + locais[0][i].ID + '" selected>' + locais[0][i].descricao + '</option>';
-                                } else {
-                                    options += '<option value="' + locais[0][i].ID + '">' + locais[0][i].descricao + '</option>';
-                                }
+                    if (opt == 2) {
+                        var options = '';
+                        for (var i = 0; i < locais[0].length; i++) {
+                            if (locais[0][i].ID == localID) {
+                                options += '<option value="' + locais[0][i].ID + '" selected>' + locais[0][i].descricao + '</option>';
+                            } else {
+                                options += '<option value="' + locais[0][i].ID + '">' + locais[0][i].descricao + '</option>';
                             }
-                            return options;
                         }
+                        return options;
+                    }
                 }
             }
         }
@@ -581,6 +654,7 @@
                         divinv.innerHTML = xhr.responseText
                     } else
                         if (operation == 'update') {
+
                             // console.log(xhr.responseText)
                         } else
                             if (operation == 'refresh') {
@@ -592,7 +666,6 @@
             };
             xhr.send(data);
         }
-
     </script>
 </body>
 

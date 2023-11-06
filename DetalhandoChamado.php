@@ -189,7 +189,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['gerarLog'])) {
-        // var_dump($_FILES);
         $conn = mysqli_connect("localhost", "root", "", "siasb");
         $status = $_POST['status'];
         $prioridade = $_POST['prioridade'];
@@ -209,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // }
         $imagens = array();
 
-        if (isset($_FILES)) {
+        if (isset($_FILES['imagem'])) {
             foreach ($_FILES['imagem']['tmp_name'] as $key => $tmp_name) {
                 // Receba a imagem
                 $imagem_temp = $_FILES['imagem']['tmp_name'][$key];
@@ -230,15 +229,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-
-        if (!$status || !$mensagem || !$prioridade) {
+        var_dump($prioridade, $mensagem, $status);
+        if (!isset($status) || !isset($mensagem) || !isset($prioridade)) {
             echo "Erro ao adicionar novo status de chamado: " . mysqli_error($conn);
             exit();
         } else
             if ($prioridade && !$mensagem & !$status) {
                 $sql = "UPDATE tbchamados SET prioridade = $prioridade WHERE IDChamado = $referencia;";
-            } else {
-
+            } else if($mensagem && $prioridade && $status){
                 $sql = "SET @UltimoID = (SELECT MAX(IDLog) FROM tblog_chamado);
                     SET @UltimoID = IFNULL(@UltimoID, 0) + 1;
                     SET @responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '$responsavel');
@@ -246,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     VALUES (NULL, '$mensagem', NOW(), @responsavel, $status, $referencia);
                     UPDATE tbchamados SET prioridade = $prioridade WHERE IDChamado = $referencia;";
             }
-        echo $sql;
+        // echo $sql;
         if ($imagens) {
             foreach ($imagens as $imagem) {
                 $sql .= "INSERT INTO tbimagens (imagem, referencia, log) VALUES ('{$imagem['blob']}', @UltimoID, '1');";
@@ -255,11 +253,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         // echo $sql;
         if (mysqli_multi_query($conn, $sql)) {
+            echo $sql;
             echo "Novo status do chamado adicionado com sucesso!";
         } else {
             echo "Erro ao adicionar novo status de chamado: " . mysqli_error($conn);
         }
-        // echo $sql;
         $conn->close();
 
     }
@@ -269,8 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['verificarSetor'])) {
         $conn = mysqli_connect("localhost", "root", "", "siasb");
         $IDUsuario = $_SESSION['username'];
-        $sql = "SELECT p.setor_secao FROM TBUsuario u
-                join tbpessoa p on p.IDPessoa = u.IDUsuario
+        $sql = "SELECT administrador FROM TBUsuario u
                 where u.nome = '$IDUsuario'";
 
         $stmt = $conn->prepare($sql);
@@ -279,9 +276,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result) {
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    $setor = $row["setor_secao"];
-                    if ($setor == '1') {
-                        echo "1"; //tecnologia
+                    $administrador = $row["administrador"];
+                    if ($administrador == '1') {
+                        echo "1"; //administrador
                     } else
                         echo "0"; //qqr outro
                 }

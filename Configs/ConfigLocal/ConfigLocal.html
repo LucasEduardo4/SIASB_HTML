@@ -68,7 +68,7 @@
             color: #000000;
             text-align: start;
             padding-left: 20px;
-            flex:none;
+            flex: none;
             padding-top: 3px;
 
 
@@ -177,7 +177,7 @@
 
         /* Button Styles */
         button {
-            background-color: #00cc99;
+            background-color: #00a383;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -266,6 +266,18 @@
         #ativo {
             left: 0px;
         }
+
+        #oldValue {
+            color: red;
+        }
+
+        #newValue {
+            color: green;
+        }
+
+        #bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -279,8 +291,17 @@
 
     <main class="main-content">
         <hr>
-        <h3 style="font-size: 18px" id="novo" onclick="divCadastro()">CADASTRAR NOVO LOCAL : <i
-                class="bi bi-plus-circle"></i></h3>
+        <div class="row-cols-1">
+            <div class="d-flex" style="justify-content: space-around;">
+                <div>
+                    <button style="font-size: 18px" id="novo" onclick="divCadastro()">Cadastrar Novo Local: <i
+                            class="bi bi-plus-circle"></i></button>
+                </div>
+                <div style="width: 200px;">
+                    <button class="ml-2" onclick="exibirLogs()"></i>Logs</button>
+                </div>
+            </div>
+        </div>
 
         <div id="cadastro" class="container-fluid p-5 border">
             <form>
@@ -320,9 +341,104 @@
         <p id="divinv"></p> <!-- NÃO APAGAR...-->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../lib/dateAndNumberFormatting.js"></script>
     <script>
         const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-        var globalDelete = '';
+
+        async function exibirLogs() {
+            var RESPONSE = "";
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../logs/handleLogs.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    RESPONSE = xhr.responseText;
+                }
+            }
+            xhr.send("tabela=" + encodeURIComponent("tblocal"));
+            if (RESPONSE == "") {
+                await sleep(250);
+            }
+            Swal.fire({
+                title: 'Logs',
+                width: '80%',
+                html: unParseLog(RESPONSE),
+                icon: 'info',
+                confirmButtonText: 'OK'
+            })
+        };
+
+        function unParseLog(data) {
+            if (data == "Nenhum Log") {
+                return '<h2>Não há logs de alteraçoes para essa tabela</h2>';
+            } else {
+                var parsedData = JSON.parse(data);
+                var table = document.getElementById("resultado");
+                var tableHTML = "<table border='1'>";
+                tableHTML += `<tr><th>Data</th><th>Usuário</th><th>Alterações</th></tr>`;
+
+                for (var i = 0; i < parsedData.length; i++) {
+                    var row = parsedData[i];
+                    var diff = compararJSON(row.old_value, row.new_value);
+
+                    tableHTML += "<tr>";
+                    tableHTML += "<td>" + YYYYMMDDtoDDMMYYYY(row.dataHora, '/') + "</td>";
+                    tableHTML += "<td>" + row.usuario + "</td>";
+                    tableHTML += "<td>";
+
+                    for (var j = 0; j < diff.length; j++) {
+                        var change = diff[j];
+                        tableHTML += "Alterou coluna <span id='bold'>" + capitalizeFirstLetter(change.column.replace(/\./g, "")) +
+                            "</span> de: <span id='oldValue'>" + change.oldValue + "</span> para <span id='newValue'>" + change.newValue + "</span><br>";
+                    }
+
+                    tableHTML += "</td>";
+                    tableHTML += "</tr>";
+                }
+
+                tableHTML += "</table>";
+                return tableHTML;
+                function capitalizeFirstLetter(string) {
+                    return string.charAt(0).toUpperCase() + string.slice(1);
+                }
+            }
+        }
+
+        function verificaBIT(bit) {
+            if (bit == 1) {
+                return "Ativo";
+            } else
+                return "Inativo";
+        }
+        function compararJSON(oldValue, newValue) {
+            const result = [];
+
+            for (const key in oldValue) {
+                if (oldValue[key] !== newValue[key]) {
+                    if (oldValue[key] == 1) {
+                        oldValue[key] = "Ativo";
+                    } else if (oldValue[key] == 0) {
+                        oldValue[key] = "Inativo";
+                    }
+                    if (newValue[key] == 1) {
+                        newValue[key] = "Ativo";
+                    } else if (newValue[key] == 0) {
+                        newValue[key] = "Inativo";
+                    }
+
+                    console.log(`Comparando: ${key} se: ${oldValue[key]} é diferente de: ${newValue[key]}`);
+                    result.push({
+                        column: key,
+                        oldValue: oldValue[key],
+                        newValue: newValue[key]
+                    });
+                }
+            }
+
+            return result;
+        }
+
+
 
         var controle = 1;
         function divCadastro() {

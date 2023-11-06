@@ -1,7 +1,8 @@
 <?php
+if (!isset($_SESSION))
+    session_start();
 
-session_start();
-if($_POST['teste']){
+if (isset($_POST['teste'])) {
     $_SESSION['username'] = 'root';
     var_dump($_SESSION);
     echo "<br><br>";
@@ -9,8 +10,14 @@ if($_POST['teste']){
 function getOlderValues($conn, $tabela, $id, $colName)
 {
     //obtendo old_values
-    $sql2 = "SELECT * FROM $tabela WHERE $colName = $id";
-    
+    if ($tabela == 'localsetorsecao') {
+        $sql2 = "SELECT localsetorsecao.ID, tblocal.descricao as 'Local', setorSecaoID FROM $tabela
+                LEFT JOIN tblocal ON localsetorsecao.localID = tblocal.ID
+                WHERE $colName = $id";
+    } else {
+        $sql2 = "SELECT * FROM $tabela WHERE $colName = $id";
+    }
+
     $result = $conn->query($sql2);
     $row = $result->fetch_assoc();
     $oldValues = "";
@@ -23,14 +30,18 @@ function getOlderValues($conn, $tabela, $id, $colName)
 function getNewerValues($conn, $tabela, $id, $colName)
 {
     //obtendo new_values
-    $sql3 = "SELECT * FROM $tabela WHERE $colName = $id";
-    echo $sql3;
+    if ($tabela == 'localsetorsecao') {
+        $sql3 = "SELECT localsetorsecao.ID, tblocal.descricao as 'Local', setorSecaoID FROM $tabela
+                LEFT JOIN tblocal ON localsetorsecao.localID = tblocal.ID
+                WHERE $colName = $id";
+    } else {
+        $sql3 = "SELECT * FROM $tabela WHERE $colName = $id";
+    }
+    // echo $sql3;
     $result = $conn->query($sql3);
-
 
     if ($result === false) {
         die("Erro na consulta SQL: " . $conn->error);
-        
     }
 
     if ($result->num_rows > 0) {
@@ -47,7 +58,6 @@ function getNewerValues($conn, $tabela, $id, $colName)
         $result->close();
         return "";
     }
-    
 }
 function logChanges($tabela, $oldValues, $id, $newValues)
 {
@@ -57,8 +67,6 @@ function logChanges($tabela, $oldValues, $id, $newValues)
     $result = $conn->query($sql1);
     $row = $result->fetch_assoc();
     $usuario = $row["IDUsuario"];
-
-
 
     if ($newValues != "" && strcmp($newValues, $oldValues) !== 0) {
         $query = "INSERT INTO tblogs_sistema (usuario, tabela, old_value, new_value, dataHora) 

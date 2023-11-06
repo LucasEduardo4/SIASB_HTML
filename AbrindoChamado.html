@@ -405,12 +405,14 @@
       var sti_ID = document.getElementById("sti_ID").value;
       var terceiros = document.getElementById("terceiros").value;
       var motivo = document.getElementById("motivo").value;
+      var insertNew = 1;
 
       if (assunto === '' || descricao === '' || sti_ID === '') {
         document.getElementById("erromsg").style.display = 'flex';
       }
 
       var formData = new FormData();
+      formData.append("insertNew", insertNew);
       formData.append("assunto", assunto);
       formData.append("descricao", descricao);
       formData.append("sti_ID", sti_ID);
@@ -422,8 +424,6 @@
           formData.append("imagem[]", imagemInput.files[i]);
         }
       }
-
-
 
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "AbrindoChamado.php", true);
@@ -442,9 +442,6 @@
       xhr.send(formData);
 
     }
-
-
-
 
     function exibirPopup() {
       Swal.fire({
@@ -481,7 +478,7 @@
       var sti_ID = document.getElementById("sti_ID").value;
       // var equipamento = document.getElementById("nomeEquipamento");
 
-      connection('sti_ID=' + sti_ID, 1, 'AbrindoChamado.php');
+      connection('verifyEquip=1&sti_ID=' + sti_ID, 1, 'AbrindoChamado.php');
     }
 
     function connection(data, output, file) {
@@ -507,16 +504,7 @@
       }
       xhr.send(data);
     }
-  </script>
 
-
-
-
-
-
-  <!-- <=============================================================================================================================> -->
-
-  <script>
     let currentStep = 1;
 
     function nextStep(step) {
@@ -551,29 +539,19 @@
         currentStep = step + 1;
         document.getElementById(`step-${currentStep}`).classList.add('active');
       }
-
-
     }
 
-    // Captura o evento de pressionar uma tecla no campo de entrada
     document.getElementById("assunto").addEventListener("keydown", function (event) {
-      // Verifica se a tecla pressionada é o "Enter"
       if (event.key === "Enter") {
-        // Impede o envio automático do formulário
         event.preventDefault();
-        // Nada acontece aqui, pois nenhum código foi adicionado
       }
     });
 
     document.getElementById("sti_ID").addEventListener("keydown", function (event) {
-      // Verifica se a tecla pressionada é o "Enter"
       if (event.key === "Enter") {
-        // Impede o envio automático do formulário
         event.preventDefault();
-        // Nada acontece aqui, pois nenhum código foi adicionado
       }
     });
-
 
     // FAZER MEU PRÓXIMO MÉTODO PARA MUDAR DE ABA (REDONDA)
     // function changeStep(step) {
@@ -597,7 +575,6 @@
 
     }
 
-
     function validarCampos() {
       var motivo = document.getElementById("motivo").value;
       var terceiros = document.getElementById("terceiros").value;
@@ -620,16 +597,6 @@
         nextStep(3);
       }
     }
-
-    // function checkAge() {
-    //     const idade = parseInt(document.getElementById('idade').value);
-    //     if (idade < 18) {
-    //         nextStep(1); // Se a idade for menor que 18, vá para a Etapa 4
-    //     }
-    //     if (idade > 18) {
-    //         nextStep(2); // Caso contrário, vá para a Etapa 5
-    //     }
-    // }
 
     document.addEventListener("DOMContentLoaded", function () {
       const inputterceiros = document.getElementById("terceiros");
@@ -671,16 +638,7 @@
         }
       });
     });
-
-
-    // document.getElementById('step-form').addEventListener('submit', function (e) {
-    //     e.preventDefault();
-    //     alert('Formulário enviado com sucesso!');
-    // }); Estava dando erro, então comentei...
   </script>
-
-
-  <!-- ===================================================================================================================================== -->
 </body>
 
 </html>

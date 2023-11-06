@@ -15,9 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $dataHora->format('d/m/y');
     }
     $conn = mysqli_connect("localhost", "root", "", "siasb");
-    if(isset($_SESSION['username'])){
+    if (isset($_SESSION['username'])) {
         $username = $_SESSION['username'];
-    }else{
+    } else {
         echo "javascript:window.location='../login.html';";
     }
     if (isset($_POST['Select']) && $_POST['Select'] == '1') {
@@ -104,12 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $responsavel = $_POST['responsavel'];
-        if($responsavel == '0'){
+        if ($responsavel == '0') {
             $sql .= " AND responsavel IS NULL";
-        }else 
-        if ($responsavel != '') {
-            $sql .= " AND responsavel = '$responsavel'";
-        }
+        } else
+            if ($responsavel != '') {
+                $sql .= " AND responsavel = '$responsavel'";
+            }
 
         $equipamento = $_POST['stiID'];
         if ($equipamento != '') {
@@ -190,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $sql2 = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.responsavel = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where p.administrador = 1";
+            $sql2 = "SELECT DISTINCT p.IDPessoa, p.nomeCompleto FROM tbchamados c left join tbusuario u on c.responsavel = u.IDUsuario left join tbpessoa p on u.IDUsuario = p.IDPessoa where u.administrador = 1";
             $responsaveis = array();
             $result2 = $conn->query($sql2);
             if ($result2 && $result2->num_rows > 0) {
@@ -217,10 +217,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
+            $sql4 = "SELECT COUNT(*) FROM tbchamados WHERE responsavel is null";
+            $result4 = $conn->query($sql4);
+            if ($result4 && $result4->num_rows > 0) {
+                while ($row = $result4->fetch_assoc()) {
+                    $chamadosNovos = $row["COUNT(*)"];
+                }
+            }
+
+            $sql5 = "SELECT administrador FROM tbusuario WHERE u.nome = {$_SESSION['username']}";
+            $result5 = $conn->query($sql5);
+            if ($result5 && $result5->num_rows > 0) {
+                while ($row = $result5->fetch_assoc()) {
+                    $administrador = $row["administrador"];
+                }
+            }
+            
+
             $resultJSON = array();
             $resultJSON['usuarios'] = $usuarios;
             $resultJSON['responsaveis'] = $responsaveis;
             $resultJSON['status'] = $status;
+            $resultJSON['chamadosNovos'] = $chamadosNovos;
+            $resultJSON['administrador'] = $administrador;
 
             echo json_encode($resultJSON);
         } else
@@ -239,7 +258,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "Digite um STI_ID valido (números inteiros)";
                 }
                 echo $descricao;
-            }
+            } else
+                if (isset($_POST['chamadosNovos'])) {
+                    $sql = "SELECT IDChamado, assunto, a.nome as 'autor', dataAbertura, dataFechamento, c.descricao, r.nome as 'responsavel', s.descricao as 'status_chamado', p.descricao as 'prioridade', sc.descricao as 'setor_secao' from tbchamados c
+                    LEFT JOIN tbusuario a on a.IDUsuario = c.autor
+                    LEFT JOIN tbusuario r on r.IDUsuario = c.responsavel
+                    LEFT JOIN tbstatus_chamado s on s.IDStatus = c.status_chamado
+                    LEFT JOIN tbprioridade p on c.prioridade = p.ID
+                    LEFT JOIN tbpessoa pe on a.IDUsuario = pe.IDPessoa
+                    LEFT JOIN tbsetor_secao sc on pe.setor_secao = sc.ID";
+
+                    $result = mysqli_query($conn, $sql);
+                    $chamados = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+                    echo json_encode($chamados);
+                } else
+                    if (isset($_POST['receberChamado'])) {
+                        $IDChamado = $_POST['IDChamado'];
+
+                        $sql = "UPDATE tbchamados SET responsavel = (SELECT IDUsuario FROM tbusuario WHERE nome = '" . $_SESSION['username'] . "'), status_chamado = 2 WHERE IDChamado = $IDChamado";
+                        $result = mysqli_query($conn, $sql);
+                        if ($result) {
+                            echo json_encode(array("success" => true));
+                        } else {
+                            echo json_encode(array("success" => false));
+                        }
+                    }
 }
 
 ?>

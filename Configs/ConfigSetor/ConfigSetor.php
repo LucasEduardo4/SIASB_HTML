@@ -114,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
 
                         $oldValues = getOlderValues($conn, 'tbsetor_secao', $ID, "ID");
+                        $oldValues2 = getOlderValues($conn, "localsetorsecao", $ID, "setorSecaoID");
                         
                         $sql = "UPDATE tbsetor_secao SET descricao = '$descricao' WHERE ID = $ID;
                         UPDATE localsetorsecao SET localID = $local WHERE setorSecaoID = $ID;";
@@ -127,9 +128,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
 
                         $newValues = getNewerValues($conn, 'tbsetor_secao', $ID, "ID");
-                        var_dump($newValues);
-                        var_dump($oldValues);
+                        $newValues2 = getNewerValues($conn, "localsetorsecao", $ID, "setorSecaoID");
+                        echo "<br><br>";
+                        echo "oldValues: <br>";
+                        var_dump($oldValues2);
+                        echo "<br><br>";
+                        echo "newValues: <br>";
+                        var_dump($newValues2);
+                        echo "<br><br>";
+                        echo "LogChanges: <br>";
                         logChanges('tbsetor_secao', $oldValues, $ID, $newValues);
+                        logChanges('localsetorsecao', $oldValues2, $ID, $newValues2);
 
                         $conn->close();
                     }

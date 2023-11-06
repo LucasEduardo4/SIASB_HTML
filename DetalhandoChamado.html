@@ -447,6 +447,7 @@
           if (operation == 1) {
             unParse(xhr.responseText);
           } else if (operation == 2) {
+            console.log(xhr.responseText);
           } else if (operation == 'verificarSetor') {
             if (xhr.responseText == '1') {
               controlarResponsavel_Tecnologia();
@@ -497,15 +498,15 @@
       }
 
       dataAbertura = formatarDataHora(dataAbertura);
-
       document.getElementById("assunto").innerHTML += assunto;
       document.getElementById("descricao").innerHTML += '<br>' + descricao;
       document.getElementById("dataAbertura").innerHTML += dataAbertura;
       // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
       document.getElementById("status").innerHTML += status_chamado;
-      document.getElementById("prioridade").innerHTML += ' ' + prioridadeChamado == 'undefined'? prioridadeChamado : 'Ainda não definida';
+      document.getElementById("prioridade").innerHTML += ' ' + (prioridadeChamado == 'undefined' ? 'Ainda não definida' : prioridadeChamado);
+
       document.getElementById("prioridade").classList.add(prioridadeChamado);
-      document.getElementById("responsavel").innerHTML += responsavel;
+      document.getElementById("responsavel").innerHTML += (responsavel == null ? "-----" : responsavel);
       document.getElementById("autor").innerHTML += autor;
       if (equipamento != null) {
         document.getElementById("equipamento").innerHTML += `${equipamento}`;
@@ -513,7 +514,6 @@
         document.getElementById("equipamento").style.display = 'none';
       }
       document.getElementById("numChamado").innerHTML += IDChamado;
-
 
       if (icone) {
         document.getElementById("AutorLabel").innerHTML +=
@@ -838,25 +838,61 @@
             var mensagem = document.getElementById("mensagem").value;
             var imagemInput = document.getElementById("imagem");
 
+            console.log(`status -> ${status} \nprioridade -> ${prioridade} \nmensagem -> ${mensagem} \nimagem -> ${imagemInput.files[0]}`)
+
             if (!status && !prioridade && !mensagem) {
               Swal.fire({
                 title: 'Operação cancelada',
                 text: 'Nenhum campo foi preenchido.',
                 icon: 'error',
                 timer: 3000
+              }).then(() => {
+                window.location.reload();
               });
               return; // Impede que o código continue se os campos estiverem incompletos
-            }
-            if (!status && prioridade && !mensagem) {
-              Swal.fire({
-                title: 'Prioridade alterada!',
-                // text: 'A Prioridade foi alterada.',
-                icon: 'success',
-                timer: 3000
-              });
-            }
+            } else
+              if (!status && prioridade && !mensagem) {
+                Swal.fire({
+                  title: 'Prioridade alterada!',
+                  // text: 'A Prioridade foi alterada.',
+                  icon: 'success',
+                  timer: 3000
+                }).then(() => {
+                  window.location.reload();
+                });
+              } else
+                if (status && !prioridade && !mensagem) {
+                  Swal.fire({
+                    title: 'Digite um motivo para alterar o status!',
+                    // text: 'O Status foi alterado.',
+                    icon: 'warning',
+                    timer: 3000
+                  }).then(() => {
+                    window.location.reload();
+                  });
+                  return;
+                } else
+                  if (status && prioridade && mensagem) {
+                    Swal.fire({
+                      title: 'Alterado!',
+                      text: 'Chamado alterado com sucesso',
+                      icon: 'success',
+                      timer: 3000
+                    }).then(() => {
+                      window.location.reload();
+                    });
+                  } else {
+                    Swal.fire({
+                      title: 'Erro!',
+                      text: 'Preencha os campos corretamente',
+                      icon: 'error',
+                      timer: 3000
+                    }).then(() => {
+                      window.location.reload();
+                    });
+                    return;
+                  }
 
-            // var data = "gerarLog=1" + "&status=" + encodeURIComponent(status) + "&mensagem=" + encodeURIComponent(mensagem) + "&referencia=" + encodeURIComponent(IDChamado) + "&imagem=" + encodeURIComponent(imagemInput.files[0]) ;
             var data = new FormData();
             data.append("gerarLog", "1");
             data.append("status", status);
@@ -874,19 +910,8 @@
                 data.append("imagem[]", imagens[i]); // Use colchetes no nome do campo para indicar que é uma matriz de imagens
               }
             }
-
             connection(data, 2);
-
             window.location.reload();
-            // Exemplo de envio do formulário
-            Swal.fire({
-              title: 'Alterado!',
-              text: 'Chamado alterado com sucesso',
-              icon: 'success',
-              timer: 3000
-            }).then(() => {
-              // window.location.reload();
-            });
           }
         }
       });
