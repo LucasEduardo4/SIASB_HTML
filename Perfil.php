@@ -124,18 +124,12 @@ if ($imageData) {
 }
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Informações do Usuário</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
     <style>
         img {
             border-radius: 50%;
@@ -224,10 +218,6 @@ if ($imageData) {
             border-radius: 8px;
         }
     </style>
-
-</head>
-
-
 </head>
 
 <body>
@@ -241,8 +231,6 @@ if ($imageData) {
         <div>
             <div id="anexosContainer"></div>
         </div>
-
-
         <script>
 
             var imagem = <?php echo json_encode(base64_encode($imageData)); ?>;
@@ -319,8 +307,6 @@ if ($imageData) {
                     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
                 }
 
-
-
                 //===============================================================
                 $usuario_ = $_SESSION['username'];
                 // Substitua pelo ID do usuário que deseja atualizar
@@ -359,7 +345,6 @@ if ($imageData) {
             </div>
         </div>
 
-
         <!-- REALIZANDO A ALTERAÇÃO DA SENHA -->
 
         <div class="div2">
@@ -373,7 +358,6 @@ if ($imageData) {
 
                 <input type="submit" value="Alterar Senha">
             </form>
-
 
             <?php
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -402,22 +386,14 @@ if ($imageData) {
                 if ($result->num_rows > 0) {
                     // Atualizar a senha
                     $hashed_password = password_hash($nova_senha, PASSWORD_DEFAULT);
-
                     $sql = "UPDATE tbusuario SET senha = ? WHERE nome = ?";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("ss", $hashed_password, $usuario_);
                     if ($stmt->execute()) {
                         echo "<p class='alt_senha'>Senha atualizada com sucesso!</p>";
-
-
-
-
-
                     } else {
                         echo "Erro ao atualizar a senha: " . $stmt->error;
                     }
-
-
 
                     $stmt->close();
                 } else {
@@ -429,8 +405,7 @@ if ($imageData) {
             ?>
         </div>
     </div>
-    </div>
-    </div>
+
     </div>
 </body>
 

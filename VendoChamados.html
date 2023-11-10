@@ -294,18 +294,21 @@
             margin: 5px 0px;
         }
 
-        table td{
+        table td {
             border-top: solid 1px black;
             padding: 10px 5px;
         }
-        th{
+
+        th {
             padding: 5px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
 
-        tbody tr:hover{
+        tbody tr:hover {
             background-color: #e9ecef;
         }
-        table tr:last-child td{
+
+        table tr:last-child td {
             border-bottom: solid 1px black;
         }
 
@@ -335,14 +338,8 @@
                 </div>
             </div>
         </div>
-        <div class="container" style="display: none;" id="divNovosChamados">
-            <div class="col">
-                <div class="container container-fluid" id="">
-                    <div class="div-superior" style="border-radius: 5px;">
-                        <h2 id="novosChamados">Placeholder</h2>
-                        <button onclick="visualizarSemResponsaveis()">Verificar</button>
-                    </div>
-                </div>
+        <div class="col">
+            <div class="container container-fluid" id="divNovosChamados" style="width: 260px; display: none;">
             </div>
         </div>
     </div>
@@ -351,8 +348,7 @@
         function visualizarSemResponsaveis() {
             xhrRequest('chamadosNovos=1', 'chamadosNovos');
             Swal.fire({
-                title: 'Novos Chamados:',
-                html: `<div id='popupEdit'><table class='table' border='0' cellspacing="0" cellpadding="0"> <thead style="font-weight: 700;">
+                html: `<h2>NOVOS CHAMADOS:</h2><div id='popupEdit'><table class='table' border='0' cellspacing="0" cellpadding="0"> <thead style="font-weight: 700;">
                     <tr>
                         <th>ID</th>
                         <th>ASSUNTO</th>
@@ -379,7 +375,7 @@
         var CHAMADOS = [];
 
         function unParseNovos(dados) {
-            console.log(dados);
+            // console.log(dados);
             var dados = JSON.parse(dados);
             var novos = document.getElementById('novos');
             var resolvendo = document.getElementById('resolvendo');
@@ -539,7 +535,7 @@
                 }
 
                 function calcularDiasEmAberto(dataAtual, dataAbertura) {
-                    console.log(dataAtual)
+                    // console.log(dataAtual)
                     function converterDataFormato(dataString) {
                         const partes = dataString.split("/");
                         const dia = partes[0];
@@ -704,7 +700,7 @@
                 }
 
                 function unParse(json) {
-                    console.log(json);
+                    // console.log(json);
                     if (json.includes('window.location')) {
                         window.parent.location.reload();
                     }
@@ -735,10 +731,24 @@
                         selectStatus.appendChild(option);
                     }
 
-                    novosChamados.innerHTML = "Há <span style='color:red; font-weight:bold'>" + JSONObj.chamadosNovos + "</span> novos chamados";
 
                     if (JSONObj.administrador == 1) {
-                        document.getElementById("divNovosChamados").style.display = 'flex';
+                        var place = document.getElementById("divNovosChamados")
+                        place.style.display = "flex";
+                        var div = document.createElement("div");
+                        div.classList.add("div-superior");
+                        div.style.borderRadius = "5px";
+                        var h2 = document.createElement("h2");
+                        h2.id = "novosChamados";
+                        h2.innerHTML = "HÁ <span style='color:red; font-weight:bold'>" + JSONObj.chamadosNovos + "</span> NOVOS CHAMADOS";
+                        var btn = document.createElement("button");
+                        btn.innerHTML = "Verificar";
+                        btn.onclick = function () {
+                            visualizarSemResponsaveis();
+                        };
+                        div.appendChild(h2);
+                        div.appendChild(btn);
+                        place.appendChild(div);
                     }
                 }
 

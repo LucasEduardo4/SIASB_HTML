@@ -2,12 +2,9 @@
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    echo "<h1>Permissão Negada!</h1>";
+    echo "<h1>Permissão Negada!, efetue login no sistema para obter acesso</h1>";
 } else {
     $username = $_SESSION['username'];
-
-
-
     function convertData($data)
     {
         $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $data);
@@ -109,7 +106,6 @@ if (!isset($_SESSION['username'])) {
             $resultArray['setor'] = $setor;
             $stmt5->close();
 
-            $conn->close();
             // Retornar o resultado como JSON
             echo json_encode($resultArray);
         }
@@ -134,16 +130,17 @@ if (!isset($_SESSION['username'])) {
             $filtroATEDataFechamento = $_POST['filtroATEDataFechamento'] ?? null;
             $tipoRelatorio = $_POST['tipoRelatorio'] ?? null;
 
-            $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', te.descricao as 'TipoEquipamento', st.descricao as 'setor', st.ID
-                FROM TBChamados c 
-                LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus 
-                LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario 
-                LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario 
-                LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID 
-                LEFT JOIN TBPessoa p on c.autor = p.idpessoa 
-                LEFT JOIN TBTipo_equipamentos as te on e.tipo = te.IDTipo 
-                LEFT JOIN tbsetor_secao st on p.setor_secao = st.ID
-                WHERE 1=1";
+            $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, c.dataFechamento, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', te.descricao as 'TipoEquipamento', st.descricao as 'setor', st.ID, COUNT(lc.IDLog) as 'qtdLogs'
+            FROM TBChamados c 
+            LEFT JOIN TBStatus_Chamado sc ON c.status_chamado = sc.IDStatus 
+            LEFT JOIN TBUsuario a ON c.responsavel = a.IDUsuario 
+            LEFT JOIN TBUsuario u ON c.autor = u.IDUsuario 
+            LEFT JOIN TBEquipamentos e ON c.equipamento = e.sti_ID 
+            LEFT JOIN TBPessoa p on c.autor = p.idpessoa 
+            LEFT JOIN TBTipo_equipamentos as te on e.tipo = te.IDTipo 
+            LEFT JOIN tbsetor_secao st on p.setor_secao = st.ID
+            LEFT JOIN tblog_chamado lc on lc.referencia = c.IDChamado
+            WHERE 1=1";
 
             if (!empty($filtroDataAbertura)) {
                 if ($filtroATEDataAbertura == '') {
@@ -185,6 +182,7 @@ if (!isset($_SESSION['username'])) {
             if (!empty($filtroSetor)) {
                 $sql .= " AND ID = '$filtroSetor'";
             }
+            $sql .= " GROUP BY c.IDChamado";
 
             // Ordenação
             if (!empty($ordenarPor)) {
@@ -209,14 +207,15 @@ if (!isset($_SESSION['username'])) {
                         $IDChamado = $row['IDChamado'];
                         $assunto = $row['assunto'];
                         $descricao = $row['descricao'];
-                        $dataAbertura = convertData($row['dataAbertura']);
-                        $dataFechamento = convertData($row['dataFechamento']);
+                        $dataAbertura = $row['dataAbertura'];
+                        $dataFechamento = $row['dataFechamento'];
                         $responsavel = $row['responsavel'];
                         $equipamento = $row['equipamento'];
                         $autor = $row['autor'];
                         $status_chamado = $row['status_chamado'];
                         $tipo_equipamento = $row['TipoEquipamento'];
                         $setor = $row['setor'];
+                        $qtdLogs = $row['qtdLogs'];
 
 
                         if (isset($_POST['gerarRelatorio'])) {
@@ -226,8 +225,8 @@ if (!isset($_SESSION['username'])) {
                                     $dataAbertura = convertDataXLSX($row['dataAbertura']);
                                     $dataFechamento = convertDataXLSX($row['dataFechamento']);
                                 } else {
-                                    $dataAbertura = convertData($row['dataAbertura']);
-                                    $dataFechamento = convertData($row['dataFechamento']);
+                                    $dataAbertura = $row['dataAbertura'];
+                                    $dataFechamento = $row['dataFechamento'];
                                 }
 
                                 $dados[] = array(
@@ -239,7 +238,8 @@ if (!isset($_SESSION['username'])) {
                                     'status_chamado' => $status_chamado,
                                     'responsavel' => $responsavel,
                                     'equipamento' => $equipamento,
-                                    'autor' => $autor
+                                    'autor' => $autor,
+                                    'qtdLogs' => $qtdLogs,
                                 );
                                 $teste++;
                             }
@@ -265,7 +265,6 @@ if (!isset($_SESSION['username'])) {
                 return;
             }
             $stmt->close();
-            $conn->close();
             //encontrar onde está quebrando o codigo.
             if (isset($_POST['geraPDF'])) {
                 require('tcpdf/tcpdf.php');
@@ -316,6 +315,8 @@ if (!isset($_SESSION['username'])) {
                         }
                 }
 
+
+
                 // ---------------------- MAIN ---------------------- \\
 
                 $pdf = new TCPDF();
@@ -328,9 +329,9 @@ if (!isset($_SESSION['username'])) {
 
                     $pdf->SetFont($font, 'B', 14);
                     $tamanhoImagemPrincipal = 50;
-                    $tamanhoImagem = 12;
+                    $tamanhoImagem = 16;
                     $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
-                    $pdf->Image('../Icones Site/simbolo-saaeb.png', 185, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                    $pdf->Image('../icons/S_SIASB.png', 185, 15, $tamanhoImagem, $tamanhoImagem, 'png');
                     $pdf->Ln();
                     $pdf->Cell(0, 10, '', 0, 1, 'C');
                     $pdf->Cell(0, 10, '', 0, 1, 'C');
@@ -352,7 +353,7 @@ if (!isset($_SESSION['username'])) {
                     $alturaResults = 5;
 
                     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
-                    $pdf->setFooterMargin(20);
+                    $pdf->setFooterMargin(5);
                     $pdf->setFooterFont(array($font, '', 10));
 
                     // --------------------------------------------------- \\
@@ -363,9 +364,9 @@ if (!isset($_SESSION['username'])) {
                     $pdf->setPageOrientation('L'); //modo paisagem
                     $pdf->SetFont($font, 'B', 14);
                     $tamanhoImagemPrincipal = 50;
-                    $tamanhoImagem = 12;
+                    $tamanhoImagem = 18;
                     $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
-                    $pdf->Image('../Icones Site/simbolo-saaeb.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                    $pdf->Image('../icons/S_SIASB.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
                     $pdf->Ln();
                     $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
                     $pdf->SetFont($font, '', 12);
@@ -384,8 +385,8 @@ if (!isset($_SESSION['username'])) {
                     $Lstatus = $pdf->GetStringWidth('Status') + 13.0;
                     $alturaResults = 5.0;
 
-                    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
-                    $pdf->setFooterMargin(20);
+                    // $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Defina a margem do rodapé
+                    $pdf->setFooterMargin(5);
                     $pdf->setFooterFont(array($font, '', 10));
 
                     // --------------------------------------------------- \\
@@ -395,15 +396,15 @@ if (!isset($_SESSION['username'])) {
                 $dadosFiltros = array();
 
                 if (!empty($_POST['filtroATEDataAbertura'])) {
-                    $dadosFiltros['Data de Abertura'] = 'de: ' . convertData($filtroDataAbertura) . ' até: ' . convertData($filtroATEDataAbertura);
+                    $dadosFiltros['Data de Abertura'] = 'de: ' . $filtroDataAbertura . ' até: ' . $filtroATEDataAbertura;
                 } elseif (!empty($_POST['filtroDataAbertura'])) {
-                    $dadosFiltros['Data de Abertura'] = 'a partir de: ' . convertData($filtroDataAbertura);
+                    $dadosFiltros['Data de Abertura'] = 'a partir de: ' . $filtroDataAbertura;
                 }
 
                 if (!empty($_POST['filtroATEDataFechamento'])) {
-                    $dadosFiltros['Data de Fechamento'] = 'de: ' . convertData($filtroDataFechamento) . ' até: ' . convertData($filtroATEDataFechamento);
+                    $dadosFiltros['Data de Fechamento'] = 'de: ' . $filtroDataFechamento . ' até: ' . $filtroATEDataFechamento;
                 } elseif (!empty($_POST['filtroDataFechamento'])) {
-                    $dadosFiltros['Data de Fechamento'] = 'até: ' . convertData($filtroDataFechamento);
+                    $dadosFiltros['Data de Fechamento'] = 'até: ' . $filtroDataFechamento;
                 }
 
                 if ($filtroStatus == 5) {
@@ -485,8 +486,8 @@ if (!isset($_SESSION['username'])) {
                         $registro['assunto'] = limitaCaracteres(($registro['assunto']));
                         $pdf->Cell($LID, $alturaResults, $registro['IDChamado'], $border, 0, 'C');
                         $pdf->Cell($Lassunto, $alturaResults, $registro['assunto'], $border, 0);
-                        $pdf->Cell($LdataAbertura, $alturaResults, $registro['dataAbertura'], $border, 0, 'C');
-                        $pdf->Cell($LdataFechamento, $alturaResults, $registro['dataFechamento'], $border, 0, 'C');
+                        $pdf->Cell($LdataAbertura, $alturaResults, convertData($registro['dataAbertura']), $border, 0, 'C');
+                        $pdf->Cell($LdataFechamento, $alturaResults, convertData($registro['dataFechamento']), $border, 0, 'C');
                         $pdf->Cell($Lresponsavel, $alturaResults, $registro['responsavel'] ? $registro['responsavel'] : '--', $border, 0, 'C');
                         $pdf->Cell($Lequipamento, $alturaResults, $registro['equipamento'] ? $registro['equipamento'] : '--', $border, 0, 'C');
                         $pdf->Cell($Lautor, $alturaResults, $registro['autor'], $border, 0, 'C');
@@ -522,27 +523,32 @@ if (!isset($_SESSION['username'])) {
 
                     foreach ($dados as $indice => $registro) {
                         $descricaoCampo = $registro['descricao'];
+                        $qtdLogs = $registro['qtdLogs'];
                         $currentY = $pdf->GetY();
-                        if (strlen($descricaoCampo) <= 200)
+                        if (strlen($descricaoCampo) <= 200 && $qtdLogs <= 1)
                             $blockHeight = 40; //estimativa altura bloco atual
-                        else
+                        else if (strlen($descricaoCampo) >= 200 && $qtdLogs <= 1)
                             $blockHeight = 60;
+                        else if (strlen($descricaoCampo) >= 200 && $qtdLogs > 1)
+                            $blockHeight = 60 + ($qtdLogs);
+                        else if (strlen($descricaoCampo) <= 200 && $qtdLogs > 1)
+                            $blockHeight = 70 + ($qtdLogs);
+
 
                         if ($currentY + $blockHeight + $minBottomMargin > $pdf->getPageHeight()) {
                             // Caso não haja espaço:
                             $pdf->AddPage();
                             $pdf->SetFont($font, 'B', 14);
                             $tamanhoImagemPrincipal = 50;
-                            $tamanhoImagem = 12;
                             $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
-                            $pdf->Image('../Icones Site/simbolo-saaeb.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                            $pdf->Image('../icons/S_SIASB.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
                             $pdf->Ln();
                             $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
                             $pdf->SetFont($font, '', 12);
+                            $pdf->Ln();
                         }
                         underline($pdf, $tipoRelatorio);
 
-                        $border = 0;
                         $pdf->Ln(2);
                         $pdf->MultiCell(8, 10, 'ID:', $border, 'L', false, 0);
                         $pdf->MultiCell(25, 10, $registro['IDChamado'], $border, 'L', false, 0);
@@ -563,27 +569,88 @@ if (!isset($_SESSION['username'])) {
                             $w = ($result * 4);
                             $pdf->Ln($w);
                         }
+
                         $pdf->MultiCell(33, 10, 'Data de Abertura:', $border, 'R', false, 0);
-                        $pdf->MultiCell(40, 10, $registro['dataAbertura'], $border, 'L', false, 0);
+                        $pdf->MultiCell(39, 10, convertData($registro['dataAbertura']), $border, 'L', false, 0);
 
-                        $pdf->MultiCell(39.05, 10, 'Data de Fechamento:', $border, 'R', false, 0);
-                        $pdf->MultiCell(40, 10, $registro['dataFechamento'] ? $registro['dataFechamento'] : '----', $border, 'L', false, 0);
+                        if ($registro['status_chamado'] == 'Fechado') {
+                            $pdf->MultiCell(39.05, 10, 'Data de Fechamento:', $border, 'R', false, 0);
+                            $pdf->MultiCell(39, 10, $registro['dataFechamento'] ? convertData($registro['dataFechamento']) : '----', $border, 'L', false, 0);
+                        }
 
-                        $pdf->MultiCell(50, 10, 'Última alteração no status:', $border, 'L', false, 0);
-                        $pdf->MultiCell(50, 10, $registro['responsavel'] ? $registro['responsavel'] : '----', $border, 'L', false, 0);
+                        if ($qtdLogs != 0) {
+                            $pdf->MultiCell(50, 10, 'Última alteração no status:', $border, 'L', false, 0);
+                            $pdf->MultiCell(50, 10, $registro['responsavel'] ? $registro['responsavel'] : '----', $border, 'L', false, $registro['status_chamado'] == 'Fechado' ? 1 : 0);
+                            $pdf->SetMargins(80, 0, 0, true);
+                        }
 
-                        $pdf->Ln(3);
+                        // calcular dias em aberto
+                        if ($registro['status_chamado'] == 'Fechado') {
+                            $dataAbertura = strtotime($registro['dataAbertura']);
+                            $dataFechamento = strtotime($registro['dataFechamento']);
+                            $diasEmAberto = round(($dataFechamento - $dataAbertura) / 86400);
+
+                            // exibir dias em aberto
+                            $pdf->MultiCell(30, 10, 'Dias em aberto:', $border, 'R', false, 0);
+                            $pdf->MultiCell(40, 10, $diasEmAberto, $border, 'L', false, 0);
+
+                        }
+                        $sql = "SELECT c.dataAlteracao, c.mensagem, u.nome, s.descricao FROM tblog_chamado c
+                        LEFT JOIN tbusuario u on c.responsavel = u.IDUsuario
+                        LEFT JOIN tbstatus_chamado s on c.status = s.IDStatus
+                         WHERE referencia = " . $registro['IDChamado'];
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $logs = array();
+                        if ($qtdLogs != 0)
+                            $pdf->MultiCell(200, 10, 'Logs de Alterações:', $border, 'L', false, 1);
+                        $isFirstRow = true;
+                        $maiorLinhaMsg = 40; //LTRB
+                        $maiorLinhaUser = 10;
+                        while ($row2 = $result->fetch_assoc()) {
+                            if ($pdf->GetStringWidth($row2['mensagem']) + 10 > $maiorLinhaMsg)
+                                $maiorLinhaMsg = $pdf->GetStringWidth($row2['mensagem']) + 20;
+                            if ($pdf->GetStringWidth($row2['nome']) + 12 > $maiorLinhaUser)
+                                $maiorLinhaUser = $pdf->GetStringWidth($row2['nome']) + 12;
+                            if ($isFirstRow) {
+                                $pdf->SetFont($font, 'U', 14);
+                                $border =  array(
+                                    'T' => array('width' => 0.5),  // Borda superior
+                                    'B' => array('width' => 0.5),  // Borda inferior
+                                );
+                                // $border = 1;
+                                $pdf->Cell($maiorLinhaUser, 10, 'Usuário', $border, 0, 'C');
+                                $pdf->Cell(25, 10, 'Data', $border, 0, 'C');
+                                $pdf->Cell(30, 10, 'Status', $border, 0, 'C');
+                                $pdf->Cell($maiorLinhaMsg, 10, 'Mensagem', $border, 1, 'C');
+                                $pdf->SetFont($font, '', 12);
+                            }
+
+                            $pdf->Cell($maiorLinhaUser, 10, $row2['nome'] , $border, 0, 'C');
+                            $pdf->Cell(25, 10, convertData($row2['dataAlteracao']), $border, 0, 'C');
+                            $pdf->Cell(30, 10, $row2['descricao'], $border, 0, 'C');
+                            $pdf->Cell($maiorLinhaMsg, 10, $row2['mensagem'], $border, 1, 'C');
+                            $isFirstRow = false;
+
+                        }
+                        $border = 0;
+                        $pdf->SetMargins(10, 0, 0, true);
+
+                        $stmt->close();
+                        $pdf->Ln(2);
                     }
                 }
 
                 //resultados:
-                if ($pdf->GetY() + 60 + 20 > $pdf->getPageHeight()) {
+                if ($pdf->GetY() + 60 + 10 > $pdf->getPageHeight()) {
+                    $pdf->SetMargins(10, 0, 0, true);
                     $pdf->AddPage();
+
                     $pdf->SetFont($font, 'B', 14);
                     $tamanhoImagemPrincipal = 50;
-                    $tamanhoImagem = 12;
                     $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
-                    $pdf->Image('../Icones Site/simbolo-saaeb.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
+                    $pdf->Image('../icons/S_SIASB.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
                     $pdf->Ln();
                     $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
                     $pdf->SetFont($font, '', 12);
@@ -613,15 +680,11 @@ if (!isset($_SESSION['username'])) {
                 $pdf->Ln();
 
                 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
-
                 $pdf->SetTitle('Relatório Gerado!');
-
                 $pdf->Output('/Relatorio Chamados ' . date('d-m-Y') . '.pdf', 'I'); // Gera o PDF
-
                 exit();
             } else
                 if (isset($_POST['geraXLSX'])) {
-
                     // $colunas = array('IDChamado','Assunto','Data Abertura','Data Fechado','Status','Responsável','Equipamento','Autor');
                     $colunas = array();
                     $nomeArquivo = 'relatorio.xlsx';
@@ -639,5 +702,7 @@ if (!isset($_SESSION['username'])) {
             // imprimeDados($dados);
         }
     }
+    $conn->close();
+
 }
 ?>
