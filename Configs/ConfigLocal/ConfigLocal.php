@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = new mysqli("localhost", "root", "", "siasb");
+    require_once("../../model/conexao.php");
     if (isset($_POST['insertLocal'])) {
         $nomeLocal = $_POST['nomeLocal'];
         $endereco = $_POST['endereco'];

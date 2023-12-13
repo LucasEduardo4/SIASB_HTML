@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         return $dataHora->format('d/m/y');
     }
-    $conn = mysqli_connect("localhost", "root", "", "siasb");
+    require_once("model/conexao.php");
     if (isset($_SESSION['username'])) {
         $username = $_SESSION['username'];
     } else {

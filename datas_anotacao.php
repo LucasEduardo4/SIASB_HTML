@@ -1,13 +1,7 @@
 
 <?php
-// Conexão com o banco de dados (substitua com suas próprias informações)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "siasb";
+require_once("model/conexao.php");
 
-// Criar conexão
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Verificar a conexão
 if ($conn->connect_error) {

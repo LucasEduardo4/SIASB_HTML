@@ -14,7 +14,6 @@ if (!isset($_SESSION['username'])) {
                 return "--";
             }
         }
-
         return $dataHora->format('d/m/y');
     }
 
@@ -217,7 +216,6 @@ if (!isset($_SESSION['username'])) {
                         $setor = $row['setor'];
                         $qtdLogs = $row['qtdLogs'];
 
-
                         if (isset($_POST['gerarRelatorio'])) {
                             $teste = 0;
                             while ($teste <= 0) {
@@ -273,23 +271,7 @@ if (!isset($_SESSION['username'])) {
 //                             PDF DOCUMENTATION:                          \\
 // ----------------------------------------------------------------------- \\
 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
-
-                // ------------------ FUNCTIONS --------------------- \\
-                function imprimeDados($dados)
-                {
-
-                    echo "<pre>";
-                    // print_r($dados);
-                    foreach ($dados as $registro) {
-                        foreach ($registro as $campo => $valor) {
-                            echo "$campo: $valor<br>";
-                        }
-                        echo "<br>";
-                    }
-
-                    echo "</pre>";
-                }
-
+                
                 // -------------------- GLOBAL ---------------------- \\
                 $font = 'times';
                 $border = 0;
@@ -360,7 +342,6 @@ if (!isset($_SESSION['username'])) {
                     //para agora: usuario que gerou e data gerada.
                     // $pdf->Ln();
                 } else if ($tipoRelatorio == 'analitico') {
-
                     $pdf->setPageOrientation('L'); //modo paisagem
                     $pdf->SetFont($font, 'B', 14);
                     $tamanhoImagemPrincipal = 50;
@@ -368,7 +349,8 @@ if (!isset($_SESSION['username'])) {
                     $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
                     $pdf->Image('../icons/S_SIASB.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
                     $pdf->Ln();
-                    $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
+                    $borderHeader = 0;
+                    $pdf->Cell(0, 10, 'Relatório de Chamados', $borderHeader, 1, 'C');
                     $pdf->SetFont($font, '', 12);
                     $pdf->Ln();
 
@@ -396,15 +378,15 @@ if (!isset($_SESSION['username'])) {
                 $dadosFiltros = array();
 
                 if (!empty($_POST['filtroATEDataAbertura'])) {
-                    $dadosFiltros['Data de Abertura'] = 'de: ' . $filtroDataAbertura . ' até: ' . $filtroATEDataAbertura;
+                    $dadosFiltros['Data de Abertura'] = 'de: ' . convertData($filtroDataAbertura) . ' até: ' . convertData($filtroATEDataAbertura);
                 } elseif (!empty($_POST['filtroDataAbertura'])) {
-                    $dadosFiltros['Data de Abertura'] = 'a partir de: ' . $filtroDataAbertura;
+                    $dadosFiltros['Data de Abertura'] = 'a partir de: ' . convertData($filtroDataAbertura);
                 }
 
                 if (!empty($_POST['filtroATEDataFechamento'])) {
-                    $dadosFiltros['Data de Fechamento'] = 'de: ' . $filtroDataFechamento . ' até: ' . $filtroATEDataFechamento;
+                    $dadosFiltros['Data de Fechamento'] = 'de: ' . convertData($filtroDataFechamento) . ' até: ' . convertData($filtroATEDataFechamento);
                 } elseif (!empty($_POST['filtroDataFechamento'])) {
-                    $dadosFiltros['Data de Fechamento'] = 'até: ' . $filtroDataFechamento;
+                    $dadosFiltros['Data de Fechamento'] = 'até: ' . convertData($filtroDataFechamento);
                 }
 
                 if ($filtroStatus == 5) {
@@ -498,7 +480,6 @@ if (!isset($_SESSION['username'])) {
                         if ($i >= $tamanhoMax) {
                             $pdf->AddPage();
                             $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY(), array('width' => 0.3, 'dash' => 1));
-
                             $pdf->Cell($LID, 10, 'ID', $border, 0, 'C');
                             $pdf->Cell($Lassunto, 10, 'Assunto', $border, 0, 'C');
                             // $pdf->MultiCell($Lassunto, 10, 'Assunto', $border, 'C');
@@ -509,10 +490,8 @@ if (!isset($_SESSION['username'])) {
                             $pdf->Cell($Lequipamento, 10, 'Equipamento', $border, 0, 'C');
                             $pdf->Cell($Lautor, 10, 'autor', $border, 0, 'C');
                             $pdf->Cell($Lstatus, 10, 'status', $border, 0, 'C');
-
                             $pdf->Ln();
                             $pdf->SetFont($font, '', 10);
-
                             $i = 0;
                             $tamanhoMax = 51;
                         }
@@ -526,13 +505,13 @@ if (!isset($_SESSION['username'])) {
                         $qtdLogs = $registro['qtdLogs'];
                         $currentY = $pdf->GetY();
                         if (strlen($descricaoCampo) <= 200 && $qtdLogs <= 1)
-                            $blockHeight = 40; //estimativa altura bloco atual
+                            $blockHeight = 30; //estimativa altura bloco atual
                         else if (strlen($descricaoCampo) >= 200 && $qtdLogs <= 1)
-                            $blockHeight = 60;
+                            $blockHeight = 50;
                         else if (strlen($descricaoCampo) >= 200 && $qtdLogs > 1)
-                            $blockHeight = 60 + ($qtdLogs);
+                            $blockHeight = 50 + ($qtdLogs);
                         else if (strlen($descricaoCampo) <= 200 && $qtdLogs > 1)
-                            $blockHeight = 70 + ($qtdLogs);
+                            $blockHeight = 50 + ($qtdLogs);
 
 
                         if ($currentY + $blockHeight + $minBottomMargin > $pdf->getPageHeight()) {
@@ -543,56 +522,78 @@ if (!isset($_SESSION['username'])) {
                             $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
                             $pdf->Image('../icons/S_SIASB.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
                             $pdf->Ln();
-                            $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
+                            $pdf->Cell(0, 10, 'Relatório de Chamados', $borderHeader, 1, 'C');
                             $pdf->SetFont($font, '', 12);
                             $pdf->Ln();
                         }
-                        underline($pdf, $tipoRelatorio);
 
+                        underline($pdf, $tipoRelatorio);
                         $pdf->Ln(2);
-                        $pdf->MultiCell(8, 10, 'ID:', $border, 'L', false, 0);
-                        $pdf->MultiCell(25, 10, $registro['IDChamado'], $border, 'L', false, 0);
-                        $pdf->MultiCell(18, 10, 'Assunto:', $border, 'R', false, 0);
-                        $pdf->MultiCell(94, 10, $registro['assunto'], $border, 'L', false, 0);
-                        $pdf->MultiCell(30, 10, 'Autor:', $border, 'R', false, 0);
-                        $pdf->MultiCell(40, 10, $registro['autor'], $border, 'L', false, 0);
-                        $pdf->MultiCell(24, 10, 'Status:', $border, 'R', false, 0);
-                        $pdf->MultiCell(23, 10, $registro['status_chamado'], $border, 'L', false, 1);
-                        $pdf->Ln(1);
-                        $pdf->MultiCell(25, 10, 'Descrição: ', $border, 'L', false, 0);
-                        $pdf->MultiCell(120, 10, $descricaoCampo, $border, 'L', false, 0);
-                        $pdf->MultiCell(30, 10, 'Equipamento:', $border, 'R', false, 0);
-                        $pdf->MultiCell(40, 10, $registro['equipamento'] ? $registro['equipamento'] : '-----', $border, 'L', false, 1); //$DATAABERTURA
+                        $pdf->SetFont($font, 'B', 12);
+                        $pdf->MultiCell(10, 6, 'ID:', $border, 'L', false, 0);
+                        $pdf->SetFont($font, '', 12);
+                        $pdf->MultiCell(25, 6, $registro['IDChamado'], $border, 'L', false, 0);
+                        $pdf->SetFont($font, 'B', 12);
+                        $pdf->MultiCell(18, 6, 'Assunto:', $border, 'R', false, 0);
+                        $pdf->SetFont($font, '', 12);
+                        $pdf->MultiCell(94, 6, $registro['assunto'], $border, 'L', false, 0);
+                        $pdf->SetFont($font, 'B', 12);
+                        $pdf->MultiCell(30, 6, 'Autor:', $border, 'R', false, 0);
+                        $pdf->SetFont($font, '', 12);
+                        $pdf->MultiCell(40, 6, $registro['autor'], $border, 'L', false, 0);
+                        $pdf->SetFont($font, 'B', 12);
+                        $pdf->MultiCell(24, 6, 'Status:', $border, 'R', false, 0);
+                        $pdf->SetFont($font, '', 12);
+                        $pdf->MultiCell(23, 6, $registro['status_chamado'], $border, 'L', false, 1);
+                        $pdf->SetFont($font, 'B', 12);
+                        $pdf->MultiCell(25, 6, 'Descrição: ', $border, 'L', false, 0);
+                        $pdf->SetFont($font, '', 12);
+                        $pdf->MultiCell(122, 6, $descricaoCampo, $border, 'L', false, 0);
+                        $pdf->SetFont($font, 'B', 12);
+                        $pdf->MultiCell(30, 6, 'Equipamento:', $border, 'R', false, 0);
+                        $pdf->SetFont($font, '', 12);
+                        $pdf->MultiCell(40, 6, $registro['equipamento'] ? $registro['equipamento'] : '-----', $border, 'L', false, 1); //$DATAABERTURA
+                        
                         if (strlen($descricaoCampo) > 65) {
                             $tamanho = strlen($descricaoCampo);
                             $result = $tamanho / 65;
-                            $w = ($result * 4);
+                            $w = (($result * 4) + 2);
                             $pdf->Ln($w);
                         }
+                        $pdf->SetFont($font, 'B', 12);
 
-                        $pdf->MultiCell(33, 10, 'Data de Abertura:', $border, 'R', false, 0);
-                        $pdf->MultiCell(39, 10, convertData($registro['dataAbertura']), $border, 'L', false, 0);
+                        $pdf->MultiCell(36, 6, 'Data de Abertura:', $border, 'L', false, 0);
+                        $pdf->SetFont($font, '', 12);
+                        $pdf->MultiCell(34, 6, convertData($registro['dataAbertura']), $border, 'L', false, 0);
 
                         if ($registro['status_chamado'] == 'Fechado') {
-                            $pdf->MultiCell(39.05, 10, 'Data de Fechamento:', $border, 'R', false, 0);
-                            $pdf->MultiCell(39, 10, $registro['dataFechamento'] ? convertData($registro['dataFechamento']) : '----', $border, 'L', false, 0);
+                            $pdf->SetFont($font, 'B', 12);
+                            $pdf->MultiCell(43, 6, 'Data de Fechamento:', $border, 'R', false, 0);
+                            $pdf->SetFont($font, '', 12);
+                            $pdf->MultiCell(34, 6, $registro['dataFechamento'] ? convertData($registro['dataFechamento']) : '----', $border, 'L', false, 0);
                         }
 
                         if ($qtdLogs != 0) {
-                            $pdf->MultiCell(50, 10, 'Última alteração no status:', $border, 'L', false, 0);
-                            $pdf->MultiCell(50, 10, $registro['responsavel'] ? $registro['responsavel'] : '----', $border, 'L', false, $registro['status_chamado'] == 'Fechado' ? 1 : 0);
+                            $pdf->SetFont($font, 'B', 12);
+                            $pdf->MultiCell(52, 6, 'Última alteração no status:', $border, 'L', false, 0);
+                            $pdf->SetFont($font, '', 12);
+                            $pdf->MultiCell(50, 6, $registro['responsavel'] ? $registro['responsavel'] : '----', $border, 'L', false, $registro['status_chamado'] == 'Fechado' ? 1 : 0);
                             $pdf->SetMargins(80, 0, 0, true);
                         }
 
                         // calcular dias em aberto
                         if ($registro['status_chamado'] == 'Fechado') {
+                            $pdf->SetFont($font, 'B', 12);
                             $dataAbertura = strtotime($registro['dataAbertura']);
+                            $pdf->SetFont($font, '', 12);
                             $dataFechamento = strtotime($registro['dataFechamento']);
                             $diasEmAberto = round(($dataFechamento - $dataAbertura) / 86400);
 
                             // exibir dias em aberto
-                            $pdf->MultiCell(30, 10, 'Dias em aberto:', $border, 'R', false, 0);
-                            $pdf->MultiCell(40, 10, $diasEmAberto, $border, 'L', false, 0);
+                            $pdf->SetFont($font, 'B', 12);
+                            $pdf->MultiCell(32, 6, 'Dias em aberto:', $border, 'L', false, 0);
+                            $pdf->SetFont($font, '', 12);
+                            $pdf->MultiCell(38, 6, $diasEmAberto == 0 ? '0' : $diasEmAberto, $border, 'L', false, 0);
 
                         }
                         $sql = "SELECT c.dataAlteracao, c.mensagem, u.nome, s.descricao FROM tblog_chamado c
@@ -603,8 +604,11 @@ if (!isset($_SESSION['username'])) {
                         $stmt->execute();
                         $result = $stmt->get_result();
                         $logs = array();
-                        if ($qtdLogs != 0)
-                            $pdf->MultiCell(200, 10, 'Logs de Alterações:', $border, 'L', false, 1);
+                        if ($qtdLogs != 0) {
+                            $pdf->SetFont($font, 'B', 12);
+                            $pdf->MultiCell(119, 6, 'Logs de Alterações:', $border, 'C', false, 1);
+                            $pdf->SetFont($font, '', 12);
+                        }
                         $isFirstRow = true;
                         $maiorLinhaMsg = 40; //LTRB
                         $maiorLinhaUser = 10;
@@ -615,26 +619,29 @@ if (!isset($_SESSION['username'])) {
                                 $maiorLinhaUser = $pdf->GetStringWidth($row2['nome']) + 12;
                             if ($isFirstRow) {
                                 $pdf->SetFont($font, 'U', 14);
-                                $border =  array(
-                                    'T' => array('width' => 0.5),  // Borda superior
-                                    'B' => array('width' => 0.5),  // Borda inferior
-                                );
                                 // $border = 1;
                                 $pdf->Cell($maiorLinhaUser, 10, 'Usuário', $border, 0, 'C');
                                 $pdf->Cell(25, 10, 'Data', $border, 0, 'C');
                                 $pdf->Cell(30, 10, 'Status', $border, 0, 'C');
                                 $pdf->Cell($maiorLinhaMsg, 10, 'Mensagem', $border, 1, 'C');
                                 $pdf->SetFont($font, '', 12);
+                                $border = array(
+                                    'T' => array('width' => 0.5),
+                                    // Borda superior
+                                    'B' => array('width' => 0.5),
+                                    // Borda inferior
+                                );
                             }
 
-                            $pdf->Cell($maiorLinhaUser, 10, $row2['nome'] , $border, 0, 'C');
-                            $pdf->Cell(25, 10, convertData($row2['dataAlteracao']), $border, 0, 'C');
-                            $pdf->Cell(30, 10, $row2['descricao'], $border, 0, 'C');
-                            $pdf->Cell($maiorLinhaMsg, 10, $row2['mensagem'], $border, 1, 'C');
+                            $pdf->Cell($maiorLinhaUser, 5, $row2['nome'], $border, 0, 'C');
+                            $pdf->Cell(25, 5, convertData($row2['dataAlteracao']), $border, 0, 'C');
+                            $pdf->Cell(30, 5, $row2['descricao'], $border, 0, 'C');
+                            $pdf->Cell($maiorLinhaMsg, 5, $row2['mensagem'], $border, 1, 'C');
                             $isFirstRow = false;
 
                         }
                         $border = 0;
+
                         $pdf->SetMargins(10, 0, 0, true);
 
                         $stmt->close();
@@ -644,15 +651,14 @@ if (!isset($_SESSION['username'])) {
 
                 //resultados:
                 if ($pdf->GetY() + 60 + 10 > $pdf->getPageHeight()) {
-                    $pdf->SetMargins(10, 0, 0, true);
                     $pdf->AddPage();
-
+                    $pdf->Ln(6);
                     $pdf->SetFont($font, 'B', 14);
                     $tamanhoImagemPrincipal = 50;
                     $pdf->Image('../Icones Site/logo-saeeb.png', 10, 15, $tamanhoImagemPrincipal, (0.32 * $tamanhoImagemPrincipal), 'png');
                     $pdf->Image('../icons/S_SIASB.png', 265, 15, $tamanhoImagem, $tamanhoImagem, 'png');
-                    $pdf->Ln();
                     $pdf->Cell(0, 10, 'Relatório de Chamados', 0, 1, 'C');
+                    $pdf->Ln(13);
                     $pdf->SetFont($font, '', 12);
 
                     underline($pdf, $tipoRelatorio);
@@ -681,6 +687,8 @@ if (!isset($_SESSION['username'])) {
 
                 //  Cell(largura,altura,texto,borda,quebra de linha,alinhamento,fill,link) \\
                 $pdf->SetTitle('Relatório Gerado!');
+                if ($tipoRelatorio == 'analitico')
+                    $pdf->setPageOrientation('L'); //modo paisagem
                 $pdf->Output('/Relatorio Chamados ' . date('d-m-Y') . '.pdf', 'I'); // Gera o PDF
                 exit();
             } else
@@ -698,11 +706,9 @@ if (!isset($_SESSION['username'])) {
 
                     echo json_encode($response);
                 }
-
             // imprimeDados($dados);
         }
     }
     $conn->close();
-
 }
 ?>

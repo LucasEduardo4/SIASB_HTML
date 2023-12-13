@@ -12,6 +12,10 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
+    .card {
+      box-shadow: 0px 2px 4px rgba(68, 68, 68, 0.267)
+    }
+
     /* CSS para a modal */
     .modal {
       display: none;
@@ -317,6 +321,21 @@
     .Alta {
       color: red;
     }
+
+    .width-1920 {
+      position: absolute;
+      top: 130px;
+      right: 3%;
+      width: 310px;
+
+    }
+
+    .width-1536 {
+      right: 2.5%;
+      position: absolute;
+      top: 130px;
+      width: 250px;
+    }
   </style>
 
   <title>Detalhando Chamado</title>
@@ -339,6 +358,11 @@
         <h4 style="display: inline;" id="prioridade"></h4>
       </div>
     </div>
+  </div>
+  <div class="container my-3 p-0" id="containerBtn" style="z-index: 2;">
+    <button type="button" id="responsavel_tecnologia" class="btn btn-success" onclick="alterarChamado()">
+      Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
+    </button>
   </div>
 
 
@@ -364,9 +388,9 @@
   </script> -->
 
   <div class="chamados">
-    <div style="padding-top: 80px;" class="row">
+    <div style="padding-top: 90px;" class="row">
       <div class="col-md-8">
-        <div class="card m-3">
+        <div class="card" style="margin-left: 20px; margin-top: 1%;">
           <div class="card-body container_card">
             <h5 class="card-text" id="assunto">ASSUNTO DO CHAMADO<br><br> </h5>
             <hr>
@@ -384,8 +408,8 @@
       </div>
 
 
-      <div style="z-index: 2;" class="col-md-4">
-        <div class="card" style="padding-bottom:8%; margin-top: 15px; box-shadow: 0px 2px 4px rgba(68, 68, 68, 0.267)">
+      <div class="col-md-4">
+        <div class="card" style="margin-top: 4.3%;">
           <div class="card-body">
             <h5>Informações Adicionais
               <hr>
@@ -399,7 +423,6 @@
             <p class="card-text" style="font-weight: bold;">DATA DE ABERTURA: </p>
             <p id="dataAbertura"> </p>
 
-            <!-- <span style="display: flex; align-items: center;" class="card-text" id="status"> -->
             <p class="card-text" style="font-weight: bold;">STATUS:</p>
             <p id="status"> </p>
             <!-- </span> -->
@@ -407,16 +430,11 @@
             <p id="equipamento"></p>
           </div>
         </div>
-        <div class="container my-3 p-0">
-          <button type="button" id="responsavel_tecnologia" class="btn btn-success" onclick="alterarChamado()">
-            Dar andamento ao chamado <i class="bi bi-chevron-double-right"></i>
-          </button>
-        </div>
 
       </div>
     </div>
-    <div class="row">
-      <div class="card m-3">
+    <div class="row" style="margin-left:20px; margin-right: 1px;">
+      <div class="card" style="margin-top: 15px;">
         <!-- DIV QUE EU IREI MECHER PARA REALZIZAR A ALTERAÇÃO DA PROPORÇÃO -->
         <div class="card-body">
           <h5>ANEXOS:</h5>
@@ -425,10 +443,24 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <script src="sidebars/bootstrap.bundle.min.js"></script>
   <script>
+    function foo() {
+      var containerBtn = document.getElementById("containerBtn");
+      if (window.screen.width <= 1540) {
+        containerBtn.classList.add("width-1536");
+      } else {
+        containerBtn.classList.add("width-1920");
+
+      }
+    }
+    foo();
+
+
+
     var PRIORIDADE = Array();
     var STATUS = Array();
     var url = new URL(window.location.href);
@@ -444,10 +476,15 @@
 
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
+          if (xhr.responseText == 'Não autorizado') {
+            window.location.href = "/siasb_html/flowSite/permissaonegada.html";
+            exit();
+          }
           if (operation == 1) {
             unParse(xhr.responseText);
           } else if (operation == 2) {
-            console.log(xhr.responseText);
+            // console.log(xhr.responseText);
+
           } else if (operation == 'verificarSetor') {
             if (xhr.responseText == '1') {
               controlarResponsavel_Tecnologia();
@@ -457,6 +494,7 @@
       };
 
       if (data instanceof FormData) {
+        // xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + data._boundary);
         xhr.send(data);
       } else {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -501,10 +539,8 @@
       document.getElementById("assunto").innerHTML += assunto;
       document.getElementById("descricao").innerHTML += '<br>' + descricao;
       document.getElementById("dataAbertura").innerHTML += dataAbertura;
-      // document.getElementById("dataAbertura1").innerHTML += dataAbertura;
       document.getElementById("status").innerHTML += status_chamado;
       document.getElementById("prioridade").innerHTML += ' ' + (prioridadeChamado == 'undefined' ? 'Ainda não definida' : prioridadeChamado);
-
       document.getElementById("prioridade").classList.add(prioridadeChamado);
       document.getElementById("responsavel").innerHTML += (responsavel == null ? "-----" : responsavel);
       document.getElementById("autor").innerHTML += autor;
@@ -621,6 +657,7 @@
       document.body.appendChild(modal);
     }
 
+
     function exibeLogs(logs) {
       const logsContainer = document.getElementById("logsContainer");
 
@@ -685,7 +722,7 @@
     }
 
     function exibeImagensAnexadas(imagens) {
-
+      
       if (window.screen.width < 1025) {
         var responsiveSize = window.screen.width * 0.65;
       } else {
@@ -698,23 +735,25 @@
         const html = `<div id="indicadores"></div>
               <div id="esquerda" class="setas"><span class="bi bi-arrow-left"></span></div>
               <div id="central" style="width:70%; display:inline;">
-                <img id="imagemLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">
+                <img id="imagemLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="90%" alt="Imagem do log">
               </div>
               <div id="direita" class="setas"><span class="bi bi-arrow-right"></span></div>
             `;
-
         Swal.fire({
+          //1.7778
           title: "Imagem anexada",
           html: html,
-          width: window.screen.width,
+          width: window.screen.width - 400,
           showCancelButton: false,
           confirmButtonText: 'Fechar',
           confirmButtonColor: '#00cc99'
         });
-
         const indicadoresDiv = document.getElementById("indicadores");
         indicadoresDiv.innerHTML = "";
-
+        if (imagens.length == 1) {
+          document.getElementById("esquerda").style.display = "none";
+          document.getElementById("direita").style.display = "none";
+        }
         for (let i = 0; i < imagens.length; i++) {
           const indicador = document.createElement("div");
           indicador.classList.add("indicador");
@@ -757,7 +796,7 @@
 
         indicadores[index].classList.add("ativo");
 
-        document.getElementById("central").innerHTML = `<img id="imagemLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="${responsiveSize}px;" alt="Imagem do log">`;
+        document.getElementById("central").innerHTML = `<img id="imagemLOG" src="data:image/jpeg;base64, ${imagens[index].dados}" width="90%;" alt="Imagem do log">`;
       }
 
       showImage(currentIndex);
@@ -838,7 +877,7 @@
             var mensagem = document.getElementById("mensagem").value;
             var imagemInput = document.getElementById("imagem");
 
-            console.log(`status -> ${status} \nprioridade -> ${prioridade} \nmensagem -> ${mensagem} \nimagem -> ${imagemInput.files[0]}`)
+            // S(`status -> ${status} \nprioridade -> ${prioridade} \nmensagem -> ${mensagem} \nimagem -> ${imagemInput.files[0]}`)
 
             if (!status && !prioridade && !mensagem) {
               Swal.fire({
@@ -900,18 +939,21 @@
             data.append("mensagem", mensagem);
             data.append("referencia", IDChamado);
 
+            var result = "gerarLog: 1"  + "<br>" +
+              "status: " + status + "<br>" +
+              "prioridade: " + prioridade + "<br>" +
+              "mensagem: " + mensagem + "<br>" +
+              "<br> qtdImagens: " + imagemInput.files.length + "<br>";
 
-            var imagemInput = document.getElementById("imagem"); // Supondo que você tenha um elemento de entrada de arquivo para imagens
-            if (imagemInput) {
+            // console.log(result);
 
-              var imagens = imagemInput.files;
-
-              for (var i = 0; i < imagens.length; i++) {
-                data.append("imagem[]", imagens[i]); // Use colchetes no nome do campo para indicar que é uma matriz de imagens
+            if (imagemInput.files.length > 0) {
+              for (var i = 0; i < imagemInput.files.length; i++) {
+                data.append("imagem[]", imagemInput.files[i]);
               }
             }
             connection(data, 2);
-            window.location.reload();
+            // window.location.reload();
           }
         }
       });

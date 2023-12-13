@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "siasb");
+require_once("../../model/conexao.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST["novoStatus"])) {
         $novoStatus = $_POST['novoStatus'];

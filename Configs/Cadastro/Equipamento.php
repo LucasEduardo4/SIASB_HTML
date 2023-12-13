@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "siasb");
+require_once("../../model/conexao.php");
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['Select_Tipo_Secao'])){

@@ -2,7 +2,8 @@
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    header("Location: ../login.html");
+    // header("Location: ../login.html");
+    echo "noSession";
 
     exit();
 } else
@@ -20,24 +21,20 @@ if (!isset($_SESSION['username'])) {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $habilitado = $row["habilitado"];
-                $setor_secao = $row["setor_secao"];
                 $administrador = $row["administrador"];
 
                 if (isset($_POST['verificaPermissao'])) {
                     if ($administrador == 1 && $habilitado == 1) {
-                        echo 'permitido!';
+                        echo 'permitido! adm e habilitado é 1';
                     } elseif ($habilitado != 1) {
                         echo 'desabilitado';
-                    } elseif ($setor_secao != 1) {
+                    } elseif ($administrador != 1) {
                         echo 'sem permissao';
-                    } else {
-                        echo 'permitido!';
+                    } elseif ($habilitado == 1) {
+                        echo 'habilitado';
                     }
                 }
             }
-            // administrador: 0 
-            // habilitado: 1 
-            // setor_secao: 2
         }
     }
 ?>

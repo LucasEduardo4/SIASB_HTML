@@ -4,10 +4,9 @@ session_start();
 if (isset($_POST['teste'])) {
     $_SESSION['username'] = 'gabriel_fernandes';
 }
-$conn = mysqli_connect("localhost", "root", "", "siasb");
+require_once("model/conexao.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['verifyEquip']) && !isset($_POST['insertNew'])) {
-        $conn = mysqli_connect("localhost", "root", "", "siasb");
 
         $sti_ID = $_POST['sti_ID'];
         $descricao = '';
@@ -19,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($row) {
                 $descricao = $row['descricao'];
             } else
-                $descricao = 'Equipamento nao encontrado';
+                $descricao = 'nao encontrado';
         } else {
-            echo "Digite um STI_ID valido (números inteiros)";
+            echo "invalido";
         }
         echo $descricao;
     } else

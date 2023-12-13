@@ -22,13 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagem'])) {
     // Read image data as binary
     $imageData = file_get_contents($imagem['tmp_name']);
 
-    // Conexão com o banco de dados (substitua pelas suas informações)
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "siasb";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    require_once("model/conexao.php");
 
     // Verificar conexão
     if ($conn->connect_error) {

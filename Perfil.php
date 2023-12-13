@@ -1,4 +1,6 @@
 <?php
+require_once("model/conexao.php");
+
 session_start();
 $_SESSION['even'] = 0;
 
@@ -11,7 +13,6 @@ if (!isset($_SESSION['username'])) {
         echo "<script>window.parent.location.reload();</script>";
 
     //abaixo está a verificação se o usuário está ativo:
-    $conn = mysqli_connect('localhost', 'root', '', 'siasb');
     $username = $_SESSION['username'];
 
     $sql = "SELECT * FROM TBUsuario u  
@@ -36,9 +37,6 @@ if (!isset($_SESSION['username'])) {
 
 }
 
-
-//abaixo está a verificação se o usuário está ativo:
-$conn = mysqli_connect('localhost', 'root', '', 'siasb');
 $username = $_SESSION['username'];
 
 $sql = "SELECT * FROM TBUsuario u  
@@ -72,15 +70,7 @@ if ($result->num_rows > 0) {
 ?>
 
 <?php
-// Conectar ao banco de dados
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "siasb";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar a conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
@@ -113,7 +103,6 @@ if ($result->num_rows > 0) {
     exit;
 }
 
-$conn->close();
 
 if ($imageData) {
     // Display the image using base64 encoding
@@ -245,13 +234,6 @@ if ($imageData) {
         </script>
 
         <?php
-        // Conexão com o banco de dados
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "siasb";
-
-        $conn = new mysqli($servername, $username, $password, $dbname);
         if ($conn->connect_error) {
             die("Falha na conexão com o banco de dados: " . $conn->connect_error);
         }
@@ -286,7 +268,6 @@ if ($imageData) {
         } else {
             echo "Nenhum usuário encontrado.";
         }
-        $conn->close();
         ?>
 
     </div>
@@ -296,13 +277,6 @@ if ($imageData) {
             <div id="user-info">
 
                 <?php
-                // Conexão com o banco de dados
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "siasb";
-
-                $conn = new mysqli($servername, $username, $password, $dbname);
                 if ($conn->connect_error) {
                     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
                 }
@@ -340,7 +314,6 @@ if ($imageData) {
                 } else {
                     echo "Nenhum usuário encontrado.";
                 }
-                $conn->close();
                 ?>
             </div>
         </div>
@@ -361,13 +334,6 @@ if ($imageData) {
 
             <?php
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                // Conectar ao banco de dados
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "siasb";
-
-                $conn = new mysqli($servername, $username, $password, $dbname);
                 if ($conn->connect_error) {
                     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
                 }

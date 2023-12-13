@@ -4,7 +4,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
   $username = $_POST['username'];
   $password = $_POST['password'];
 
-  // Faça a conexão com o banco de dados (substitua as informações de conexão com as suas)
   $host = 'localhost';
   $db = 'siasb';
   $user = 'root';
@@ -23,13 +22,8 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
   $stmt->execute();
   $result = $stmt->get_result();
 
-
   if ($result->num_rows > 0) {
-    // Encontrou resultados
     $row = $result->fetch_assoc();
-    // echo "Dado encontrado!<br>";
-    // echo "Senha: " . $row["senha"] . "<br>";
-    // echo "Nome: " . $row["nome"] . "<br>";
     $login_habilitado = $row["habilitado"];
 
     if ($login_habilitado == "1") {
@@ -42,23 +36,18 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         exit;
       }
 
-      // Consulta para obter a senha hash correspondente ao nome de usuário fornecido
       $stmt = $pdo->prepare('SELECT senha FROM tbusuario WHERE nome = ? LIMIT 1');
       $stmt->execute([$username]);
       $row = $stmt->fetch();
       if ($row) {
         $storedPassword = $row['senha'];
 
-        // Verifique se a senha inserida corresponde à senha armazenada (você pode usar a função de hash adequada)
         if (password_verify($password, $storedPassword)) {
-          // echo "<br>senha existe";
-          // Senha correta, redirecione para a página protegida
           session_start();
           $_SESSION['username'] = $_POST['username'];
           header('Location: sidebars/index.php');
           exit;
         } else {
-          // Nome de usuário ou senha incorretos
           header('Location: Login.html?error=error');
         }
 
@@ -66,7 +55,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         header('Location: Login.html?error=true');
       }
 
-      // Exibir outros campos conforme necessário
     } else {
       header('Location: Login.html?error=error');
     }

@@ -430,7 +430,7 @@
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            console.log(xhr.responseText);
+            // console.log(xhr.responseText);
             exibirPopup();
           } else {
             // Lida com erros aqui, se necessário
@@ -438,7 +438,6 @@
         }
       };
 
-      // Envie o FormData com os dados do formulário
       xhr.send(formData);
 
     }
@@ -466,11 +465,13 @@
     function handleCadastro(icone, response) {
       var nomeEquipamento = document.getElementById("nomeEquipamento");
 
-      if (response === 'Equipamento nao encontrado') {
-        nomeEquipamento.placeholder = 'Código inválido';
-        nomeEquipamento.value = '';
-      } else if (response !== 'Equipamento nao encontrado') {
-        nomeEquipamento.placeholder = '';
+      if (response === 'nao encontrado') {
+        nomeEquipamento.value = 'Código inválido';
+        // nomeEquipamento.value = '';
+      } else if (response === 'invalido') {
+        nomeEquipamento.value = 'Digite um STI_ID valido (números inteiros)';
+      }else {
+        nomeEquipamento.value = response;
       }
     }
 
@@ -590,9 +591,10 @@
     function validarCampos2() {
 
       var assunto = document.getElementById("assunto").value;
+      var nomeEquipamento = document.getElementById("nomeEquipamento").value;
 
-      if (assunto === "") {
-        alert("Por favor, preencha todos os campos antes de avançar.");
+      if (assunto === "" || nomeEquipamento == 'Código inválido' || nomeEquipamento == '' || nomeEquipamento == 'Digite um STI_ID valido (números inteiros)') {
+        alert("Por favor, preencha corretamente os campos antes de avançar.");
       } else {
         nextStep(3);
       }

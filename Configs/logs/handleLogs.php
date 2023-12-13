@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "siasb");
+require_once("../../model/conexao.php");
 if (isset($_POST['tabela']))
     $tabela = $_POST['tabela'];
 else if (isset($_POST['tabela1'])) {

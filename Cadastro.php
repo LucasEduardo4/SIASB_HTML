@@ -1,5 +1,6 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "siasb");
+require_once("model/conexao.php");
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST["select_setor"])) {
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             while ($row = $result->fetch_assoc()) {
                 $id = $row["ID"];
                 $setor = $row["descricao"];
-
+                
                 echo "<option value='" . $id . "'>" . $setor . "</option>";
             }
         }

@@ -37,21 +37,12 @@ if ($result->num_rows > 0) {
     }
   }
 }
-?>
-<?php
-// Conectar ao banco de dados
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "siasb";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
+require_once('../model/conexao.php');
 // Verificar a conexão
 if ($conn->connect_error) {
   die("Conexão falhou: " . $conn->connect_error);
 }
-
 
 $usuario_ = $_SESSION['username'];
 
@@ -427,6 +418,13 @@ if ($imageData) {
       background-color: rgb(64, 163, 131);
       border-radius: 50%;
       border: solid 1px black;
+      /* TESTE A/B */
+      /* A: Cria um efeito amarelo ao redor do sino */
+            /* box-shadow: 20px -15px 10px 3px yellow !important; */
+      
+      /* B: Cria uma borda branca ao redor do ícone*/
+            box-shadow: 0px 0px 5px 2px white; 
+
     }
 
     #icone {
@@ -543,7 +541,7 @@ if ($imageData) {
   <div class="sidebar_icon" onclick="abrirNotificacao(event)" ;>
     <div class='circleDiv' id="circle">
       <img src="..\Icones Site\NOTIFICACAO.png" id="notificationSign" alt="saaeb barretos" width="40">
-      <div class="circle"></div>
+      <div class="circle" style="display:none"></div>
     </div>
 
   </div>
@@ -695,6 +693,17 @@ if ($imageData) {
     </div>
 
     <script>
+      function recarregarDiv() {
+
+        var iframe = document.getElementById("myNotifications");
+        if (iframe.hidden == true) {
+          iframe.src = iframe.src;
+        } else
+          return;
+      }
+
+      setInterval(recarregarDiv, 10000);
+
       if (imagem != '') {
         document.getElementById("imagem-retraida").innerHTML +=
           '<img id="icone" src="data:image/jpeg;base64,' + imagem + '" width="57" alt="" />';
@@ -723,6 +732,7 @@ if ($imageData) {
     </script>
 
     <?php
+
     $conn = mysqli_connect("localhost", "root", "", "siasb");
     $usuario = $_SESSION['username'];
     $sql = "SELECT * FROM tbusuario WHERE nome = '$usuario'";
@@ -947,7 +957,7 @@ if ($imageData) {
 
       function abrirConfiguracoes() {
         var iframe = document.getElementById("myIframe");
-        iframe.src = "../Configs/index.html";
+        iframe.src = "../Configs/index.php";
       }
 
       function abrirPerfil() {

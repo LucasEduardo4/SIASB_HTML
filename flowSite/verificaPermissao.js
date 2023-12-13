@@ -16,9 +16,15 @@ xhr.onreadystatechange = function () {
         } else
             if (xhr.responseText == 'desabilitado') {
                 window.location.href = `/${pathArray[1]}/flowsite/usuarioinativo.html`;
-            }
-
+            } else
+                if (xhr.responseText == "noSession") {
+                    window.location.href = `/${pathArray[1]}/Login.html?error=true`;
+                } else {
+                    // console.log("retorno -> " + xhr.responseText);
+                }
     }
 }
+
 xhr.send("verificaPermissao=" + encodeURIComponent(1));
 
+// Path: flowSite/verificaPermissao.php

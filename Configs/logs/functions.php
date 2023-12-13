@@ -61,7 +61,7 @@ function getNewerValues($conn, $tabela, $id, $colName)
 }
 function logChanges($tabela, $oldValues, $id, $newValues)
 {
-    $conn = mysqli_connect("localhost", "root", "", "siasb");
+    require_once("../../model/conexao.php");
 
     $sql1 = "SELECT IDUsuario FROM tbusuario WHERE nome = '" . $_SESSION['username'] . "'";
     $result = $conn->query($sql1);

@@ -232,17 +232,19 @@
                     background-color: white;
                     padding: 2px;
                 }
-                .divColumnSelection label{
+
+                .divColumnSelection label {
                     width: 180px;
                     width: 26vh;
                 }
-                .divColumnSelection:hover{
+
+                .divColumnSelection:hover {
                     color: white;
                     background-color: #1e90ff;
                 }
 
                 #columnSelection {
-                    display: flex; 
+                    display: flex;
                     flex-direction: column;
                     border: solid 1px black;
                     /* display: none; */
@@ -250,76 +252,29 @@
                     width: 210px;
                     background-color: white;
                 }
-                #columnSelector{
+
+                #columnSelector {
                     border: solid 1px #dcdcdc;
                     border-radius: 6px;
                     padding: 6px;
                 }
-                .disabledDiv{
+
+                .disabledDiv {
                     color: #dcdcdc;
                 }
             </style>
             <script>
-                function exibeColunas(){
+                function exibeColunas() {
                     var columnSelection = document.getElementById('columnSelection');
-                    if(columnSelection.style.display == 'none'){
+                    if (columnSelection.style.display == 'none') {
                         columnSelection.style.display = 'flex';
-                    }else{
+                    } else {
                         columnSelection.style.display = 'none';
                     }
                 }
             </script>
 
             <div class="container container-fluid esse mt-3" style="margin: auto;">
-                <div class="form-check p-0">
-
-                    <p for="columnSelector" class="form-check-label mb-0">Selecionar colunas:</p>
-                    <div id="columnSelector" class="disabledDiv" onclick="exibeColunas()">Escolha abaixo:</div>
-                    <div id="columnSelection">
-                        <div class="divColumnSelection">
-                            <label for="IDChamado">IDChamado</label>
-                            <input class="form-check-input" type="checkbox" value="IDChamado" id="IDChamado"
-                                name="IDChamado" checked>
-                        </div>
-                        <div class="divColumnSelection">
-                            <label for="Assunto">Assunto</label>
-                            <input class="form-check-input" type="checkbox" value="assunto" id="Assunto" name="Assunto"
-                                checked>
-                        </div>
-                        <div class="divColumnSelection">
-                            <label for="Descrição">Descrição</label>
-                            <input class="form-check-input" type="checkbox" value="descricao" id="Descrição"
-                                name="Descrição" checked>
-                        </div>
-                        <div class="divColumnSelection">
-                            <label for="DatadeAbertura">Data de Abertura</label>
-                            <input class="form-check-input" type="checkbox" value="dataAbertura" id="DatadeAbertura"
-                                name="DatadeAbertura" checked>
-                        </div>
-                        <div class="divColumnSelection">
-                            <label for="DatadeFechamento">Data de Fechamento</label>
-                            <input class="form-check-input" type="checkbox" value="dataFechamento" id="DatadeFechamento"
-                                name="DatadeFechamento" checked>
-                        </div>
-                        <div class="divColumnSelection">
-                            <label for="Status">Status</label>
-                            <input class="form-check-input" type="checkbox" value="status" id="Status" name="Status"
-                                checked>
-                        </div>
-                        <div class="divColumnSelection">
-                            <label for="Autor">Autor</label>
-                            <input class="form-check-input" type="checkbox" value="autor" id="Autor" name="Autor"
-                                checked>
-                        </div>
-                        <div class="divColumnSelection">
-                            <label for="Equipamento">Equipamento</label>
-                            <input class="form-check-input" type="checkbox" value="equipamento" id="Equipamento"
-                                name="Equipamento" checked>
-                        </div>
-                    </div>
-
-
-                </div>
                 </form>
                 <div class="container px-3">
                     <button class="btn btn-primary mt-3" onclick="submitFilters()">Visualizar Relatório <i
@@ -498,7 +453,7 @@
                 }
         }
 
-        function LimpaFiltros() { 
+        function LimpaFiltros() {
             var filtroDEDataAbertura = document.getElementById("filtroDEDataAbertura");
             var filtroDEDataFechamento = document.getElementById("filtroDEDataFechamento");
             var filtroAutor = document.getElementById("filtroAutor");
@@ -575,10 +530,6 @@
                     return;
                 }
             }
-            // else if (selectDataAbertura.options[selectDataAbertura.selectedIndex].value == 9) {
-            //     return;
-            // }
-
 
             var data = "filtroDataAbertura=" + encodeURIComponent(filtroDataAbertura.value) +
                 "&filtroDataFechamento=" + encodeURIComponent(filtroDataFechamento.value) +
@@ -591,7 +542,6 @@
                 "&filtroATEDataAbertura=" + encodeURIComponent(filtroATEDataAbertura.value) +
                 "&filtroATEDataFechamento=" + encodeURIComponent(filtroATEDataFechamento.value) +
                 "&tipoRelatorio=" + encodeURIComponent(tipoRelatorio.id);
-
 
             if (!relatorio) {
                 console.log(data);

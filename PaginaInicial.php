@@ -1,5 +1,7 @@
 <?php
 // Verifica se o usuário está autenticado
+require_once("model/conexao.php");
+
 session_start();
 
 if (!isset($_SESSION['username'])) {
@@ -12,10 +14,6 @@ if (!isset($_SESSION['username'])) {
             exit();
         } else
             echo "<script>window.parent.location.reload();</script>";
-
-
-        //abaixo está a verificação se o usuário está ativo:
-        $conn = mysqli_connect('localhost', 'root', '', 'siasb');
         $username = $_SESSION['username'];
 
         $sql = "SELECT * FROM TBUsuario u  
@@ -41,16 +39,7 @@ if (!isset($_SESSION['username'])) {
 
 ?>
 <?php
-// Faça a consulta para obter o ID do usuário
-// Realizar a conexão com o banco de dados (substitua os valores conforme suas configurações)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "siasb";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar a conexão
 if ($conn->connect_error) {
     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
 }
@@ -88,9 +77,6 @@ if ($result_id_usuario) {
 ?>
 
 <?php //terminar aqui.
-
-$conn = new mysqli('localhost', 'root', '', 'siasb');
-
 $sql = "SELECT nomeCompleto 
         FROM TBUSUARIO u
         JOIN TBPessoa p ON p.IDPessoa = u.IDUsuario

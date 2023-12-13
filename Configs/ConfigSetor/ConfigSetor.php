@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "siasb");
+require_once("../../model/conexao.php");
 $connMulti = mysqli_connect("localhost", "root", "", "siasb");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST["select_ready"])) {

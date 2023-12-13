@@ -6,15 +6,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $date = $_POST['date'];
     $message = $_POST['message'];
     
-    // Realizar a conexão com o banco de dados (substitua os valores conforme suas configurações)
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "siasb";
-    
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    
-    // Verificar a conexão
+    require_once("model/conexao.php");
+
     if ($conn->connect_error) {
         die("Falha na conexão com o banco de dados: " . $conn->connect_error);
     }

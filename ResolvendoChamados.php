@@ -1,6 +1,6 @@
 <?php 
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "siasb");
+require_once("model/conexao.php");
 // var_dump($_SESSION);
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['selectChamados']) || isset($_POST['fechados'])){

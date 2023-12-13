@@ -729,8 +729,7 @@
                         option.value = JSONObj.status[i].IDStatus;
                         option.text = JSONObj.status[i].descricao;
                         selectStatus.appendChild(option);
-                    }
-
+                     }
 
                     if (JSONObj.administrador == 1) {
                         var place = document.getElementById("divNovosChamados")
@@ -740,6 +739,9 @@
                         div.style.borderRadius = "5px";
                         var h2 = document.createElement("h2");
                         h2.id = "novosChamados";
+                        if(JSONObj.chamadosNovos == 1){
+                            h2.innerHTML = "HÁ <span style='color:red; font-weight:bold'>" + JSONObj.chamadosNovos + "</span> NOVO CHAMADO";
+                        }else
                         h2.innerHTML = "HÁ <span style='color:red; font-weight:bold'>" + JSONObj.chamadosNovos + "</span> NOVOS CHAMADOS";
                         var btn = document.createElement("button");
                         btn.innerHTML = "Verificar";
@@ -749,6 +751,13 @@
                         div.appendChild(h2);
                         div.appendChild(btn);
                         place.appendChild(div);
+
+                        if(JSONObj.chamadosNovos == 0){
+                            btn.disabled = true;
+                            btn.style.display = "none";
+                            btn.style.backgroundColor = "#e9ecef";
+                            h2.innerHTML = "NÃO HÁ NOVOS CHAMADOS";
+                        }
                     }
                 }
 

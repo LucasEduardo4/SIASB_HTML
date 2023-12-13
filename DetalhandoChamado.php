@@ -6,10 +6,11 @@ if (!isset($_SESSION['username'])) {
 
     exit();
 }
+require_once("model/conexao.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['ChamadoID'])) {
-        $conn = mysqli_connect("localhost", "root", "", "siasb");
 
+    if (isset($_POST['ChamadoID'])) {
+       
         $IDChamado = $_POST['ChamadoID'];
 
         $sql = "SELECT c.IDChamado, c.assunto, c.descricao, c.dataAbertura, sc.descricao as 'status_chamado', a.nome as 'responsavel', u.nome as 'autor', e.descricao as 'equipamento', p.icone, pr.descricao as 'prioridade'
@@ -83,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $this->dados = $dados;
                 $this->referencia = $referencia;
             }
+
         }
         class LogChamado
         {
@@ -122,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $row2["dataAlteracao"],
                     $row2["responsavel"],
                     $row2["status"],
-                    $imagens = array()
+                    $imagensLog = array()
                 );
 
                 $sqlImagens = "SELECT * FROM tbimagens WHERE LOG IS NOT NULL AND referencia = " . $row2["IDLog"];
@@ -139,7 +141,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $rowImagem["referencia"]
                         );
                         $logChamado->imagensLog[] = $imagem;
-
                     }
                 }
 
@@ -189,7 +190,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['gerarLog'])) {
-        $conn = mysqli_connect("localhost", "root", "", "siasb");
         $status = $_POST['status'];
         $prioridade = $_POST['prioridade'];
         $mensagem = $_POST['mensagem'];
@@ -207,6 +207,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //     $imagem_blob = null;
         // }
         $imagens = array();
+        
+        echo "files:";
+        var_dump($_FILES);
 
         if (isset($_FILES['imagem'])) {
             foreach ($_FILES['imagem']['tmp_name'] as $key => $tmp_name) {
@@ -229,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-        var_dump($prioridade, $mensagem, $status);
+
         if (!isset($status) || !isset($mensagem) || !isset($prioridade)) {
             echo "Erro ao adicionar novo status de chamado: " . mysqli_error($conn);
             exit();
@@ -251,9 +254,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // 
             }
         }
+        
         // echo $sql;
         if (mysqli_multi_query($conn, $sql)) {
-            echo $sql;
+            // echo $sql;
             echo "Novo status do chamado adicionado com sucesso!";
         } else {
             echo "Erro ao adicionar novo status de chamado: " . mysqli_error($conn);
@@ -265,7 +269,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['verificarSetor'])) {
-        $conn = mysqli_connect("localhost", "root", "", "siasb");
         $IDUsuario = $_SESSION['username'];
         $sql = "SELECT administrador FROM TBUsuario u
                 where u.nome = '$IDUsuario'";
